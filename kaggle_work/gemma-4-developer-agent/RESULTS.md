@@ -5,12 +5,20 @@ Append-only ledger. One row per experiment, including failures.
 ## Status
 
 **Nothing submitted yet.** No leaderboard score exists for this entry. Everything below is
-offline engineering and validation, not measurement. There is no local way to measure resolution
-rate: the real evaluator needs 4x L4 GPUs, the 31B QAT weights, and the container image.
+offline engineering and validation plus clean Kaggle kernel runs, not measurement. There is
+no local way to measure resolution rate: the real evaluator needs 4x L4 GPUs, the 31B QAT
+weights, and the container image.
 
 | exp | date | change vs base | metric | status | notes |
 |---|---|---|---|---|---|
 | setup | 2026-10-03 | research + harness audit | n/a | PASS | 30/30 offline checks pass, including the real `adk_submission.compile_submission` |
+| notebook | 2026-10-03 | sections + builder + end-to-end verifier | n/a | PASS | notebook executes offline; artifact passes the real compiler |
+| exp01 v1 | 2026-10-03 | kernel push, version 1 | kernel run | PASS | COMPLETE, no traceback, `submission.zip` byte-identical to the local build |
+| exp01 v2 | 2026-10-03 | added explicit `DONE_OK` sentinel | kernel run | PASS | COMPLETE, `DONE_OK` once, no traceback, same digest |
+
+**exp01 is ready to submit** and is waiting on an explicit go-ahead. Kernel
+`narisettichaitanya/gemma4-devagent-exp01` version 2, file `submission.zip`, digest
+`d0c8959dfb3951756872ac49a46ff0aaaf163d7a9f4596db78fb463f2badeb95`.
 
 ## Verification layers that DO exist offline
 
@@ -64,10 +72,31 @@ passed a broken bundle.
 | Included `.yaml` files were returned as raw **text**, so `generate_content_config` was never a dict and its field allowlist never ran | parse included `.yaml`/`.yml` structurally |
 | `search_similar_code` and graph-tool truncation were described from a write-up rather than the source | corrected against `graph.py` / `execution.py` / `workspace.py` |
 
+## Environment problems found on this machine, and their fixes
+
+These cost real time and are recorded so a future run does not rediscover them.
+
+| Problem | Cause | Fix |
+|---|---|---|
+| `adk_eval_core` refuses to install | it requires Python >= 3.11, and only 3.10.12 is present | installed CPython 3.12.15 via `uv` and rebuilt `.venv-harness` on it |
+| `uv venv` has no `pip` | uv does not seed pip | use `uv pip install --python .venv-harness/bin/python` |
+| `tools/verify_bundle.py` never re-execs into the venv | `VENV_PYTHON` was hardcoded to `Scripts\python.exe`, the Windows layout | made it platform-aware |
+| `kaggle` CLI returns **401 on every authenticated call** | the installed CLI (1.7.4.5, the newest on this box's index) authenticates with HTTP Basic, and the account's `KGAT_` token is only accepted as a `Bearer` token | added `tools/kaggle_rest.py`, which calls the same endpoints directly with bearer auth |
+| the CLI still *appears* to work | public dataset downloads are anonymous, so they succeed while authenticated calls silently fail | always confirm with an authenticated endpoint before trusting the CLI |
+| `kaggle kernels push` rejects the kernel | `kagglesdk` serialises POST bodies as **camelCase**; sending snake_case drops fields and surfaces as `Invalid kernel type ''` | send `kernelType`, `newTitle`, `userName`, ... |
+| `kernels/status`, `kernels/pull`, `kernels/output` return 404 as POST | those routes are **GET** with query parameters, not POST | issue them as GET |
+
+## The notebook-to-artifact equivalence result
+
+The strongest evidence that the deliverable is correct: the `submission.zip` produced by the
+kernel run on Kaggle is **byte-identical** to the archive built and validated locally,
+`d0c8959dfb3951756872ac49a46ff0aaaf163d7a9f4596db78fb463f2badeb95`. So the artifact the
+organizers receive is exactly the one that `adk_submission.compile_submission` was run
+against, and no packaging step can have altered it.
+
 ## Next steps
 
-1. Write the notebook section modules and the builder, generate the notebook, and re-run
-   `tools/verify_bundle.py` plus an end-to-end execution of the generated notebook.
-2. Push the notebook as a Kaggle kernel and confirm it runs clean and emits `submission.zip`.
-3. Submit once the verification is green. One submission per day; do not spend one on an
-   unverified bundle.
+1. Submit exp01 (kernel version 2) once approved, then wait out the scoring rerun.
+2. Do not spend a second submission on an unverified bundle; one submission per day.
+3. After the first score, test exactly one isolated change per submission, ranked in
+   `HANDOFF.md`.

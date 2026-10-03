@@ -270,6 +270,40 @@ def cmd_output(ref: str, dest: Path) -> int:
     return 0
 
 
+def cmd_submit(
+    competition: str, kernel_ref: str, version: str, filename: str, message: str
+) -> int:
+    """Submit a kernel to a code competition.
+
+    Mirrors ``kaggle competitions submit -c C -k owner/slug -v N -f name -m msg``.
+    For a code competition ``filename`` is the *name of the output file the
+    kernel produces*, not a local path: the graders read the kernel's output.
+    """
+    owner, slug = split_ref(kernel_ref)
+    body = {
+        "competitionName": competition,
+        "kernelOwner": owner,
+        "kernelSlug": slug,
+        "kernelVersion": int(version),
+        "fileName": filename,
+        "submissionDescription": message,
+    }
+    result = call_json(
+        "POST", f"/api/v1/competitions/submissions/submit-notebook/{competition}", body
+    )
+    print(json.dumps(result, indent=2)[:2000])
+    print(f"\nsubmitted {competition} from {kernel_ref} version {version}")
+    return 0
+
+
+def cmd_submissions(competition: str) -> int:
+    result = call_json(
+        "GET", f"/api/v1/competitions/submissions/list/{competition}?page=1"
+    )
+    print(json.dumps(result, indent=2)[:4000])
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -287,6 +321,16 @@ def main() -> int:
     output.add_argument("ref")
     output.add_argument("dest", type=Path)
 
+    submit = sub.add_parser("submit", help="submit a kernel to a code competition")
+    submit.add_argument("--competition", required=True)
+    submit.add_argument("--kernel", required=True, help="owner/slug")
+    submit.add_argument("--version", required=True)
+    submit.add_argument("--filename", default="submission.zip")
+    submit.add_argument("--message", default="")
+
+    submissions = sub.add_parser("submissions", help="list competition submissions")
+    submissions.add_argument("competition")
+
     args = parser.parse_args()
     if args.command == "push":
         return cmd_push(args.folder)
@@ -296,6 +340,12 @@ def main() -> int:
         return cmd_get(args.ref)
     if args.command == "output":
         return cmd_output(args.ref, args.dest)
+    if args.command == "submit":
+        return cmd_submit(
+            args.competition, args.kernel, args.version, args.filename, args.message
+        )
+    if args.command == "submissions":
+        return cmd_submissions(args.competition)
     return 1
 
 
