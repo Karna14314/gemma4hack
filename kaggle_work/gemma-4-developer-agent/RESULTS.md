@@ -15,10 +15,29 @@ weights, and the container image.
 | notebook | 2026-10-03 | sections + builder + end-to-end verifier | n/a | PASS | notebook executes offline; artifact passes the real compiler |
 | exp01 v1 | 2026-10-03 | kernel push, version 1 | kernel run | PASS | COMPLETE, no traceback, `submission.zip` byte-identical to the local build |
 | exp01 v2 | 2026-10-03 | added explicit `DONE_OK` sentinel | kernel run | PASS | COMPLETE, `DONE_OK` once, no traceback, same digest |
+| exp01 v3 | 2026-10-03 | competition attached as a source | kernel run | PASS | COMPLETE, `DONE_OK` once, no traceback, same digest — **this version was submitted** |
+| **exp01 SUBMITTED** | 2026-10-03 | kernel v3, file `submission.zip` | resolution rate | **pending** | submission ref `56793672`, submitted 2026-10-03T08:34:41Z, digest `d0c8959d…` |
 
-**exp01 is ready to submit** and is waiting on an explicit go-ahead. Kernel
-`narisettichaitanya/gemma4-devagent-exp01` version 2, file `submission.zip`, digest
+**exp01 is submitted** (submission ref `56793672`, status `pending`) and is the first
+scored entry for this account. Kernel `narisettichaitanya/gemma4-devagent-exp01`
+version 3, file `submission.zip`, digest
 `d0c8959dfb3951756872ac49a46ff0aaaf163d7a9f4596db78fb463f2badeb95`.
+
+### Two competition facts that contradict HANDOFF.md
+
+| Documented | Actual | Consequence |
+|---|---|---|
+| the notebook must attach **no** competition source ("the notebook must need no inputs") | `submit-notebook` rejects it: *"Submission not allowed: Your Notebook must include this competition as a data source"* | `competition_sources: ["gemma-4-developer-agent"]` is mandatory. The notebook still reads nothing from it, so it remains functionally input-free |
+| deadline 2026-12-02 | the competition API reports `2026-11-12T23:59:00.807Z` | ~40 days, not ~60. Worth re-checking on the competition page |
+
+### The multipart trap
+
+`ApiCreateCodeSubmissionRequest` is one of the requests `kagglesdk` marks as
+form-encoded (`REQUESTS_REQUIRING_FORMS`). Posting the same body as JSON is accepted by the
+route, has every field **silently ignored**, and returns
+`"This competition requires an output FileName for Notebook Submissions"` regardless of what
+was sent — an error that reads like a payload problem when it is an encoding problem. The
+field name was correct all along.
 
 ## Verification layers that DO exist offline
 
@@ -96,7 +115,9 @@ against, and no packaging step can have altered it.
 
 ## Next steps
 
-1. Submit exp01 (kernel version 2) once approved, then wait out the scoring rerun.
+1. exp01 is submitted and pending. Poll `tools/kaggle_rest.py submissions
+   gemma-4-developer-agent`; the scoring rerun must finish inside 12 h for all ~120
+   tasks, so expect hours.
 2. Do not spend a second submission on an unverified bundle; one submission per day.
 3. After the first score, test exactly one isolated change per submission, ranked in
    `HANDOFF.md`.

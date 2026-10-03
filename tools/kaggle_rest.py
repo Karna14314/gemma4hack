@@ -86,6 +86,46 @@ def request(
         raise SystemExit(f"network error calling {url}: {error}") from error
 
 
+def request_form(
+    method: str,
+    path: str,
+    fields: dict,
+    accept: str = "application/json",
+) -> tuple[int, bytes, str]:
+    """POST multipart/form-data.
+
+    `ApiCreateCodeSubmissionRequest` is one of the requests kagglesdk marks as
+    form-encoded (`REQUESTS_REQUIRING_FORMS`). A JSON body is accepted by the
+    route but every field is ignored, and the server then answers "This
+    competition requires an output FileName for Notebook Submissions" no matter
+    what was sent — a misleading error that looks like a payload problem.
+    """
+    url = path if path.startswith("http") else BASE + path
+    boundary = f"----kagglehack{os.urandom(12).hex()}"
+    parts: list[bytes] = []
+    for name, value in fields.items():
+        if value is None:
+            continue
+        parts.append(
+            f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n'
+            f"{value}\r\n".encode("utf-8")
+        )
+    parts.append(f"--{boundary}--\r\n".encode("utf-8"))
+    body = b"".join(parts)
+
+    req = urllib.request.Request(url, data=body, method=method)
+    req.add_header("Authorization", f"Bearer {credentials()[1]}")
+    req.add_header("Accept", accept)
+    req.add_header("Content-Type", f"multipart/form-data; boundary={boundary}")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as response:
+            return response.status, response.read(), response.headers.get("Content-Type", "")
+    except urllib.error.HTTPError as error:
+        return error.code, error.read(), error.headers.get("Content-Type", "")
+    except urllib.error.URLError as error:
+        raise SystemExit(f"network error calling {url}: {error}") from error
+
+
 def call_json(method: str, path: str, body: dict | None = None) -> dict:
     status, payload, _ = request(method, path, body)
     text = payload.decode("utf-8", "replace")
@@ -193,18 +233,19 @@ def cmd_push(folder: Path) -> int:
         name
         for name, key in (
             ("dataset_sources", "datasetDataSources"),
-            ("competition_sources", "competitionDataSources"),
             ("kernel_sources", "kernelDataSources"),
             ("model_sources", "modelDataSources"),
         )
         if body[key]
     ]
     if attached:
-        # The submission notebook must run with no inputs at all; an attached
-        # source would make the run depend on a dataset the organizers may not
-        # have available, and internet is off.
+        # The notebook genuinely needs no dataset, kernel or model input: it only
+        # builds a zip from inlined strings. An attached source would make the run
+        # depend on data the organizers may not have available, and internet is
+        # off. (A competition source is allowed: the competition demands it, even
+        # though the notebook never reads the data.)
         raise SystemExit(
-            f"this notebook must attach no sources, but found {attached}"
+            f"this notebook must attach no dataset/kernel/model sources, but found {attached}"
         )
 
     result = call_json("POST", "/api/v1/kernels/push", body)
@@ -288,9 +329,15 @@ def cmd_submit(
         "fileName": filename,
         "submissionDescription": message,
     }
-    result = call_json(
+    status, payload, _ = request_form(
         "POST", f"/api/v1/competitions/submissions/submit-notebook/{competition}", body
     )
+    text = payload.decode("utf-8", "replace")
+    if status >= 400:
+        raise SystemExit(
+            f"submit-notebook -> HTTP {status}\n{text[:2000]}"
+        )
+    result = json.loads(text) if text.strip() else {}
     print(json.dumps(result, indent=2)[:2000])
     print(f"\nsubmitted {competition} from {kernel_ref} version {version}")
     return 0
