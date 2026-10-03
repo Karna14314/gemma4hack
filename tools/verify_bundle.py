@@ -13,7 +13,8 @@ Runs three independent layers of checking:
 Layer 2 needs the venv interpreter, so re-exec through it when the harness
 wheels are not importable from the current one:
 
-    .venv-harness\\Scripts\\python tools\\verify_bundle.py
+    .venv-harness\\Scripts\\python tools\\verify_bundle.py   # Windows
+    .venv-harness/bin/python tools/verify_bundle.py        # Linux/macOS
 """
 
 from __future__ import annotations
@@ -25,7 +26,11 @@ import traceback
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VENV_PYTHON = ROOT / ".venv-harness" / "Scripts" / "python.exe"
+# venv layout differs per platform: Scripts\python.exe on Windows, bin/python elsewhere
+_VENV_PYTHON = (
+    Path("Scripts") / "python.exe" if os.name == "nt" else Path("bin") / "python"
+)
+VENV_PYTHON = ROOT / ".venv-harness" / _VENV_PYTHON
 HARNESS_READY = {"adk_submission", "swegemma"}
 
 

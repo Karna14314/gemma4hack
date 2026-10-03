@@ -13,3 +13,5 @@ kaggle_work/*/research/wheelhouse/
 kaggle_work/*/research/files_all.txt
 kaggle_work/*/research/wheelhouse_files.txt
 kaggle_work/*/research/pulled/**/*.ipynb
+# Generated notebook output - rebuild with `python tools/build_notebook.py`
+build/
