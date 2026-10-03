@@ -119,6 +119,10 @@ for name in names:
     print(f"      {name}")
 print("=" * 68)
 print("submission.zip is written and verified")
+
+# An explicit sentinel, so a log scan can distinguish "finished and verified"
+# from "the kernel died part way through" without having to parse the report.
+print("DONE_OK")
 '''
 
 CLOSING = """\

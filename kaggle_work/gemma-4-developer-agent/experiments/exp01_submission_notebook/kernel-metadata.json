@@ -1,0 +1,15 @@
+{
+  "id": "narisettichaitanya/gemma4-devagent-exp01",
+  "title": "gemma4 DevAgent Exp01",
+  "code_file": "submission_notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
