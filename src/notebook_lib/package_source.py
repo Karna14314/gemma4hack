@@ -40,16 +40,17 @@ FALLBACK_SAMPLING_YAML = """\
 temperature: 0.2
 top_p: 0.95
 top_k: 40
-max_output_tokens: 8192
+max_output_tokens: 16384
 thinking_config:
-  include_thoughts: false
+  include_thoughts: true
+  thinking_budget: 4096
 """
 
 FALLBACK_EVAL_CONFIG_YAML = """\
 evaluation:
   timeout_seconds: 300
-  max_time_minutes: 4
-  max_tool_calls: 80
+  max_time_minutes: 6
+  max_tool_calls: 60
   max_turns: 120
 """
 
