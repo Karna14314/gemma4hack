@@ -18,7 +18,7 @@ best public cluster score. Deliverable is a declarative ADK agent package emitte
 | current primary bundle | **exp03**: byte-exact replica of the public 0.17 SuperAgent bundle, `sha256 e3be904c…`, 3,170 bytes |
 | ablation bundles | exp04 (mandatory `py_compile`), exp05 (pre-submit patch integrity) — each a single change off exp03 |
 | kernels | `gemma4-devagent-exp03-baseline-017-replica`, `gemma4-devagent-exp04-ablation-pycompile`, `gemma4-devagent-exp05-ablation-patch-integrity` — all v1 COMPLETE, no failureMessage, zips byte-identical to the local builds |
-| submissions | **none made from exp03-05**; the user decides |
+| submissions | **exp03 SUBMITTED 2026-10-10 08:45:36Z** — ref **57037122**, status pending, message "exp03 baseline replica of public 0.17", kernel scriptVersionId 356964911, file `submission.zip` sha256 `e3be904c…` (byte-identical to the checkpoint and to the public 0.17 bundle). Pre-flight: hash matched, and `kaggle competitions submissions` showed no submission from 2026-10-10 before this one. **exp04/exp05 NOT submitted** — awaiting the user's decision. |
 
 ## What changed since checkpoint 2 (v2)
 
@@ -73,15 +73,27 @@ python3 tools/kaggle_rest.py output  <ref> kaggle_work/gemma-4-developer-agent/r
 python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "<notes>"
 ```
 
+## Submission log
+
+| date | ref | bundle | score | status |
+|---|---|---|---|---|
+| 2026-10-03 | 56793672 | exp01 (v1) | 0.05 | complete |
+| 2026-10-04 | — | exp02 (v2) | 0.08 | complete |
+| **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
+
 ## Recommended submission order (user decides; one per day)
 
-1. **exp03** — the 0.17 baseline replica. It must reproduce ~0.17; if it does, it
-   becomes the new anchor and every later change is a single ablation off it.
-2. **exp05** (patch integrity) — targets the observed *empty patch* failure mode with
+exp03 is submitted and pending. Next, only when the user says so:
+
+1. **exp05** (patch integrity) — targets the observed *empty patch* failure mode with
    a harness-verified mechanism (`submit_patch` runs `git add -N .`, which respects
    `.gitignore`; an ignored new file silently never reaches the diff).
-3. **exp04** (mandatory `py_compile`) — targets *patches that don't apply*; the lint
+2. **exp04** (mandatory `py_compile`) — targets *patches that don't apply*; the lint
    guardrail is priced at -3.0 pp in SWE-agent's published ablation.
+
+Interpretation once exp03 reports: if it reproduces ~0.17 the configuration is
+re-anchored and exp05/exp04 are clean one-variable ablations; if it lands near 0.08,
+the difference is notebook/prompt content or run noise, not the configuration.
 
 Then, in order: drop the three graph tools (invalid-call surface), add the `/tmp`
 plan.md scratchpad (compaction survives only model text), and only then revisit

@@ -152,3 +152,12 @@ against, and no packaging step can have altered it.
 - Baseline replica: content-identical to the public bundle; `verify_bundle.py`
   and `verify_notebook.py` both ALL CHECKS PASSED for all three bundles, with
   `compile_submission` reporting `root 'swe_agent' tools=9 output_tokens=8192`.
+
+## 2026-10-10 — exp03 SUBMITTED (ref 57037122, pending)
+
+Baseline replica submitted with message "exp03 baseline replica of public 0.17".
+Pre-flight checks passed: the kernel output zip sha256 `e3be904ca4823b9d…` is
+byte-identical to the checkpoint copy and every member matches the manifest, and
+`kaggle competitions submissions` showed no submission from 2026-10-10 beforehand
+(previous: exp02 on 2026-10-04 at 0.08, exp01 on 2026-10-03 at 0.05).
+Status at submission: PENDING. exp04/exp05 not submitted.
