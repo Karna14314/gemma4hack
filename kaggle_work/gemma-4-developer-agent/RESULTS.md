@@ -153,6 +153,19 @@ against, and no packaging step can have altered it.
   and `verify_notebook.py` both ALL CHECKS PASSED for all three bundles, with
   `compile_submission` reporting `root 'swe_agent' tools=9 output_tokens=8192`.
 
+## exp03 submission — result record
+
+| field | value |
+|---|---|
+| submission ref | **57037122** |
+| submitted | 2026-10-10T08:45:36Z |
+| message | "exp03 baseline replica of public 0.17" |
+| kernel | `narisettichaitanya/gemma4-devagent-exp03-baseline-017-replica` version 1, scriptVersionId 356964911 |
+| file | `submission.zip`, sha256 `e3be904ca4823b9d6603360e2f34a43208c96ddc17db77c4d25f82218c4b0a68` |
+| pre-flight | hash byte-identical to the checkpoint copy and to the local deterministic build; all four members match `submission_manifest.json`; no earlier submission from 2026-10-10 |
+| status at handoff | **pending** (scoring rerun, hours-scale; poll command in `ckpt/STATE.md` and `EXPECTATIONS.md`) |
+| not submitted | exp04 (py_compile) and exp05 (patch integrity) — both await an explicit decision |
+
 ## 2026-10-10 — exp03 SUBMITTED (ref 57037122, pending)
 
 Baseline replica submitted with message "exp03 baseline replica of public 0.17".

@@ -211,3 +211,34 @@ updated for the moved API: `swegemma.models.discovery.validate_single_declared_m
 no longer exists and is replaced by `adk_submission.discovery.discover_declared_models`,
 and `swegemma.models.registry.setup_gemma_model_registry` was replaced by a
 direct check of `adk_eval_core/budget/models.yaml`.
+
+## 7. Submission and expectations (2026-10-10)
+
+**Submitted:** exp03, the byte-exact baseline replica, as submission ref **57037122**
+(message "exp03 baseline replica of public 0.17", kernel
+`gemma4-devagent-exp03-baseline-017-replica` version 1, scriptVersionId 356964911,
+zip sha256 `e3be904c…`). Status at handoff: **pending**; the scoring rerun runs ~120
+tasks sequentially on the organizers' 4x L4 box inside a 12 h limit, so a score takes
+hours. exp04/exp05 were deliberately not submitted.
+
+**What the score means** (public split is ~58 tasks, one task ~0.017, and identical
+resubmissions move ~±2 tasks):
+
+| exp03 score | reading | next action |
+|---|---|---|
+| 0.15-0.20 | the configuration re-anchors on our account; the 0.08 was our v2 bundle, not the account | exp05 next (one variable), then exp04 |
+| 0.08-0.12 | the gap was not configuration — notebook/prompt content or run noise | investigate prompt content differences (the two 0.17-0.18 prompts differ from each other) before spending more submissions |
+| < 0.08 or error | something environmental or a regression in our build path | diff the submitted zip against the public notebook member-by-member (already verified identical) and check the kernel log |
+
+**Expectations:** exp03 should land near 0.17 — it is the same configuration the three
+public notebooks measured at 0.17-0.18, and our artifact is content-identical to the
+public 0.17 bundle member-for-member. exp05 targets the *empty patch* failure mode
+(harness-verified `git add -N .` / `.gitignore` mechanism); exp04 targets *patches that
+don't apply* (`py_compile`; SWE-agent prices the lint guardrail at -3.0 pp). Both are
+single changes off exp03, so each score is interpretable as one variable. Then, in
+order: drop the three graph tools (invalid-call surface; the public notebooks ban them
+in the prompt but still declare them), add the `/tmp/plan.md` scratchpad (compaction
+keeps only model text), and only then revisit budget knobs.
+
+**Poll:** `python3 tools/kaggle_rest.py submissions gemma-4-developer-agent` (top row
+is ref 57037122; needs `export KAGGLE_API_TOKEN="$KAGGLE_KEY"`).

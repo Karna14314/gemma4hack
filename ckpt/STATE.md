@@ -81,6 +81,14 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 | 2026-10-04 | — | exp02 (v2) | 0.08 | complete |
 | **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
 
+## New-session entry point
+
+- `kaggle_work/gemma-4-developer-agent/EXPECTATIONS.md` — score interpretation table,
+  what each bundle targets, recommended order, exact commands, fixed environment facts.
+- `kaggle_work/gemma-4-developer-agent/experiments/exp06_session_baseline/` — the fresh
+  submission notebook for the current primary bundle, verified to produce the same
+  artifact as the submitted exp03 (sha256 `e3be904c…`), with kernel metadata ready to push.
+
 ## Poll exp03's score (ref 57037122)
 
 ```bash
