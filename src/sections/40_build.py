@@ -13,13 +13,16 @@ The full agent package, inlined as a string mapping. This directory is the singl
 source of truth in the repository:
 
 ```
-agent.yaml                  root coder agent: tools + the analyzer sub-agent
+agent.yaml                  root agent: the 9 harness tools, no sub-agents
 eval_config.yaml            the 12 hour compute budget, allocated per task
-configs/sampling.yaml       generation config shared by both agents
-prompts/system.md           the coder's instructions
-prompts/analyzer.md         the sub-agent's instructions
-sub_agents/code_analyzer.yaml   read-only navigator
+configs/sampling.yaml       generation config (thinking on, 8192 output tokens)
+prompts/system.md           the agent's instructions
 ```
+
+This is the byte-exact public 0.17 baseline bundle (SuperAgent), which is also
+the 0.18 Budget-Fit configuration. Ablation bundles live under
+`kaggle_work/gemma-4-developer-agent/bundles/` and are built into their own
+notebooks with `tools/build_notebook.py --bundle ...`.
 '''
 
 PACKAGE_SPLICE = "#<<<SPLICE_DIR_LITERAL:src/agent_package:PACKAGE_FILES>>>"

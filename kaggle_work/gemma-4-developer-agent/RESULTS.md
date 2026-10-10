@@ -4,7 +4,20 @@ Append-only ledger. One row per experiment, including failures.
 
 ## Status
 
-**Nothing submitted yet.** No leaderboard score exists for this entry. Everything below is
+| exp | date | change vs base | metric | status | notes |
+|---|---|---|---|---|---|
+| exp01 SUBMITTED | 2026-10-03 | kernel v3 | public 0.05 | scored | ref 56793672 |
+| exp02 v2 | 2026-10-03 | thinking on, 6 min/60 calls/120 turns, prompt rewrite | public ~0.08 | scored | four changes bundled; see `ckpt/STATE.md` history |
+| **exp03 baseline replica** | 2026-10-10 | replaced by the public **0.17** SuperAgent bundle (identical config to the public 0.18 Budget-Fit bundle) | target 0.17+ | built, validated | full analysis in `research/BASELINE_017.md` |
+| exp04 A1 | 2026-10-10 | baseline + mandatory `py_compile` after every edit | pending kernel | built, validated | single change; attacks non-applying patches |
+| exp05 A2 | 2026-10-10 | baseline + pre-submit patch integrity (`git status --short`, `git add -N -f`) | pending kernel | built, validated | single change; attacks empty patches |
+
+**The public baseline replaced our own bundle on 2026-10-10.** Our v2 scored ~0.08;
+three public notebooks score 0.17-0.18 and converge on one configuration
+(single agent, thinking on at 4096, `max_output_tokens` 8192, 240 s commands,
+28 tool calls, 8 minutes, 80 turns). `src/agent_package/` is now a byte-exact
+replica of that configuration; the diff and the ablation plan are in
+`research/BASELINE_017.md`. Everything below is
 offline engineering and validation plus clean Kaggle kernel runs, not measurement. There is
 no local way to measure resolution rate: the real evaluator needs 4x L4 GPUs, the 31B QAT
 weights, and the container image.
@@ -121,3 +134,21 @@ against, and no packaging step can have altered it.
 2. Do not spend a second submission on an unverified bundle; one submission per day.
 3. After the first score, test exactly one isolated change per submission, ranked in
    `HANDOFF.md`.
+
+## 2026-10-10 — the public 0.17 baseline
+
+- Kaggle auth fixed: the KAGGLE_API_TOKEN bearer flow works with CLI 1.7.4.5
+  (`KAGGLE_API_TOKEN="$KAGGLE_KEY"`); plain `KAGGLE_KEY` still 401s on every
+  authenticated call.
+- The wheelhouse moved again: swegemma 0.2.7 -> **0.2.11**, adk_submission
+  0.2.12 -> **0.2.13**. Every mechanism cited in the old notes was re-verified
+  against the current wheels: `submit_patch`'s `git add -N .` + baseline diff
+  (`tools/execution.py:77-127`), protected-file stripping
+  (`harness/verification.py:62-85`), the working-tree fallback
+  (`agent_runner.py:1054-1075`). `validate_single_declared_model` and
+  `setup_gemma_model_registry` no longer exist; both verifiers now use
+  `adk_submission.discovery.discover_declared_models` and the
+  `adk_eval_core/budget/models.yaml` registry.
+- Baseline replica: content-identical to the public bundle; `verify_bundle.py`
+  and `verify_notebook.py` both ALL CHECKS PASSED for all three bundles, with
+  `compile_submission` reporting `root 'swe_agent' tools=9 output_tokens=8192`.
