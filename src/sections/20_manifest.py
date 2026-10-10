@@ -1,130 +1,100 @@
 """Section 20 — design rationale.
 
-Markdown only. Each claim here was checked against the shipped harness source
-(`swegemma` 0.2.7, `adk_submission` 0.2.12, `adk_eval_core` 0.1.0) rather than
-taken from published write-ups; four widely repeated claims turned out to be
-wrong, and this cell records the corrected versions.
+Markdown only. Each claim here is either a measured number published by the
+0.17/0.18 public notebooks or checked against the shipped harness source
+(`swegemma` 0.2.11, `adk_submission` 0.2.13, `adk_eval_core` 0.1.0,
+`google-adk` 1.36.1) rather than taken from write-ups.
 """
 
 RATIONALE = """\
 ## Why the package looks the way it does
 
-Every choice below has a mechanism in the harness source. Choices justified only
-by a leaderboard delta are not made: the public leaderboard covers roughly half of
-the hidden tasks, so one task is worth about 0.017 and run-to-run sampling is
-stochastic — differences below ~0.05 are noise.
+This package is a byte-exact replica of a public notebook whose best public
+score is **0.17** (`matterhorn3838/gemma-4-superagent`), and whose
+`agent.yaml`, sampling and budgets are identical to the public **0.18**
+`verracodeguacas/gemma-4-agent-budget-fit-single-agent` bundle. Three
+independent public notebooks converged on this configuration. Our previous
+bundle (v2, public 0.08) differed from it in architecture, output budget,
+per-task budget and prompt structure; the full diff is in
+`kaggle_work/gemma-4-developer-agent/research/BASELINE_017.md`. What follows is
+why each load-bearing value is what it is: the public authors' measured numbers
+first, then the harness source where we have verified the mechanism ourselves
+(swegemma 0.2.11 / adk_submission 0.2.13 / adk_eval_core 0.1.0).
 
-### 1. No LoRA adapter anywhere
+### 1. Single agent, no sub-agents, no adapters
 
-The single biggest structural decision. If an adapter is declared, the harness
-starts vLLM with 8 LoRA slots at rank 128, which collapses the available KV cache
-from roughly 46k tokens to roughly 7.6k. The scoring context is 32,768 tokens, so
-that difference is the difference between an agent that can hold a repository in
-its head and one that is compacted away constantly. The package declares no
-`adapter:` key and ships no `adapters/` directory.
+The 0.17/0.18 notebooks all use one `LlmAgent` with the nine harness tools. A
+sub-agent's LLM calls count against the same turn budget, its `AgentTool`
+schema adds a complex tenth tool choice, and the published harness study
+(arXiv 2609.32459) found *general* sub-agents can hurt a small model while a
+complex harness gives a weak model no gain. No LoRA adapter either: any adapter
+collapses the harness KV cache from roughly 46k to roughly 7.6k tokens, and the
+competition's W4A16 alias is the only permitted model.
 
-### 2. `eval_config.yaml` — the 12 hour budget is the binding constraint
+### 2. `eval_config.yaml` — the budget is calibrated, not guessed
 
-The whole scoring run gets 12 hours for all ~120 tasks run **sequentially**,
-including vLLM startup and verification. That allows roughly six minutes of wall
-clock per task, so the per-task agent budget must be much smaller than the cap the
-harness would accept.
+The scoring run gets 12 hours for ~120 sequential tasks including vLLM startup
+and Phase 2 verification, and `max_time_minutes` is an `asyncio.timeout` ceiling
+around the agent loop that is cancelled the instant `submit_patch` is called
+(`agent_runner.py:725`, and the loop breaks on `patch_submitted` at
+`agent_runner.py:920`). So the ceiling costs nothing on a task solved quickly
+and only spends wall clock where a task would otherwise be killed mid-debug —
+with a half-finished edit, which scores exactly zero.
 
 | Setting | Value | Reason |
 |---|---|---|
-| `max_time_minutes` | 4 | a measured 12 minute cap exceeded the total compute limit and scored zero |
-| `timeout_seconds` | 300 | see below — **not** lowered |
-| `max_tool_calls` | 80 | bounds runaway tool loops |
-| `max_turns` | 120 | sub-agent LLM calls count against the same budget, and the harness default is a hard-coded 500 |
+| `max_time_minutes` | 8 | measured: only about half of the fixes Gemma eventually finds are on disk after 4 scorer-speed minutes; a scored run with this cap finished inside the 12 h total |
+| `max_tool_calls` | 28 | measured: runs still exploring after many calls almost never succeed; the hard cap pays for the longer time ceiling |
+| `max_turns` | 80 | one LLM call per turn; more turns cannot be spent once the 28 tool calls are gone |
+| `timeout_seconds` | 240 | it bounds the Phase 2 pytest run too (`verification.py`); heavy repos' test files need about 100 s, so a shorter timeout can score a correct patch as failed |
 
-`timeout_seconds` is widely reported in write-ups as a good way to bound the agent
-by lowering it to 120. That is wrong, and dangerously so: it maps to
-`harness.command_timeout_seconds`, which bounds **both** the agent's commands
-**and** the Phase 2 pytest run. Lowering it can time out the verification of an
-already-correct patch, which is strictly worse than a slow agent. It stays at the
-300 second default. Agent time is bounded by `max_time_minutes` instead.
+The prompt enforces the same numbers as a **call plan** (edit by call 12),
+which is where the measured 87%-fail-without-edit-by-call-12 statistic is
+banked.
 
-### 3. Thinking off, 8192 output tokens
+### 3. Thinking on, 8192 output tokens
 
-`include_thoughts: false` genuinely hard-disables thinking: it emits
-`chat_template_kwargs.enable_thinking=false` and actively removes
-`thinking_token_budget` and `reasoning_effort`. `max_output_tokens: 8192` leaves
-about 24.5k tokens of prompt room, and reserving more than roughly a third of the
-32k context for a single response is harmful. Thinking off also buys more turns per
-minute, which matters when the budget is four minutes.
+`include_thoughts: true` with `thinking_budget: 4096`; vLLM is served with
+`max_model_len=32768`, and a request whose prompt plus `max_output_tokens`
+exceeds that is refused and kills the session. 8192 leaves about 24k of prompt
+headroom; the 16384 our previous bundle used leaves only about 16k and was
+measured by the public authors to kill long tasks.
 
-### 4. A coder root agent plus a read-only `code_analyzer` sub-agent
+### 4. The prompt: specification first, then a call plan
 
-Exploration reads stay out of the coder's context, which is the scarce resource.
-`skip_summarization` is **false**: with `true`, the sub-agent's function-response
-event becomes final, the parent's flow loop breaks, and the harness immediately
-spends a nudge. The sub-agent is read-only and its LLM calls still count against
-the parent's budget, which is why `max_turns` is 120 rather than 80.
+The public prompt extracts the exact names, messages, types and edge cases from
+the issue as a literal specification before any tool call, then locates with
+one batched `git grep`, edits the root cause minimally, verifies with at most
+two calls and submits. Google's Gemma function-calling guidance says the same
+thing from the model side: multi-step chaining is outside Gemma's trained
+distribution, so the prompt must supply the sequence explicitly; tool-use
+instructions should say *when and why*, not just *what*. The graph tools are
+declared but banned in the prompt: they only match exact fully-qualified ids
+and usually return nothing.
 
-### 5. Prompt rules that follow from specific harness behaviour
+### 5. Patch mechanics (verified in the harness source)
 
-- **Never call `search_similar_code`.** Write-ups claim it returns uncapped source
-  and overflows the context. The source says otherwise: it is capped at 5,000
-  characters *shared across all ten results*, each head-truncated mid-line. It is
-  still banned, but for the honest reason — it burns one of the 80 tool calls to
-  return worse results than `git grep`.
-- **Never pass `edge_type`.** The shipped graphs contain only lowercase `calls`
-  edges, so the documented `CALLS` value matches nothing.
-- **Graph tools are weak hints.** They are only populated for the four public
-  repositories; hidden tasks come from elsewhere, so they usually just error.
-- **Redirect long output to `/tmp`, then `tail` it.** `run_command` keeps only the
-  first 5,000 characters of stdout *and* stderr, and pytest prints its verdict at
-  the very end — so an unredirected test run hides exactly the part that matters.
-- **Use narrow `read_file` ranges.** It returns 150 lines, then 10,000 characters,
-  so a window can be clipped mid-line with no warning.
-- **Keep a plain-text state card.** Context compaction is active during scoring at
-  `token_threshold: 14336`, and only the model's own text survives it. A short
-  written card is the only reliable way to keep the required behaviour, the
-  confirmed location and the last test result.
-- **Have an exact-replacement fallback.** `edit_file` is a three-tier matcher that
-  fails on non-unique or reformatted `old_string`. A `str.replace` inside a Python
-  heredoc does not have that failure mode.
-- **Check `git status --short` before submitting.** The patch is built with
-  `git add -N .`, which respects the repository's own `.gitignore`, so a new file
-  on an ignored path silently never reaches the grading diff. New files need
-  `git add -N -f`. Untracked scratch files inside `/workspace`, on the other hand,
-  *do* land in the patch and must be cleaned up.
-- **Never edit tests or protected config.** `conftest.py`, `pytest.ini`,
-  `pyproject.toml`, `tox.ini`, `setup.cfg`, `sitecustomize.py`, `*.pth`, `test_*.py`,
-  `*_test.py` and any `.py` under a `tests`/`test`/`testing` directory are all reset
-  to baseline before the hidden `test_patch` is applied. A task whose fix is purely
-  a config change is therefore unwinnable by design.
-- **Do not rely on `submit_patch` being called.** The harness grades the working
-  tree even when it is never called, so a plausible patch beats an empty tree.
-- **Both prompts end with `{problem_description}` and contain no other braces.**
-  ADK interpolates every brace-delimited token in an instruction from session
-  state, so an accidental literal brace is a runtime error. The validator enforces
-  that the only placeholders present are `problem_description` and `hints`.
+- `submit_patch` runs `git add -N .` and diffs against the `_swegemma_baseline`
+  tag (`tools/execution.py:77-127`). `git add -N .` respects the repository's
+  own `.gitignore`, so a new file on an ignored path silently never reaches
+  the patch — the prompt's pre-submit checklist covers it.
+- Protected test and runner-config files are stripped from the patch before
+  grading (`harness/verification.py:62-85`), so editing them can never help.
+- The working tree is graded even if `submit_patch` is never called
+  (`agent_runner.py:1054-1075`); the prompt says so, and requires a non-empty
+  tree.
+- The instruction contains no braces except the trailing
+  `{problem_description}`: ADK interpolates every brace-delimited token in an
+  instruction from session state, so an accidental literal brace is a runtime
+  error. The validator enforces this.
 
 ### 6. What is deliberately absent
 
-- **No `skills/` directory.** Skills are progressive disclosure of *content*;
-  with unseen target repositories there is no repo-specific content worth
-  disclosing, and a `SKILL.md` only adds context.
-- **No `.py` files.** `.py` is an allowed extension but is never imported or
-  executed by the compiler, so shipping one is pure risk.
-- **No files with an empty suffix.** The competition override omits the empty
-  extension from the allowlist, so a `LICENSE`, `Makefile`, `Dockerfile` or
-  `.gitignore` would abort the entire submission.
-- **No callbacks.** `callback_registry` is never passed, so `before_model_callbacks`
-  is accepted by the schema and then silently dropped.
-
-### 7. Compile-time correctness
-
-`compile_submission` reports the `code_analyzer` in `tools` rather than in
-`sub_agents`, because it is exposed through an inline `agent_tool` mapping. This
-is expected and not an error:
-
-```
-root 'swe_coder'  model=LiteLlm(model='gemma-4-31b-it-qat-w4a16-ct')  tools=10  output_tokens=8192
-```
-
-Ten tools is the nine harness tools plus `code_analyzer`.
+No `skills/` directory (no repo-specific content worth disclosing on unseen
+repositories), no `.py` files (never executed by the compiler, pure risk), no
+files with an empty suffix (the competition allowlist omits it, so a `LICENSE`
+or `Makefile` aborts the submission), no callbacks (`callback_registry` is
+never passed).
 """
 
 

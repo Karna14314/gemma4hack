@@ -1,19 +1,5 @@
-# Per-task Stage 1 budgets, read by the scorer from the `evaluation` key.
-#
-# The whole scoring run has a hard 12 hour compute limit covering roughly 120
-# tasks that run one after another, including vLLM start-up, sandbox setup and
-# Phase 2 verification. `max_time_minutes` measures only the agent loop, so the
-# wall-clock cost of a task is this budget plus setup. A 12 minute cap was
-# measured to exceed the limit; 4 minutes leaves headroom and still gives a
-# normal run about twenty model turns.
-#
-# `timeout_seconds` is deliberately left at the 300 second default. It bounds
-# both the agent's shell commands *and* the Phase 2 pytest run, so lowering it
-# would risk timing out the verification of an otherwise correct patch. The
-# per-task time budget already caps runaway commands, because the effective
-# command timeout is the smaller of this value and the remaining session time.
 evaluation:
-  timeout_seconds: 300
-  max_time_minutes: 4
-  max_tool_calls: 80
-  max_turns: 120
+  timeout_seconds: 240
+  max_tool_calls: 28
+  max_time_minutes: 8
+  max_turns: 80

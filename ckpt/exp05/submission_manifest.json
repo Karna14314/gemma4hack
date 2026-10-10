@@ -1,0 +1,29 @@
+{
+  "adapters": [],
+  "members": {
+    "agent.yaml": {
+      "bytes": 314,
+      "sha256": "680799291cc7d156d06fb7bfb5577f683ccc0d555b00e8ddb662d577f9bfa5e4"
+    },
+    "configs/sampling.yaml": {
+      "bytes": 119,
+      "sha256": "571a934e89911734927533f1d36cbcc7b8d493592febe63b217e911cf7ed4926"
+    },
+    "eval_config.yaml": {
+      "bytes": 94,
+      "sha256": "916cf6cb34a6cc3de39837fa72cac681599b9ac2a3ee0b893adadfd36474c531"
+    },
+    "prompts/system.md": {
+      "bytes": 5425,
+      "sha256": "fed226f7715931b271ca52b2a71335cf6a2f1d333aa08d92e6294706d7e3d7e2"
+    }
+  },
+  "model": "gemma-4-31b-it-qat-w4a16-ct",
+  "selected_package": "primary",
+  "selection_reason": "primary package passed every check",
+  "submission": "submission.zip",
+  "submission_bytes": 3386,
+  "submission_sha256": "2ba7f9b118ea1837d1950038894cc856d1d33fe98c333d216afe6aaac1661774",
+  "unpacked_bytes": 5952,
+  "zip_crc_check": "clean"
+}

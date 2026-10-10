@@ -13,6 +13,11 @@ Usage::
 
     python tools/build_notebook.py
     python tools/build_notebook.py --out build/submission_notebook.ipynb
+    python tools/build_notebook.py --bundle kaggle_work/.../bundles/exp04_x \
+        --out kaggle_work/.../experiments/exp04/submission_notebook.ipynb
+
+``--bundle DIR`` splices a bundle other than the primary ``src/agent_package``
+(used to build the ablation kernels) with no other change.
 """
 
 from __future__ import annotations
@@ -98,8 +103,13 @@ def _render_exec_literal(relative: str) -> str:
     return f"_SPLICED_SOURCE = {payload!r}\n"
 
 
-def resolve_splices(source: str, where: str) -> str:
-    """Replace every splice marker in ``source`` with generated content."""
+def resolve_splices(source: str, where: str, bundle_root: Path | None = None) -> str:
+    """Replace every splice marker in ``source`` with generated content.
+
+    ``bundle_root`` overrides the directory spliced by the
+    ``SPLICE_DIR_LITERAL`` marker for the agent package, so the same section
+    modules can build a kernel for any bundle directory.
+    """
 
     def sub_file(match: re.Match) -> str:
         path = ROOT / match.group("path")
@@ -111,7 +121,10 @@ def resolve_splices(source: str, where: str) -> str:
         return _render_exec_literal(match.group("path")).rstrip("\n")
 
     def sub_dir(match: re.Match) -> str:
-        return _render_dir_literal(match.group("path"), match.group("var")).rstrip("\n")
+        target = match.group("path")
+        if bundle_root is not None and target == "src/agent_package":
+            target = str(bundle_root)
+        return _render_dir_literal(target, match.group("var")).rstrip("\n")
 
     def sub_py(match: re.Match) -> str:
         return _render_py_literal(
@@ -153,7 +166,7 @@ def load_sections() -> list[tuple[str, list[dict]]]:
     return sections
 
 
-def build(out_path: Path) -> Path:
+def build(out_path: Path, bundle_root: Path | None = None) -> Path:
     import nbformat
 
     nb = nbformat.v4.new_notebook()
@@ -164,7 +177,9 @@ def build(out_path: Path) -> Path:
             kind = cell.get("cell_type")
             if kind not in ("markdown", "code"):
                 raise SystemExit(f"{section_name} cell {index}: bad cell_type {kind!r}")
-            source = resolve_splices(cell.get("source", ""), f"{section_name} cell {index}")
+            source = resolve_splices(
+                cell.get("source", ""), f"{section_name} cell {index}", bundle_root
+            )
             if not source.strip():
                 raise SystemExit(f"{section_name} cell {index}: empty source")
             if kind == "markdown":
@@ -204,8 +219,14 @@ def build(out_path: Path) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    parser.add_argument(
+        "--bundle",
+        type=Path,
+        default=None,
+        help="bundle directory to splice instead of src/agent_package",
+    )
     args = parser.parse_args()
-    build(args.out)
+    build(args.out, args.bundle)
 
 
 if __name__ == "__main__":
