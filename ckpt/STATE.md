@@ -81,6 +81,17 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 | 2026-10-04 | — | exp02 (v2) | 0.08 | complete |
 | **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
 
+## Poll exp03's score (ref 57037122)
+
+```bash
+export KAGGLE_API_TOKEN="$KAGGLE_KEY"
+python3 tools/kaggle_rest.py submissions gemma-4-developer-agent   # top row = ref 57037122
+```
+
+Status `pending` at 2026-10-10 09:07Z after ~22 min; the scoring rerun runs ~120
+tasks sequentially on the organizers' 4x L4 box inside a 12h limit, so expect
+hours. Record the score here when it flips to `complete`.
+
 ## Recommended submission order (user decides; one per day)
 
 exp03 is submitted and pending. Next, only when the user says so:
