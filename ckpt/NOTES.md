@@ -1,3 +1,40 @@
+# NOTES — checkpoint 3 (public 0.17 baseline)
+
+## What changed vs checkpoint 2 (v2, ~0.08)
+
+The primary bundle is now the public 0.17 configuration. See `BASELINE_017.md` for
+the full ranked diff. The four deltas, largest first:
+
+1. **Architecture**: coder + analyzer sub-agent (10 tools) -> single agent (9 tools).
+2. **`max_output_tokens` 16384 -> 8192** (vLLM refuses prompt + output > 32,768 and
+   the session dies; 16384 leaves only ~16k of prompt headroom).
+3. **`max_time_minutes` 6 -> 8, `max_tool_calls` 60 -> 28, `max_turns` 120 -> 80**
+   (the ceiling is cancelled on `submit_patch`, so it costs nothing on fast tasks;
+   measured: runs exploring past many calls almost never succeed).
+4. **Prompt**: harness-mechanics-first -> spec extraction + call plan + decision rules.
+
+Ablations built, each a single change off the baseline: exp04 (mandatory
+`py_compile` after every edit) and exp05 (pre-submit patch integrity:
+`git status --short`, `git add -N -f` for ignored new files, delete scratch).
+
+## Verification (all on this box, 2026-10-10)
+
+- `verify_bundle.py` ALL CHECKS PASSED for the primary and both ablations, including
+  the real `compile_submission`: `root 'swe_agent' tools=9 output_tokens=8192`.
+- `verify_notebook.py` ALL CHECKS PASSED for all three notebooks (offline exec).
+- All three Kaggle kernels v1 COMPLETE, no failureMessage; the zips they produced are
+  byte-identical to the local deterministic builds (exp03 `e3be904c…` matches the
+  local digest exactly).
+- The exp03 bundle is **content-identical** to the public 0.17 notebook's own
+  `submission.zip` (all four members byte-for-byte).
+
+## Risk
+
+Nothing from exp03-05 has been scored. The baseline is the measured configuration,
+so exp03 should land near 0.17; the ablations are unmeasured. One submission per day.
+
+---
+
 # NOTES — checkpoint 2 (v2 candidate)
 
 ## What changed vs checkpoint 1

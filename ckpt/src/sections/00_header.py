@@ -50,8 +50,19 @@ it will fail:
 
 RUN_NOTE = """\
 > **Note.** The agent package itself is what scores; this notebook is only the
-> mechanism that delivers it. The interesting content is in `prompts/system.md`
-> and `sub_agents/code_analyzer.yaml`, reproduced verbatim in the cells below.
+> mechanism that delivers it. The interesting content is in `prompts/system.md`,
+> reproduced verbatim in the cells below.
+
+> **Baseline.** The bundled package is a byte-exact replica of the public
+> `matterhorn3838/gemma-4-superagent` notebook (best public score **0.17**),
+> whose `agent.yaml`, sampling and budgets are identical to the public
+> **0.18** `verracodeguacas/gemma-4-agent-budget-fit-single-agent` bundle.
+> Three independent public notebooks converge on this configuration
+> (single agent, thinking on at budget 4096, `max_output_tokens` 8192,
+> 240 s commands, 28 tool calls, 8 minutes, 80 turns); it replaced our own
+> v2 bundle (public 0.08). See
+> `kaggle_work/gemma-4-developer-agent/research/BASELINE_017.md` for the full
+> diff and the ablation plan.
 """
 
 

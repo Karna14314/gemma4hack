@@ -2,36 +2,28 @@
   "adapters": [],
   "members": {
     "agent.yaml": {
-      "bytes": 523,
-      "sha256": "1df4ef1739044a964ccc534c0d31e8bedf8db443999aabb2a8bcc1eec96a0b86"
+      "bytes": 314,
+      "sha256": "680799291cc7d156d06fb7bfb5577f683ccc0d555b00e8ddb662d577f9bfa5e4"
     },
     "configs/sampling.yaml": {
-      "bytes": 129,
-      "sha256": "a54436c630ed44256fd062e06b28cee84a8c72ce973e5c39db50d195d740516c"
+      "bytes": 119,
+      "sha256": "571a934e89911734927533f1d36cbcc7b8d493592febe63b217e911cf7ed4926"
     },
     "eval_config.yaml": {
-      "bytes": 1260,
-      "sha256": "0e63db7d563f0797eedbb35053195bf451c1665d70416c9418e68a1b018baa2a"
-    },
-    "prompts/analyzer.md": {
-      "bytes": 3160,
-      "sha256": "abe99b10e33581dd9555503768c38e6055b2cfa8376fe179e3c70851507e4c2e"
+      "bytes": 94,
+      "sha256": "916cf6cb34a6cc3de39837fa72cac681599b9ac2a3ee0b893adadfd36474c531"
     },
     "prompts/system.md": {
-      "bytes": 10735,
-      "sha256": "6b0c0d8658103fd96036735f27223c3252a8da4f2533d23a2b54ec97811ee74a"
-    },
-    "sub_agents/code_analyzer.yaml": {
-      "bytes": 431,
-      "sha256": "6434c016f13eb23fa8ea27325cda9dbef4b1a469a93d3bd29063b631ad759049"
+      "bytes": 4913,
+      "sha256": "9eb0bc7d9e3eaef21dac45a64d6c3ea69246dfde0b6a5e34c9563b7fbed3b291"
     }
   },
   "model": "gemma-4-31b-it-qat-w4a16-ct",
   "selected_package": "primary",
   "selection_reason": "primary package passed every check",
   "submission": "submission.zip",
-  "submission_bytes": 8559,
-  "submission_sha256": "57c9919fefc7b56006450605700417a7cfc96f68fab9a7ff0832c75b8d6ba408",
-  "unpacked_bytes": 16238,
+  "submission_bytes": 3170,
+  "submission_sha256": "e3be904ca4823b9d6603360e2f34a43208c96ddc17db77c4d25f82218c4b0a68",
+  "unpacked_bytes": 5440,
   "zip_crc_check": "clean"
 }

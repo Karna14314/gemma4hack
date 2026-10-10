@@ -1,22 +1,5 @@
-# Per-task Stage 1 budgets, read by the scorer from the `evaluation` key.
-#
-# The whole scoring run has a hard 12 hour compute limit covering roughly 120
-# tasks that run one after another, including vLLM start-up, sandbox setup and
-# Phase 2 verification. `max_time_minutes` is a CEILING on the agent loop, not a
-# target: `agent_runner.py` breaks out of the loop the moment `submit_patch` is
-# called, and most tasks finish well before the cap. So a higher ceiling costs
-# nothing on a task the agent solves quickly, and only spends wall clock on the
-# tasks it would otherwise be cut off mid-debug on. A task killed by the timeout
-# with a half-finished edit scores zero, exactly like no patch at all, so the
-# ceiling is where the run risks the 12 hour cap rather than where it loses
-# points. 6 minutes keeps a wide margin under the cap while giving roughly
-# double the exploration, edit and verification time of the previous 4.
-#
-# `timeout_seconds` is deliberately left at the 300 second default. It bounds
-# both the agent's shell commands *and* the Phase 2 pytest run, so lowering it
-# would risk timing out the verification of an otherwise correct patch.
 evaluation:
-  timeout_seconds: 300
-  max_time_minutes: 6
-  max_tool_calls: 60
-  max_turns: 120
+  timeout_seconds: 240
+  max_tool_calls: 28
+  max_time_minutes: 8
+  max_turns: 80

@@ -7,7 +7,9 @@ Two things live here:
     rollback target: if the primary bundle fails any validation check, the
     notebook ships this instead. It has no sub-agent, no skills, no adapters and
     one short prompt, so it has the fewest possible ways to fail during
-    compilation on the scorer's machine.
+    compilation on the scorer's machine. Its sampling and eval budgets are
+    the measured 0.17 baseline configuration, so a rollback never silently
+    reverts to an unmeasured budget.
 
 ``load_from_disk``
     Reads the real bundle out of ``src/agent_package``, which mirrors the
@@ -39,19 +41,18 @@ generate_content_config: !include configs/sampling.yaml
 FALLBACK_SAMPLING_YAML = """\
 temperature: 0.2
 top_p: 0.95
-top_k: 40
-max_output_tokens: 16384
+max_output_tokens: 8192
 thinking_config:
-  include_thoughts: true
   thinking_budget: 4096
+  include_thoughts: true
 """
 
 FALLBACK_EVAL_CONFIG_YAML = """\
 evaluation:
-  timeout_seconds: 300
-  max_time_minutes: 6
-  max_tool_calls: 60
-  max_turns: 120
+  timeout_seconds: 240
+  max_time_minutes: 8
+  max_tool_calls: 28
+  max_turns: 80
 """
 
 FALLBACK_SYSTEM_MD = '''\
@@ -77,7 +78,7 @@ a fix is in place, then call submit_patch().
   print their verdict at the end. read_file returns at most 150 lines.
 - read_file, write_file and edit_file accept only paths inside /workspace.
   Create scratch files in /tmp with run_command.
-- Commands time out after 300 seconds, but a long command only wastes your own
+- Commands time out after 240 seconds, but a long command only wastes your own
   budget: never let one run for minutes.
 - get_status() and submit_patch() are free.
 
@@ -95,7 +96,8 @@ a fix is in place, then call submit_patch().
 4. Fix the root cause minimally. Handle the exact edge cases the issue names,
    because hidden tests probe them. Keep public signatures and exception types
    unchanged.
-5. Verify after every edit: python3 -m py_compile PATH
+5. Verify after every edit: python3 -m py_compile PATH (not optional; a file
+   that does not import is a guaranteed zero)
 6. Submit. Run git status --short and git diff --stat, delete debugging files
    you created in /workspace, then call submit_patch() as your last tool call.
 
@@ -143,22 +145,22 @@ will not match, use the exact replacement above. Do not reread a file you
 already understand.
 
 ## Pace
-You have roughly 4 minutes and 120 model turns. Call get_status() every five or
-six tool calls; it is free. Explore only until you have a confirmed location,
-then edit. When half the remaining time is gone, stop exploring, make the most
-plausible minimal fix, run one syntax check and at most one targeted test, and
-submit. If a third of the time is gone and you still have no root cause, make
-the change that best matches the issue wording at the most likely location,
-confirm it compiles, and submit: a patch that fails some tests scores the same
-as no patch, so shipping a best guess is strictly better than timing out.
+You have 8 minutes and at most 28 tool calls. get_status() is free and does
+not count: call it every five or six calls. By your 12th tool call you must
+have edited a source file; if you have not, stop exploring and make your
+best-guess edit in the most likely place now. After the edit: one compile
+check and at most one targeted test, then submit_patch. A patch that fails
+some tests scores the same as no patch, so shipping a best guess is strictly
+better than timing out with an empty tree.
 
 ## Keeping your place
 The context is finite and older tool outputs get compacted away as it grows;
 only your own plain text survives. After confirming the location and after each
-verification, write a state card of at most 100 words: required behaviour,
-confirmed file and line, edit made, last test result, next single action. Never
-paste tool output into it, and reread the source before editing. Keep tool
-results small on purpose by piping through head, tail or grep.
+verification, write a state card of at most 100 words in /tmp/plan.md through
+run_command: required behaviour, confirmed file and line, edit made, last test
+result, next single action. Never paste tool output into it, and reread the
+source before editing. Keep tool results small on purpose by piping through
+head, tail or grep.
 
 ## The issue
 {problem_description}

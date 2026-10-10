@@ -10,6 +10,13 @@ is a **Kaggle notebook** which, when run, writes `/kaggle/working/submission.zip
 Google ADK agent package that the organizers compile and run on ~120 hidden SWE-bench-style tasks
 across ~4x NVIDIA L4 GPUs. Score = fraction of tasks resolved by hidden tests.
 
+**Current anchor (2026-10-10):** the public scoring cluster is 0.17-0.18. Our primary bundle is
+now a byte-exact replica of the public **0.17** configuration (`src/agent_package/`), with two
+single-change ablations built and kernel-verified. Nothing has been submitted from them; the
+submission decision is the user's. Read `ckpt/STATE.md` (resume commands, kernel refs,
+submission order) and `kaggle_work/gemma-4-developer-agent/research/BASELINE_017.md` (why the
+baseline changed) before touching anything.
+
 ## Current state
 
 Done and committed:
@@ -26,7 +33,10 @@ Done and committed:
   `adk_submission.validate_directory`, `swegemma.models.discovery.validate_single_declared_model`
   and `adk_submission.compile_submission` against the bundle.
 
-**Not started:** the notebook section modules, the builder, the Kaggle kernel, the submission.
+**Not started:** any submission from the exp03-05 bundles (all three kernels are built,
+validated offline against the real harness, and COMPLETE on Kaggle with byte-identical
+artifacts). The next actions are the user's submit decisions, one per day, in the order
+listed in `ckpt/STATE.md`.
 
 ## Cold-start setup on the cloud agent
 
@@ -43,12 +53,16 @@ for w in swegemma-0.2.7 adk_submission-0.2.12 adk_eval_core-0.1.0; do
   kaggle datasets download -d metric/gemma-4-developer-agent-wheelhouse -f "$w-py3-none-any.whl" \
     -p kaggle_work/gemma-4-developer-agent/research/wheelhouse
 done
-.venv-harness/bin/python -m pip install -q --no-deps kaggle_work/gemma-4-developer-agent/research/wheelhouse/*.whl
+uv pip install --python .venv-harness/bin/python -q --no-deps kaggle_work/gemma-4-developer-agent/research/wheelhouse/*.whl
+# (uv is installed via pip; the wheelhouse now carries swegemma 0.2.11 / adk_submission 0.2.13,
+#  downloadable file-by-file from metric/gemma-4-developer-agent-wheelhouse)
 python tools/verify_bundle.py     # auto re-execs into the venv; must print ALL CHECKS PASSED
 ```
 
-`KAGGLE_USERNAME` / `KAGGLE_KEY` may need exporting, or `~/.kaggle/kaggle.json` may already exist.
-Confirm with `kaggle kernels list --mine`. The account is `narisettichaitanya`.
+Auth on this account: `export KAGGLE_API_TOKEN="$KAGGLE_KEY"` — the KGAT_ token is
+Bearer-only, so with a bare `KAGGLE_KEY` every authenticated CLI call 401s while anonymous
+downloads still succeed and look healthy. Confirm with `kaggle kernels list --mine`. The account
+is `narisettichaitanya`.
 
 ## What to build next
 
@@ -125,7 +139,9 @@ log, no traceback, and `submission.zip` present in the pulled output.
 ### 5. Submission
 
 Only after the local end-to-end check **and** the clean kernel run both pass. One submission per
-day, so do not spend one on an unverified bundle.
+day, so do not spend one on an unverified bundle. exp03, exp04 and exp05 have all passed both;
+submit in the order in `ckpt/STATE.md` (exp03 first — it must reproduce ~0.17 before any
+ablation is worth scoring).
 
 ```bash
 kaggle competitions submit -c gemma-4-developer-agent -k narisettichaitanya/gemma4-devagent-exp01 -v <N> -f submission.zip -m "exp01 mechanism-justified bundle"   # verify exact flags with --help first

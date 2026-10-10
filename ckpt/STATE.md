@@ -1,111 +1,99 @@
-# STATE — gemma-4-developer-agent
+# STATE — gemma-4-developer-agent (checkpoint 3)
+
+Updated 2026-10-10. Resume with: `git checkout kilo/winter-quest-l1k` in the clone,
+then rebuild the harness venv (below) — everything else is in git.
 
 ## Objective
-Raise the Kaggle competition score (`gemma-4-developer-agent`) above the current **0.05**.
-Deliverable is a declarative ADK agent package emitted as `submission.zip` by a Kaggle notebook.
 
-## Current score
-- Submission ref `56793672`, status `complete`, **publicScore 0.05**, no `errorDescription`.
-- So the bundle *ran and compiled*; it simply resolved few tasks. This is NOT a crash or a
-  rejected-submission problem.
+Raise the Kaggle competition score (`gemma-4-developer-agent`) above **0.17**, the
+best public cluster score. Deliverable is a declarative ADK agent package emitted as
+`submission.zip` by a Kaggle notebook.
 
-## Leaderboard (fetched 2026-10-03 via REST)
-Top is **0.24**. A large cluster sits at **0.15-0.17**. Two teams at 0.17.
-We are at 0.05, i.e. below the whole cluster. The gap is ~0.10 = ~6 tasks on the ~60-task
-public split, which is far outside the ~0.05 noise band. **Something structural is wrong,
-not prompt polish.**
+## Current state
 
-## Done
-- Full harness source audit (swegemma 0.2.7 / adk_submission 0.2.12 / adk_eval_core 0.1.0
-  / google-adk 1.36.1) re-installed into `.venv-harness` from
-  `metric/gemma-4-developer-agent-wheelhouse` and verified importable.
-  NOTE: the swegemma wheel is on **page 2** of the dataset file list; page-token needed.
-- `tools/verify_bundle.py` -> ALL CHECKS PASSED (incl. the real `compile_submission`).
-- `tools/build_notebook.py` -> writes `build/submission_notebook.ipynb` (needs `nbformat`,
-  now installed into the venv).
-- `tools/verify_notebook.py` -> ALL CHECKS PASSED, end-to-end exec of the notebook offline.
-- `tools/kaggle_rest.py` -> the ONLY way to make authenticated Kaggle calls. The `kaggle`
-  CLI 1.7.4.5 returns **401 on every authenticated call** (it uses HTTP Basic; this account's
-  `KGAT_` token is Bearer-only). Public/anonymous calls still succeed, which makes the CLI
-  look healthy while silently failing. **Always use `python3 tools/kaggle_rest.py`.**
+| item | value |
+|---|---|
+| our best public score | **~0.08** (v2 bundle: thinking on, 6 min / 60 calls / 120 turns, coder + analyzer sub-agent) |
+| public baseline to beat | **0.17** (three public notebooks converge on one configuration; best single notebook 0.18) |
+| current primary bundle | **exp03**: byte-exact replica of the public 0.17 SuperAgent bundle, `sha256 e3be904c…`, 3,170 bytes |
+| ablation bundles | exp04 (mandatory `py_compile`), exp05 (pre-submit patch integrity) — each a single change off exp03 |
+| kernels | `gemma4-devagent-exp03-baseline-017-replica`, `gemma4-devagent-exp04-ablation-pycompile`, `gemma4-devagent-exp05-ablation-patch-integrity` — all v1 COMPLETE, no failureMessage, zips byte-identical to the local builds |
+| submissions | **none made from exp03-05**; the user decides |
+
+## What changed since checkpoint 2 (v2)
+
+1. **The primary bundle is now the public 0.17 configuration.** Full diff and ranked
+   impact analysis: `research/BASELINE_017.md` (in-repo) / `BASELINE_017.md` (this
+   checkpoint). v2 remains recoverable from git history (`0771b89`) and dataset
+   version 2.
+2. **Kaggle auth fixed**: `export KAGGLE_API_TOKEN="$KAGGLE_KEY"` makes CLI 1.7.4.5
+   work with bearer auth. Plain `KAGGLE_KEY` still 401s every authenticated call.
+   Note: kernel ids are re-slugified from the title on push — poll status with the
+   ref listed by `kaggle kernels list --mine --page 2`, not the requested id.
+3. **Wheelhouse versions bumped** (2026-10-09): swegemma 0.2.7 -> 0.2.11,
+   adk_submission 0.2.12 -> 0.2.13. Both verifiers now use
+   `adk_submission.discovery.discover_declared_models` (the old
+   `swegemma.models.discovery.validate_single_declared_model` is gone). All
+   load-bearing mechanisms were re-verified against the current wheels.
+4. **`verify_bundle.py --bundle DIR`** validates any bundle directory;
+   **`build_notebook.py --bundle DIR --out …`** builds a kernel notebook for any
+   bundle; **`verify_notebook.py --notebook …`** unchanged interface.
+
+## Kaggle kernel refs
+
+| exp | kernel | version | status | zip sha256 |
+|---|---|---|---|---|
+| exp03 baseline | `narisettichaitanya/gemma4-devagent-exp03-baseline-017-replica` | 1 | complete | `e3be904ca4823b9d…` |
+| exp04 A1 py_compile | `narisettichaitanya/gemma4-devagent-exp04-ablation-pycompile` | 1 | complete | `71bf21d6eeea0d7a…` |
+| exp05 A2 patch integrity | `narisettichaitanya/gemma4-devagent-exp05-ablation-patch-integrity` | 1 | complete | `2ba7f9b118ea1837…` |
 
 ## Working commands (this box)
+
 ```bash
-# harness venv (already built; wheels are gitignored, rebuild if lost)
-UV=/tmp/kilo-worktrees/63bb3d39c211e815bac84bd14e84c57ac61ff0cf31be3265f9a09035a1a09015/.local/bin/uv
-$UV pip install --python .venv-harness/bin/python -q google-adk==1.36.1 google-genai==2.11.0 \
-    PyYAML networkx pandas nbformat
-$UV pip install --python .venv-harness/bin/python -q --no-deps \
+export KAGGLE_API_TOKEN="$KAGGLE_KEY"          # required for every authenticated call
+export PATH="/usr/local/bin:$PATH"             # uv lives here
+
+# harness venv (already built on this box; .venv-harness is gitignored)
+uv pip install --python .venv-harness/bin/python -q google-adk==1.36.1 \
+    google-genai==2.11.0 PyYAML networkx pandas nbformat litellm rich loguru docker
+uv pip install --python .venv-harness/bin/python -q --no-deps \
     kaggle_work/gemma-4-developer-agent/research/wheelhouse/*.whl
 
 # validate + build
-.venv-harness/bin/python tools/verify_bundle.py     # must print ALL CHECKS PASSED
-.venv-harness/bin/python tools/build_notebook.py
-.venv-harness/bin/python tools/verify_notebook.py   # must print ALL CHECKS PASSED
+.venv-harness/bin/python tools/verify_bundle.py                                  # primary
+.venv-harness/bin/python tools/verify_bundle.py --bundle <bundle-dir>            # ablations
+.venv-harness/bin/python tools/build_notebook.py --bundle <bundle-dir> \
+    --out kaggle_work/gemma-4-developer-agent/experiments/<exp>/submission_notebook.ipynb
+.venv-harness/bin/python tools/verify_notebook.py --notebook <notebook>          # offline exec
 
 # authenticated Kaggle
-python3 tools/kaggle_rest.py submissions gemma-4-developer-agent
+python3 tools/kaggle_rest.py push kaggle_work/.../experiments/<exp>
+python3 tools/kaggle_rest.py status  <actual kernel ref from kernels list>
+python3 tools/kaggle_rest.py output  <ref> kaggle_work/gemma-4-developer-agent/runs/<name>
+python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "<notes>"
 ```
 
-## Kaggle API facts learned the hard way
-- Leaderboard route is `/api/v1/competitions/{slug}/leaderboard/view`, **GET**, no `page` param
-  (it 400s), payload key is `submissions` (not `teams`), each row has `score`/`teamName`.
-- `kaggle competitions download` **works anonymously**; only authed calls 401.
+## Recommended submission order (user decides; one per day)
 
-## v2 status: BUILT, VALIDATED, KERNEL-RUN VERIFIED. Awaiting a submit decision.
+1. **exp03** — the 0.17 baseline replica. It must reproduce ~0.17; if it does, it
+   becomes the new anchor and every later change is a single ablation off it.
+2. **exp05** (patch integrity) — targets the observed *empty patch* failure mode with
+   a harness-verified mechanism (`submit_patch` runs `git add -N .`, which respects
+   `.gitignore`; an ignored new file silently never reaches the diff).
+3. **exp04** (mandatory `py_compile`) — targets *patches that don't apply*; the lint
+   guardrail is priced at -3.0 pp in SWE-agent's published ablation.
 
-Kernel `narisettichaitanya/gemma4-devagent-exp02` version 1: status **complete**, no
-failureMessage, `selected_package: primary`, and the `submission.zip` it produced is
-**byte-identical** to the local build (`sha256 57c9919f…`). So the artifact Kaggle would
-score is exactly the one `adk_submission.compile_submission` was validated against. Pull
-evidence is in `exp02/`.
+Then, in order: drop the three graph tools (invalid-call surface), add the `/tmp`
+plan.md scratchpad (compaction survives only model text), and only then revisit
+budget knobs.
 
-All four changes below are implemented, verified against the real harness, and packed into
-`submission.zip` (sha256 `57c9919f…`, 8,559 bytes). See `NOTES.md` for the full rationale.
+## Hard rules (unchanged)
 
-1. **Thinking ON**: `include_thoughts: true` + `thinking_budget: 4096`,
-   `max_output_tokens: 16384`. Verified by compiling a probe bundle through the genuine
-   `adk_submission.compile_submission` and reading `enable_thinking=True` and
-   `thinking_token_budget=4096` off the model object. The bug that originally forced thinking
-   off (vLLM dropping thoughts between tool calls) is fixed in
-   `generation.py:66-74` / `install_litellm_reasoning_patch()`.
-2. **`max_time_minutes` 4 -> 6**, `max_tool_calls` 80 -> 60. Confirmed at
-   `agent_runner.py:435-442` and `:635` that this is an `asyncio.timeout` **ceiling** which is
-   cancelled the instant `submit_patch` is called, so it costs nothing on tasks the agent
-   finishes early. The published 0.12 anchor used **10**. `swegemma/config.py` imposes no
-   ceiling; our old 5-minute validator cap was a local guess and is now 10.
-3. **Prompt rewritten** around a `/tmp/plan.md` scratchpad (survives the lossy compaction that
-   keeps only model text), a mandatory `py_compile` after every edit (SWE-agent prices its lint
-   guardrail at -3.0 pp), a ban on editing from stale tool output, the repo's own tests as the
-   guard signal rather than self-authored proxies, a ban on paging through search results
-   (-6.0 pp in SWE-agent's ablation), and the binary-scoring asymmetry stated up front.
-4. **Fallback bundle aligned** with the same thinking and budget settings, so a rollback does
-   not silently revert to thinking-off.
-
-### Validation results
-- `tools/verify_bundle.py` -> ALL CHECKS PASSED (30 checks, incl. real `compile_submission`
-  on both the primary and fallback bundles)
-- `tools/verify_notebook.py` -> ALL CHECKS PASSED (notebook executed end to end offline)
-- `submission.zip`: 6 members, `agent.yaml` at root, only `.md`/`.yaml` suffixes, no adapters
-- brace audit: `problem_description` is the only placeholder in either prompt
-
-## Next step
-1. **Ask the user whether to submit v2.** Do not submit without an explicit yes.
-2. If the score improves, the next experiment is a `SequentialAgent` root with per-stage tool
-   restriction (Agentless hierarchical localisation). It was rejected for v2 only because a
-   non-`LlmAgent` root cannot be validated offline against the harness's per-turn prompt and
-   nudge loop, and submissions are limited to one per day.
-3. If v2 regresses, checkpoint 1 (v1, the 0.05 bundle) is recoverable byte-for-byte from
-   dataset version 1, and the fallback bundle in v2 is still thinking-on, so isolate the time
-   budget from the thinking flag next.
-
-## Hard rules
 - **NEVER** run `kaggle competitions submit` without an explicit yes in the conversation.
-- One submission per day.
-- A notebook that errors scores 0. Keep the fallback bundle.
-- No LoRA adapters (KV cache 46k -> 7.6k tokens).
-- Allowed extensions only: `.yaml .yml .md .txt .py .json .safetensors`, **no empty suffix**.
-- `agent.yaml` at the zip root, < 3 GiB unpacked.
-- Only model: `gemma-4-31b-it-qat-w4a16-ct`.
-- Both prompts may contain **no braces** except the trailing `{problem_description}`;
-  ADK interpolates every `{token}` in an instruction from session state.
+- One submission per day; differences below ~0.05 on the public LB are noise.
+- A notebook that errors scores 0. The fallback bundle is the safety net; its budgets
+  now match the measured baseline so a rollback cannot silently revert.
+- No LoRA adapters (KV cache 46k -> 7.6k tokens). Only model:
+  `gemma-4-31b-it-qat-w4a16-ct`. Allowed extensions only, no empty suffix.
+  `agent.yaml` at the zip root, < 3 GiB unpacked.
+- Both prompts contain no braces except the trailing `{problem_description}`.

@@ -129,10 +129,17 @@ def check_harness_optional(payload: bytes) -> None:
             return
 
         try:
-            from swegemma.models.discovery import validate_single_declared_model
+            try:
+                from adk_submission.discovery import discover_declared_models
 
-            validate_single_declared_model(target)
-            check("real harness accepts exactly one declared model", True)
+                declared = discover_declared_models(target)
+                ok = declared == {MODEL_NAME}
+            except ImportError:
+                from swegemma.models.discovery import validate_single_declared_model
+
+                validate_single_declared_model(target)
+                ok = True
+            check("real harness accepts exactly one declared model", ok, str(declared))
         except Exception as error:
             check("real harness accepts exactly one declared model", False, str(error))
 
