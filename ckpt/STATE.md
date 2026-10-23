@@ -80,6 +80,7 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 | 2026-10-03 | 56793672 | exp01 (v1) | 0.05 | complete |
 | 2026-10-04 | — | exp02 (v2) | 0.08 | complete |
 | **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
+| **2026-10-23** | **57553805** | **exp05 patch integrity ablation** | **pending** | submitted 07:49:57Z, message "exp05 patch integrity ablation (single change off exp03)" |
 
 ## New-session entry point
 
@@ -128,3 +129,21 @@ budget knobs.
   `gemma-4-31b-it-qat-w4a16-ct`. Allowed extensions only, no empty suffix.
   `agent.yaml` at the zip root, < 3 GiB unpacked.
 - Both prompts contain no braces except the trailing `{problem_description}`.
+
+
+# Checkpoint 4 (this session, 2026-10-23)
+
+## Score update
+- exp03 (ref 57037122) scored **0.17** (COMPLETE), reproducing the public baseline. Configuration re-anchored on our account.
+- exp05 submitted 2026-10-23 ref **57553805** (pending at handoff).
+
+## Built this session
+- exp06 `bundles/exp06_repo_test_cheatsheet` — repo-specific test/toolchain cheat sheet added to the baseline prompt (single change off exp03). Verified: verify_bundle ALL CHECKS PASSED; verify_notebook ALL CHECKS PASSED. Kernel pushed: narisettichaitanya/gemma4-devagent-exp06-repo-test-cheatsheet v1 (complete pending run).
+- exp07 `bundles/exp07_verification_loop` — executable verification loop (reproduce first, compile+targeted test, max 2 repair cycles, submit best patch by ~75% budget). Verified: ALL CHECKS PASSED. Kernel pushed: narisettichaitanya/gemma4-devagent-exp07-verification-loop v1.
+
+## Failure analysis of the 0.17 run
+Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122). Buckets below are the harness failure taxonomy from BASELINE_017.md mapped to the 0.17 baseline; counts are not available from the scoring API. Estimated split is qualitative only:
+- empty patches (new file swallowed by .gitignore / no edit landed): targeted by exp05.
+- patches that do not apply / syntax errors: targeted by exp04 (mandatory py_compile).
+- timeouts / wandering (runs exploring past many calls): addressed by baseline budget (28 calls / 8 min) and exp07 budget gate.
+- invalid tool calls (graph tools): candidate for next bundle (drop 3 graph tools).
