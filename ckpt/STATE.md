@@ -81,6 +81,7 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 | 2026-10-04 | — | exp02 (v2) | 0.08 | complete |
 | **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
 | **2026-10-23** | **57553805** | **exp05 patch integrity ablation** | **pending** | submitted 07:49:57Z, message "exp05 patch integrity ablation (single change off exp03)" |
+| **2026-10-25** | **57618114** | **exp08 tool contract prompt** | **pending** | submitted from kernel narisettichaitanya/gemma4-devagent-exp08-tool-contract-prompt v1, message "exp08 tool contract prompt (single change off exp05)" |
 
 ## New-session entry point
 
@@ -147,3 +148,19 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 - patches that do not apply / syntax errors: targeted by exp04 (mandatory py_compile).
 - timeouts / wandering (runs exploring past many calls): addressed by baseline budget (28 calls / 8 min) and exp07 budget gate.
 - invalid tool calls (graph tools): candidate for next bundle (drop 3 graph tools).
+
+
+# Checkpoint 5 (this session, 2026-10-25)
+
+## Score update
+- exp05 (ref 57553805) scored **0.20** (COMPLETE): new baseline (exp05 = exp03 + pre-submit patch integrity).
+- exp08 submitted 2026-10-25 ref **57618114** (PENDING at handoff).
+
+## Built this session
+- research/TOOL_CONTRACT.md: tool contract + battery.
+- exp08 bundle: exp05 + tool usage/sandbox prompt section.
+- exp07-rebased: exp05 + executable verification loop.
+- exp06-rebased: exp05 + repo test/toolchain cheat sheet.
+- exp09: exp05 minus 3 graph tools.
+- All bundles notebooks built and verified (verify_notebook ALL CHECKS PASSED).
+- Verification: verify_bundle layer 1 PASS for all; layer 2 skipped (no wheels in container).
