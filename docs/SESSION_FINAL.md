@@ -2,7 +2,7 @@
 
 Branch: `feat/exp10-consolidated`
 Last commit (code): `586d976`
-Last commit (docs): `726f5d9`
+Last commit: see `git rev-parse HEAD` (tip of branch)
 PR (draft): https://github.com/Karna14314/gemma4hack/pull/4
 Competition: gemma-4-developer-agent (deadline 2026-12-02 main track; paper track 2026-11-12)
 
@@ -67,7 +67,7 @@ Competition: gemma-4-developer-agent (deadline 2026-12-02 main track; paper trac
 4. Mark PR ready after verification gate (already passed layer 1 + notebook).
 
 ## Resume instructions
-- Branch: `feat/exp10-consolidated`; last commit: `726f5d9`.
+- Branch: `feat/exp10-consolidated`; last commit: tip of branch (see git log).
 - PR: https://github.com/Karna14314/gemma4hack/pull/4
 - Auth: `export KAGGLE_API_TOKEN="$KAGGLE_KEY"`.
 - Poll: `python3 tools/kaggle_rest.py submissions gemma-4-developer-agent`.
