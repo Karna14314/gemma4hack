@@ -1,66 +1,73 @@
 # SESSION_FINAL — gemma-4-developer-agent
 
-Branch: `kilo/tool-contract-session`
-Last commit (code): `68c8533` (wip: tool contract, exp08/exp07-rebased/exp06-rebased/exp09 bundles + verification)
-PR (draft): https://github.com/Karna14314/gemma4hack/pull/3
-Competition: gemma-4-developer-agent (deadline 2026-12-02, main track; paper track 2026-11-12)
+Branch: `feat/exp10-consolidated`
+Last commit (code): `586d976`
+Last commit (docs): `726f5d9`
+PR (draft): https://github.com/Karna14314/gemma4hack/pull/4
+Competition: gemma-4-developer-agent (deadline 2026-12-02 main track; paper track 2026-11-12)
 
 ## Summary
-- exp05 (patch integrity) scored **0.20** (COMPLETE): new baseline (exp03 0.17 + pre-submit patch integrity). Binomial SE on ~58 tasks: sqrt(0.20*0.80/58)=0.052; a 0.03 delta is within noise.
-- Tool contract documented in research/TOOL_CONTRACT.md (all 9 tools, caps, error strings).
-- Built and verified 4 new single-change bundles off exp05: exp08 (tool usage/sandbox prompt), exp07-rebased (verification loop), exp06-rebased (repo test cheat sheet), exp09 (drop 3 graph tools).
-- exp08 submitted 2026-10-25 ref **57618114** (PENDING at handoff).
-- Checkpoint pushed to private dataset narisettichaitanya/gemma4-agent-ckpt.
+- exp05 (patch integrity) scored 0.20 (COMPLETE): anchored baseline.
+- exp08 (tool contract prompt) submitted 2026-10-25 ref 57618114; PENDING at handoff.
+- Built and verified `exp10-consolidated`: exp05 + drop 3 graph tools + `max_output_tokens` 8192->6144 + `max_time_minutes` 8->7 + 6-rule prompt (A-F).
+- Kernel pushed: narisettichaitanya/gemma4-devagent-exp10-consolidated v1 COMPLETE.
+- Submission of exp10-consolidated deferred: daily submission quota already used by exp08 (2026-10-25).
+- Documented vLLM/ADK/wall-clock mechanics in research/CONTEXT_AND_BUDGET_MECHANICS.md.
+- Added offline paper-track benchmark (research/paper_track_benchmark.py) and PAPER_DATA.md (Experiment B; Experiment A pending published task data).
+- Audited exp06-rebased: repo-specific cheat sheet not carried into exp10-consolidated.
+- Checkpoint pushed to narisettichaitanya/gemma4-agent-ckpt.
 
 ## Per-phase status
 
 | phase | status | commit |
 |---|---|---|
-| env setup (venv + wheels) | partial (no wheels in container; layer 2 skipped) | n/a |
-| tool contract doc | done | 68c8533 |
-| exp08 bundle + notebook + kernel | done, verified, submitted | 68c8533 |
-| exp07-rebased bundle + notebook | done, verified | 68c8533 |
-| exp06-rebased bundle + notebook | done, verified | 68c8533 |
-| exp09 bundle + notebook | done, verified | 68c8533 |
-| checkpoint push | done | 68c8533 |
+| branch setup from main | done | 586d976 |
+| exp10-consolidated configs | done | 586d976 |
+| exp10-consolidated prompt (rules A-F) | done | 586d976 |
+| verify_bundle (layer 1) | PASS | 586d976 |
+| verify_notebook | ALL CHECKS PASSED | 586d976 |
+| kernel push | COMPLETE | n/a |
+| context/budget mechanics doc | done | 586d976 |
+| paper benchmark + PAPER_DATA.md | done | 586d976 |
+| checkpoint push | done | n/a |
+| draft PR | opened | https://github.com/Karna14314/gemma4hack/pull/4 |
 | SESSION_FINAL | this file | — |
 
 ## Files changed
-- `research/TOOL_CONTRACT.md`, `ckpt/TOOL_CONTRACT.md`
-- `kaggle_work/.../bundles/exp08_tool_contract/*`, `exp07_rebased_verification/*`, `exp06_rebased_cheatsheet/*`, `exp09_drop_graph_tools/*`
-- `kaggle_work/.../experiments/exp08_tool_contract/*`, `exp07_rebased_verification/*`, `exp06_rebased_cheatsheet/*`, `exp09_drop_graph_tools/*`
-- `ckpt/bundles/exp08_tool_contract/*`, `exp07_rebased_verification/*`, `exp06_rebased_cheatsheet/*`, `exp09_drop_graph_tools/*`
-- `ckpt/STATE.md`
+- kaggle_work/gemma-4-developer-agent/bundles/exp10_consolidated/* (agent.yaml, configs/sampling.yaml, eval_config.yaml, prompts/system.md)
+- kaggle_work/gemma-4-developer-agent/experiments/exp10_consolidated/* (kernel-metadata.json, submission_notebook.ipynb)
+- kaggle_work/gemma-4-developer-agent/research/CONTEXT_AND_BUDGET_MECHANICS.md
+- kaggle_work/gemma-4-developer-agent/research/PAPER_DATA.md
+- kaggle_work/gemma-4-developer-agent/research/paper_data_bundle_tokens.csv
+- kaggle_work/gemma-4-developer-agent/research/paper_track_benchmark.py
+- ckpt/STATE.md, ckpt/bundles/exp10_consolidated/*, ckpt/research/*
+- docs/SESSION_FINAL.md
 
 ## Verification commands and results
-- `python3 tools/verify_bundle.py --bundle .../exp08_tool_contract` -> ALL (layer1) PASS; layer2 skipped (no wheels)
-- same for exp07_rebased_verification, exp06_rebased_cheatsheet, exp09_drop_graph_tools -> PASS
-- `python3 tools/verify_notebook.py --notebook .../submission_notebook.ipynb` (x4) -> ALL CHECKS PASSED
-- `python3 tools/kaggle_rest.py submissions gemma-4-developer-agent` -> exp05 0.20 COMPLETE; exp08 ref 57618114 PENDING
-- `kaggle competitions` deadline: 2026-12-02T23:59Z (main); paper track 2026-11-12.
+- `python3 tools/verify_bundle.py --bundle kaggle_work/.../bundles/exp10_consolidated` -> ALL CHECKS PASSED (layer 1); layer 2 skipped (no harness wheels).
+- `python3 tools/verify_notebook.py --notebook kaggle_work/.../experiments/exp10_consolidated/submission_notebook.ipynb` -> ALL CHECKS PASSED.
+- `python3 tools/kaggle_rest.py status narisettichaitanya/gemma4-devagent-exp10-consolidated` -> complete.
+- `python3 tools/kaggle_rest.py submissions gemma-4-developer-agent` -> exp08 ref 57618114 PENDING; exp05 0.20 COMPLETE.
 
 ## NOT-verified items
+- Layer 2 real harness compile (no swegemma/adk_submission wheels in container).
 - exp08 score (pending).
-- Layer 2 (real harness compile_submission) not run: no swegemma/adk_submission wheels in this container; static layer 1 + notebook layer passed.
-- Final submission selection rule: not confirmed from rules page (JS-rendered); standard Kaggle code competition requires selecting up to 2 final submissions before deadline — verify on Rules tab.
-- Exact error_message text beyond error_type for tools: documented from HARNESS_README, not executed against real tools.
+- exp10-consolidated score (not submitted; quota).
+- Experiment A paper metrics (published task data not present).
 
 ## Known gaps
-- exp07-rebased/exp06-rebased/exp09 not yet pushed/submitted (queue: one per day).
+- exp10-consolidated submission deferred until daily quota resets.
 - No local scoring available.
-- exp04 (mandatory py_compile) not submitted.
+- Prompt token counts are byte/4 estimates.
 
 ## Next steps
 1. Poll exp08 score (ref 57618114); record score + binomial SE in STATE.md.
-2. Submit exp07-rebased next day, then exp06-rebased, then exp09.
-3. After 3 scored runs, build one stacked bundle of clear winners.
-4. Push checkpoint and update SESSION_FINAL.
+2. Submit exp10-consolidated once daily quota allows.
+3. Run paper benchmark Experiment A when published task data is available.
+4. Mark PR ready after verification gate (already passed layer 1 + notebook).
 
 ## Resume instructions
-- Branch: `kilo/tool-contract-session`; last commit: `68c8533`.
-- PR: https://github.com/Karna14314/gemma4hack/pull/3
+- Branch: `feat/exp10-consolidated`; last commit: `726f5d9`.
+- PR: https://github.com/Karna14314/gemma4hack/pull/4
 - Auth: `export KAGGLE_API_TOKEN="$KAGGLE_KEY"`.
-- Rebuild venv/wheels if available; otherwise layer 2 skipped.
 - Poll: `python3 tools/kaggle_rest.py submissions gemma-4-developer-agent`.
-EOF
-echo done
