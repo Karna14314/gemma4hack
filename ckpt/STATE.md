@@ -185,9 +185,3 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 - Submission attempt blocked: HTTP 400 "Submission not allowed: Your team already has 1 pending submissions; please wait for one to finish scoring." (exp08 ref 57618114 still pending).
 - exp08 status: PENDING, no score.
 - exp10-consolidated ready for one-command submission: `python3 tools/kaggle_rest.py submit --competition gemma-4-developer-agent --kernel narisettichaitanya/gemma4-devagent-exp10-consolidated --version 2 --filename submission.zip --message "exp10-consolidated ..."`
-
-## Checkpoint: exp10-and-paper-track (2026-10-26)
-- exp08 (ref 57618114) scored 0.17 LB (regression -0.03 vs exp05 0.20; within 1 SE 0.052). Hypothesis rejected.
-- exp10-consolidated submitted today ref 57654236 (kernel v3). Bundle: 6 tools, max_output_tokens 6144, max_time_minutes 7, prompt +150 chars.
-- exp10 prompt char delta vs exp05: +150.
-- exp11-e4b bundle created but verify_bundle FAILS: validator MODEL is hardcoded to gemma-4-31b-it-qat-w4a16-ct; e4b alias not in registry. Needs validator/registry update or a separate verification path before submission.
