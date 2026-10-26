@@ -33,6 +33,19 @@ Additional safeguards: drop three unused graph tools from `agent.yaml` (reducing
 
 ## 3. Code-Graph & Embedding Analysis
 
+Real 129-task results:
+
+# Experiment 1 results (129 tasks)
+
+| strategy | R@1 | R@3 | R@5 | R@10 |
+|---|---:|---:|---:|---:|
+| lexical | 0.0018 | 0.0045 | 0.0045 | 0.0058 |
+| graph | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| hybrid | 0.0018 | 0.0045 | 0.0045 | 0.0045 |
+
+Tasks evaluated: 129
+
+
 The competition releases per-repository AST code graphs (JSON) and 256-dimensional node embeddings (`.npz`). We compare four retrieval strategies on the 129 public tasks: (a) lexical grep/BM25 over `problem_statement` identifiers; (b) cosine similarity over `.npz` embeddings (`search_similar_code`); (c) one-hop `get_code_neighbors` expansion from seeds; (d) hybrid graph-lexical routing (embedding top-3 seeds plus one-hop filtering when lexical grep returns zero or >20 matches).
 
 Why naive graph exposure fails: the harness tools require exact fully-qualified symbol IDs, so small models hallucinate plausible but wrong IDs; additionally, three extra tool schemas inflate per-turn context. Gated hybrid retrieval avoids both by using embeddings only as seeds and graph traversal only as expansion.
