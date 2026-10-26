@@ -9,17 +9,19 @@ files = {p.relative_to(BUNDLE).as_posix(): p.read_text() for p in BUNDLE.rglob("
 assert "agent.yaml" in files
 ag = files["agent.yaml"]
 assert f"model: {MODEL}" in ag
-for t in ["run_command","read_file","edit_file","write_file","get_status","submit_patch","search_similar_code"]:
+for t in ["run_command","read_file","edit_file","write_file","get_status","submit_patch"]:
     assert f"  - {t}" in ag
+assert "search_similar_code" not in ag
 assert "get_code_neighbors" not in ag
 assert "get_code_subgraph" not in ag
 sampling = yaml.safe_load(files["configs/sampling.yaml"])
 assert sampling["temperature"] == 0.1
-assert sampling["max_output_tokens"] == 4096
-assert sampling["thinking_config"]["thinking_budget"] == 2048
+assert sampling["top_p"] == 0.95
+assert sampling["max_output_tokens"] == 5120
+assert sampling["thinking_config"]["thinking_budget"] == 3072
 evalc = yaml.safe_load(files["eval_config.yaml"])["evaluation"]
 assert evalc["timeout_seconds"] == 180
-assert evalc["max_tool_calls"] == 35
+assert evalc["max_tool_calls"] == 36
 assert evalc["max_time_minutes"] == 6
 assert evalc["max_turns"] == 80
 print("E4B VERIFY_BUNDLE: ALL CHECKS PASSED")

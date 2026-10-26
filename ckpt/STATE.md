@@ -189,3 +189,19 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 ## Paper eval (2026-10-26)
 - Experiment 1 run on real 129 tasks: lexical R@1 0.0018, R@3 0.0045, R@5 0.0045, R@10 0.0058; graph 0.0; hybrid 0.0018/0.0045/0.0045/0.0045.
 - exp10-consolidated ref 57654236: PENDING.
+
+# Checkpoint 7 (this session, 2026-10-26)
+
+## Score update
+- exp10-consolidated (ref 57654236): still PENDING at session end. Not submitted.
+
+## Built this session
+- exp11_e4b upgraded: 6-tool surface, sampling (temp 0.1, top_p 0.95, max_output_tokens 5120, thinking_budget 3072), eval (180s/36/6min/80turns), 60-line reads. Verifiers updated and PASS. Kernel g4-e4b-small-agent-submit v2 COMPLETE.
+- lora_pipeline: split_100_29.json (placeholder), build_oracle_trajectories.py (offline, strict loss masking).
+- LoRA training kernel g4-e4b-lora-trainer v15 pushed. Status: ERROR (CUDA OOM on 14.56 GB GPU; bf16 4B model + training exceeds VRAM). Next session: try CPU offload or smaller model variant / subset.
+- docs/PAPER_TRACK_DRAFT.md updated with Experiment 1/2 tables and cross-scale/PEFT section.
+- docs/SESSION_FINAL.md written with inline tables.
+
+## Kernels
+- narisettichaitanya/g4-e4b-small-agent-submit v2: COMPLETE
+- narisettichaitanya/g4-e4b-lora-trainer v15: ERROR (OOM)

@@ -1,0 +1,13 @@
+{
+  "train_ids": [],
+  "val_ids": [],
+  "train_count": 0,
+  "val_count": 0,
+  "strata": {},
+  "status": "pending_data: run build_oracle_trajectories.py on Kaggle with published/tasks.jsonl to populate",
+  "spec": {
+    "train": 100,
+    "val": 29,
+    "strata": ["fastapi", "rich", "requests", "httpx"]
+  }
+}

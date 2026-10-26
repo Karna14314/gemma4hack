@@ -29,6 +29,18 @@ We discovered four silent killers through ablations.
 
 (iv) Tool/prompt bloat. `exp05` scored 0.20; `exp08` added 554 characters of tool-usage prose and regressed to 0.17. Verbose rules dilute attention without fixing structural bottlenecks. `exp10-consolidated` keeps the prompt within +150 characters of `exp05`.
 
+Experiment 2 (harness & context budget, 129 tasks):
+
+| bundle | tools | max_output_tokens | prompt chars |
+|---|---:|---:|---:|
+| exp05 | 9 | 8192 | 5425 |
+| exp10-consolidated | 6 | 6144 | 5575 |
+
+- `.gitignore` empty-patch: exp03 0.17 -> exp05 0.20 (+0.03).
+- Prompt bloat: exp05 0.20 -> exp08 0.17 (-0.03).
+- vLLM headroom: 24576 (exp05) vs 26624 (exp10).
+- ADK compaction threshold: 14336.
+
 Additional safeguards: drop three unused graph tools from `agent.yaml` (reducing schema overhead), enforce `max_time_minutes=7` to stay inside the 12-hour global cap, and require an early on-disk edit by Call 8–10.
 
 ## 3. Code-Graph & Embedding Analysis
@@ -54,7 +66,35 @@ Empirical tables (localization Recall@1/@3/@5/@10, output chars, failure rate) a
 
 ## 4. Cross-Scale Analysis: 31B vs. E4B
 
-The 31B QAT model consumes most of the 4x L4 KV-cache budget, while the E4B (4B) footprint leaves ~90 GB free. This headroom enables longer contexts and more tool calls, but semantic localization becomes more important because the smaller model is less robust to noisy tool output. We stage `exp11-e4b` with `temperature=0.1`, `thinking_budget=2048`, `max_output_tokens=4096`, `max_tool_calls=36`, `max_time_minutes=6`, targeting the Small Model leaderboard (Rank 3 at 0.06). Whether `search_similar_code` is included depends on its Recall@5 from Phase 3.
+The 31B QAT model consumes most of the 4x L4 KV-cache budget, while the E4B (4B) footprint leaves ~90 GB free. This headroom enables longer contexts and more tool calls, but semantic localization becomes more important because the smaller model is less robust to noisy tool output.
+
+### 4.1 KV-cache and budget architecture
+
+| quantity | 31B QAT (`gemma-4-31b-it-qat-w4a16-ct`) | E4B QAT (`gemma-4-e4b-it-qat-w4a16-ct`) |
+|---|---:|---:|
+| weights (4-bit) | ~20 GB | <4 GB |
+| VRAM on 4x L4 | ~96 GB total | ~96 GB total |
+| KV-cache headroom | tight (compaction at 14,336 tokens) | ~90 GB free |
+| vLLM ceiling | `prompt + max_output <= 32768` | `prompt + max_output <= 32768` |
+| ADK compaction threshold | 14,336 tokens | 14,336 tokens |
+| max_output_tokens | 6144 (exp10) | 5120 (exp11-e4b) |
+| prompt headroom | 26,624 tokens | 27,648 tokens |
+| thinking budget | 4096 | 3072 |
+| tool-call budget | 28 calls / 8 min / 80 turns | 36 calls / 6 min / 80 turns |
+
+E4B generates tokens ~4-5x faster than 31B, so we raise the tool-call budget (36 vs 28) and lower the wall-clock cap (6 vs 8 minutes) while keeping the vLLM ceiling and ADK compaction threshold identical. The 60-line surgical `read_file` window keeps E4B below the 14,336 compaction threshold longer and removes indentation drift in `old_string` copying.
+
+### 4.2 Oracle-Guided PEFT distillation for E4B (`exp12_e4b_lora`)
+
+Because competition rules prohibit sending competition data to external APIs, we build the SFT dataset 100% offline inside Kaggle from the 129 public tasks (`published/tasks.jsonl`, repository snapshots, code graphs):
+
+- Stratified split: **100 train / 29 held-out validation** tasks, stratified across `fastapi`, `rich`, `requests`, `httpx` (`tracks/e4b_small/lora_pipeline/split_100_29.json`).
+- Gold multi-turn ADK tool-use trajectories (`build_oracle_trajectories.py`): Turn 1 localization (`git grep`/`search_similar_code` on the exact symbol in the gold patch), Turn 2 surgical 60-line read, Turn 3 exact `edit_file` with `old_string`/`new_string` extracted deterministically from the gold patch, Turn 4 `py_compile` + targeted `pytest` (tail-piped) + pre-submit `git status` + `submit_patch`.
+- Strict loss masking: `labels = -100` on all `system`, `user`, and `tool` tokens; cross-entropy is computed **only** on assistant turns (`<think>`, `STATE:` line, tool-call JSON). This prevents memorizing repository contents and trains tool-calling, `old_string` copying precision, and state tracking.
+- PEFT LoRA: `r=8`, `lora_alpha=16`, `target_modules="all-linear"` (Gemma4 wraps projections in `Gemma4ClippableLinear`), `lora_dropout=0.05`, `bias="none"`, `task_type="CAUSAL_LM"`, 2 epochs, `lr=1e-4`, cosine scheduler, `bf16`, max seq 1024 (reduced from 4096 under VRAM pressure). Adapter saved as `adapters/main_lora/` (`adapter_config.json` + `adapter_model.safetensors`), compatible with `adk-submission` and vLLM.
+- Validation: validation loss plus exact tool-call / `old_string` match accuracy on the 29 held-out tasks.
+
+Experiment 1 showed `search_similar_code` has **no complementary recall** (graph 0.0000; hybrid 0.0018/0.0045/0.0045/0.0045 == lexical), so `exp11-e4b` keeps the ultra-clean 6-tool surface (no `search_similar_code`).
 
 ## 5. Related Work, Limitations & Reproducibility
 
