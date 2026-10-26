@@ -51,3 +51,9 @@ Tasks evaluated: 129
 
 ### Binomial SE
 - sqrt(p*(1-p)/58); for p=0.20: 0.0524 (~3 tasks).
+## Dev-set kernel status (latest)
+- slug: narisettichaitanya/g4-paired-devset-eval
+- latest version: 45
+- status: ERROR (environment blocker)
+- blocker: byod image Python 3.12 lacks torch/pydantic; Python 3.13 has torch 2.11.0 but vLLM 0.19.1 abi3 wheel is ABI-incompatible (undefined symbol c10::MessageLogger). Wheelhouse has no torch/pydantic wheels. Kernel cannot start vLLM in current image.
+- next: use a byod image with torch compatible with vLLM 0.19.1, or run vLLM via a separate compatible runtime.
