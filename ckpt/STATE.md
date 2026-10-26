@@ -164,3 +164,30 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 - exp09: exp05 minus 3 graph tools.
 - All bundles notebooks built and verified (verify_notebook ALL CHECKS PASSED).
 - Verification: verify_bundle layer 1 PASS for all; layer 2 skipped (no wheels in container).
+
+# Checkpoint 6 (this session, 2026-10-25)
+
+## Score update
+- exp08 (ref 57618114) status PENDING at handoff (polled 2026-10-25); score not yet available. Binomial SE on ~58 public tasks: sqrt(p*(1-p)/58); for p=0.20 this is sqrt(0.20*0.80/58)=0.0524 (~3 tasks). Record final score when it flips to COMPLETE.
+- exp05 (ref 57553805) scored 0.20 (COMPLETE): anchored baseline.
+
+## Built this session
+- exp10-consolidated bundle: exp05 + drop 3 graph tools + max_output_tokens 6144 + max_time_minutes 7 + 6-rule prompt (A-F). Verified: verify_bundle layer 1 PASS; verify_notebook ALL CHECKS PASSED. Kernel pushed: narisettichaitanya/gemma4-devagent-exp10-consolidated v1 (COMPLETE).
+- research/CONTEXT_AND_BUDGET_MECHANICS.md: vLLM/ADK/wall-clock mechanics.
+- research/paper_track_benchmark.py + research/PAPER_DATA.md: offline paper-track tables (Experiment B; Experiment A pending published task data).
+- Audit of exp06-rebased: repo-specific test cheat sheet is prompt content only; not carried into exp10-consolidated (no hardcoded repo paths).
+
+## Submission status
+- exp08 already submitted 2026-10-25 (ref 57618114); daily quota used. exp10-consolidated submission deferred until quota resets.
+
+## Submission attempt 2026-10-26
+- exp10-consolidated kernel v2 COMPLETE.
+- Submission attempt blocked: HTTP 400 "Submission not allowed: Your team already has 1 pending submissions; please wait for one to finish scoring." (exp08 ref 57618114 still pending).
+- exp08 status: PENDING, no score.
+- exp10-consolidated ready for one-command submission: `python3 tools/kaggle_rest.py submit --competition gemma-4-developer-agent --kernel narisettichaitanya/gemma4-devagent-exp10-consolidated --version 2 --filename submission.zip --message "exp10-consolidated ..."`
+
+## Checkpoint: exp10-and-paper-track (2026-10-26)
+- exp08 (ref 57618114) scored 0.17 LB (regression -0.03 vs exp05 0.20; within 1 SE 0.052). Hypothesis rejected.
+- exp10-consolidated submitted today ref 57654236 (kernel v3). Bundle: 6 tools, max_output_tokens 6144, max_time_minutes 7, prompt +150 chars.
+- exp10 prompt char delta vs exp05: +150.
+- exp11-e4b bundle created but verify_bundle FAILS: validator MODEL is hardcoded to gemma-4-31b-it-qat-w4a16-ct; e4b alias not in registry. Needs validator/registry update or a separate verification path before submission.
