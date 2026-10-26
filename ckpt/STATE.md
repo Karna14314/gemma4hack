@@ -185,3 +185,7 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 - Submission attempt blocked: HTTP 400 "Submission not allowed: Your team already has 1 pending submissions; please wait for one to finish scoring." (exp08 ref 57618114 still pending).
 - exp08 status: PENDING, no score.
 - exp10-consolidated ready for one-command submission: `python3 tools/kaggle_rest.py submit --competition gemma-4-developer-agent --kernel narisettichaitanya/gemma4-devagent-exp10-consolidated --version 2 --filename submission.zip --message "exp10-consolidated ..."`
+
+## Paper eval (2026-10-26)
+- Experiment 1 run on real 129 tasks: lexical R@1 0.0018, R@3 0.0045, R@5 0.0045, R@10 0.0058; graph 0.0; hybrid 0.0018/0.0045/0.0045/0.0045.
+- exp10-consolidated ref 57654236: PENDING.
