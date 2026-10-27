@@ -64,3 +64,9 @@ Tasks evaluated: 129
 - helper kernel: narisettichaitanya/g4-torch-wheel-cache (v7, COMPLETE) downloaded 89 wheels but did NOT include torch/vllm (pip download from cu128 index failed).
 - blocker: byod image Python 3.12 lacks torch/pydantic; Python 3.13 has torch 2.11.0 but vLLM 0.19.1 requires torch==2.10.0. Wheelhouse has no torch/pydantic wheels. Cannot start vLLM.
 - next: provide a byod image with torch 2.10.0 compatible with vLLM 0.19.1, or pre-cache compatible wheels in a dataset.
+
+## Dev-set kernel status (v58)
+- slug: narisettichaitanya/g4-paired-devset-eval
+- status: ERROR (missing xgrammar module)
+- progress: torch 2.10.0 + vllm 0.19.1 import SUCCESS, vLLM server starts but fails on xgrammar (cp312-only wheel in wheelhouse, not available for 3.13).
+- blocker: whack-a-mole of cp312-only binary deps (cbor2, msgspec, xgrammar, etc.) missing in 3.13 environment. Need to download all missing deps from PyPI or use a compatible image.
