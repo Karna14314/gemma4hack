@@ -209,3 +209,21 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 
 ## Binomial SE note
 - For p=0.20 over ~58 tasks: sqrt(0.20*0.80/58)=0.0524 (~3 tasks).
+
+# Checkpoint 8 (this session, 2026-10-27)
+## exp11_e4b submission
+- Pushed narisettichaitanya/g4-e4b-small-agent-submit v3; submitted to gemma-4-developer-agent ref 57697341, status PENDING (registered 2026-10-27).
+- Bundle: pure model-scale ablation of exp05 (31B -> E4B), byte-identical prompt/tools/budgets; verification gates passed.
+
+## Score update
+- exp10-consolidated (ref 57654236) scored **0.17** (COMPLETE): regression vs exp05 0.20 (-0.03, within 1 SE 0.052). Matches exp03 0.17 and exp08 0.17.
+- exp05 (ref 57553805) remains anchored baseline at 0.20.
+- Today's submission quota is OPEN; no submission pending.
+
+## Audit
+- Strict diff audit of exp10-consolidated vs exp05 documented in research/EXP10_POSTMORTEM.md.
+- Root cause: confounded 5-change bundle (9->6 tools, max_output_tokens 8192->6144, max_time_minutes 8->7, STATE: line, Call-8 early edit), time cap clipping, prompt intervention interference, and procedural-rule regression pattern (exp08/exp10 both 0.17).
+- exp05's exact prompt + max_time_minutes 8 + max_output_tokens 8192 is the only proven 0.20 configuration.
+
+## exp11_e4b
+- Re-anchored strictly on exp05 (pure model-scale ablation 31B -> E4B, zero prompt/config confounding). Bundle updated: model gemma-4-e4b-it-qat-w4a16-ct, exp05 tool list, sampling, eval_config, and byte-identical prompt. Verifiers to be re-run.

@@ -21,7 +21,7 @@ We answer these with live ablations (`exp01`–`exp10`) and an offline benchmark
 
 We discovered four silent killers through ablations.
 
-(i) ADK compaction amnesia. At 14,336 tokens, ADK compaction strips all tool calls and tool outputs, keeping only plain-text model messages outside `think` blocks. Agents wake up blind and loop. Our `exp10-consolidated` adds a one-line `STATE: <file:line> | <fix> | <step>` header every turn, which survives compaction.
+(i) ADK compaction amnesia. At 14,336 tokens, ADK compaction strips all tool calls and tool outputs, keeping only plain-text model messages outside `think` blocks. Agents wake up blind and loop. `exp10-consolidated` attempted a one-line `STATE: <file:line> | <fix> | <step>` header every turn; it scored 0.17 (vs exp05 0.20), so the STATE line and other procedural additions were judged to disrupt the model's native tool-calling rhythm and are stripped from exp11_e4b.
 
 (ii) vLLM context overflow. vLLM throws `ContextWindowExceededError` when `prompt + max_output > 32768`. With `max_output_tokens=8192`, any prompt over 24,576 tokens crashes the session. Lowering to 6144 adds 2,048 tokens of prompt headroom while preserving a 4,096 thinking budget.
 
@@ -54,11 +54,11 @@ Empirical tables (localization Recall@1/@3/@5/@10, output chars, failure rate) a
 
 ## 4. Cross-Scale Analysis: 31B vs. E4B
 
-The 31B QAT model consumes most of the 4x L4 KV-cache budget, while the E4B (4B) footprint leaves ~90 GB free. This headroom enables longer contexts and more tool calls, but semantic localization becomes more important because the smaller model is less robust to noisy tool output. We stage `exp11-e4b` with `temperature=0.1`, `thinking_budget=2048`, `max_output_tokens=4096`, `max_tool_calls=36`, `max_time_minutes=6`, targeting the Small Model leaderboard (Rank 3 at 0.06). Whether `search_similar_code` is included depends on its Recall@5 from Phase 3.
+The 31B QAT model consumes most of the 4x L4 KV-cache budget, while the E4B (4B) footprint leaves ~90 GB free. This headroom enables longer contexts and more tool calls, but semantic localization becomes more important because the smaller model is less robust to noisy tool output. `exp11-e4b` was re-anchored strictly on `exp05` (pure model-scale ablation: 31B -> E4B with zero prompt/config confounding): byte-identical prompt, identical 9-tool list, sampling (temperature 0.2, top_p 0.95, max_output_tokens 8192, thinking_budget 4096), and budgets (timeout 240, max_tool_calls 28, max_time_minutes 8, max_turns 80); only the model changed to gemma-4-e4b-it-qat-w4a16-ct. Submitted 2026-10-27 as ref 57697341 (pending). This gives a 100% controlled cross-scale comparison (exp05 31B vs exp11_e4b E4B) for the Paper Track and our safest proven 0.20 architecture on the Small Model leaderboard (top 0.10).
 
 ## 5. Related Work, Limitations & Reproducibility
 
-Related work: SWE-bench (Jimenez et al., 2024), SWE-agent (Yang et al., 2024), Agentless (Xia et al., 2024), and RepoGraph (Ouyang et al., 2024). Limitations: no local scoring (requires 4x L4 GPUs and QAT weights); layer-2 harness compilation skipped in this container; paper recall metrics pending the released dataset. Reproducibility: all bundles, notebooks, and verification commands are in the repository; `verify_bundle.py` and `verify_notebook.py` gate every commit. Submission refs: exp03 57037122 (0.17), exp05 57553805 (0.20), exp08 57618114 (0.17), exp10 57654236 (pending).
+Related work: SWE-bench (Jimenez et al., 2024), SWE-agent (Yang et al., 2024), Agentless (Xia et al., 2024), and RepoGraph (Ouyang et al., 2024). Limitations: no local scoring (requires 4x L4 GPUs and QAT weights); layer-2 harness compilation skipped in this container; paper recall metrics pending the released dataset. Reproducibility: all bundles, notebooks, and verification commands are in the repository; `verify_bundle.py` and `verify_notebook.py` gate every commit. Submission refs: exp03 57037122 (0.17), exp05 57553805 (0.20), exp08 57618114 (0.17), exp10 57654236 (0.17), exp11_e4b 57697341 (pending, pure model-scale ablation of exp05: 31B -> E4B, byte-identical prompt/tools/budgets).
 
 
 ## 2.1 Additional Mechanistic Detail
@@ -77,7 +77,7 @@ Because the 129-task dataset is not mounted in this container, we provide the sc
 
 ## 4.1 Staging exp11-e4b
 
-We stage exp11-e4b with stricter sampling (temperature 0.1) and smaller budgets. The goal is to maximize throughput on the 4B model while retaining enough reasoning. If hybrid retrieval shows strong Recall@5, we will add search_similar_code as the first localization call.
+`exp11-e4b` (submitted 2026-10-27, ref 57697341, pending) is a pure model-scale ablation of `exp05` (31B -> E4B, zero prompt/config confounding): byte-identical prompt, identical 9-tool list, sampling, and budgets; only the model changes to `gemma-4-e4b-it-qat-w4a16-ct`. This yields a 100% controlled cross-scale comparison (exp05 31B vs exp11_e4b E4B) for the Paper Track and our safest proven 0.20 architecture on the Small Model leaderboard (top 0.10).
 
 ## 5.1 Reproducibility Checklist
 

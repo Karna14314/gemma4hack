@@ -1,0 +1,15 @@
+{
+  "id": "narisettichaitanya/g4-torch-wheel-cache",
+  "title": "g4 Torch Wheel Cache",
+  "code_file": "wheel_cache.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

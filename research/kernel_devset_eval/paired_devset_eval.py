@@ -24,17 +24,21 @@ except Exception as e:
 
 # Step 1: downgrade torch to 2.10.0 from helper kernel (compatible with vLLM 0.19.1)
 import glob as _g_torch
-_torch_wheels = _g_torch.glob('/kaggle/input/g4-torch-wheel-cache/extra_wheels/torch-2.10.0*.whl')
+_extra_dir = '/kaggle/input/g4-torch-wheel-cache/extra_wheels'
+_torch_wheels = _g_torch.glob(_extra_dir + '/torch-2.10.0*.whl')
 print('torch 2.10.0 wheels found:', _torch_wheels)
 if _torch_wheels:
     subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--no-index', '--no-deps', '--force-reinstall', _torch_wheels[0]], check=False)
     print('torch install done')
-    # install cbor2 from helper
-    import glob as _g_cbor
-    _cbor = _g_cbor.glob('/kaggle/input/g4-torch-wheel-cache/extra_wheels/cbor2*.whl')
-    if _cbor:
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--no-index', '--no-deps', '--force-reinstall', _cbor[0]], check=False)
-        print('cbor2 install done')
+# install all cp313 helper wheels (xgrammar, msgspec, cbor2, etc.)
+import glob as _g_all
+_allw = sorted(_g_all.glob(_extra_dir + '/*.whl'))
+print('extra wheels to install:', len(_allw))
+for _w in _allw:
+    if 'torch-2.10.0' in _w:
+        continue
+    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--no-index', '--no-deps', '--force-reinstall', _w], check=False)
+print('extra wheels install done')
 
 WHEELHOUSE_CANDIDATES = [
     Path('/kaggle/input/datasets/metric/gemma-4-developer-agent-wheelhouse'),

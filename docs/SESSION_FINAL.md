@@ -1,80 +1,32 @@
 # SESSION_FINAL
 
-Branch: feat/devset-gpu-eval-harness
-PR: (draft to be opened)
+Branch: feat/exp10-audit-and-e4b-submit
+PR: (draft)
 
 ## Summary
-- Paired dev-set GPU eval kernel built and launched: `narisettichaitanya/g4-paired-devset-eval` v4, status RUNNING at handoff.
-- 24-task stratified benchmark saved in `research/kernel_devset_eval/eval_24_tasks.json`.
-- Official harness evaluation mechanics documented in `research/DEVSET_EVAL_MECHANICS.md`.
-- exp10-consolidated (ref 57654236) status PENDING; submission quota blocked, exp11_e4b deferred.
+- Recorded exp10-consolidated (ref 57654236) = 0.17 LB; strict diff audit in research/EXP10_POSTMORTEM.md (confounded bundle, time cap, prompt interference, procedural-rule regression pattern).
+- Re-anchored exp11_e4b strictly on exp05: byte-identical prompt, identical tools/sampling/budgets, only model -> gemma-4-e4b-it-qat-w4a16-ct. Verification gates passed.
+- Submitted exp11_e4b to gemma-4-developer-agent: ref 57697341, status PENDING (registered 2026-10-27).
+- Wheel cache v20 downloaded cp313 wheels for all listed deps + vllm; verification failed: torch import error (undefined symbol ncclCommResume) — vLLM did not start successfully.
+- Paired devset eval pushed v70 (running); log empty at handoff, status running, no failure yet.
 
 ## Verification
-- `python3 -m py_compile research/kernel_devset_eval/paired_devset_eval.py`: PASS
-- kernel-metadata.json: valid (GPU, offline, competition + model sources)
-- 31B checks (`verify_bundle.py`, `verify_notebook.py`) and E4B checks (`tracks/e4b_small/verify_bundle_e4b.py`, `tracks/e4b_small/verify_notebook_e4b.py`): not re-run this session; bundles unchanged (exp05, exp10-consolidated verified previously).
+- tracks/e4b_small/verify_bundle_e4b.py: PASS
+- tracks/e4b_small/verify_notebook_e4b.py: PASS
+- 31B bundle checks not re-run (bundles unchanged).
 
 ## Kernel status
-- slug: narisettichaitanya/g4-paired-devset-eval
-- version: 4
-- status: RUNNING (at handoff)
-- outputs: `/kaggle/working/smoke_test_results.json`, `/kaggle/working/paired_eval_results.json`, `/kaggle/working/paired_eval_summary.md`
+- g4-e4b-small-agent-submit v3: COMPLETE, submitted ref 57697341 (PENDING).
+- g4-torch-wheel-cache v20: COMPLETE; vLLM --help did NOT succeed (torch ncclCommResume).
+- g4-paired-devset-eval v70: RUNNING at handoff.
 
 ## Submission status
-- exp10-consolidated ref 57654236: PENDING (not scored)
+- exp10-consolidated ref 57654236: COMPLETE 0.17
 - exp05 ref 57553805: COMPLETE 0.20
 - exp08 ref 57618114: COMPLETE 0.17
+- exp11_e4b ref 57697341: PENDING (submitted 2026-10-27)
 
-## Numerical tables (from research/PAPER_EXPERIMENTS.md, commit ba523ac)
-
-### Experiment 1 — Code-Graph & Embedding Localization (129 tasks)
-
-| strategy | R@1 | R@3 | R@5 | R@10 |
-|---|---:|---:|---:|---:|
-| lexical | 0.0018 | 0.0045 | 0.0045 | 0.0058 |
-| graph | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
-| hybrid | 0.0018 | 0.0045 | 0.0045 | 0.0045 |
-
-Tasks evaluated: 129
-
-### Experiment 2 — Harness & Context Budget Bottleneck
-
-| bundle | tools | max_output_tokens | prompt chars |
-|---|---:|---:|---:|
-| exp05 | 9 | 8192 | 5425 |
-| exp10-consolidated | 6 | 6144 | 5575 |
-
-- .gitignore empty-patch: exp03 0.17 -> exp05 0.20 (+0.03).
-- Prompt bloat: exp05 0.20 -> exp08 0.17 (-0.03).
-- vLLM headroom: 24576 (exp05) vs 26624 (exp10).
-- ADK compaction threshold: 14336.
-
-### Binomial SE
-- sqrt(p*(1-p)/58); for p=0.20: 0.0524 (~3 tasks).
-## Dev-set kernel status (latest)
-- slug: narisettichaitanya/g4-paired-devset-eval
-- latest version: 45
-- status: ERROR (environment blocker)
-- blocker: byod image Python 3.12 lacks torch/pydantic; Python 3.13 has torch 2.11.0 but vLLM 0.19.1 abi3 wheel is ABI-incompatible (undefined symbol c10::MessageLogger). Wheelhouse has no torch/pydantic wheels. Kernel cannot start vLLM in current image.
-- next: use a byod image with torch compatible with vLLM 0.19.1, or run vLLM via a separate compatible runtime.
-
-## Dev-set kernel status (final, v47+)
-- slug: narisettichaitanya/g4-paired-devset-eval
-- status: ERROR (environment blocker persists)
-- helper kernel: narisettichaitanya/g4-torch-wheel-cache (v7, COMPLETE) downloaded 89 wheels but did NOT include torch/vllm (pip download from cu128 index failed).
-- blocker: byod image Python 3.12 lacks torch/pydantic; Python 3.13 has torch 2.11.0 but vLLM 0.19.1 requires torch==2.10.0. Wheelhouse has no torch/pydantic wheels. Cannot start vLLM.
-- next: provide a byod image with torch 2.10.0 compatible with vLLM 0.19.1, or pre-cache compatible wheels in a dataset.
-
-## Dev-set kernel status (v58)
-- slug: narisettichaitanya/g4-paired-devset-eval
-- status: ERROR (missing xgrammar module)
-- progress: torch 2.10.0 + vllm 0.19.1 import SUCCESS, vLLM server starts but fails on xgrammar (cp312-only wheel in wheelhouse, not available for 3.13).
-- blocker: whack-a-mole of cp312-only binary deps (cbor2, msgspec, xgrammar, etc.) missing in 3.13 environment. Need to download all missing deps from PyPI or use a compatible image.
-
-## Dev-set kernel final status (v69)
-- slug: narisettichaitanya/g4-paired-devset-eval
-- status: ERROR — vLLM ABI mismatch (fundamental)
-- progress: torch 2.10.0 + vLLM 0.19.1 import passes (`import torch, vllm; from vllm._C import *` = SUCCESS).
-- blocker: `vllm._C.abi3.so` requires `c10::MessageLogger` (torch ≥2.12 symbol). Available torch versions are 2.10.0 / 2.11.0, neither exports the symbol. vLLM 0.19.1 METADATA claims torch==2.10.0 but the compiled wheel needs a newer torch ABI. No torch version available satisfies it.
-- conclusion: vLLM cannot start on this byod image with available torch. Cannot complete paired dev-set eval via vLLM.
-- alternative: use `TransformersServer` instead of `VllmServer`, or obtain a torch wheel matching vLLM's build (torch ≥2.12 cu128 cp313) — not available in wheelhouse or easily downloadable offline.
+## Handoff
+- exp11_e4b in Kaggle scoring queue; no submission pending before it.
+- Paired devset eval running; vLLM startup not yet confirmed. If it errors, record failure and consider TransformersServer alternative.
+- Next: poll exp11_e4b score; when devset eval completes, update paper tables.
