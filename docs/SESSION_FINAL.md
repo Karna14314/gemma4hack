@@ -70,3 +70,11 @@ Tasks evaluated: 129
 - status: ERROR (missing xgrammar module)
 - progress: torch 2.10.0 + vllm 0.19.1 import SUCCESS, vLLM server starts but fails on xgrammar (cp312-only wheel in wheelhouse, not available for 3.13).
 - blocker: whack-a-mole of cp312-only binary deps (cbor2, msgspec, xgrammar, etc.) missing in 3.13 environment. Need to download all missing deps from PyPI or use a compatible image.
+
+## Dev-set kernel final status (v69)
+- slug: narisettichaitanya/g4-paired-devset-eval
+- status: ERROR — vLLM ABI mismatch (fundamental)
+- progress: torch 2.10.0 + vLLM 0.19.1 import passes (`import torch, vllm; from vllm._C import *` = SUCCESS).
+- blocker: `vllm._C.abi3.so` requires `c10::MessageLogger` (torch ≥2.12 symbol). Available torch versions are 2.10.0 / 2.11.0, neither exports the symbol. vLLM 0.19.1 METADATA claims torch==2.10.0 but the compiled wheel needs a newer torch ABI. No torch version available satisfies it.
+- conclusion: vLLM cannot start on this byod image with available torch. Cannot complete paired dev-set eval via vLLM.
+- alternative: use `TransformersServer` instead of `VllmServer`, or obtain a torch wheel matching vLLM's build (torch ≥2.12 cu128 cp313) — not available in wheelhouse or easily downloadable offline.
