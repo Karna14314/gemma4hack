@@ -9,18 +9,30 @@ files = {p.relative_to(BUNDLE).as_posix(): p.read_text() for p in BUNDLE.rglob("
 assert "agent.yaml" in files
 ag = files["agent.yaml"]
 assert f"model: {MODEL}" in ag
-for t in ["run_command","read_file","edit_file","write_file","get_status","submit_patch","search_similar_code"]:
+for t in ["run_command","read_file","edit_file","write_file","get_status","submit_patch"]:
     assert f"  - {t}" in ag
-assert "get_code_neighbors" not in ag
-assert "get_code_subgraph" not in ag
+for t in ["get_code_neighbors","search_similar_code","get_code_subgraph"]:
+    assert f"  - {t}" not in ag
 sampling = yaml.safe_load(files["configs/sampling.yaml"])
-assert sampling["temperature"] == 0.1
-assert sampling["max_output_tokens"] == 4096
-assert sampling["thinking_config"]["thinking_budget"] == 2048
+assert sampling["temperature"] == 0.2
+assert sampling["top_p"] == 0.95
+assert sampling["max_output_tokens"] == 8192
+assert sampling["thinking_config"]["thinking_budget"] == 4096
+assert sampling["thinking_config"]["include_thoughts"] is True
 evalc = yaml.safe_load(files["eval_config.yaml"])["evaluation"]
-assert evalc["timeout_seconds"] == 180
-assert evalc["max_tool_calls"] == 35
-assert evalc["max_time_minutes"] == 6
+assert evalc["timeout_seconds"] == 240
+assert evalc["max_tool_calls"] == 28
+assert evalc["max_time_minutes"] == 9
 assert evalc["max_turns"] == 80
+# prompt byte-identical to exp12-timing-buffer
+exp12_prompt = Path(__file__).resolve().parents[2] / "kaggle_work" / "gemma-4-developer-agent" / "bundles" / "exp12-timing-buffer" / "prompts" / "system.md"
+assert exp12_prompt.is_file(), "exp12 prompt missing"
+assert files["prompts/system.md"] == exp12_prompt.read_text(), "prompt not byte-identical to exp12"
+# hygiene: problem_description present and clean end
+prompt = files["prompts/system.md"]
+assert "{problem_description}" in prompt
+assert prompt.rstrip().endswith("{problem_description}")
+assert "EOF" not in prompt.split("## The issue")[-1]
+assert "echo written" not in prompt
 print("E4B VERIFY_BUNDLE: ALL CHECKS PASSED")
 sys.exit(0)

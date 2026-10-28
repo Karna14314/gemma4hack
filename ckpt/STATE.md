@@ -209,3 +209,21 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 
 ## Binomial SE note
 - For p=0.20 over ~58 tasks: sqrt(0.20*0.80/58)=0.0524 (~3 tasks).
+
+
+# Checkpoint 8 (this session, 2026-10-28)
+
+## Score update
+- exp12-timing-buffer submitted 2026-10-28 ref **57736284** (PENDING at handoff).
+- exp11_e4b (ref 57697341) scored 0.13 (COMPLETE).
+- exp05 (ref 57553805) scored 0.20 (anchored baseline).
+
+## Built this session
+- Fixed on-disk exp05 prompts to end with `## The issue\n{problem_description}` (hygiene bug).
+- Hardened verify_bundle.py and verify_bundle_e4b.py with problem_description / clean-end / max_output_tokens: 8192 checks.
+- exp12-timing-buffer (31B): near-exact copy of scored exp05 with 6 tools, max_time_minutes 9, 3 early-exit bullets.
+- Synced exp11_e4b (E4B) to same template (model only differs).
+- Kernels pushed: gemma4-devagent-exp12-timing-buffer v1 (COMPLETE), g4-e4b-small-agent-submit v4 (COMPLETE).
+
+## Submission status
+- exp12-timing-buffer ref 57736284: PENDING (submitted 2026-10-28).
