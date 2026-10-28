@@ -189,3 +189,23 @@ Per-task logs are not exposed by Kaggle (only aggregate score 0.17, ref 57037122
 ## Paper eval (2026-10-26)
 - Experiment 1 run on real 129 tasks: lexical R@1 0.0018, R@3 0.0045, R@5 0.0045, R@10 0.0058; graph 0.0; hybrid 0.0018/0.0045/0.0045/0.0045.
 - exp10-consolidated ref 57654236: PENDING.
+
+# Checkpoint 7 (this session, 2026-10-26)
+
+## Score update
+- exp10-consolidated (ref 57654236): status PENDING at handoff (not yet scored). Submission quota blocked (1 pending); exp11_e4b submission deferred.
+- exp05 (ref 57553805) scored 0.20 (anchored baseline); exp08 (ref 57618114) scored 0.17.
+
+## Built this session
+- research/kernel_devset_eval/: paired dev-set GPU eval kernel `narisettichaitanya/g4-paired-devset-eval` v4 (RUNNING at handoff).
+- research/kernel_devset_eval/eval_24_tasks.json: deterministic stratified 24-task benchmark (fastapi 12, rich 8, requests 3, httpx 1).
+- research/DEVSET_EVAL_MECHANICS.md: official harness evaluation mechanics.
+- Branch: feat/devset-gpu-eval-harness.
+
+## Kernel status
+| kernel | slug | version | status |
+|---|---|---|---|
+| paired devset eval | narisettichaitanya/g4-paired-devset-eval | 4 | RUNNING |
+
+## Binomial SE note
+- For p=0.20 over ~58 tasks: sqrt(0.20*0.80/58)=0.0524 (~3 tasks).
