@@ -180,3 +180,28 @@ Container B -> Evaluator: exit_code 0 + valid JUnit XML -> resolved
 - Total scoring compute 12h for all ~120 tasks incl startup/verification. [VERIFIED ckpt/CONFIG.md]
 - Per-task max_time_minutes ceiling recommended <=10. [VERIFIED src/notebook_lib/validator.py _check_eval_config comment]
 - If exceeded: "Notebook Exceeded Allowed Compute" (from CONFIG). [REPORTED ckpt/CONFIG.md]
+
+## Part 4 — What the model sees (exp05, one real task)
+
+Task used: `fastapi_15661` (fastapi/fastapi). [VERIFIED /tmp/tasks.jsonl]
+
+### 4.1 Sampling params (from configs/sampling.yaml)
+- temperature 0.2, top_p 0.95, max_output_tokens 8192, thinking_budget 4096, include_thoughts true. [VERIFIED ckpt/bundles/exp05_patch_integrity/configs/sampling.yaml]
+
+### 4.2 System prompt
+- exp05 system prompt length: 5461 chars (~1365 tokens by chars/4 estimate). [VERIFIED measurement 2026-10-29]
+- Full text: `ckpt/bundles/exp05_patch_integrity/prompts/system.md`. [VERIFIED]
+
+### 4.3 Tool schemas
+- 6 tools declared: run_command, read_file, edit_file, write_file, get_status, submit_patch. [VERIFIED agent.yaml]
+- Exact JSON schema byte sizes: UNKNOWN (tool schema source not shipped in this workspace). [UNKNOWN what would settle: swegemma tool definitions]
+- Rough estimate: each tool schema ~200-400 tokens; 6 tools ~1500-2400 tokens. [ESTIMATE reasoning: descriptions in HARNESS_README §6 are ~100-200 words each]
+
+### 4.4 First user message
+- Harness builds sections per §5.2. For fastapi_15661, problem statement length 1025 chars (~256 tokens). [VERIFIED measurement]
+- First user message total ~1125 chars (~281 tokens) plus budget/environment/workspace sections (not measured; ESTIMATE +1000-2000 tokens). [ESTIMATE]
+
+### 4.5 Headroom
+- max_model_len 32768. With max_output_tokens 8192, prompt+system must stay <= 24576 tokens. [VERIFIED ckpt/HARNESS_README.md §3.1]
+- Rough first-request total: system 1365 + tools ~2000 + user ~1500 = ~4865 tokens, leaving ~19711 tokens headroom. [ESTIMATE]
+- Later turns add tool results (up to 5000 chars each) and assistant thoughts; compaction triggers at 14336 tokens. [VERIFIED §7.2]
