@@ -214,3 +214,45 @@ Task used: `fastapi_15661` (fastapi/fastapi). [VERIFIED /tmp/tasks.jsonl]
 - Lines changed per task: min 1, max 12714, mean 167.8; quartiles 4 / 12 / 44. [VERIFIED]
 - Hidden tasks: repos not in public data; count unknown (reported ~120 total). [ESTIMATE ckpt/CONFIG.md]
 - What participants get back: leaderboard aggregate only; local eval gives per-task patches/logs/traces. [ESTIMATE]
+
+## Part 6 — exp05 deep dive
+
+### 6.1 Files
+- `agent.yaml`: single agent `swe_agent`, model 31B, 6 tools, sampling include. [VERIFIED]
+- `configs/sampling.yaml`: as in Part 2. [VERIFIED]
+- `eval_config.yaml`: timeout 240, calls 28, minutes 8, turns 80. [VERIFIED]
+- `prompts/system.md`: 5461 chars. [VERIFIED]
+
+### 6.2 Prompt instruction -> harness mechanism (VERIFIED/GUESS)
+- "28 tool calls and 8 minutes" -> matches eval_config budgets. [VERIFIED]
+- "Never create/modify/delete test files" -> protected paths reset; editing tests discarded. [VERIFIED §8.2]
+- "Never run full test suite" -> command output cap 5000 chars; pytest verdict at end. [VERIFIED §6.1, ckpt/CONFIG.md]
+- "Never look outside /workspace" -> file tools reject outside /workspace. [VERIFIED §6.2]
+- "Calls 1-8 locate/read, 9-12 edit" -> measured 87% fail without edit by call 12 (reported in paper draft). [REPORTED docs/PAPER_TRACK_DRAFT.md]
+- "Use git grep" -> available binary; rg absent. [VERIFIED ckpt/CONFIG.md]
+- "read_file narrow range" -> 150 lines/10000 chars cap. [VERIFIED]
+- "py_compile after edit" -> targets patches that don't apply/import. [VERIFIED ckpt/CONFIG.md]
+- "submit_patch last" -> submit_patch free and terminates loop. [VERIFIED §6.1]
+- "Every file created must be listed by git status --short" -> git add -N respects .gitignore. [VERIFIED §8.1]
+- "patch built with git add -N ." -> harness extraction. [VERIFIED]
+- "Keep state card in /tmp/plan.md" -> compaction at 14336 keeps only model text. [VERIFIED §7.2]
+- "Tail pytest output" -> run_command keeps first 5000 chars. [VERIFIED]
+- "Budget warning <=10 calls" -> tool responses include budget_warning. [VERIFIED §6]
+
+### 6.3 Patch-integrity block (exact)
+From exp05 prompt:
+> **Every file you created must be listed by `git status --short`.** The patch is built with `git add -N .`, which silently skips anything the repository's own `.gitignore` ignores, so a new file on an ignored path never reaches the grading diff. If a file you created is missing from the status output, run `git add -N -f <path>` and check again.
+[VERIFIED ckpt/bundles/exp05_patch_integrity/prompts/system.md]
+
+### 6.4 Config table
+| Key | Value | Harness behavior |
+|---|---|---|
+| temperature | 0.2 | sampling |
+| top_p | 0.95 | sampling |
+| max_output_tokens | 8192 | vLLM context ceiling |
+| thinking_budget | 4096 | reasoning parser |
+| include_thoughts | true | enables thinking |
+| timeout_seconds | 240 | command + Phase 2 pytest timeout |
+| max_tool_calls | 28 | budget gate |
+| max_time_minutes | 8 | agent wall-clock |
+| max_turns | 80 | loop turns |
