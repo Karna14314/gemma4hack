@@ -1,4 +1,4 @@
-"""Section 50 — validation and fallback selection.
+"""Section 50 — validation (fail-fast).
 
 This cell must never raise. It validates the primary package, and on any
 ``SubmissionInvalid`` — or on any unexpected exception whatsoever — it selects the
@@ -11,8 +11,7 @@ INTRO = """\
 ## Validate, and pick a package
 
 The primary package is checked against every constraint the harness enforces. If
-anything fails, the minimal fallback package ships instead. Either way this cell
-records which package won and why, and it never raises.
+anything fails, this cell raises rather than substituting another bundle.
 """
 
 VALIDATE = '''\

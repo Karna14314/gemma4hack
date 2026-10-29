@@ -33,7 +33,7 @@ if submission_bytes is None:
     emergency = {
         "agent.yaml": (
             "name: swe_coder\\n"
-            "model: gemma-4-31b-it-qat-w4a16-ct\\n"
+            "model: gemma-4-e4b-it-qat-w4a16-ct\\n"
             "description: Autonomous software engineer that fixes one repository issue.\\n"
             "instruction: You fix one issue in the Python repository at /workspace. "
             "Work with your tools until a minimal source fix is in place, then call "
