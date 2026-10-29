@@ -5,7 +5,7 @@ Two things are spliced in here by ``tools/build_notebook.py``:
 - ``src/notebook_lib/validator.py`` **verbatim**, base64-encoded and executed, so
   the notebook can never drift from ``src/`` and no character in the source needs
   escaping.
-- ``package_source.FALLBACK_FILES``, rendered as a Python string-literal dict.
+- No fallback package: a failed validation raises rather than substituting another bundle.
 
 If the validator cannot be loaded at all — the only realistic cause is PyYAML
 being absent, which should not happen on Kaggle — the notebook degrades to
@@ -43,7 +43,8 @@ if not VALIDATOR_LOADED:
     # Degraded but still functional: packaging proceeds without validation, so a
     # valid archive is produced either way. The constants the reporting cell
     # reads are restated here so no later cell can raise a NameError.
-    MODEL = "gemma-4-31b-it-qat-w4a16-ct"
+    ALLOWED_MODELS = frozenset({"gemma-4-e4b-it-qat-w4a16-ct"})
+    MODEL = "gemma-4-e4b-it-qat-w4a16-ct"
     ALLOWED_SUFFIXES = frozenset(
         {".yaml", ".yml", ".md", ".txt", ".py", ".json", ".safetensors"}
     )
@@ -70,26 +71,9 @@ if not VALIDATOR_LOADED:
         return hashlib.sha256(payload).hexdigest()
 '''
 
-FALLBACK_INTRO = '''\
-# --- fallback package -------------------------------------------------------
-# A deliberately minimal, deliberately boring package: one agent, no sub-agent,
-# no skills, no adapters. This is what ships if the primary package fails any
-# check, because a package that compiles is far better than no score at all.
-'''
-
-FALLBACK_SPLICE = "#<<<SPLICE_PY_LITERAL:notebook_lib.package_source:FALLBACK_FILES:FALLBACK_FILES>>>"
-
-FALLBACK_NOTE = '''\
-# Both dictionaries are now plain ``{posix path: file text}`` mappings. The next
-# section defines the primary package in the same shape.
-'''
-
 
 def cells() -> list[dict]:
     return [
         {"cell_type": "markdown", "source": PREAMBLE},
         {"cell_type": "code", "source": VALIDATOR_SPLICE},
-        {"cell_type": "markdown", "source": FALLBACK_INTRO},
-        {"cell_type": "code", "source": FALLBACK_SPLICE},
-        {"cell_type": "markdown", "source": FALLBACK_NOTE},
     ]
