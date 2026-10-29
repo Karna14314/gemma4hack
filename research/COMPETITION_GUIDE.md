@@ -313,3 +313,24 @@ From exp05 prompt:
 - A 0.03 difference = ~1.8 tasks, inside noise. [COMPUTED]
 - Run-to-run variance: same package can differ due to sampling and time dependence. [REPORTED ckpt/CONFIG.md]
 - Local evaluation on dev set feasible on Kaggle hardware (4x L4) but costly; not on this instance. [VERIFIED ckpt/HARNESS_README.md §9]
+
+## Part 11 — Score ceiling estimates (ESTIMATE)
+
+- Published Gemma 4 31B: LiveCodeBench v6 80.0%; SWE-bench Verified estimates 59.2% (InferenceRate) / 78.1% (benchgap estimate) / 80.9% (RankedAGI); SWE-bench Pro 35.7-44.6%. [REPORTED web search 2026-10-29: sources above]
+- Published Gemma 4 E4B: LiveCodeBench v6 52.0%. [REPORTED Hugging Face model card via web search]
+- These are not this competition's harness/scaffold; treat directionally only. [ESTIMATE]
+- Dev-set patch distribution: median 12 lines, 91/129 tasks one file; suggests many tasks are small edits, plausibly solvable by a capable model in 28 calls. [VERIFIED /tmp analysis]
+- Our observed 0.17-0.20 (~10-12/58 public tasks) is far below published SWE-bench numbers, indicating scaffold/budget/time constraints dominate. [VERIFIED docs/AUDIT_E4B_AND_PAPER.md]
+- Estimated ceiling for 31B under this harness: low 0.20, mid 0.30, high 0.40. [ESTIMATE reasoning: published SWE-bench ~60-80% but 8-min/28-call/offline constraints and compaction likely cap well below; current best 0.20]
+- Estimated ceiling for E4B: low 0.05, mid 0.10, high 0.15. [ESTIMATE reasoning: E4B LiveCodeBench 52% vs 31B 80%; small-model bonus leader reported 0.10]
+- Separation: scaffold-limited failures (compaction, output caps, .gitignore drops) vs model-limited (wrong localization/edit). [ESTIMATE]
+
+## Part 12 — Open questions (ranked)
+
+1. Whether scorer accepts E4B for small-model bonus (ALLOWED_MODEL_NAMES conflict). [UNKNOWN]
+2. Whether eval_config.yaml is read during scoring. [UNKNOWN]
+3. Exact hidden task count and repos. [UNKNOWN]
+4. Tool JSON schema sizes. [UNKNOWN]
+5. Whether .gitignore is stripped before agent runs. [UNKNOWN]
+6. Exact EvalConfig built by scorer. [UNKNOWN]
+7. Final selection rules/number of finals. [UNKNOWN]
