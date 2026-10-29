@@ -205,3 +205,12 @@ Task used: `fastapi_15661` (fastapi/fastapi). [VERIFIED /tmp/tasks.jsonl]
 - max_model_len 32768. With max_output_tokens 8192, prompt+system must stay <= 24576 tokens. [VERIFIED ckpt/HARNESS_README.md §3.1]
 - Rough first-request total: system 1365 + tools ~2000 + user ~1500 = ~4865 tokens, leaving ~19711 tokens headroom. [ESTIMATE]
 - Later turns add tool results (up to 5000 chars each) and assistant thoughts; compaction triggers at 14336 tokens. [VERIFIED §7.2]
+
+## Part 5 — Evaluation data (public dev set)
+
+- Tasks: 129. [VERIFIED /tmp/tasks.jsonl]
+- Repos: fastapi/fastapi 67, Textualize/rich 48, psf/requests 13, encode/httpx 1. [VERIFIED]
+- Files changed per task: min 1, max 26, mean 2.16; 91 tasks change 1 file. [VERIFIED /tmp analysis 2026-10-29]
+- Lines changed per task: min 1, max 12714, mean 167.8; quartiles 4 / 12 / 44. [VERIFIED]
+- Hidden tasks: repos not in public data; count unknown (reported ~120 total). [ESTIMATE ckpt/CONFIG.md]
+- What participants get back: leaderboard aggregate only; local eval gives per-task patches/logs/traces. [ESTIMATE]
