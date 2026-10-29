@@ -43,6 +43,7 @@ if not VALIDATOR_LOADED:
     # Degraded but still functional: packaging proceeds without validation, so a
     # valid archive is produced either way. The constants the reporting cell
     # reads are restated here so no later cell can raise a NameError.
+    ALLOWED_MODELS = frozenset({"gemma-4-31b-it-qat-w4a16-ct", "gemma-4-e4b-it-qat-w4a16-ct"})
     MODEL = "gemma-4-31b-it-qat-w4a16-ct"
     ALLOWED_SUFFIXES = frozenset(
         {".yaml", ".yml", ".md", ".txt", ".py", ".json", ".safetensors"}
