@@ -279,3 +279,37 @@ From exp05 prompt:
 ### 7.3 Leaderboard
 - Public LB top reported in CONFIG: top 0.24, cluster 0.15-0.17. [REPORTED ckpt/CONFIG.md]
 - Small Model Leaderboard #1 reported 0.10. [REPORTED user task 2026-10-29]
+
+## Part 8 — Public harnesses and top solutions
+
+- Notable public notebooks (by votes): flexonafft/gemma-4-budget-aware-coding-agent-v2, verracodeguacas/gemma-4-agent-budget-fit-single-agent, honghanhhh/gemma-4-baseline-lb-0-24. [VERIFIED kaggle kernels list 2026-10-29]
+- exp05 is a byte-exact replica of public 0.17 SuperAgent bundle (matterhorn3838) and matches 0.18 Budget-Fit config. [REPORTED ckpt/HARNESS_README.md rationale]
+- Official Google/Gemma/ADK guidance: Gemma function-calling guidance (multi-step chaining outside trained distribution; supply sequence explicitly). [REPORTED ckpt/HARNESS_README.md §2.4]
+- DeepSeek-style or other published harness material: not present in workspace. [UNKNOWN]
+
+## Part 9 — Lever inventory
+
+| Lever | Constraint | Evidence |
+|---|---|---|
+| model | single base model; main track 31B | [VERIFIED §3.2] |
+| tools subset | 9 registered; unknown raises fatal | [VERIFIED ckpt/CONFIG.md] |
+| thinking_budget | 0..32768 | [VERIFIED §2.4] |
+| max_output_tokens | 1..32768; prompt+output<=32768 | [VERIFIED §2.4, §3.1] |
+| temperature/top_p | unrestricted ranges | [VERIFIED §2.4] |
+| eval budgets | ranges in §7.1 | [VERIFIED] |
+| sub-agents | allowed; calls count toward parent turns | [VERIFIED ckpt/CONFIG.md] |
+| adapters/LoRA | allowed but collapses KV cache 46k->7.6k | [REPORTED ckpt/CONFIG.md] |
+| skills | allowed, 50MiB each | [VERIFIED §2.4] |
+| compaction | fixed by scorer, not configurable | [VERIFIED §7.2] |
+| model fine-tuning | not possible in submission (no training) | [VERIFIED] |
+| callbacks | silently dropped | [VERIFIED ckpt/CONFIG.md] |
+| .py in zip | allowed but never executed | [VERIFIED §2.2] |
+
+## Part 10 — Noise and measurement
+
+- Public task count ~60 (half of ~120). [ESTIMATE ckpt/CONFIG.md]
+- Binomial SE at p=0.17,n=60: 0.0485; 95% CI half-width ~0.095 (~5.7 tasks). [COMPUTED 2026-10-29]
+- At p=0.20,n=60: SE 0.0516; half-width ~0.101 (~6.1 tasks). [COMPUTED]
+- A 0.03 difference = ~1.8 tasks, inside noise. [COMPUTED]
+- Run-to-run variance: same package can differ due to sampling and time dependence. [REPORTED ckpt/CONFIG.md]
+- Local evaluation on dev set feasible on Kaggle hardware (4x L4) but costly; not on this instance. [VERIFIED ckpt/HARNESS_README.md §9]
