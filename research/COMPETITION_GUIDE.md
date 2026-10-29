@@ -256,3 +256,26 @@ From exp05 prompt:
 | max_tool_calls | 28 | budget gate |
 | max_time_minutes | 8 | agent wall-clock |
 | max_turns | 80 | loop turns |
+
+## Part 7 — Score landscape
+
+### 7.1 Our submissions (from docs/AUDIT_E4B_AND_PAPER.md)
+| ref | date | bundle | score | model |
+|---|---|---|---|---|
+| 57777888 | 2026-10-29 | exp11_e4b genuine E4B | PENDING | E4B |
+| 57736284 | 2026-10-28 | exp12 timing buffer | 0.17 | 31B |
+| 57697341 | 2026-10-27 | exp11_e4b (was 31B fallback) | 0.13 | 31B fallback |
+| 57654236 | 2026-10-26 | exp10 consolidated | 0.17 | 31B |
+| 57618114 | 2026-10-25 | exp08 tool contract | 0.17 | 31B |
+| 57553805 | 2026-10-23 | exp05 patch integrity | 0.20 | 31B |
+| 57037122 | 2026-10-10 | exp03 baseline replica | 0.17 | 31B |
+| 56812498 | 2026-10-04 | exp02 | 0.08 | 31B |
+| 56793672 | 2026-10-03 | exp01 | 0.05 | 31B |
+
+### 7.2 Public notebooks
+- Top kernels list (by votes) retrieved via `kaggle kernels list`. Scores not exposed in list output. [VERIFIED command 2026-10-29]
+- Public notebooks referenced in repo: matterhorn3838/gemma-4-superagent (0.17), verracodeguacas/gemma-4-agent-budget-fit-single-agent (0.18). [REPORTED ckpt/HARNESS_README.md §2.2/rationale]
+
+### 7.3 Leaderboard
+- Public LB top reported in CONFIG: top 0.24, cluster 0.15-0.17. [REPORTED ckpt/CONFIG.md]
+- Small Model Leaderboard #1 reported 0.10. [REPORTED user task 2026-10-29]
