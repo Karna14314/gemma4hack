@@ -111,3 +111,72 @@ evaluation:
 - Declarative YAML compiler; no arbitrary Python import. [VERIFIED ckpt/HARNESS_README.md §2.1]
 - Resolves tools against closed registries; unknown tool raises ToolNotFoundError. [VERIFIED ckpt/CONFIG.md]
 - Single model enforced at ingest. [VERIFIED ckpt/HARNESS_README.md §3.2]
+
+## Part 3 — Task lifecycle
+
+### 3.1 Flow diagram
+```
+Evaluator -> Container A: start sandbox, setup wheels
+Evaluator -> Container A: extract repo snapshot at base_commit (zero future history)
+Evaluator -> Container A: write .git/info/exclude; pip install -e /workspace --no-deps
+Evaluator -> Container A: stream cached test site-packages; setup pytest.ini/conftest.py
+Evaluator -> Container A: git add -A && git commit -m "baseline"
+Evaluator -> Agent: start timer; send build_agent_prompt()
+loop until submit_patch/timeout/budget/nudges:
+  Agent -> Container A: tool calls (run_command, read_file, edit_file, ...)
+  Container A -> Agent: JSON responses
+Evaluator -> Container A: extract agent_patch (submitted or fallback git add -N . && git diff)
+Evaluator -> Container A: stop & clean
+if patch non-empty:
+  Evaluator -> Container B: fresh setup; apply agent_patch (4-pass); reset protected paths; apply test_patch; pytest
+Container B -> Evaluator: exit_code 0 + valid JUnit XML -> resolved
+```
+[VERIFIED ckpt/HARNESS_README.md §4]
+
+### 3.2 Sandbox properties
+- Docker: network_mode none; memory 4g; cpu_quota 200000/100000; workdir /workspace; TEST_TMPDIR=/tmp. [VERIFIED ckpt/HARNESS_README.md §4.1]
+- Air-gapped: no network/PyPI. [VERIFIED]
+- Subprocess backend alternative creates temp dirs and venv. [VERIFIED]
+- Container setup excluded from agent time budget: task_start_time at context creation, agent_start_time after setup. [VERIFIED ckpt/HARNESS_README.md §7.1]
+- Command timeout: min(command_timeout_seconds [300], max(5, remaining_time_seconds)). [VERIFIED ckpt/HARNESS_README.md §6.1 run_command]
+- Command output cap: 5000 chars stdout+stderr. [VERIFIED]
+- read_file cap: 150 lines AND 10000 chars. [VERIFIED ckpt/HARNESS_README.md §6.2]
+- edit_file diff cap: 5000 chars. [VERIFIED]
+
+### 3.3 Model serving
+- vLLM: tensor_parallel_size=4, gpu_memory_utilization=0.80, max_model_len=32768, enable_auto_tool_choice=True, tool_call_parser=gemma4, reasoning_parser=gemma4, default_chat_template_kwargs={"enable_thinking": True}, enable_lora=True, max_loras=8, max_lora_rank=128. [VERIFIED ckpt/HARNESS_README.md §3.1]
+- Model alias bound to LiteLlm(openai/<served_model>, api_base=http://127.0.0.1:8000/v1, num_retries=5). [VERIFIED ckpt/HARNESS_README.md §3.3]
+- max_model_len=32768 means prompt + max_output_tokens must fit. [VERIFIED]
+
+### 3.4 Prompt assembly
+- Initial user message sections: task header/problem; hints (if present); task budget; execution environment rules; standard instructions 0-5; code intelligence tools (if graph data); workspace layout (first 150 entries). [VERIFIED ckpt/HARNESS_README.md §5.2]
+- Session state: problem_description, hints. [VERIFIED §5.1]
+- ADK interpolates {variable} in instruction. [VERIFIED]
+
+### 3.5 Turn loop and budgets
+- Outer while True loop agent_runner.py lines 503-740. [VERIFIED ckpt/HARNESS_README.md §5.3]
+- Immediate termination when submit_patch and final response. [VERIFIED]
+- Continuation nudges max 3 consecutive; tool call resets counter. [VERIFIED]
+- Nudge messages for unclosed tool tag / MAX_TOKENS / normal stop. [VERIFIED]
+- Budgets: time_minutes, tool_calls, turns, cost_usd, total_tokens, command_timeout, output caps. [VERIFIED §7.1]
+- submit_patch and get_status do not count toward tool_calls. [VERIFIED §6.1]
+- Budget warning when remaining_tool_calls <= 10 and used >=20. [VERIFIED §6]
+
+### 3.6 Compaction
+- EventsCompactionConfig: compaction_interval=5, overlap_size=2, token_threshold=14336, event_retention_size=5. [VERIFIED §7.2]
+- ContextCacheConfig: min_tokens=2048, ttl_seconds=1800, cache_intervals=10. [VERIFIED]
+- ModelRetryPlugin: retries up to 5 on transient errors, backoff 2s, multiplier 2, max 60s, jitter 20%. [VERIFIED]
+- Only model text survives compaction; tool outputs stripped. [VERIFIED ckpt/CONFIG.md]
+
+### 3.7 submit_patch semantics
+- Stages untracked intents: git add -N .; captures git diff --binary _swegemma_baseline (or HEAD). [VERIFIED §8.1]
+- git add -N respects .gitignore. [VERIFIED]
+- Automatic recovery if never submitted: harness runs git add -N . and diff. [VERIFIED]
+- Protected paths reset to HEAD before test_patch. [VERIFIED §8.2]
+- Phase 2 applies agent_patch with 4 passes; failure -> resolved False. [VERIFIED]
+- pytest command with JUnit XML; resolved iff exit 0 and valid XML. [VERIFIED]
+
+### 3.8 Global 12h limit
+- Total scoring compute 12h for all ~120 tasks incl startup/verification. [VERIFIED ckpt/CONFIG.md]
+- Per-task max_time_minutes ceiling recommended <=10. [VERIFIED src/notebook_lib/validator.py _check_eval_config comment]
+- If exceeded: "Notebook Exceeded Allowed Compute" (from CONFIG). [REPORTED ckpt/CONFIG.md]
