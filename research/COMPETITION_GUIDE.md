@@ -48,3 +48,66 @@
 - Unknown tool name raises ToolNotFoundError, fatal for every task. [VERIFIED ckpt/CONFIG.md]
 - Invalid submission (validation failure) in our notebook policy: raise RuntimeError, no fallback. [VERIFIED src/sections/50_validate.py]
 - Historically, notebook `g4-e4b-small-agent-submit` v1 substituted a 31B FALLBACK when E4B was rejected by an ALLOWED_MODELS list containing only 31B; manifest showed selected_package fallback, model 31B. [VERIFIED docs/AUDIT_E4B_AND_PAPER.md]
+
+## Part 2 — Submission structure
+
+### 2.1 Zip layout (exp05)
+```
+submission.zip
+├── agent.yaml
+├── eval_config.yaml
+├── configs/sampling.yaml
+└── prompts/system.md
+```
+[VERIFIED ckpt/bundles/exp05_patch_integrity tree]
+
+### 2.2 File-by-file
+
+#### agent.yaml
+- Keys: `name`, `model`, `instruction`, `tools`, `generate_content_config`. [VERIFIED ckpt/bundles/exp05_patch_integrity/agent.yaml]
+- `name`: string, required, non-empty, unique across agents. [VERIFIED ckpt/HARNESS_README.md §2.3]
+- `model`: `gemma-4-31b-it-qat-w4a16-ct` (single model). [VERIFIED ckpt/bundles/exp05_patch_integrity/agent.yaml; ckpt/HARNESS_README.md §3.2]
+- `instruction`: `!include prompts/system.md`. [VERIFIED]
+- `tools`: list of 6 strings: run_command, read_file, edit_file, write_file, get_status, submit_patch. [VERIFIED]
+- `generate_content_config`: `!include configs/sampling.yaml`. [VERIFIED]
+- Consumed by `compile_submission` / `validate_single_declared_model`. [VERIFIED ckpt/HARNESS_README.md §2.1, §3.2]
+
+#### configs/sampling.yaml (generate_content_config)
+- `temperature: 0.2` (float >=0). [VERIFIED]
+- `top_p: 0.95` (0..1). [VERIFIED]
+- `max_output_tokens: 8192` (1..32768). [VERIFIED ckpt/HARNESS_README.md §2.4]
+- `thinking_config.thinking_budget: 4096` (0..32768). [VERIFIED]
+- `thinking_config.include_thoughts: true` (bool). [VERIFIED]
+- Consumed by ADK generation config; vLLM reasoning parser. [VERIFIED ckpt/HARNESS_README.md §2.4, §3.1]
+
+#### eval_config.yaml
+```yaml
+evaluation:
+  timeout_seconds: 240
+  max_tool_calls: 28
+  max_time_minutes: 8
+  max_turns: 80
+```
+[VERIFIED ckpt/bundles/exp05_patch_integrity/eval_config.yaml]
+- Keys under `evaluation`: timeout_seconds (1..300), max_tool_calls (1..100), max_time_minutes (0,60], max_turns (1..500). [VERIFIED ckpt/HARNESS_README.md §7.1; src/notebook_lib/validator.py _check_eval_config]
+- Consumer: `load_submission_eval_config` in scripts/inference.py (not shipped) per README. [VERIFIED ckpt/HARNESS_README.md §2.2, §7.1]
+- Uncertainty: whether scoring run reads it is listed in CONFIG uncertainties. [VERIFIED ckpt/CONFIG.md]
+
+#### prompts/system.md
+- Plain text instruction with `{problem_description}` placeholder. [VERIFIED]
+- Must contain only allowed brace placeholders `{problem_description}`, `{hints}`. [VERIFIED ckpt/HARNESS_README.md §2.3; src/notebook_lib/validator.py regex]
+- Consumed as LlmAgent.instruction; ADK interpolates braces from session.state. [VERIFIED ckpt/HARNESS_README.md §5.1]
+
+### 2.3 Validator constraints (our local validator)
+- Root config exactly one of agent.yaml/yml/root_agent.yaml/yml. [VERIFIED src/notebook_lib/validator.py]
+- Allowed extensions: .yaml,.yml,.md,.txt,.py,.json,.safetensors. [VERIFIED]
+- Max total size 3 GiB; max files 10000; max YAML files 1000; max YAML size 50 MiB. [VERIFIED]
+- No adapters in our bundle. [VERIFIED]
+- No skills. [VERIFIED]
+- No sub-agents. [VERIFIED]
+- `compile()` check for .py (none). [VERIFIED]
+
+### 2.4 compile_submission
+- Declarative YAML compiler; no arbitrary Python import. [VERIFIED ckpt/HARNESS_README.md §2.1]
+- Resolves tools against closed registries; unknown tool raises ToolNotFoundError. [VERIFIED ckpt/CONFIG.md]
+- Single model enforced at ingest. [VERIFIED ckpt/HARNESS_README.md §3.2]
