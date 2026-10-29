@@ -25,6 +25,7 @@ import yaml
 # Harness constants, transcribed from HARNESS_README.md sections 2.4 and 3.
 # ---------------------------------------------------------------------------
 
+ALLOWED_MODELS = frozenset({"gemma-4-31b-it-qat-w4a16-ct", "gemma-4-e4b-it-qat-w4a16-ct"})
 MODEL = "gemma-4-31b-it-qat-w4a16-ct"
 ROOT_CONFIGS = ("agent.yaml", "agent.yml", "root_agent.yaml", "root_agent.yml")
 ALLOWED_SUFFIXES = frozenset(
@@ -398,8 +399,8 @@ def validate(files: dict) -> dict:
     # Only the base model may be declared, and the scorer accepts exactly one.
     normalised = {model.split("/")[-1] for model in models if model}
     _require(
-        normalised == {MODEL},
-        f"every agent must declare only {MODEL}, found {sorted(normalised)}",
+        len(normalised) == 1 and normalised.issubset(ALLOWED_MODELS),
+        f"every agent must declare only one allowed model among {sorted(ALLOWED_MODELS)}, found {sorted(normalised)}",
     )
 
     if "eval_config.yaml" in files:
