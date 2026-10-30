@@ -93,9 +93,9 @@ M3 1-hop neighborhood >5000-char cap exceedance: 313/387 = 80.9%
 | ALL | 129 | 1.0/2.16/4.0 | 8.0/138.6/89.0 | 2.0/29.2/24.0 | 2.0/5.4/13.0 | 70.5 | 29.5 | 8.5 |
 | fastapi | 67 | 1.0/2.46/5.0 | 11.0/72.4/192.0 | 2.0/42.5/24.0 | 2.0/6.9/17.0 | 64.2 | 35.8 | 14.9 |
 | httpx | 1 | 7.0/7.0/7.0 | 57.0/57.0/57.0 | 22.0/22.0/22.0 | 18.0/18.0/18.0 | 0.0 | 100.0 | 0.0 |
-| ALL | 129 | 1.0/2.16/4.0 | 8.0/138.6/89.0 | 2.0/29.2/24.0 | 2.0/5.4/13.0 | 70.5 | 29.5 | 8.5 |
 | requests | 13 | 1.0/1.15/1.0 | 3.0/4.6/9.0 | 1.0/2.2/3.0 | 1.0/1.5/1.0 | 84.6 | 15.4 | 0.0 |
 | rich | 48 | 1.0/1.9/2.0 | 5.0/269.0/43.0 | 3.0/18.1/24.0 | 2.0/4.1/8.0 | 77.1 | 22.9 | 2.1 |
+
 
 ## Experiment 3 — Triggered SWE Domain Knowledge Book
 
@@ -118,7 +118,7 @@ Overall precision: 32.6% (84/258)
 
 | Ref | Name | Scale | Score | SHA-256 | Resolved tasks (score*58) | Binomial SE | Config delta |
 |---|---|---|---:|---|---:|---:|---|
-| exp01 | exp01 (v1) | 31B | 0.05 | e3? no | 2.9 | 0.0286 | baseline v1 |
+| exp01 | exp01 (v1) | 31B | 0.05 | — | 2.9 | 0.0286 | baseline v1 |
 | exp02 | exp02 (v2) | 31B | 0.08 | — | 4.64 | 0.0356 | thinking on, 6 min/60 calls/120 turns |
 | exp03 | exp03 baseline replica | 31B | 0.17 | e3be904c… | 9.86 | 0.0493 | byte-exact public 0.17 replica |
 | exp04 | exp04 py_compile | 31B |  | 71bf21d6… |  |  | mandatory py_compile (-3pp ablation) |
