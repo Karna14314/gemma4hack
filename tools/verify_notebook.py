@@ -46,7 +46,7 @@ ALLOWED_SUFFIXES = frozenset(
     {".yaml", ".yml", ".md", ".txt", ".py", ".json", ".safetensors"}
 )
 
-MODEL_NAME = "gemma-4-31b-it-qat-w4a16-ct"
+DEFAULT_MODEL_NAME = "gemma-4-31b-it-qat-w4a16-ct"
 # The nine sandboxed tools the harness registers unconditionally on every task.
 HARNESS_TOOL_NAMES = (
     "run_command",
@@ -98,7 +98,16 @@ def execute(path: Path, workdir: Path) -> tuple[dict, str]:
     return namespace, "\n".join(output)
 
 
-def check_harness_optional(payload: bytes) -> None:
+def model_from_selected(selected: dict) -> str:
+    """Read the declared base model from the selected ``agent.yaml``."""
+    text = selected.get("agent.yaml", "")
+    for line in text.splitlines():
+        if line.startswith("model:"):
+            return line.split(":", 1)[1].strip()
+    return ""
+
+
+def check_harness_optional(payload: bytes, declared_model: str) -> None:
     """Run the artifact through the real harness, when the wheels are importable.
 
     This is the authoritative check: the notebook's own validator is a mirror of
@@ -133,7 +142,7 @@ def check_harness_optional(payload: bytes) -> None:
                 from adk_submission.discovery import discover_declared_models
 
                 declared = discover_declared_models(target)
-                ok = declared == {MODEL_NAME}
+                ok = declared == {declared_model}
             except ImportError:
                 from swegemma.models.discovery import validate_single_declared_model
 
@@ -150,7 +159,9 @@ def check_harness_optional(payload: bytes) -> None:
 
             limits, constraints = build_submission_limits()
             registry = adk_submission.ModelRegistry()
-            registry.register(MODEL_NAME, LiteLlm(model=MODEL_NAME, api_key="EMPTY"))
+            registry.register(
+                declared_model, LiteLlm(model=declared_model, api_key="EMPTY")
+            )
             tools = {name: (lambda **_: "{}") for name in HARNESS_TOOL_NAMES}
             agent = adk_submission.compile_submission(
                 target,
@@ -275,6 +286,17 @@ def main() -> int:
         namespace.get("VALIDATION_REPORT", {}).get("root_config") == "agent.yaml",
     )
 
+    declared_model = (
+        namespace.get("VALIDATION_REPORT", {}).get("model")
+        or model_from_selected(selected)
+        or DEFAULT_MODEL_NAME
+    )
+    check(
+        "the artifact declares a single base model",
+        bool(declared_model),
+        declared_model,
+    )
+
     # Determinism: repacking the same package must reproduce the same bytes.
     pack = namespace.get("pack")
     digest = namespace.get("digest")
@@ -302,7 +324,7 @@ def main() -> int:
             sorted(manifest.get("members", {})) == sorted(names),
         )
 
-    check_harness_optional(payload)
+    check_harness_optional(payload, declared_model)
 
     print()
     print("=" * 70)

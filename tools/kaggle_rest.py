@@ -40,21 +40,27 @@ BASE = "https://www.kaggle.com"
 
 
 def credentials() -> tuple[str, str]:
-    """Return ``(username, token)`` from the environment or ``kaggle.json``."""
+    """Return ``(username, token)`` from the environment or ``kaggle.json``.
+
+    ``KAGGLE_API_TOKEN`` is the bearer token written by newer Kaggle CLI
+    versions (``KGAT_...``). ``KAGGLE_KEY`` and ``kaggle.json`` are the legacy
+    forms. Only the token is required: every REST call below sends it as
+    ``Authorization: Bearer``, and the username is never used on the wire.
+    """
     username = os.environ.get("KAGGLE_USERNAME")
-    token = os.environ.get("KAGGLE_KEY")
-    if not (username and token):
+    token = os.environ.get("KAGGLE_KEY") or os.environ.get("KAGGLE_API_TOKEN")
+    if not token:
         path = Path(os.path.expanduser("~/.kaggle/kaggle.json"))
         if path.is_file():
             data = json.loads(path.read_text(encoding="utf-8"))
             username = username or data.get("username")
             token = token or data.get("key")
-    if not (username and token):
+    if not token:
         raise SystemExit(
-            "no Kaggle credentials: set KAGGLE_USERNAME and KAGGLE_KEY, or "
-            "write ~/.kaggle/kaggle.json"
+            "no Kaggle credentials: set KAGGLE_API_TOKEN (preferred) or "
+            "KAGGLE_KEY, or write ~/.kaggle/kaggle.json"
         )
-    return username, token
+    return username or "", token
 
 
 # ---------------------------------------------------------------------------

@@ -6,7 +6,7 @@ Runs three independent layers of checking:
 2. the real harness, installed from the competition wheels in
    ``.venv-harness`` — ``adk_submission.validate_directory``,
    ``swegemma.config.build_submission_limits``,
-   ``swegemma.models.discovery.validate_single_declared_model`` and
+   ``adk_submission.discovery.discover_declared_models`` and
    ``adk_submission.compile_submission``;
 3. negative tests that prove the validator actually rejects known-bad bundles.
 
@@ -71,20 +71,29 @@ def check(label: str, ok: bool, detail: str = "") -> None:
         FAILURES.append(label)
 
 
-def layer_static(files: dict) -> None:
+def warn(label: str, detail: str = "") -> None:
+    """Report a non-fatal caveat without failing the run."""
+    print(f"[WARN] {label}" + (f" :: {detail}" if detail else ""))
+
+
+def layer_static(files: dict) -> dict[str, dict]:
+    """Validate both bundles and return the reports keyed by bundle label."""
     print("\n=== 1. project static validator ===")
+    reports: dict[str, dict] = {}
     for label, bundle in (
         ("primary bundle", files),
         ("fallback bundle", package_source.FALLBACK_FILES),
     ):
         try:
             report = validator.validate(bundle)
+            reports[label] = report
             check(
                 f"static validate: {label}",
                 True,
                 f"root={report['root_config']} files={report['file_count']} "
-                f"agents={report['agents']} adapters={report['adapters']} "
-                f"skills={report['skills']} bytes={report['unpacked_bytes']}",
+                f"model={report['model']} agents={report['agents']} "
+                f"adapters={report['adapters']} skills={report['skills']} "
+                f"bytes={report['unpacked_bytes']}",
             )
         except Exception as error:  # noqa: BLE001
             check(f"static validate: {label}", False, f"{type(error).__name__}: {error}")
@@ -115,6 +124,7 @@ def layer_static(files: dict) -> None:
     payload_a = validator.pack(files)
     payload_b = validator.pack(files)
     check("pack is deterministic", payload_a == payload_b, validator.digest(payload_a)[:16])
+    return reports
 
 
 def _alias_is_registered(alias: str) -> bool:
@@ -167,7 +177,7 @@ def _materialise(files: dict, root: Path) -> Path:
     return root
 
 
-def layer_real_harness(files: dict) -> None:
+def layer_real_harness(files: dict, reports: dict[str, dict]) -> None:
     print("\n=== 2. real harness (adk_submission / swegemma) ===")
     try:
         from adk_submission import ModelRegistry, compile_submission, validate_directory
@@ -204,11 +214,26 @@ def layer_real_harness(files: dict) -> None:
         f"output_tokens={constraints.max_output_tokens} "
         f"thinking={constraints.thinking_budget}",
     )
-    check(
-        "our model alias is registered by the harness",
-        _alias_is_registered(MODEL),
-        MODEL,
+    declared_models = sorted(
+        {report["model"] for report in reports.values() if report.get("model")}
     )
+    for alias in declared_models:
+        check(
+            f"model {alias} is allowed by the competition docs",
+            alias in validator.ALLOWED_MODELS,
+            f"allowed={sorted(validator.ALLOWED_MODELS)}",
+        )
+        if _alias_is_registered(alias):
+            check(f"model {alias} is registered by the local harness wheel", True)
+        else:
+            # The local wheelhouse predates the 2026-10-13 HARNESS_README, which
+            # lists four official quantized models. A missing alias here is a
+            # stale-wheel caveat, not proof the scorer will reject the bundle.
+            warn(
+                f"model {alias} is not in the local harness registry",
+                "the live HARNESS_README permits it; re-download the wheelhouse "
+                "before treating this as a submission blocker",
+            )
     # A file with no suffix must be rejected: the competition override omits ""
     # from the allowlist, which silently excludes LICENSE, Makefile and friends.
     check(
@@ -241,10 +266,11 @@ def layer_real_harness(files: dict) -> None:
                 from swegemma.models.discovery import validate_single_declared_model
 
                 declared = validate_single_declared_model(directory)
+            expected = {reports[label]["model"]} if label in reports else set()
             check(
                 f"single declared model: {label}",
-                declared == {MODEL},
-                str(declared),
+                declared == expected,
+                f"{sorted(declared)} (expected {sorted(expected)})",
             )
         except Exception as error:  # noqa: BLE001
             check(
@@ -256,7 +282,8 @@ def layer_real_harness(files: dict) -> None:
             from google.adk.models.lite_llm import LiteLlm
 
             registry = ModelRegistry()
-            registry.register(MODEL, LiteLlm(model=MODEL, api_key="EMPTY"))
+            for alias in declared_models:
+                registry.register(alias, LiteLlm(model=alias, api_key="EMPTY"))
             tools = {name: (lambda **_: "{}") for name in validator.HARNESS_TOOLS}
             agent = compile_submission(
                 directory,
@@ -439,8 +466,8 @@ def main() -> int:
     files = package_source.load_from_disk(args.bundle)
     print(f"bundle: {args.bundle or PACKAGE_SRC}")
     print(f"bundle files: {sorted(files)}")
-    layer_static(files)
-    layer_real_harness(files)
+    reports = layer_static(files)
+    layer_real_harness(files, reports)
     layer_negative(files)
     print("\n" + "=" * 60)
     if FAILURES:

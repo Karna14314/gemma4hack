@@ -411,7 +411,7 @@ def validate(files: dict) -> dict:
         "file_count": len(files),
         "unpacked_bytes": total_bytes,
         "agents": sorted(seen_agents),
-        "model": MODEL,
+        "model": next(iter(normalised)),
         "adapters": sorted(n for n in files if n.startswith("adapters/")),
         "skills": sorted(set(skill_names)),
     }

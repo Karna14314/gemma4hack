@@ -13,5 +13,7 @@ kaggle_work/*/research/wheelhouse/
 kaggle_work/*/research/files_all.txt
 kaggle_work/*/research/wheelhouse_files.txt
 kaggle_work/*/research/pulled/**/*.ipynb
+kaggle_work/*/research/competition/tasks.jsonl
+kaggle_work/*/research/competition/*.zip
 # Generated notebook output - rebuild with `python tools/build_notebook.py`
 build/

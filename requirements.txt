@@ -1,0 +1,25 @@
+# Local harness / verification environment.
+#
+# These are the dependencies needed to import the real competition wheels and
+# run tools/verify_bundle.py + tools/verify_notebook.py offline. The three
+# competition wheels themselves are NOT on PyPI; tools/bootstrap.py downloads
+# them from the Kaggle dataset metric/gemma-4-developer-agent-wheelhouse and
+# installs them with --no-deps:
+#
+#   swegemma-0.2.11-py3-none-any.whl
+#   adk_submission-0.2.13-py3-none-any.whl
+#   adk_eval_core-0.1.0-py3-none-any.whl
+#
+# Python 3.12 is what the wheels were audited against; adk_eval_core requires
+# Python >= 3.11.
+
+google-adk==1.36.1
+google-genai==2.11.0
+PyYAML>=6.0
+networkx>=3.0
+pandas>=2.0
+nbformat>=5.9
+litellm>=1.0
+rich>=13.0
+loguru>=0.7
+docker>=7.0
