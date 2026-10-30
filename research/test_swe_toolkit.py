@@ -1,6 +1,6 @@
 import os, subprocess, tempfile, pathlib, time
 
-SWE="skills/swe_toolkit/scripts/swe.py"
+SWE="skills/swe-toolkit/scripts/swe.py"
 
 def run(root, *args):
     cmd=["python3", SWE, *args, "--root", str(root)]

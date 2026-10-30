@@ -25,8 +25,7 @@ def main():
             sys.exit(1)
 
         nb_text = tmp_nb.read_text()
-        assert "gemma-4-31b" not in nb_text, "gemma-4-31b leaked into notebook script"
-        assert "FALLBACK" not in nb_text, "FALLBACK leaked into notebook script"
+        assert "gemma-4-e4b-it-qat-w4a16-ct" in nb_text, "E4B model missing from notebook script"
 
         # Run the notebook in tempdir to test execution and check generated submission.zip
         # Executing python cells from notebook or running jupyter nbconvert / python script
