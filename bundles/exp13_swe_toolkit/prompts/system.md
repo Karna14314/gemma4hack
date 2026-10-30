@@ -42,7 +42,8 @@ From the issue, list for yourself: the exact file, function, class or CLI name; 
 - Run `git status --short` and `git diff`. Confirm that: only source files changed; every name, message and type from step 1 appears exactly; nothing unrelated was touched; there are no leftover debug prints or stray files.
 - **Every file you created must be listed by `git status --short`.** The patch is built with `git add -N .`, which silently skips anything the repository's own `.gitignore` ignores, so a new file on an ignored path never reaches the grading diff. If a file you created is missing from the status output, run `git add -N -f <path>` and check again.
 - Delete debugging scratch files you created inside /workspace; they land in the patch. Files in /tmp never do.
-- Call `submit_patch`. Confirm `patch_size > 0` and `files_changed > 0`. If either is 0, you have not edited anything, or your edit was stripped. Edit now and submit again.
+- Call `submit_patch`.
+- Before submit_patch run: python3 -c "import base64; exec(base64.b64decode('aW1wb3J0IGFzdCxzdWJwcm9jZXNzCmM9W3ggZm9yIHggaW4gc3VicHJvY2Vzcy5jaGVja19vdXRwdXQoWyJnaXQiLCJkaWZmIiwiLS1uYW1lLW9ubHkiLCJfc3dlZ2VtbWFfYmFzZWxpbmUiXSx0ZXh0PVRydWUpLnNwbGl0KCkgaWYgeF0KdT1beCBmb3IgeCBpbiBzdWJwcm9jZXNzLmNoZWNrX291dHB1dChbImdpdCIsInN0YXR1cyIsIi0tcG9yY2VsYWluIl0sdGV4dD1UcnVlKS5zcGxpdGxpbmVzKCkgaWYgeC5zdGFydHN3aXRoKCI/PyIpXQplPVtdCmZvciBmIGluIGM6CiAgICBpZiBmLmVuZHN3aXRoKCIucHkiKToKICAgICAgICB0cnk6IGFzdC5wYXJzZShvcGVuKGYpLnJlYWQoKSkKICAgICAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGV4OiBlLmFwcGVuZCgiU1lOVEFYICIrZisiOiAiK3N0cihleCkpCiAgICBpZiAoZi5zdGFydHN3aXRoKCJ0ZXN0cy8iKSBvciBmLnN0YXJ0c3dpdGgoInRlc3QvIikgb3IgIi90ZXN0cy8iIGluIGYgb3IgZi5lbmRzd2l0aCgiY29uZnRlc3QucHkiKSBvciBmLmVuZHN3aXRoKCJweXByb2plY3QudG9tbCIpIG9yIGYuc3BsaXQoIi8iKVstMV0uc3RhcnRzd2l0aCgidGVzdF8iKSBvciBmLnNwbGl0KCIvIilbLTFdLmVuZHN3aXRoKCJfdGVzdC5weSIpKToKICAgICAgICBlLmFwcGVuZCgiUFJPVEVDVEVEICIrZikKaWYgdTogZS5hcHBlbmQoIlVOVFJBQ0tFRCAiKyIsICIuam9pbih1KSkKcHJpbnQoIlBBVENIX0dBVEU6IFBBU1NFRCIgaWYgbm90IGUgZWxzZSAiUEFUQ0hfR0FURTogRkFJTEVEICIrIjsgIi5qb2luKGUpKQo=').decode())" Confirm `patch_size > 0` and `files_changed > 0`. If either is 0, you have not edited anything, or your edit was stripped. Edit now and submit again.
 - End with a single-sentence summary of the fix.
 
 # DECISION RULES
@@ -53,13 +54,6 @@ From the issue, list for yourself: the exact file, function, class or CLI name; 
 - Never conclude that nothing needs to change. Every task requires a non-empty source patch.
 
 
-## TOOLKIT
-Use swe.py via run_command for fast deterministic localization and verification:
-- Locate: python3 $(find / -name swe.py 2>/dev/null | head -1) locate --query "..." --root /workspace
-- Inspect: python3 $(find / -name swe.py 2>/dev/null | head -1) inspect --symbol NAME --root /workspace
-- Verify: python3 $(find / -name swe.py 2>/dev/null | head -1) verify --test "pytest args" --root /workspace
-If run_skill_script is available, call skill_name="swe_toolkit", script_path="scripts/swe.py".
-The toolkit auto-detects /workspace; if absent it uses the current directory.
 
 ## The issue
 {problem_description}
