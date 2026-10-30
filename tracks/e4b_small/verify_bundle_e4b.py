@@ -22,17 +22,21 @@ assert sampling["thinking_config"]["include_thoughts"] is True
 evalc = yaml.safe_load(files["eval_config.yaml"])["evaluation"]
 assert evalc["timeout_seconds"] == 240
 assert evalc["max_tool_calls"] == 28
-assert evalc["max_time_minutes"] == 9
+assert evalc["max_time_minutes"] == 8
 assert evalc["max_turns"] == 80
-# prompt byte-identical to exp12-timing-buffer
-exp12_prompt = Path(__file__).resolve().parents[2] / "kaggle_work" / "gemma-4-developer-agent" / "bundles" / "exp12-timing-buffer" / "prompts" / "system.md"
-assert exp12_prompt.is_file(), "exp12 prompt missing"
-assert files["prompts/system.md"] == exp12_prompt.read_text(), "prompt not byte-identical to exp12"
+# prompt is the clean exp05 prompt with the graph-tool ban line removed
+exp05_prompt = Path(__file__).resolve().parents[2] / "ckpt" / "bundles" / "exp05_patch_integrity" / "prompts" / "system.md"
+assert exp05_prompt.is_file(), "exp05 prompt missing"
+graph_line = "- Never use `search_similar_code`, `get_code_neighbors` or `get_code_subgraph`. They return nothing useful.\n"
+expected_prompt = exp05_prompt.read_text().replace(graph_line, "")
+assert files["prompts/system.md"] == expected_prompt, "prompt not the clean exp05 prompt (graph line removed)"
 # hygiene: problem_description present and clean end
 prompt = files["prompts/system.md"]
 assert "{problem_description}" in prompt
 assert prompt.rstrip().endswith("{problem_description}")
 assert "EOF" not in prompt.split("## The issue")[-1]
 assert "echo written" not in prompt
+for _name, _content in files.items():
+    assert "gemma-4-31b" not in _content, f"gemma-4-31b leaked into bundle file {_name}"
 print("E4B VERIFY_BUNDLE: ALL CHECKS PASSED")
 sys.exit(0)

@@ -10,7 +10,7 @@ TITLE = """\
 This notebook builds **`/kaggle/working/submission.zip`**, a declarative Google ADK
 agent package. The organizers compile it with `adk-submission` and run the resulting
 agent on hidden SWE-bench-style tasks with a single permitted model,
-`gemma-4-31b-it-qat-w4a16-ct`, on 4x L4 GPUs.
+`gemma-4-e4b-it-qat-w4a16-ct`, on 4x L4 GPUs.
 
 **What the notebook does, and nothing else:**
 
