@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SKILL CONTRACT (research/SKILL_CONTRACT.md)
 
 Source inspected: ckpt/HARNESS_README.md §§2.2,2.3,2.4; local search for adk-submission/swegemma source returned no wheels or source in this container.
@@ -14,3 +15,8 @@ Source inspected: ckpt/HARNESS_README.md §§2.2,2.3,2.4; local search for adk-s
 - Whether `run_skill_script` can be called on Call 1 without `load_skill`: UNKNOWN.
 - cwd/environment/path of `run_skill_script`: UNKNOWN.
 - Output truncation cap on skill script and whether skill calls count toward max_tool_calls: UNKNOWN.
+=======
+# SKILL CONTRACT
+
+Inspection of `/kaggle/input/gemma-4-developer-agent/wheels/` found no `adk_submission` or `swegemma` wheels (only third-party dependencies like starlette, pytest, pydantic, etc.). Therefore exact skill tool names/signatures/cwd/output caps remain UNKNOWN. Settle by locating the harness source or an official ADK skill example.
+>>>>>>> 3c88e73 (feat: upgrade swe_toolkit scorer + exp13 cleanup)

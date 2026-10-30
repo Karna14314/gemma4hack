@@ -8,9 +8,12 @@ tools:
   - write_file
   - get_status
   - submit_patch
+<<<<<<< HEAD
   - get_code_neighbors
   - search_similar_code
   - get_code_subgraph
+=======
+>>>>>>> 3c88e73 (feat: upgrade swe_toolkit scorer + exp13 cleanup)
 skills:
   - skills/swe_toolkit
 generate_content_config: !include configs/sampling.yaml

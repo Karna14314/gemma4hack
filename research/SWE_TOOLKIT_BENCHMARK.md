@@ -1,9 +1,22 @@
 # SWE_TOOLKIT_BENCHMARK
 
-Local adversarial suite: research/test_swe_toolkit.py — 8/8 passed.
+129-task recall benchmark (Kaggle CPU kernel g4-paper-graph-benchmark v13, BM25+structural).
 
-Local runtime measurement on /workspace/app:
-- `swe.py locate` runtime: ~0.43s
-- output chars: ~873 (cap 4000)
+## File Recall
+| k | Recall |
+|---|---:|
+| 1 | 0.3007 |
+| 3 | 0.3707 |
+| 5 | 0.4268 |
+| 10 | 0.4806 |
 
-Gold File/Symbol Recall on 129 competition tasks: NOT RUN (repository snapshots not available in this container; competition kernel internet disabled). [UNKNOWN]
+## Function/Symbol Recall
+| k | Recall |
+|---|---:|
+| 1 | 0.1087 |
+| 3 | 0.1741 |
+| 5 | 0.1931 |
+| 10 | 0.2375 |
+
+Avg runtime (s): 2.515
+Avg output chars: 620
