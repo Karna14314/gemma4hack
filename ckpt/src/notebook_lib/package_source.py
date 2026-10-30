@@ -25,7 +25,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[1] / "agent_package"
 
 FALLBACK_AGENT_YAML = """\
 name: swe_coder
-model: gemma-4-31b-it-qat-w4a16-ct
+model: gemma-4-e4b-it-qat-w4a16-ct
 description: Autonomous software engineer that fixes one repository issue with a minimal source patch.
 instruction: !include prompts/system.md
 tools:

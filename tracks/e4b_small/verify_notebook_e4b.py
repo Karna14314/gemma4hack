@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import sys
 import tempfile
@@ -23,12 +24,17 @@ def main():
             print(r.stderr)
             sys.exit(1)
 
+        nb_text = tmp_nb.read_text()
+        assert "gemma-4-31b" not in nb_text, "gemma-4-31b leaked into notebook script"
+        assert "FALLBACK" not in nb_text, "FALLBACK leaked into notebook script"
+
         # Run the notebook in tempdir to test execution and check generated submission.zip
         # Executing python cells from notebook or running jupyter nbconvert / python script
         # Let's extract code cells and execute them in tmpdir context
         import nbformat
         nb = nbformat.read(str(tmp_nb), as_version=4)
 
+        os.chdir(tmpdir)
         # Execute code cells in a fresh globals dict
         exec_globals = {"__file__": str(tmp_nb)}
         for idx, cell in enumerate(nb.cells):

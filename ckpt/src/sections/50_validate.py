@@ -1,4 +1,4 @@
-"""Section 50 — validation and fallback selection.
+"""Section 50 — validation (fail-fast).
 
 This cell must never raise. It validates the primary package, and on any
 ``SubmissionInvalid`` — or on any unexpected exception whatsoever — it selects the
@@ -11,8 +11,7 @@ INTRO = """\
 ## Validate, and pick a package
 
 The primary package is checked against every constraint the harness enforces. If
-anything fails, the minimal fallback package ships instead. Either way this cell
-records which package won and why, and it never raises.
+anything fails, this cell raises rather than substituting another bundle.
 """
 
 VALIDATE = '''\
@@ -27,21 +26,9 @@ try:
     SELECTED_NAME = "primary"
     SELECTION_REASON = "primary package passed every check"
 except SubmissionInvalid as error:
-    # A precise, expected failure: the fallback is the designed response.
-    SELECTION_REASON = f"primary rejected by the validator: {error}"
-except Exception:  # noqa: BLE001 - the notebook must not abort here
-    SELECTION_REASON = "primary raised an unexpected error:\\n" + traceback.format_exc()
-
-if SELECTED_FILES is None:
-    try:
-        VALIDATION_REPORT = validate(FALLBACK_FILES)
-        SELECTED_FILES = FALLBACK_FILES
-        SELECTED_NAME = "fallback"
-    except Exception:  # noqa: BLE001
-        # Last resort: ship the fallback unvalidated rather than ship nothing.
-        SELECTED_FILES = FALLBACK_FILES
-        SELECTED_NAME = "fallback (unvalidated)"
-        SELECTION_REASON += "\\nfallback also failed:\\n" + traceback.format_exc()
+    raise RuntimeError(f"Strict Fail-Fast Policy: primary package rejected by validator: {error}") from error
+except Exception as error:
+    raise RuntimeError(f"Strict Fail-Fast Policy: primary package failed validation with error: {error}") from error
 
 print(f"selected package : {SELECTED_NAME}")
 print(f"reason           : {SELECTION_REASON}")

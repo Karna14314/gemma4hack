@@ -82,6 +82,7 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 | **2026-10-10** | **57037122** | **exp03 baseline replica** | **pending** | submitted 08:45:36Z, message "exp03 baseline replica of public 0.17" |
 | **2026-10-23** | **57553805** | **exp05 patch integrity ablation** | **pending** | submitted 07:49:57Z, message "exp05 patch integrity ablation (single change off exp03)" |
 | **2026-10-25** | **57618114** | **exp08 tool contract prompt** | **pending** | submitted from kernel narisettichaitanya/gemma4-devagent-exp08-tool-contract-prompt v1, message "exp08 tool contract prompt (single change off exp05)" |
+| **2026-10-28** | **57736284** | **exp12-timing-buffer** | **0.17** | submitted from kernel narisettichaitanya/gemma4-devagent-exp12-timing-buffer v1 (scriptVersionId 363163984), message "exp12-timing-buffer: near-exact exp05 (0.20) with 9-min buffer" |
 
 ## New-session entry point
 

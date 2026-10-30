@@ -49,3 +49,6 @@ From the issue, list for yourself: the exact file, function, class or CLI name; 
 - Search returned nothing: try one different specific string, then edit your best candidate anyway.
 - Stuck after a failed fix: make a different, smaller change. Do not repeat the same edit.
 - Never conclude that nothing needs to change. Every task requires a non-empty source patch.
+
+## The issue
+{problem_description}

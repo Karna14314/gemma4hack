@@ -34,9 +34,6 @@ for _path in sorted(PACKAGE_FILES):
     print(f"  {len(PACKAGE_FILES[_path].encode('utf-8')):>8,d} B  {_path}")
 print(f"  {sum(len(v.encode('utf-8')) for v in PACKAGE_FILES.values()):>8,d} B  TOTAL")
 print()
-print("fallback files:", len(FALLBACK_FILES))
-for _path in sorted(FALLBACK_FILES):
-    print(f"  {len(FALLBACK_FILES[_path].encode('utf-8')):>8,d} B  {_path}")
 '''
 
 
