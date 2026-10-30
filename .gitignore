@@ -17,3 +17,7 @@ kaggle_work/*/research/competition/tasks.jsonl
 kaggle_work/*/research/competition/*.zip
 # Generated notebook output - rebuild with `python tools/build_notebook.py`
 build/
+
+# Audit snapshots - 786 MB compressed / ~1.6 GB extracted, re-downloadable.
+# See docs/AUDIT_SNAPSHOTS.md for the manifest, usage audit and retention policy.
+audit_snapshots/

@@ -228,7 +228,8 @@ Check:
 ## 6. Submissions (only with an explicit yes)
 
 > **Hard rule:** never run this without an explicit "yes" from the user in the current
-> conversation. One submission per day, 10 total. A pending submission blocks the next.
+> conversation. One submission per day; one pending at a time; there is **no total cap**.
+> A pending submission blocks the next one.
 
 Check quota and history first:
 

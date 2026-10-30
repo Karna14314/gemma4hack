@@ -20,9 +20,12 @@ and submission hygiene.
 
 1. **NEVER run `kaggle competitions submit` without an explicit "yes" from the user in
    the current conversation.** A bare instruction to "continue" or "finish" is not a yes.
-2. **One submission per day, 10 total.** Check the live quota before planning anything:
-   `kaggle competitions submissions -c gemma-4-developer-agent`. A pending submission
-   also blocks the next one (`numAllowedNow: 0`).
+2. **One submission per day. There is no total cap.** Check the live state before
+   planning anything: `kaggle competitions submissions -c gemma-4-developer-agent`.
+   A pending submission blocks the next one (`maxPendingSubmissionsPerTeam: 1`).
+   Only two submissions are selected for final scoring (`numScoredSubmissions: 2`),
+   so the final two must be deliberate. Corrected 2026-10-30: the competition API
+   exposes `maxDailySubmissions: 1` and no total-submission field.
 3. **A broken notebook scores 0.** Every notebook must pass `verify_notebook.py`
    end-to-end before it is pushed to Kaggle. Never push an unverified notebook.
 4. **One isolated change per experiment.** Justify it by a mechanism in the harness
@@ -72,10 +75,10 @@ Key differences between the live docs and the older checkpoint docs:
 | other scored entries | 0.17 exp03 / exp08 / exp10 / exp12, 0.13 E4B-as-31B fallback, 0.06 genuine E4B |
 | pending submission | `57806053` e4b-v2 (submitted 2026-10-30) |
 | public LB top | 0.29; a 0.24 cluster |
-| team rank | 231 / 4,201 |
+| team rank | 232 / 4,202 (live API, 2026-10-30) |
 | main deadline | **2026-12-02 23:59 UTC** |
 | paper deadline | **2026-11-12 23:59 UTC** |
-| submission limit | **1/day**, 10 total |
+| submission limit | **1/day**; 1 pending at a time; **no total cap**; 2 final selections |
 | public dev set | 129 tasks: fastapi 67, rich 48, requests 13, httpx 1 |
 
 **One task ≈ 0.017 on the public LB, and scoring is stochastic. Treat differences below

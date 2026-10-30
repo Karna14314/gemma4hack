@@ -31,7 +31,7 @@ image and 4× L4, so this repo optimizes for three things instead:
 | team rank | 231 / 4,201 teams (2026-10-30) |
 | main competition deadline | **2026-12-02 23:59 UTC** |
 | paper-track deadline | **2026-11-12 23:59 UTC** |
-| submission limit | **1 per day**, 10 total (confirmed by the Kaggle API) |
+| submission limit | **1 per day**; 1 pending at a time; no total cap (verified via the Kaggle API, 2026-10-30) |
 | public dev set | 129 tasks: fastapi 67, rich 48, requests 13, httpx 1 |
 
 Public-LB granularity is ~half of ~120 tasks, so **one task ≈ 0.017** and run-to-run sampling is
@@ -220,7 +220,7 @@ only needs the standard library plus `PyYAML`.
 
 | constraint | consequence |
 |---|---|
-| **1 submission/day**, 10 total | one verified bundle per day; no exploratory spam |
+| **1 submission/day** | one verified bundle per day; no total cap, but no exploratory spam |
 | **12 h compute for ~120 sequential tasks** | per-task agent budget must average ≲4–5 min; 12 min was measured to exceed the cap and score 0 |
 | **A notebook that errors scores 0** | build, validate and package must be exception-proof; test the notebook offline first |
 | **No internet in the notebook** | no `pip install`, no downloads at run time |
@@ -267,6 +267,9 @@ The full audit trail, failure analysis and per-experiment rationale are in
 | [`AGENTS.md`](AGENTS.md) | hard rules and workflow for AI coding agents |
 | [`docs/RUNBOOK.md`](docs/RUNBOOK.md) | copy-paste commands for setup, verify, push, submit, recover |
 | [`docs/COMPETITION_RESOURCES.md`](docs/COMPETITION_RESOURCES.md) | verified live resource inventory (files, hashes, deadlines) |
+| [`docs/TASK_CLASSIFICATION.md`](docs/TASK_CLASSIFICATION.md) | what the 129 dev tasks look like: categories, patch shapes, hot files, difficulty |
+| [`docs/SKILLS_ARCHITECTURE.md`](docs/SKILLS_ARCHITECTURE.md) | final skills/scripts/knowledge design, verified harness facts, 31B experiment ladder |
+| [`docs/AUDIT_SNAPSHOTS.md`](docs/AUDIT_SNAPSHOTS.md) | downloaded audit snapshots: manifest, usage audit, retention policy |
 | [`docs/AUDIT_E4B_AND_PAPER.md`](docs/AUDIT_E4B_AND_PAPER.md) | forensic audit of E4B/paper submissions |
 | [`docs/PAPER_TRACK_DRAFT.md`](docs/PAPER_TRACK_DRAFT.md) | paper-track draft |
 | [`research/COMPETITION_GUIDE.md`](research/COMPETITION_GUIDE.md) | 12-part study guide |

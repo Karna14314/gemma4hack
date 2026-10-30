@@ -26,11 +26,18 @@ changed since this snapshot — re-read the live file before relying on any note
 | deliverable | Kaggle notebook that writes `submission.zip` (declarative ADK agent package) |
 | main deadline | **2026-12-02 23:59 UTC** |
 | paper track | `gemma-4-developer-agent-paper`, deadline **2026-11-12 23:59 UTC** |
-| submission limit | **1 per day**, 10 total (confirmed by the API) |
+| submission limit | **1 per day**; 1 pending at a time; no total cap (verified via the API 2026-10-30) |
 | public LB top | 0.29 (2026-10-29); a 0.24 cluster |
-| our team rank | 231 / 4,201 (2026-10-30) |
+| our team rank | 232 / 4,202 (2026-10-30) |
 | our best public score | **0.20** (`exp05_patch_integrity`, ref `57553805`, 31B) |
 | pending at snapshot | `57806053` e4b-v2 (2026-10-30), status PENDING |
+
+Submission mechanics, verified from `competitions.CompetitionService/GetCompetition` on
+2026-10-30: `maxDailySubmissions: 1`, `maxPendingSubmissionsPerTeam: 1`,
+`numScoredSubmissions: 2`, `leaderboardPercentage: 50`,
+`requiredSubmissionFilename: submission.zip`. **There is no total-submission cap**; the
+earlier "10 total" note was wrong. Only two submissions are selected for final scoring, so
+the last two must be deliberate.
 
 The scoring rerun runs ~120 tasks sequentially on the organizers' 4× L4 box inside a
 **12-hour** cap, including vLLM startup and pytest verification. Queueing and runtime can
