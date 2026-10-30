@@ -21,11 +21,11 @@ assert sampling["thinking_config"]["thinking_budget"] == 4096
 assert sampling["thinking_config"]["include_thoughts"] is True
 evalc = yaml.safe_load(files["eval_config.yaml"])["evaluation"]
 assert evalc["timeout_seconds"] == 240
-assert evalc["max_tool_calls"] == 28
+assert evalc["max_tool_calls"] == 35
 assert evalc["max_time_minutes"] == 8
 assert evalc["max_turns"] == 80
 prompt = files["prompts/system.md"]
-assert len(prompt) <= 2500, f"prompt {len(prompt)} > 2500"
+assert len(prompt) <= 2200, f"prompt {len(prompt)} > 2200"
 assert "{problem_description}" in prompt
 assert prompt.rstrip().endswith("{problem_description}")
 # braces only problem_description
