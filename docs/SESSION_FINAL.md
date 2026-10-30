@@ -1,35 +1,25 @@
-# SESSION FINAL REPORT — feat/submit-true-e4b (2026-10-29)
+# SESSION FINAL REPORT — feat/study-guide
 
 ## Summary
+Created research/COMPETITION_GUIDE.md (12 parts), research/SCORES.md, research/SOURCES.md.
 
-Submitted a 100% genuine `gemma-4-e4b-it-qat-w4a16-ct` bundle (`exp11_e4b`) to
-`gemma-4-developer-agent` for the $10,000 Small Model Bonus Prize.
+## Commit hashes
+- eb9d70a docs: study guide part 1 competition overview
+- d89c9f8 docs: study guide part 2 submission structure
+- dc8158b docs: study guide part 3 task lifecycle
+- dca5344 docs: study guide part 4 model view
+- 5106bf0 docs: study guide part 5 eval data
+- 5f42743 docs: study guide part 6 exp05 deep dive
+- 4ad281f docs: study guide part 7 score landscape
+- 49b5c98 docs: study guide parts 8-10 levers noise
+- c8eb81c docs: study guide parts 11-12 and scores/sources
 
-- exp12-timing-buffer (ref 57736284) recorded as 0.17 LB.
-- E4B bundle hardened: no FALLBACK dictionary and no `gemma-4-31b` reference anywhere in notebook/bundle.
-- Kernel `narisettichaitanya/g4-e4b-small-agent-submit` version 6 built server-side `submission.zip`.
-- Mandatory server-output inspection verified `model: gemma-4-e4b-it-qat-w4a16-ct` and `selected_package: primary`.
-- Submission registered: ref **57777888**, status PENDING.
+## Could not verify
+- Scorer acceptance of E4B for small-model bonus.
+- Whether eval_config.yaml is read during scoring.
+- Hidden task count/repos.
+- Tool JSON schema sizes.
+- Final selection rules.
 
-## Verified server-built submission.zip agent.yaml
-
-```yaml
-name: swe_agent
-model: gemma-4-e4b-it-qat-w4a16-ct
-instruction: !include prompts/system.md
-tools:
-  - run_command
-  - read_file
-  - edit_file
-  - write_file
-  - get_status
-  - submit_patch
-generate_content_config: !include configs/sampling.yaml
-```
-
-## Submission ref
-
-- ref: 57777888
-- kernel: narisettichaitanya/g4-e4b-small-agent-submit
-- scriptVersionId: 6
-- status: PENDING
+## Resume
+git checkout feat/study-guide && git pull
