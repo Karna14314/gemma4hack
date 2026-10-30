@@ -1,25 +1,26 @@
-# SESSION FINAL — feat/exp13-swe-toolkit-v2 (2026-10-30)
+# Session Final — Paper Track Complete Benchmarks
 
-## Summary
-Built exp13-swe-toolkit bundle (31B, anchored on exp05 0.20) with unified deterministic SWE toolkit and dual-transport resilience. Kernel pushed and COMPLETE.
+Branch: `feat/paper-track-complete-benchmarks`
 
-## Branch
-feat/exp13-swe-toolkit-v2 (from main)
+## Verified benchmark artifacts
+- Kernel: `narisettichaitanya/g4-paper-graph-benchmark` v20, status COMPLETE.
+- Outputs: `research/paper_eval_outputs/` (`paper_experiments.json`, `PAPER_TABLES.md`, `PAPER_EXPERIMENTS.md`).
+- Committed verified tables: `research/PAPER_EXPERIMENTS.md`.
 
-## Verification
-- verify_bundle.py --bundle bundles/exp13_swe_toolkit: ALL CHECKS PASSED (layer 1-3, real harness compile_submission PASS)
-- verify_notebook.py --notebook experiments/exp13_swe_toolkit/submission_notebook.ipynb: ALL CHECKS PASSED
-- Adversarial test suite: 8/8 PASS (research/test_swe_toolkit.py)
-- Kernel: narisettichaitanya/gemma4-devagent-exp13-swe-toolkit-v2 v1 COMPLETE, DONE_OK, submission.zip present
+## Key results
+- Tasks evaluated: 129; in-graph: 125; docs_src tasks lacking graph nodes: 1.
+- 1-hop neighborhood >5000-char cap exceedance: 80.88%.
+- M4 `swe_toolkit` file R@10: 0.4587 (all), 0.4734 (in-graph); MRR 0.4354.
+- M5 Hybrid RRF file R@10: 0.5701 (all), 0.5883 (in-graph); MRR 0.4332.
+- Lexical baseline file R@10: 0.3036.
+- Gold patch anatomy: median 1 file, 8 lines added, 2 deleted, 2 hunks; 70.5% single-file, 8.5% new files.
+- Playbook audit: 258 triggers, 32.6% precision.
+- e4b-v2 (ref 57806053): PENDING, no score yet.
 
-## Bundle
-- bundles/exp13_swe_toolkit (also ckpt/ and kaggle_work/ copies)
-- skills/swe_toolkit (root + bundle copies, kebab-case alias skills/swe-toolkit)
-- agent.yaml anchored on exp05 (6 base tools + graph tools + skill)
+## e4b-v2 poll
+`kaggle competitions submissions -c gemma-4-developer-agent`: ref 57806053 status `pending` (submitted 2026-10-30T12:56:30Z). Not submitted today beyond existing.
 
-## Submission
-Not submitted (daily quota used by E4B ref 57806053). Staged for next submission window.
-
-## Next steps
-- Submit exp13 kernel when quota resets.
-- Poll kernel/submission score.
+## Files changed
+- `research/kernel_paper_eval/paper_eval.py` (4 experiments)
+- `docs/PAPER_TRACK_DRAFT.md` (~2,240 words, submission-ready)
+- `research/PAPER_EXPERIMENTS.md` (verified tables)
