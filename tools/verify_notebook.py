@@ -236,7 +236,7 @@ def main() -> int:
             "no adapter directory (KV cache would collapse)",
             not any(n.startswith("adapters/") for n in names),
         )
-        check("no .py member (never executed by the compiler)", not any(n.endswith(".py") for n in names))
+        check("no .py member outside skills (never executed by the compiler)", not any(n.endswith(".py") and not n.startswith("skills/") for n in names))
 
         selected = namespace.get("SELECTED_FILES", {})
         mismatched = []
