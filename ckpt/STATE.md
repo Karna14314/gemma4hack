@@ -74,6 +74,7 @@ python3 tools/kaggle_ckpt.py version ckpt narisettichaitanya/gemma4-agent-ckpt "
 ```
 
 ## Submission log
+- 2026-10-30: ref 57777888 (genuine E4B) status PENDING (polled).
 
 | date | ref | bundle | score | status |
 |---|---|---|---|---|

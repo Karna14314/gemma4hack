@@ -25,8 +25,8 @@ import yaml
 # Harness constants, transcribed from HARNESS_README.md sections 2.4 and 3.
 # ---------------------------------------------------------------------------
 
-ALLOWED_MODELS = frozenset({"gemma-4-e4b-it-qat-w4a16-ct"})
-MODEL = "gemma-4-e4b-it-qat-w4a16-ct"
+ALLOWED_MODELS = frozenset({"gemma-4-31b-it-qat-w4a16-ct", "gemma-4-e4b-it-qat-w4a16-ct"})
+MODEL = "gemma-4-31b-it-qat-w4a16-ct"
 ROOT_CONFIGS = ("agent.yaml", "agent.yml", "root_agent.yaml", "root_agent.yml")
 ALLOWED_SUFFIXES = frozenset(
     {".yaml", ".yml", ".md", ".txt", ".py", ".json", ".safetensors"}
