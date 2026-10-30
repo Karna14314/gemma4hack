@@ -1,25 +1,14 @@
-# SESSION FINAL REPORT — feat/study-guide
+# SESSION FINAL — feat/swe-toolkit-skill
 
 ## Summary
-Created research/COMPETITION_GUIDE.md (12 parts), research/SCORES.md, research/SOURCES.md.
+Added skills/swe_toolkit and exp13 bundle; contract unknowns documented.
 
-## Commit hashes
-- eb9d70a docs: study guide part 1 competition overview
-- d89c9f8 docs: study guide part 2 submission structure
-- dc8158b docs: study guide part 3 task lifecycle
-- dca5344 docs: study guide part 4 model view
-- 5106bf0 docs: study guide part 5 eval data
-- 5f42743 docs: study guide part 6 exp05 deep dive
-- 4ad281f docs: study guide part 7 score landscape
-- 49b5c98 docs: study guide parts 8-10 levers noise
-- c8eb81c docs: study guide parts 11-12 and scores/sources
+## Commit
+- feat: add swe_toolkit skill and exp13 bundle
 
-## Could not verify
-- Scorer acceptance of E4B for small-model bonus.
-- Whether eval_config.yaml is read during scoring.
-- Hidden task count/repos.
-- Tool JSON schema sizes.
-- Final selection rules.
+## Benchmark
+- Adversarial 8/8 passed.
+- Gold recall: UNKNOWN (repos unavailable).
 
-## Resume
-git checkout feat/study-guide && git pull
+## Ref 57777888
+- status: pending
