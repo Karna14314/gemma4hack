@@ -217,3 +217,28 @@ is why the control was allowed through.
 **Decision rule.** ≈0.20 → anchor real, E1 must beat 0.20. ≈0.17 → anchor is 0.179, prompt
 line exhausted, E1 measured against 0.18 with the paired instrument. ≤0.13 → environment
 drift, stop the ladder. ≥0.24 → repeat before concluding.
+
+## 2026-10-31 — public-research audit: 0.24 is a tail, and the loss is localization
+
+Full evidence: `docs/AUDIT_PUBLIC_RESEARCH.md`. No submission was made; this is analysis
+over the public board, the public notebooks, and Dmitrii Gluzdov's 692-run task-level
+dataset.
+
+1. **Anchor = 0.179.** Five runs: 12, 10, 10, 10, 10 tasks. SD 0.89. 0.24 needs 14 tasks,
+   which is 4.0 SD above the mean and 2 above the best draw. Identical bytes have scored
+   0.12–0.22 across runs, so any single score is one draw.
+2. **The public board is a smooth tail.** 4,261 teams: 0.24 = 6 teams, 0.22 = 58 teams at a
+   median of 16 submissions each. No 0.24 recipe exists in the public work.
+3. **Union ceiling.** All 8 public configs together solve 50/114 tasks (43.9%); our config
+   solves 39/114 (34.1%) and scores 0.179. Scaled, the union is ~0.23.
+4. **The 64 never-solved tasks are not a capability wall.** 30 of them are single-file
+   patches of ≤30 lines, and 21 of those have issues ≤300 chars. Reaching 0.24 needs ~7 of
+   those 30 — a localization problem, not a patch-construction problem.
+5. **The built lever is not ready.** `exp13_swe_toolkit` passes `verify_bundle` but:
+   `swe.py locate` takes 13.5–25.7 s on fastapi and the 25 s watchdog returns `DEGRADED`
+   with no output; the prompt shells out to `find /`; the skill is named `swe_toolkit`
+   instead of `swe-toolkit`; `SKILL.md` omits `locate`; and the prompt appends
+   `{problem_description}`, making it two changes off the anchor. Not submitted.
+6. **Next, no submission required.** Fix T2 items 1/2/7, expand the snapshot set from 7 to
+   the 30 single-file never-solved tasks, and measure `locate` hit@3. Gate at 60%: pass →
+   build and submit E1; fail → hold the anchor and spend the remaining days on draws.

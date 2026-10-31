@@ -145,8 +145,13 @@ hash == local build), `numAllowedNow > 0`, explicit yes.
 
 ## T7 — E1 submission
 
-Single change vs E0: `skills/swe-toolkit/` + the `skills:` line + `# CALL PLAN` → `## TOOLKIT`.
-**Gate.** T2–T5 complete; T1 shows no regression on the paired set.
+Single change vs E0: `skills/swe-toolkit/` + the `skills:` line + `## TOOLKIT` paragraph.
+**Do not append `{problem_description}`** — the harness already sends the problem statement
+as the user turn (`agent_runner.py:677`), and the 0.20 artifact has no placeholder.
+
+**Gate (added 2026-10-31).** `locate` hit@3 ≥ 60% on the 30 single-file never-solved tasks,
+`locate` returns in < 5 s on fastapi with no `DEGRADED`/empty body, and the prompt names the
+skill `swe-toolkit` and calls it without `find /`.
 **Done when.** Score recorded; keep only if the paired instrument shows a real per-task gain
 and the LB is ≥ E0 + 0.06 (0.05 is 1 standard error, see Audit A).
 
@@ -213,3 +218,7 @@ the two highest noisy scores. Re-verify both artifacts byte-for-byte before sele
 | 2026-10-31 | E4B line closed; genuine E4B is 0.05–0.06 |
 | 2026-10-31 | the 0.20 anchor is `ckpt/exp05/submission.zip`; the frozen bundle is a later variant (+36 chars) |
 | 2026-10-31 | LB resolution is ±0.05 (1 SE at n=58); only ≥ 0.06 deltas are admissible |
+| 2026-10-31 | anchor mean is 10.4/58 (12,10,10,10,10); 0.24 = 4.0 SD, so 0.17 is the modal expectation |
+| 2026-10-31 | 0.24 is **not** arithmetically impossible: it needs ~7 of the 30 single-file never-solved tasks; the blocker is localization |
+| 2026-10-31 | `exp13_swe_toolkit` is **not submittable**: `locate` is 13.5–25.7 s on fastapi, the 25 s watchdog returns `DEGRADED` with no output, the prompt uses `find /`, the skill name is wrong, `SKILL.md` omits `locate`, and the `{problem_description}` append makes it 2 changes |
+| 2026-10-31 | T2 gate is now a 30-task locate benchmark at hit@3 ≥ 60%; no E1 submission until it passes |
