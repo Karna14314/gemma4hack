@@ -7,6 +7,7 @@ __pycache__/
 
 # Kaggle run artefacts - regenerate with `kaggle kernels output`
 kaggle_work/*/runs/
+runs/
 
 # Large vendored competition data - re-download with `kaggle competitions download`
 kaggle_work/*/research/wheelhouse/

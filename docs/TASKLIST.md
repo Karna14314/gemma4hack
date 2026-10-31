@@ -11,13 +11,38 @@ Updated 2026-10-30. Design rationale: `docs/SKILLS_ARCHITECTURE.md`. Evidence:
 | item | value |
 |---|---|
 | best public score | **0.20** (`exp05_patch_integrity`, ref `57553805`, 31B) |
-| pending submission | `57806053` e4b-v2 — **blocks the next submission** |
-| next submission slot | **2026-10-31 00:00 UTC** (`maxDailySubmissions: 1`) |
-| submission days left | 33 (2026-10-31 → 2026-12-02) |
+| pooled 31B estimate | **0.179** (52/290 across five runs) — see `docs/AUDIT_E4B_AND_ANCHOR.md` |
+| pending submission | **`57836949`** E0 control, byte-identical exp05 (2026-10-31) |
+| E4B line | **closed** — 0.05–0.06, about 3/58 tasks; not a competition entry |
+| submission days left | 32 (2026-11-01 → 2026-12-02) |
 | final selections | 2 (`numScoredSubmissions: 2`) |
 | measurement instrument | `research/kernel_devset_eval/` = `KernelWorkerStatus.ERROR` |
 | paper deadline | 2026-11-12 23:59 UTC |
 | main deadline | 2026-12-02 23:59 UTC |
+
+---
+
+## T0 — E0 control  *(submitted 2026-10-31, ref `57836949`, awaiting score)*
+
+Byte-identical resubmission of the 0.20 artifact, to separate 0.20 from 0.17.
+
+**Why it is not simply "re-run the frozen bundle".** `ckpt/bundles/exp05_patch_integrity`
+carries 36 extra chars (`## The issue` + `{problem_description}`) that were added *after*
+the 0.20 submission. The true artifact is `ckpt/exp05/submission.zip`, sha256
+`2ba7f9b118ea1837…`. The control was rebuilt from that archive; the kernel output is
+byte-identical. Full evidence: `docs/AUDIT_E4B_AND_ANCHOR.md` §Audit E.
+
+**Kernel.** `narisettichaitanya/g4-e0-exp05-control-resubmit` v1 (slug re-derived from the
+title, not the requested id).
+
+**Done when.** Score recorded in `RESULTS.md`, and the branch below is chosen.
+
+| E0 result | reading | next |
+|---|---|---|
+| ≈ 0.20 | anchor real; 0.17 is the low tail | E1 must beat 0.20 |
+| ≈ 0.17 | anchor is 0.179 pooled; 0.20 was noise | prompt line exhausted; E1 vs 0.18, paired instrument required |
+| ≤ 0.13 | environment drift, not the bundle | stop the ladder, re-audit resources and artifact |
+| ≥ 0.24 | upside variance larger than modelled | repeat before concluding |
 
 ---
 
@@ -122,8 +147,8 @@ hash == local build), `numAllowedNow > 0`, explicit yes.
 
 Single change vs E0: `skills/swe-toolkit/` + the `skills:` line + `# CALL PLAN` → `## TOOLKIT`.
 **Gate.** T2–T5 complete; T1 shows no regression on the paired set.
-**Done when.** Score recorded; keep only if ≥ E0 + 0.05 or the paired instrument shows a
-real per-task gain.
+**Done when.** Score recorded; keep only if the paired instrument shows a real per-task gain
+and the LB is ≥ E0 + 0.06 (0.05 is 1 standard error, see Audit A).
 
 ---
 
@@ -167,11 +192,15 @@ the two highest noisy scores. Re-verify both artifacts byte-for-byte before sele
 
 ## Deliberately not doing
 
+- **The E4B line.** 0.05–0.06 = ~3/58 tasks (95% CI 1.8%–14.1%); reaching 0.179 needs 3.4×.
+  Keep `tracks/e4b_small/` only as the paper-track scale ablation.
 - LoRA on the 129 public tasks — dev-only, and adapters collapse the KV cache to ~7.6k.
 - Planner/coder multi-agent split — `exp01` scored 0.05.
 - `max_time_minutes` above 9 — the 12 h total is binding; 12-minute tasks scored 0.
+- Raising `max_tool_calls` — tested (28 → 35 on E4B), no gain; see Audit D.
 - A large knowledge book in v1 — 32.6% playbook precision.
 - Per-language skills — all 129 tasks are Python.
+- Early `submit_patch` as insurance — the working tree is graded regardless.
 
 ## Decision log
 
@@ -181,3 +210,6 @@ the two highest noisy scores. Re-verify both artifacts byte-for-byte before sele
 | 2026-10-30 | knowledge ships as a six-row table in `system.md`; `_knowledge.py` not wired until error analysis justifies it |
 | 2026-10-30 | `verify` runs targeted pytest itself, because `run_command` truncates at 5,000 chars |
 | 2026-10-30 | instrument repair (T1) precedes all bundle work |
+| 2026-10-31 | E4B line closed; genuine E4B is 0.05–0.06 |
+| 2026-10-31 | the 0.20 anchor is `ckpt/exp05/submission.zip`; the frozen bundle is a later variant (+36 chars) |
+| 2026-10-31 | LB resolution is ±0.05 (1 SE at n=58); only ≥ 0.06 deltas are admissible |

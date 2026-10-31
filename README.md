@@ -267,6 +267,7 @@ The full audit trail, failure analysis and per-experiment rationale are in
 | [`AGENTS.md`](AGENTS.md) | hard rules and workflow for AI coding agents |
 | [`docs/RUNBOOK.md`](docs/RUNBOOK.md) | copy-paste commands for setup, verify, push, submit, recover |
 | [`docs/TASKLIST.md`](docs/TASKLIST.md) | live task queue: instrument repair, E1 build, gates, submission ladder, deadlines |
+| [`docs/AUDIT_E4B_AND_ANCHOR.md`](docs/AUDIT_E4B_AND_ANCHOR.md) | why 0.17/0.20 is noise, why the E4B line is closed, and what the 0.20 anchor really is |
 | [`docs/COMPETITION_RESOURCES.md`](docs/COMPETITION_RESOURCES.md) | verified live resource inventory (files, hashes, deadlines) |
 | [`docs/TASK_CLASSIFICATION.md`](docs/TASK_CLASSIFICATION.md) | what the 129 dev tasks look like: categories, patch shapes, hot files, difficulty |
 | [`docs/SKILLS_ARCHITECTURE.md`](docs/SKILLS_ARCHITECTURE.md) | final skills/scripts/knowledge design, verified harness facts, 31B experiment ladder |

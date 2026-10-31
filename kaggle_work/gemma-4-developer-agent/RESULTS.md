@@ -174,3 +174,46 @@ byte-identical to the checkpoint copy and every member matches the manifest, and
 `kaggle competitions submissions` showed no submission from 2026-10-10 beforehand
 (previous: exp02 on 2026-10-04 at 0.08, exp01 on 2026-10-03 at 0.05).
 Status at submission: PENDING. exp04/exp05 not submitted.
+
+## 2026-10-31 — the measurement audit (read this before the next experiment)
+
+Ten submissions, one table. The score column is the whole observable; there are no
+per-task traces from any run.
+
+| ref | date | bundle | model | score | tasks/58 |
+|---|---|---|---|---:|---:|
+| 56793672 | 10-03 | exp01 | 31B | 0.05 | 3 |
+| 56812498 | 10-04 | exp02 v2 | 31B | 0.08 | 5 |
+| 57037122 | 10-10 | exp03 baseline | 31B | 0.17 | 10 |
+| 57553805 | 10-23 | exp05 patch integrity | 31B | **0.20** | 12 |
+| 57618114 | 10-25 | exp08 tool contract | 31B | 0.17 | 10 |
+| 57654236 | 10-26 | exp10 consolidated | 31B | 0.17 | 10 |
+| 57697341 | 10-27 | exp11 E4B-as-31B | 31B | 0.13 | 8 |
+| 57736284 | 10-28 | exp12 timing buffer | 31B | 0.17 | 10 |
+| 57777888 | 10-29 | exp11 genuine E4B | E4B | 0.06 | 3.5 |
+| 57806053 | 10-30 | e4b-v2 | E4B | 0.05 | 3 |
+| 57836949 | 10-31 | **E0 control (byte-identical exp05)** | 31B | pending | — |
+
+**Findings.** Full evidence in `docs/AUDIT_E4B_AND_ANCHOR.md`.
+
+1. n ≈ 58, one task = 0.017, standard error = **0.050**. 0.17 vs 0.20 is 0.6 SE:
+   indistinguishable.
+2. Pooled 31B = 52/290 = **0.179**. 0.20 is one high draw in five; exp08/exp10/exp12 are
+   the same measurement repeated, not three failures.
+3. Genuine E4B = 0.05–0.06 = ~3 tasks (95% CI 1.8%–14.1%). **Line closed.**
+4. e4b-v2 changed three things at once (temperature, call cap, prompt rewrite) and its
+   0.05 vs 0.06 is 0.6 tasks. Uninterpretable.
+5. **The "byte-exact 0.20 anchor" was not byte-exact.** `ckpt/bundles/exp05_patch_integrity`
+   has 36 extra chars appended after the submission. The scored artifact is
+   `ckpt/exp05/submission.zip`, sha256 `2ba7f9b118ea1837…`.
+
+**E0 control (`57836949`).** Rebuilt from `ckpt/exp05/submission.zip`, kernel
+`narisettichaitanya/g4-e0-exp05-control-resubmit` v1, pulled artifact hash
+`2ba7f9b118ea1837d1950038894cc856d1d33fe98c333d216afe6aaac1661774` — byte-identical to the
+0.20 submission. Submitted 2026-10-31T11:22:30Z. Note: `verify_bundle.py` rejects this
+artifact on two prompt-hygiene checks; the official harness accepts and compiles it, which
+is why the control was allowed through.
+
+**Decision rule.** ≈0.20 → anchor real, E1 must beat 0.20. ≈0.17 → anchor is 0.179, prompt
+line exhausted, E1 measured against 0.18 with the paired instrument. ≤0.13 → environment
+drift, stop the ladder. ≥0.24 → repeat before concluding.

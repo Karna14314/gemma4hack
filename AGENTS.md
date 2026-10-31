@@ -67,13 +67,15 @@ Key differences between the live docs and the older checkpoint docs:
 
 ---
 
-## 2. Current state (2026-10-30)
+## 2. Current state (2026-10-31)
 
 | item | value |
 |---|---|
 | best public score | **0.20** — `exp05_patch_integrity`, ref `57553805` (31B) |
-| other scored entries | 0.17 exp03 / exp08 / exp10 / exp12, 0.13 E4B-as-31B fallback, 0.06 genuine E4B |
-| pending submission | `57806053` e4b-v2 (submitted 2026-10-30) |
+| pooled 31B estimate | **0.179** — 52/290 across five runs; 0.20 is one high draw |
+| other scored entries | 0.17 exp03 / exp08 / exp10 / exp12, 0.13 E4B-as-31B fallback, 0.06 + 0.05 genuine E4B |
+| E4B line | **closed** — 0.05–0.06 ≈ 3/58 tasks; not a competition entry |
+| pending submission | `57836949` E0 control, byte-identical exp05 (2026-10-31) |
 | public LB top | 0.29; a 0.24 cluster |
 | team rank | 232 / 4,202 (live API, 2026-10-30) |
 | main deadline | **2026-12-02 23:59 UTC** |
@@ -81,8 +83,9 @@ Key differences between the live docs and the older checkpoint docs:
 | submission limit | **1/day**; 1 pending at a time; **no total cap**; 2 final selections |
 | public dev set | 129 tasks: fastapi 67, rich 48, requests 13, httpx 1 |
 
-**One task ≈ 0.017 on the public LB, and scoring is stochastic. Treat differences below
-~0.05 as noise.**
+**One task ≈ 0.017 on the public LB, and scoring is stochastic. The standard error at
+n ≈ 58 is 0.050, so treat any difference below ~0.06 as unresolved.** Evidence:
+`docs/AUDIT_E4B_AND_ANCHOR.md` §Audit A.
 
 ### Which bundle is "the submission"?
 
@@ -93,14 +96,17 @@ budget 4096, `include_thoughts: true`).
 
 | bundle | model | tools | budget | score | location |
 |---|---|---|---:|---:|---|
-| `src/agent_package` | E4B | 9 | 28 / 8 / 80 | pending E4B line | default build |
-| `exp05_patch_integrity` | 31B | 9 | 28 / 8 / 80 | **0.20** | `ckpt/bundles/exp05_patch_integrity` (frozen anchor) |
+| `src/agent_package` | E4B | 9 | 28 / 8 / 80 | E4B line closed | default build |
+| `exp05_patch_integrity` | 31B | 9 | 28 / 8 / 80 | **0.20** | `ckpt/bundles/exp05_patch_integrity` — a later variant, not the scored artifact |
 | `exp12-timing-buffer` | 31B | 6 | 28 / 9 / 80 | 0.17 | `kaggle_work/.../bundles/` |
-| `e4b_v2` | E4B | 6 | 35 / 8 / 80 | pending `57806053` | `tracks/e4b_small/bundles/e4b_v2` |
+| `e4b_v2` | E4B | 6 | 35 / 8 / 80 | 0.05 | `tracks/e4b_small/bundles/e4b_v2` |
 | `e4b_v3` | E4B | 6 | 28 / 8 / 80 | not submitted | `tracks/e4b_small/bundles/e4b_v3` |
 
-`ckpt/bundles/exp05_patch_integrity/` is the **byte-exact 0.20 anchor**. Do not edit it.
-If you need a variant, copy it and record the single diff.
+**The 0.20 anchor is `ckpt/exp05/submission.zip` (sha256 `2ba7f9b118ea1837…`), not the
+frozen bundle.** `ckpt/bundles/exp05_patch_integrity/` is that artifact plus 36 chars
+(`## The issue` + `{problem_description}`) appended after the submission, so it is a
+*different* experiment. Do not edit either. If you need a variant, copy the archive and
+record the single diff. Evidence: `docs/AUDIT_E4B_AND_ANCHOR.md` §Audit E.
 
 ---
 
