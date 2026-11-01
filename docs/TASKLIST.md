@@ -178,15 +178,22 @@ a `bootstrap.py`, and no script hash matching any on-disk copy. The engine was r
 `docs/FINAL_HARNESS_COMPARISON.md`). The bundle that now passes Gates 2/3 (Gate 2 exit 0;
 Gate 3 artifact sha256
 `c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba543c415`, 21,285 bytes, from
-`build/exp13_swe_toolkit.ipynb`) has **never been pushed**. Gate 4 cannot close until a
-fresh push exists. Sequence, none of which is a submission:
-1. refresh `kaggle_work/.../experiments/exp13_swe_toolkit/submission_notebook.ipynb` from
-   `build/exp13_swe_toolkit.ipynb`;
-2. `kaggle kernels push -p ...` and confirm the real slug (`kaggle kernels list --mine`);
-3. wait for the CPU run (minutes), then `kaggle kernels output -p runs/...`;
-4. assert status `COMPLETE`, no traceback, and pulled-zip sha256 `0ece5e7ec92bf049…`.
-Submission itself stays blocked by pending E0 `57836949` (maxPendingSubmissionsPerTeam: 1)
-and by rule 1 (explicit yes).
+`build/exp13_swe_toolkit.ipynb`) was pushed on 2026-11-01 as kernel
+`narisettichaitanya/gemma4-devagent-exp13-swe-toolkit-v2` version 2. Sequence, and where
+each landed:
+1. kernel notebook refreshed from `build/exp13_swe_toolkit.ipynb` ✓
+2. `kaggle kernels push` ✓ — real slug confirmed via `kaggle kernels list --mine`
+3. CPU run `COMPLETE` + `DONE_OK` in 14.4 s, then `kaggle kernels output` pulled to
+   `runs/exp13_v2_kernel/` ✓
+4. asserted `COMPLETE`, no traceback, and pulled-zip sha256
+   `0ece5e7ec92bf049…` → **superseded**: the final engine (v4) artifact is
+   `c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba543c415` (10 members, one
+   model, no adapters), and the pulled zip equals it byte-for-byte. The `run_skill_script`
+   schema was re-proven against ADK 1.36.1 before the push (required
+   `[skill_name, file_path]`, args-as-list; prompt/SKILL.md match 100%).
+
+Gate 4 **closed** (kernel-only, not a submission). Submission itself stays blocked by
+pending E0 `57836949` (maxPendingSubmissionsPerTeam: 1) and by rule 1 (explicit yes).
 
 ---
 

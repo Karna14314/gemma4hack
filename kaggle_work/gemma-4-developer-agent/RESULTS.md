@@ -414,3 +414,14 @@ copies via tools/sync_exp13.py.
 explicit approval (kernel-only, not a submission): re-splice build/exp13_swe_toolkit.ipynb
 into the kernel dir, push, confirm real slug, pull output, assert sha256 == c9135bcb...
 (docs/TASKLIST.md T7).
+
+**Gate 4 closed (2026-11-01, kernel-only).** `run_skill_script` schema re-verified against
+ADK 1.36.1 from the compiled `swe_agent` (properties args/file_path/positional_args/
+short_options/skill_name, required [skill_name, file_path]; prompt + SKILL.md use exactly
+skill_name/file_path/args-as-list - 100% match, no INVALID_ARGUMENTS risk). Kernel
+narisettichaitanya/gemma4-devagent-exp13-swe-toolkit-v2 version 2 pushed; run COMPLETE with
+DONE_OK at 14.4 s, no traceback; 10 members, single kebab-case skill, no adapters. Pulled
+submission.zip sha256 c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba543c415 ==
+local Gate 3 build (docs/TASKLIST.md T7). The audit rows "no kernel push" line is superseded
+by this postscript. No competition submission was made; E0 57836949 still PENDING and rule 1
+requires an explicit yes anyway.
