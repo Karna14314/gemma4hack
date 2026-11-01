@@ -169,6 +169,25 @@ names `swe-toolkit`, has one `run_skill_script` call shape, and contains no `fin
 Remaining work: download the 30 single-file never-solved snapshots (≈2–4 GB), re-run
 `tools/audit_locate.py`, and record hit@3 before building E1.
 
+**Gate 4 outstanding (added 2026-11-01).** The kernel
+`narisettichaitanya/gemma4-devagent-exp13-swe-toolkit-v2` is `COMPLETE`, `DONE_OK`, no
+traceback, sha256 `f30e84b3…` — but its artifact is from an **older bundle revision**: 16
+members with skill dirs in BOTH spellings (`skills/swe-toolkit/` and `skills/swe_toolkit/`),
+a `bootstrap.py`, and no script hash matching any on-disk copy. The engine was re-decided on
+2026-11-01 (dual-track audit: bare-id rule reverted + deterministic tie-breakers; see
+`docs/FINAL_HARNESS_COMPARISON.md`). The bundle that now passes Gates 2/3 (Gate 2 exit 0;
+Gate 3 artifact sha256
+`c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba543c415`, 21,285 bytes, from
+`build/exp13_swe_toolkit.ipynb`) has **never been pushed**. Gate 4 cannot close until a
+fresh push exists. Sequence, none of which is a submission:
+1. refresh `kaggle_work/.../experiments/exp13_swe_toolkit/submission_notebook.ipynb` from
+   `build/exp13_swe_toolkit.ipynb`;
+2. `kaggle kernels push -p ...` and confirm the real slug (`kaggle kernels list --mine`);
+3. wait for the CPU run (minutes), then `kaggle kernels output -p runs/...`;
+4. assert status `COMPLETE`, no traceback, and pulled-zip sha256 `0ece5e7ec92bf049…`.
+Submission itself stays blocked by pending E0 `57836949` (maxPendingSubmissionsPerTeam: 1)
+and by rule 1 (explicit yes).
+
 ---
 
 ## T8 — Ladder after E1

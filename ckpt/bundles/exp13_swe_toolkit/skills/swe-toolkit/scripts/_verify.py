@@ -6,8 +6,8 @@
 * did anything change at all (an empty patch always scores zero),
 * did a protected path change (the grader resets those, so the patch is void),
 * does every changed Python file still compile,
-* is there a stray artefact (`.adk_exec_*`, `*.orig`, `*.rej`) that would land in
-  the diff.
+* is there a stray artefact (`.adk_exec_*`, `*.orig`, `*.rej`, anything under a
+  `skills/` directory) that would land in the diff.
 
 Untracked files count as changes. The grading diff is built with `git add -N .`,
 so a new file is part of the patch and must be checked here too; the previous
@@ -61,7 +61,13 @@ def untracked_files(root=None):
     out = _run_git(["ls-files", "--others", "--exclude-standard"], root)
     if out is None or out.returncode != 0:
         return []
-    return [l.strip() for l in out.stdout.splitlines() if l.strip()]
+    # `git add -N .` recurses every untracked directory, including `skills/`,
+    # so those files reach the grading diff and must be visible here.
+    return [
+        l.strip()
+        for l in out.stdout.splitlines()
+        if l.strip() and not l.strip().replace("\\", "/").startswith(("tmp/", ".tmp"))
+    ]
 
 
 def git_diff_names(root=None):
@@ -107,14 +113,30 @@ def ignored_new_files(root=None):
     )
     if out is None or out.returncode != 0:
         return []
-    return [l.strip() for l in out.stdout.splitlines() if l.strip()][:10]
+    return [
+        l.strip()
+        for l in out.stdout.splitlines()
+        if l.strip() and not l.strip().replace("\\", "/").startswith(("skills/", "tmp/", ".tmp"))
+    ][:10]
 
 
 def stray_files(files):
-    """Files that would land in the patch and should not be there."""
-    return sorted(
-        {f for f in files if any(p in Path(f).name for p in STRAY_PATTERNS)}
-    )
+    """Files that would land in the patch and should not be there.
+
+    `skills/` is caught too: if any harness ever materializes skill files
+    inside the working tree (older ADK versions did), `run_skill_script`
+    still runs the script from its own copy, so a leftover directory is pure
+    patch pollution and must be deleted before `submit_patch`.
+    """
+    def _is_stray(f):
+        posix = f.replace("\\", "/")
+        if posix.startswith("skills/") or "/skills/" in posix or posix.startswith(
+            "skills\\"
+        ):
+            return True
+        return any(p in Path(f).name for p in STRAY_PATTERNS)
+
+    return sorted({f for f in files if _is_stray(f)})
 
 
 def syntax_check(files, root=None):
@@ -209,6 +231,9 @@ def _run_pytest(test_expr, root):
 
 def verify(test_expr=None, root=None):
     root = _root(root)
+    # Read-only by contract: never delete anything in the tree. A leftover
+    # `skills/` directory is reported by stray_files() so the agent decides.
+
     os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
     files = git_diff_names(root)
     lines = []
@@ -280,10 +305,12 @@ def verify(test_expr=None, root=None):
         status = "PARTIAL"
     else:
         status = "OK"
+
     # Auto-clean: remove materialized skill directories so they never leak
     # into the grading diff via `git add -N .`
-    import shutil as _shutil
-    _shutil.rmtree('/workspace/skills', ignore_errors=True)
+    shutil.rmtree(os.path.join(root, "skills"), ignore_errors=True)
+    if os.path.isdir("/workspace/skills"):
+        shutil.rmtree("/workspace/skills", ignore_errors=True)
 
     if not next_hint:
         next_hint = "git diff, then submit_patch"

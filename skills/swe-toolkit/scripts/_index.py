@@ -182,27 +182,14 @@ def parse_query(query):
     for m in re.finditer(r'File "([^"]+)", line \d+, in ([A-Za-z_]\w*)', query):
         trace_files.append(m.group(1).split("/")[-1])
         trace_funcs.append(m.group(2))
-    # Extract .py filenames from the query
+    # Extract .py filenames from the query. Bare identifiers are deliberately
+    # NOT treated as paths: the 643c6f4-era experiment appended every
+    # meaningful issue word here, each worth a +30 path-substring boost, and
+    # that measurably displaced gold files on fastapi's generic-word issues
+    # (28-sample A/B plus the v4 full benchmark; see
+    # docs/FINAL_HARNESS_COMPARISON.md §1). Explicit `.py` names, dotted
+    # modules, backticks and quotes keep their boosts.
     paths = re.findall(r"[A-Za-z0-9_./-]+\.py\b", query)
-    # Also extract bare identifiers (def names, class names, CamelCase, snake_case)
-    # Filter out Python keywords and English stopwords
-    py_keywords = {
-        "if", "else", "for", "while", "import", "from", "as", "return", "yield",
-        "raise", "try", "except", "finally", "with", "lambda", "pass",
-        "break", "continue", "def", "class", "import", "in", "is", "not", "or",
-        "and", "async", "await", "global", "nonlocal", "del"
-    }
-    all_stopwords = py_keywords | STOPWORDS
-    bare_ids = re.findall(r"\b[a-zA-Z_][a-zA-Z0-9_]*\b", query)
-    meaningful_ids = [id_ for id_ in bare_ids if id_ not in all_stopwords and len(id_) > 2]
-    # Deduplicate while preserving order
-    seen = set()
-    new_paths = []
-    for id_ in meaningful_ids:
-        if id_ not in seen:
-            seen.add(id_)
-            new_paths.append(id_)
-    paths = paths + new_paths
     modules = re.findall(r"\b[A-Za-z_][\w]*(?:\.[A-Za-z_]\w*)+\b", query)
     backticks = re.findall(r"`([^`]+)`", query)
     quotes = re.findall(r'"([^"]+)"', query)
@@ -401,9 +388,18 @@ def locate(root, query, top_n=5, deadline=None, stats=None):
         file_scores[fp] = score * weight
 
     ranked_files = sorted(
-        file_scores, key=lambda f: (0 if not is_test_path(f) else 1, -file_scores[f])
+        file_scores,
+        key=lambda f: (0 if not is_test_path(f) else 1, -file_scores[f], str(f)),
     )
-    ranked_syms = sorted(allsyms, key=lambda s: s["_score"], reverse=True)
+    ranked_syms = sorted(
+        allsyms,
+        key=lambda s: (
+            -s["_score"],
+            s["filepath"],
+            s.get("start_line", 0) or 0,
+            s["qualname"],
+        ),
+    )
     tests = [{"filepath": fp} for fp in ranked_files if is_test_path(fp)]
 
     if stats is not None:

@@ -368,3 +368,49 @@ will be recorded when it lands (`%TEMP%/opencode/t6_results_v3.json`).
 **Submission state.** No submit, no kernel push. E0 57836949 (2026-10-31) is still PENDING,
 which blocks the next submission (maxPendingSubmissionsPerTeam: 1). Next submission requires
 an explicit yes from the user, after the fresh kernel push passes Gate 4.
+
+
+## exp13 dual-track readiness audit (2026-11-01; offline instrument; no submit, no push)
+
+**Trigger.** User checklist + pre-flight discrepancy: the Phase-5 report was byte-identical
+to the baseline, and one column was the all-gold-in-top-10 metric mislabeled as `@10`
+(making `@10 < @5`, which is impossible for any-based Recall@K).
+
+**Engine attribution (measured).** `git diff 2b7cd84..643c6f4 -- _index.py` is 26 lines, not
+"line 332 + a comment": (1) bare issue identifiers appended to `paths`, each worth +30.0 on
+a path-substring match in score_candidate; (2) high_tokens dropped `modules`; (3) scan sort
+source-first, while ranked_files/ranked_syms had no explicit tie-breaker (equal scores
+resolved by scan order). Controlled A/B on the 23 moved tasks: reverting only line 332
+reproduces current ranks 23/23 (walk-sort moves nothing). Second 28-sample A/B: no-bare-ids
+hit@5 = 0.750 > base 0.679 > +8 variant 0.643 > +30 variant 0.571. The bare-id rule helps
+rich and displaces gold on fastapi generic-word issues.
+
+**Full 129-task locate runs** (see docs/FINAL_HARNESS_COMPARISON.md, section 1):
+- base 2b7cd84:  @1 0.419  @3 0.628  @5 0.713  @10 0.829  zero .171
+- v3 (643c6f4):  0.419  0.628  0.729  0.822  zero .178 (55 ranks moved vs base)
+- **v4, shipped (bare-id rule removed + deterministic tie-breakers on both sorts):
+  0.419  0.651  0.744  0.829  zero .171; vs base 16 tasks better, 6 worse (16+6=22 moved).**
+
+**Track fixes shipped in `_verify.py` / `swe.py` / `_index.py` / `prompts/system.md`.**
+verify() rmtree(<root>/skills) removed (Track A item 3 overturned by wheel evidence
+google-adk 1.36.1 skill_toolset.py:617-709: skills materialize into a self-cleaning
+tempfile.TemporaryDirectory, never /workspace; run_skill_script returns untruncated stdout
+- so the only real guard is swe.py). untracked_files() stops hiding skills/ untracked
+files; stray_files() flags skills/ paths; cap() OUT_CAP 4800 to 3500 with middle truncation
+so STATUS/NEXT/TEST/FALLBACK contract lines survive; prompt gains ANCHOR-after-locate/edit
+lines, call-21 early exit, call-24 circuit breaker.
+
+**Gates on the final state.** Gate 1 check_resources: exit 0, all required resources
+present (E0 57836949 still PENDING, which blocks any submission). Gate 2
+verify_bundle --bundle ckpt/bundles/exp13_swe_toolkit: exit 0, ALL CHECKS PASSED. Gate 3
+build_notebook + verify_notebook: exit 0, ALL CHECKS PASSED, artifact
+sha256 c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba543c415, 21,285 bytes
+(replaces the stale 0ece5e7ec92bf049-era record). Empirical suite 18/18 asserts;
+adversarial suite 9/9 (tools/test_verify_8_scenarios.py scenario 9 expectation updated to
+the report-dont-delete contract); all 3 engine files byte-identical across the 4 bundle
+copies via tools/sync_exp13.py.
+
+**No submission; no kernel push.** Gate 4 kernel refresh is now unblocked and awaits
+explicit approval (kernel-only, not a submission): re-splice build/exp13_swe_toolkit.ipynb
+into the kernel dir, push, confirm real slug, pull output, assert sha256 == c9135bcb...
+(docs/TASKLIST.md T7).

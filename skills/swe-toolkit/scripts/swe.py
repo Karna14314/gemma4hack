@@ -1,6 +1,8 @@
 import argparse
+import atexit
 import os
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -9,12 +11,20 @@ import _guard
 import _index
 import _verify
 
-#: `run_command` truncates at 5,000 chars without a marker, and
-#: `run_skill_script` does not truncate at all. Stay under the smaller of the two.
-OUT_CAP = 4800
-EXCERPT_CHARS = 1800
-SNIPPET_CHARS = 360
-SNIPPET_LINES = 8
+def _cleanup():
+    # Guarantee zero leak of materialized skill files into git diff
+    if os.path.isdir("/workspace/skills"):
+        shutil.rmtree("/workspace/skills", ignore_errors=True)
+
+atexit.register(_cleanup)
+
+#: Hard cap at <= 3,500 chars to avoid spiking prompt tokens toward the 14,336
+#: ADK history compaction cliff.
+OUT_CAP = 3500
+CAP_HEAD = 1400
+EXCERPT_CHARS = 1400
+SNIPPET_CHARS = 240
+SNIPPET_LINES = 6
 
 
 def _default_root():
@@ -24,9 +34,18 @@ def _default_root():
 
 
 def cap(s):
-    if len(s) > OUT_CAP:
-        return s[:OUT_CAP] + "\n...[truncated]"
-    return s
+    """Respect OUT_CAP without destroying the contract lines.
+
+    `STATUS:` opens the block and `NEXT:`/`TEST:`/`FALLBACK:` close it, so
+    truncating from the end deletes exactly the lines the agent must obey.
+    Cut the middle instead: keep the first CAP_HEAD chars and the tail up to
+    OUT_CAP, with a marker in between.
+    """
+    if len(s) <= OUT_CAP:
+        return s
+    marker = "\n...[truncated {} chars]...\n".format(len(s) - OUT_CAP)
+    tail_keep = OUT_CAP - CAP_HEAD - len(marker) - 10
+    return s[:CAP_HEAD] + marker + s[len(s) - tail_keep:]
 
 
 def _read_lines(root, relpath):
@@ -253,8 +272,12 @@ def main():
     ap.add_argument("--root")
     ap.add_argument("--top", type=int, default=5)
     ap.add_argument("--budget", type=float, default=None)
-    args, _unknown = ap.parse_known_args()
+    args, unknown = ap.parse_known_args()
     cmd = args.cmd
+    if not args.query and unknown:
+        args.query = " ".join(unknown)
+    if args.query:
+        args.query = args.query.strip("'\"` \t\r\n")
     if cmd == "locate":
         print(do_locate(args))
     elif cmd == "inspect":
