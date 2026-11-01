@@ -36,13 +36,17 @@ Applying that multiplier to the v4 locate stage:
 exp05 anchor 0.20 and exp12 0.17.
 
 **90% interval (binomial, n = 58):** at p = 0.21 the standard error is
-√(0.21·0.79/58) = 0.054, so ±1.645·SE ⇒ **[0.12, 0.30]**. The historical
-pooled 31B evidence (52/290 = 0.179, SE 0.022 per pooled estimate) reinforces
-that any single-run difference below ≈ 0.06 against exp05 is not resolvable —
-the locate uplift (+0.031 R@5) by itself is under that bar; only the combined
-locate + verify + prompt effect (~+2 tasks) is worth submitting on the
-mechanism, which is why exp13 v4 exists and E0 is measuring exp05 reproducibility
-in parallel.
+√(0.21·0.79/58) = 0.054, so ±1.645·SE ⇒ **[0.12, 0.30]**. This interval
+is the *cross-split* Public→Private noise (drawing a different 58-task sample).
+On the fixed 58 public tasks, run-to-run SD is sqrt(sum p_i(1-p_i)) ≈ 1.0–1.5
+tasks (our 31B runs scored 12, 10, 10, 10, 10 tasks, empirical SD 0.89), so a
+single-run difference of 1 task (0.017) is inside noise, but 2 tasks (0.034) is
+~1.3–2 SD and borderline meaningful. The locate uplift alone (+0.031 R@5) is a
+retrieval metric, not a score prediction; the combined locate + verify + prompt
+effect (~+2 tasks) is the submission rationale, which is why exp13 v4 exists and
+E0 is measuring exp05 reproducibility in parallel. Note: we no longer claim
+"prompt micro-rule attention dilution" as a finding (exp03/exp08/exp10/exp12 all
+scored 10 tasks = pooled 0.179 baseline).
 
 **Where the ceiling is.** If nothing above locate changes, the model cannot
 predict a mean above ≈ 0.24 (the edit multiplier 0.28→0.31 is the maximum
