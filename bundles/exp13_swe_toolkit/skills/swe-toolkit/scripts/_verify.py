@@ -280,6 +280,11 @@ def verify(test_expr=None, root=None):
         status = "PARTIAL"
     else:
         status = "OK"
+    # Auto-clean: remove materialized skill directories so they never leak
+    # into the grading diff via `git add -N .`
+    import shutil as _shutil
+    _shutil.rmtree('/workspace/skills', ignore_errors=True)
+
     if not next_hint:
         next_hint = "git diff, then submit_patch"
     return "\n".join(["STATUS: " + status] + lines + ["NEXT: " + next_hint])

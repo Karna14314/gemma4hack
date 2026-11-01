@@ -182,13 +182,33 @@ def parse_query(query):
     for m in re.finditer(r'File "([^"]+)", line \d+, in ([A-Za-z_]\w*)', query):
         trace_files.append(m.group(1).split("/")[-1])
         trace_funcs.append(m.group(2))
+    # Extract .py filenames from the query
     paths = re.findall(r"[A-Za-z0-9_./-]+\.py\b", query)
+    # Also extract bare identifiers (def names, class names, CamelCase, snake_case)
+    # Filter out Python keywords and English stopwords
+    py_keywords = {
+        "if", "else", "for", "while", "import", "from", "as", "return", "yield",
+        "raise", "try", "except", "finally", "with", "lambda", "pass",
+        "break", "continue", "def", "class", "import", "in", "is", "not", "or",
+        "and", "async", "await", "global", "nonlocal", "del"
+    }
+    all_stopwords = py_keywords | STOPWORDS
+    bare_ids = re.findall(r"\b[a-zA-Z_][a-zA-Z0-9_]*\b", query)
+    meaningful_ids = [id_ for id_ in bare_ids if id_ not in all_stopwords and len(id_) > 2]
+    # Deduplicate while preserving order
+    seen = set()
+    new_paths = []
+    for id_ in meaningful_ids:
+        if id_ not in seen:
+            seen.add(id_)
+            new_paths.append(id_)
+    paths = paths + new_paths
     modules = re.findall(r"\b[A-Za-z_][\w]*(?:\.[A-Za-z_]\w*)+\b", query)
     backticks = re.findall(r"`([^`]+)`", query)
     quotes = re.findall(r'"([^"]+)"', query)
     high_tokens = set()
     exact_syms = set()
-    for s in backticks + quotes + paths + modules:
+    for s in backticks + quotes + paths:
         high_tokens |= tokenize(s)
     for s in backticks + quotes:
         for t in re.findall(r"[A-Za-z_]\w*", s):
@@ -309,7 +329,7 @@ def locate(root, query, top_n=5, deadline=None, stats=None):
     files = walk(root, deadline=deadline, max_files=MAX_FILES)
     # Source first: if the deadline cuts the scan short it must not have spent
     # the budget on test modules.
-    files.sort(key=lambda f: (is_test_path(str(f)), str(f)))
+    files.sort(key=lambda f: (0 if not is_test_path(str(f)) else 1, -path_weight(str(f)), str(f)))
 
     allsyms = []
     file_text = {}
@@ -381,7 +401,7 @@ def locate(root, query, top_n=5, deadline=None, stats=None):
         file_scores[fp] = score * weight
 
     ranked_files = sorted(
-        file_scores, key=lambda f: (is_test_path(f), -file_scores[f])
+        file_scores, key=lambda f: (0 if not is_test_path(f) else 1, -file_scores[f])
     )
     ranked_syms = sorted(allsyms, key=lambda s: s["_score"], reverse=True)
     tests = [{"filepath": fp} for fp in ranked_files if is_test_path(fp)]

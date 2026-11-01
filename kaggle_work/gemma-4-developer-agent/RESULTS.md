@@ -314,3 +314,57 @@ hash-identical.
 tasks. Only 7 snapshots are extracted, so 7/7 is the available evidence, not the gate. The
 competition dataset holds 129 snapshots (21.5 GB); downloading the 30 costs roughly 2–4 GB
 and is the next step. No E1 submission until that number exists.
+
+## 2026-11-01 — exp13 readiness check: gate regression found and cleared, engine wired (no submission)
+
+A submission-readiness pass over `ckpt/bundles/exp13_swe_toolkit` found the bundle **not ready**.
+
+**Regression: Gate 2 failed with 2 checks.** `[FAIL] prompt has problem_description` and
+`[FAIL] prompt ends cleanly` — the T2 prompt-hygiene change had removed the trailing
+`## The issue` + `{problem_description}` tail, but `tools/verify_bundle.py:106-116` requires
+the placeholder to be present and to be the last thing in the file. The removal is
+competition-safe in isolation (`agent_runner.py:379` sends the problem statement as the first
+user message; the scored exp05 artifact carries no placeholder), but it breaks this repo's own
+non-negotiable gate, so the tail was restored (git checkout) in the ckpt and kaggle_work
+copies. All three exp13 bundle copies (`bundles/`, `ckpt/bundles/`, `kaggle_work/.../bundles/`)
+are now byte-identical (system.md sha256 a4d62ab4..., 5,941 raw bytes).
+
+**Discovery: the upgraded locate engine was never in any bundle.** The T2/T6 edits to
+`_index.py` / `_verify.py` existed only in the repo-root `skills/swe-toolkit/scripts/`; all
+three bundle copies still carried the pre-session engine. On top of that, the claimed
+walk-sort demotion had silently never been written (an inline replace printed success but
+never saved the file), and one explanatory comment above `error_strings` had been deleted as
+an edit side effect. Fixes, all in the repo copy and then synced byte-identically into the
+three bundle copies (`_index.py` sha256 9e1b65f4..., `_verify.py` 37a08024..., `swe.py`
+582aaa06..., SKILL.md 5f4bde90...):
+
+- `_index.py:330` scan sort is now
+  `files.sort(key=lambda f: (0 if not is_test_path(str(f)) else 1, -path_weight(str(f)), str(f)))`,
+  i.e. source files are always visited before test modules and vendor paths inside one
+  priority class. Note the `str()` wrappers: `walk()` yields `Path` objects and the old key
+  relied on them too; a bare `is_test_path(f)` raises AttributeError.
+- the `error_strings` comment was restored.
+
+**Kernel V2 artifact is not Gate 4 material for any current bundle.** The pushed kernel
+`narisettichaitanya/gemma4-devagent-exp13-swe-toolkit-v2` is COMPLETE, DONE_OK, no traceback,
+sha256 f30e84b34d8997df... — but it was built from an older bundle revision: 16 members with
+skill dirs in BOTH spellings (`skills/swe-toolkit/` and `skills/swe_toolkit/`), a
+`bootstrap.py`, and no script hash matching any on-disk copy. Any future submission needs a
+fresh kernel push, and Gate 4 (hash equality against the local build) can only be closed
+against that new push.
+
+**Gates after the fix.** `verify_bundle.py --bundle ckpt/bundles/exp13_swe_toolkit` —
+`ALL CHECKS PASSED`, pack digest `0ece5e7ec92bf049`; `build_notebook.py` +
+`verify_notebook.py` on `build/exp13_swe_toolkit.ipynb` — `ALL CHECKS PASSED`, artifact
+sha256 `0ece5e7ec92bf049c478bc8f6ea0fcd12438d02455f665c5f0f1d428d2fd2451`, 20,159 bytes,
+10 members, single kebab-case skill, tools=10 (compile_submission), model 31B. The
+notebook-built archive reproduces the pack byte-for-byte, so Gate 2 and Gate 3 agree.
+
+**Empirical check in flight.** A 5-snapshot smoke test of the upgraded engine ran clean
+(no exceptions); ranks moved within local noise (rich_2943 3 -> 2, fastapi_11194 3 -> 5).
+A full 129-task re-benchmark against the exact engine shipped in the bundle is running and
+will be recorded when it lands (`%TEMP%/opencode/t6_results_v3.json`).
+
+**Submission state.** No submit, no kernel push. E0 57836949 (2026-10-31) is still PENDING,
+which blocks the next submission (maxPendingSubmissionsPerTeam: 1). Next submission requires
+an explicit yes from the user, after the fresh kernel push passes Gate 4.
