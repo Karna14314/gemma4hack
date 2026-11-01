@@ -262,3 +262,27 @@ the two highest noisy scores. Re-verify both artifacts byte-for-byte before sele
 | 2026-10-31 | 0.24 is **not** arithmetically impossible: it needs ~7 of the 30 single-file never-solved tasks; the blocker is localization |
 | 2026-10-31 | `exp13_swe_toolkit` is **not submittable**: `locate` is 13.5–25.7 s on fastapi, the 25 s watchdog returns `DEGRADED` with no output, the prompt uses `find /`, the skill name is wrong, `SKILL.md` omits `locate`, and the `{problem_description}` append makes it 2 changes |
 | 2026-10-31 | T2 gate is now a 30-task locate benchmark at hit@3 ≥ 60%; no E1 submission until it passes |
+| 2026-11-01 | E4B re-opened for the small-model prize via `e4b_v3_swe_toolkit` (user directive): deterministic skill locate/verify substitutes inference-bound exploration; supersedes the "E4B closed" row above for the bundle line |
+
+## 2026-11-01 follow-ups (user-directed, while E0 `57836949` is PENDING)
+
+- **Task 1 — `docs/SCORE_PREDICTION_AND_ROADMAP.md` written.** exp13 v4 point
+  prediction ≈ 0.21, 90% CI [0.12, 0.30] at n = 58 (locate uplift calibrated on the
+  exp05 anchor multiplier); e4b 0.05 flat-line diagnosed in §2 with the
+  `e4b_v3_swe_toolkit` prediction 0.09–0.13, CI [0.04, 0.16]. §3 symbol numbers are
+  PENDING(measurement) until the v5 run aggregates.
+- **Task 2 — intra-file symbol recall.** `symrank_v5.py` prototype (temp dir; repo
+  untouched) launched over all 129 tasks: span-level re-ranking (signature+body token
+  overlap, exact/trace boosts, 1/rank file prior) on top-8 files. Acceptance bars:
+  File R@3/R@5 parity with v4, locate deadline intact, measured sym hit@1/3/5/10.
+  Baseline (v4): sym@1/3/5/10 = 0.157/0.231/0.306/0.364 (121 gold-symbol tasks).
+- **Task 3 — DONE. `tracks/e4b_small/bundles/e4b_v3_swe_toolkit` staged:** 10 files,
+  48,425 B; prompt 2,104 chars derived from e4b_v2 by three exact workflow replacements
+  (locate-first cold call, fallback grep, verify call + fast-exit); skill files
+  hash-pinned byte-identical to the locked v4 engine (exp13 artifact + repo source).
+  Validation: `verify_bundle_e4b_v3.py` ALL CHECKS PASSED; real harness
+  `tools/verify_bundle.py --bundle ...` ALL CHECKS PASSED (exit 0; declared model
+  exactly `['gemma-4-e4b-it-qat-w4a16-ct']`, tools=7 = 6 + SkillToolset, registry
+  `[WARN]` only); compiled `run_skill_script` declaration PASS — required
+  `[skill_name, file_path]`, args list, no `command`.
+- No competition submission was made (rule 1); E0 `57836949` still PENDING.

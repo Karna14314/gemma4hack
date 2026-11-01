@@ -425,3 +425,43 @@ submission.zip sha256 c9135bcb969f91c20ada77f999c12b05c603ceaaeda4d85f6d5c155ba5
 local Gate 3 build (docs/TASKLIST.md T7). The audit rows "no kernel push" line is superseded
 by this postscript. No competition submission was made; E0 57836949 still PENDING and rule 1
 requires an explicit yes anyway.
+
+**Score-prediction doc written (2026-11-01, no submission).**
+`docs/SCORE_PREDICTION_AND_ROADMAP.md`: exp13 v4 (`c9135bcb...`) public-LB point
+prediction ~0.21, 90% CI [0.12, 0.30] at n=58 (locate R@5 0.744 x the exp05-anchor
+located-to-passed multiplier 0.20/0.713=0.28; SE=0.054, so deltas < ~0.06 stay
+unresolved). e4b 0.05 flat-line diagnosed (edit fidelity, low-precision run_command
+exploration, compaction state loss); skill-chain prediction for
+`e4b_v3_swe_toolkit`: 0.09-0.13, CI [0.04, 0.16]. Every number in the doc is
+measured on the 129-task instrument or pinned to a scored anchor.
+
+**Task 2 measured - v5 intra-file symbol re-ranker prototype (2026-11-01, no engine
+change, no submission).** `%TEMP%/opencode/symrank_v5.py` imported the locked
+`swe-toolkit/scripts/_index.py` read-only and re-ranked symbol spans over the top-8
+locate files on all 129 tasks (607 s): file-rank equality 0/129 mismatches, so
+File R@3 0.651 / R@5 0.744 carry over intact. Symbol hit@1/3/5/10 on the 121
+gold-symbol tasks: v4 shipped 0.157/0.231/0.306/0.364 -> v5 span ranker
+0.190/0.322/0.388/0.488 (+0.033/+0.091/+0.082/+0.124). Scope ceiling measured: only
+101/121 gold-symbol tasks have a gold file within top-8; v5 in-scope hits are
+0.208/0.366/0.446/0.564; all 359 gold qualifiers are bare names. Re-rank cost
++0.235 s median / +0.534 s max (warm cache) inside the 20 s locate budget. The
+0.50 hit@3 target was not reached (0.322); follow-up levers are member-over-container
+weight rebalance, a gold-symbol-context term, and top-12 file scope. Any engine
+change lands only as exp14 (one isolated diff) after user approval plus a
+benchmark-equality rerun; per-task JSON kept in the temp dir.
+
+**Task 3 done - e4b_v3_swe_toolkit staged and fully verified (2026-11-01, no
+submission).** `tracks/e4b_small/bundles/e4b_v3_swe_toolkit`: 10 files, 48,425 B;
+model `gemma-4-e4b-it-qat-w4a16-ct` only; sampling 0.1/0.95/8192/4096/true;
+eval 240/35/8/80; prompt 2,104 chars derived from e4b_v2 by exactly three workflow
+replacements (locate cold-call first, grep demoted to fallback, verify cold-call +
+fast exit); `{problem_description}` clean tail, exactly one brace pair; skill files
+hash-pinned byte-identical to the locked v4 engine (exp13 artifact AND repo
+source). Verification stack: `tracks/e4b_small/verify_bundle_e4b_v3.py` ALL CHECKS
+PASSED; real harness `tools/verify_bundle.py --bundle ...` ALL CHECKS PASSED
+(exit 0; declared model exactly ['gemma-4-e4b-it-qat-w4a16-ct'] - zero 31B
+fallback; compile root swe_agent tools=7 = 6 harness + SkillToolset; E4B
+wheelhouse-registry [WARN] is the documented non-blocker); compiled
+`run_skill_script` declaration PASS (required [skill_name, file_path], args list,
+no command). Kernel push deliberately deferred while E0 57836949 is PENDING; a
+kernel run is not needed for this task per user scoping.
