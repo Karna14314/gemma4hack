@@ -242,3 +242,75 @@ dataset.
 6. **Next, no submission required.** Fix T2 items 1/2/7, expand the snapshot set from 7 to
    the 30 single-file never-solved tasks, and measure `locate` hit@3. Gate at 60%: pass →
    build and submit E1; fail → hold the anchor and spend the remaining days on draws.
+
+## 2026-11-01 — T2 toolkit fixes + exp13 prompt repair (no submission)
+
+E0 (`57836949`) is still `pending` at ~24 h, so no submission was possible. This entry
+records the code work only.
+
+**What changed in `skills/swe-toolkit/`** (the E1 lever):
+
+| # | change | mechanism |
+|---|---|---|
+| 1 | `_index.walk` visits only `.py` and skips the per-file NUL probe; `MAX_FILES=4000` | fastapi has 2,418 files but 1,279 `.py`; the probe was 40% of the scan |
+| 2 | `_guard.py`: `deadline_after` / `expired` / `run(seconds, fn)` thread watchdog | a partial ranking is always produced; `DEGRADED` with no body is a wasted call |
+| 3 | `_index.locate` takes a `deadline`, sorts source-first, and reports `files_indexed/files_found/truncated/seconds` | a cut scan must not have spent its budget on `tests/` |
+| 4 | test paths are zeroed, not penalised; `docs_src` ×0.5, vendored ×0.3; traceback ×6, error-string ×4 | protected paths cannot be gold |
+| 5 | `swe.py` output contract: `STATUS` + `TOP FILES` + `NEXT:` + `TEST:` + `FALLBACK:` + excerpts (40 lines for #1, 8 for #2–5) | the model needs an action, not a ranked list |
+| 6 | `_verify` rewritten: untracked files count as changes, empty diff is `FAIL`, stray `.orig/.rej/.adk_exec_*` and gitignored new `.py` are flagged, JUnit first-failure line, `STATUS`/`NEXT` | `git add -N .` skips gitignored files, so a new source file can silently miss the patch |
+| 7 | `SKILL.md` names `swe-toolkit` and documents `run_skill_script(skill_name=..., file_path=..., args=[...])` | the old text used `skill_name="swe_toolkit"` and `script_path=`, which do not exist |
+| 8 | `bootstrap.py` deleted | it `rglob`ed `/` and was unreferenced |
+
+**Measured.**
+
+- `locate` on `audit_snapshots/fastapi_14371` (1,279 `.py`): **3.0–3.9 s warm**, 10.9 s cold
+  (was 13.5–25.7 s). `--budget 1` returns `STATUS: PARTIAL (indexed 732/1279 files in 1.3s)`
+  with `fastapi/_compat/v2.py` still rank 1 — no more empty `DEGRADED`.
+- `tools/audit_locate.py` over the 7 snapshots: **hit@1 5/7, hit@3 7/7, hit@5 7/7**,
+  median 3.19 s, max 6.87 s. `rich_3470` moved from rank 10 to rank 2 and `fastapi_15280`
+  holds rank 2. Tests occupy 0 of the top 3 in every task.
+- `TEST:` suggestion is correct on 7/7: `test_schema_compat_pydantic_v2`, `test_fastapi_cli`,
+  `test_parsers`, `test_adapters`, `test_requests`, `test_text`, `test_progress`.
+- `verify` was exercised on 8 fixtures: clean tree → `FAIL empty`; untracked source → `OK`;
+  `.orig` → `FAIL stray`; protected edit → `FAIL protected`; gitignored new `.py` →
+  `PARTIAL ignored` with the `git add -N -f` hint; after `add -N -f` → `OK`; pytest green →
+  `OK`; pytest red → `FIRST FAILURE: tests.test_core::test_a: assert 1 == 2`.
+- The ADK execution path was emulated exactly (materialize `scripts/*.py` into a temp dir,
+  `chdir`, `sys.argv`, `runpy.run_path`): `locate` and `verify` both return their contract.
+
+**exp13 prompt.** The `## TOOLKIT` block is replaced by 418 chars: one `run_skill_script`
+call with `skill_name="swe-toolkit"`, `file_path="scripts/swe.py"`,
+`args=["locate","--issue",...]`; no `find /`, no `script_path`, no `--root`, and the text
+says to obey `NEXT:` and never call `locate` twice. Everything above the block is exp05
+verbatim; the trailing `## The issue` + `{problem_description}` stays because
+`tools/verify_bundle.py:107-116` requires it, so E1's baseline is
+`ckpt/bundles/exp05_patch_integrity`, not the scored zip. The first draft of the block was
+1,034 chars; it was cut to 418 after measuring the hidden cost below.
+
+**The skill toolset is not free, and that is the main risk in E1.**
+`SkillToolset.process_llm_request` (`skill_toolset.py:1061-1083`) appends
+`_DEFAULT_SKILL_SYSTEM_INSTRUCTION` (~1,250 chars) plus an `<available_skills>` XML block to
+the system instruction on **every** request, and adds four tool declarations
+(`list_skills`, `load_skill`, `load_skill_resource`, `run_skill_script`). So E1's real prompt
+delta is ~1,800 chars (~450 tokens) plus four JSON tool schemas — not 418 chars. `exp08`
+added 554 chars of prose with no new tool and scored 0.17 vs 0.20, which is within noise but
+the direction is consistent. E1 therefore trades ~450 tokens of context and 4 tool
+declarations for one localization call. That trade has to show up per task, not on the LB
+alone.
+
+The ADK preamble also tells the model it "MUST use `load_skill`" before proceeding, and it
+is appended *after* our instruction. The prompt now works with that instead of fighting it:
+`load_skill` returns `SKILL.md`, which carries the exact call shape and the status codes.
+The old "do not call `load_skill` first" line was removed for that reason.
+
+**Gates.** `verify_bundle.py --bundle ckpt/bundles/exp13_swe_toolkit` → `ALL CHECKS PASSED`;
+`build_notebook.py` + `verify_notebook.py` → `ALL CHECKS PASSED`; artifact sha256
+`31de5b898d72d2455abe7d8d8668bed0a0cf883492b08684222fb430365b3fb0`, 19,716 bytes, 10 members.
+The four copies (`skills/swe-toolkit/`, `ckpt/bundles/exp13_swe_toolkit/`,
+`bundles/exp13_swe_toolkit/`, `kaggle_work/.../bundles/exp13_swe_toolkit/`) are
+hash-identical.
+
+**Still open before E1.** The T7 gate wants hit@3 ≥ 60% on the 30 single-file never-solved
+tasks. Only 7 snapshots are extracted, so 7/7 is the available evidence, not the gate. The
+competition dataset holds 129 snapshots (21.5 GB); downloading the 30 costs roughly 2–4 GB
+and is the next step. No E1 submission until that number exists.

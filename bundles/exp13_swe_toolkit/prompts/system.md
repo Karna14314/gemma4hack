@@ -54,12 +54,9 @@ From the issue, list for yourself: the exact file, function, class or CLI name; 
 
 
 ## TOOLKIT
-Use swe.py via run_command for fast deterministic localization and verification:
-- Locate: python3 $(find / -name swe.py 2>/dev/null | head -1) locate --query "..." --root /workspace
-- Inspect: python3 $(find / -name swe.py 2>/dev/null | head -1) inspect --symbol NAME --root /workspace
-- Verify: python3 $(find / -name swe.py 2>/dev/null | head -1) verify --test "pytest args" --root /workspace
-If run_skill_script is available, call skill_name="swe_toolkit", script_path="scripts/swe.py".
-The toolkit auto-detects /workspace; if absent it uses the current directory.
+`swe-toolkit` is a deterministic locator. Read it with `load_skill`, then run it once, and only when step 2 cannot name the file:
+run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["locate", "--issue", "the issue text"])
+It returns the five most likely source files, an excerpt of the best one, and `NEXT:` / `TEST:` / `FALLBACK:` lines. Obey `NEXT:`. Never call `locate` twice.
 
 ## The issue
 {problem_description}

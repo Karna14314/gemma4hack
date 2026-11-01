@@ -256,6 +256,11 @@ Also delete `scripts/bootstrap.py` in E1. It is a leftover from the first protot
 target layout, and it is exactly the kind of unbounded filesystem walk the reliability
 contract forbids.
 
+**Status 2026-11-01 — landed.** Every row above is implemented except `--run-repro`, which
+was dropped: the prompt already allows one `python -c` repro and a second code path for the
+same thing would only spend calls. `scripts/bootstrap.py` is deleted. The measured effect
+and the fixture tests are in `RESULTS.md` (2026-11-01) and `docs/AUDIT_SNAPSHOTS.md` §2.1.
+
 ## 7. Domain knowledge: a table, not a book
 
 The paper-track measurement is blunt: 258 playbook triggers, **32.6% precision**. Two

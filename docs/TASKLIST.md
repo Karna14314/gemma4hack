@@ -97,6 +97,12 @@ The itemized gap is `docs/SKILLS_ARCHITECTURE.md` §6.4. One PR-sized change:
 **Done when.** Test demotion shows hit@3 7/7 on the seven snapshots and no regression on the
 other six tasks.
 
+**Status 2026-11-01 — done.** All 8 items landed. hit@1 5/7, hit@3 7/7, hit@5 7/7, median
+3.19 s, max 6.87 s; `rich_3470` rank 10 → 2. `verify` was exercised on 8 fixtures covering
+empty / untracked / stray / protected / gitignored / syntax / pytest-green / pytest-red.
+Details in `RESULTS.md` under 2026-11-01. The bundle copy in
+`ckpt/bundles/exp13_swe_toolkit/skills/swe-toolkit/` is hash-identical to `skills/swe-toolkit/`.
+
 ---
 
 ## T3 — Adversarial fixtures
@@ -154,6 +160,14 @@ as the user turn (`agent_runner.py:677`), and the 0.20 artifact has no placehold
 skill `swe-toolkit` and calls it without `find /`.
 **Done when.** Score recorded; keep only if the paired instrument shows a real per-task gain
 and the LB is ≥ E0 + 0.06 (0.05 is 1 standard error, see Audit A).
+
+**Status 2026-11-01 — two of three gate clauses pass, the third is unmeasured.**
+`locate` hit@3 is 7/7 on the 7 extracted snapshots, but those are archetype picks, not the
+30 never-solved tasks, so 7/7 is not the gate. `locate` is 3.0–3.9 s warm on fastapi and
+`--budget 1` returns `STATUS: PARTIAL` with a body, so the latency clause passes. The prompt
+names `swe-toolkit`, has one `run_skill_script` call shape, and contains no `find /`.
+Remaining work: download the 30 single-file never-solved snapshots (≈2–4 GB), re-run
+`tools/audit_locate.py`, and record hit@3 before building E1.
 
 ---
 

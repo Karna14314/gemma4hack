@@ -3,6 +3,7 @@ import math
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 SKIP_DIRS = {
@@ -10,6 +11,13 @@ SKIP_DIRS = {
     "build", "dist", "__pycache__", ".tox", ".eggs", ".mypy_cache",
 }
 MAX_BYTES = 500 * 1024
+#: Hard cap on files visited by one scan. The largest public repo (fastapi) has
+#: ~1.3k Python files, so this only trips on a monorepo.
+MAX_FILES = 4000
+#: Default cooperative budget for `locate`, in seconds. `swe.py` sets a hard
+#: watchdog above this so a partial ranking is always produced before the cut.
+LOCATE_BUDGET_SECONDS = 20.0
+
 STOPWORDS = {
     "the", "when", "with", "should", "error", "value", "return", "using",
     "does", "not", "from", "this", "that", "and", "for", "are", "was",
@@ -37,22 +45,39 @@ def is_binary(path):
         return True
 
 
-def walk(root):
+def walk(root, deadline=None, max_files=None, only_py=True):
+    """Collect candidate files under `root`.
+
+    Only `.py` files are visited by default. The previous version probed every
+    file in the tree for a NUL byte, which on fastapi meant 2,418 opens instead
+    of 1,279 and dominated the cold-cache runtime. Python sources are decoded
+    with `errors="replace"` later, so the binary probe buys nothing for them.
+
+    `deadline` is a `time.monotonic()` value; `max_files` bounds the scan. Both
+    make the caller return a partial list instead of hanging.
+    """
     out = []
     root = Path(root)
     for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
         for fn in filenames:
+            if only_py and not fn.endswith(".py"):
+                continue
             p = Path(dirpath) / fn
             try:
                 if p.stat().st_size > MAX_BYTES:
                     continue
             except Exception:
                 continue
-            if is_binary(p):
+            if not only_py and is_binary(p):
                 continue
             out.append(p)
+            if max_files is not None and len(out) >= max_files:
+                return out
+        if deadline is not None and time.monotonic() > deadline:
+            break
     return out
+
 
 
 def split_ident(tok):
@@ -169,6 +194,15 @@ def parse_query(query):
         for t in re.findall(r"[A-Za-z_]\w*", s):
             exact_syms.add(t)
     general = tokenize(query)
+    # Quoted phrases that look like error text, not identifiers. A file that
+    # literally contains one is almost certainly the file that raises it.
+    error_strings = []
+    for s in backticks + quotes:
+        t = s.strip()
+        if len(t) < 12:
+            continue
+        if " " in t or ":" in t or "Error" in t or "error" in t or "Exception" in t:
+            error_strings.append(t)
     return {
         "trace_files": trace_files,
         "trace_funcs": trace_funcs,
@@ -178,7 +212,52 @@ def parse_query(query):
         "exact_syms": exact_syms,
         "general": general,
         "backticks": backticks,
+        "error_strings": error_strings,
     }
+
+
+def is_test_path(filepath):
+    """True for test modules. They are never the file the fix belongs in."""
+    fp = filepath.replace("\\", "/").lower()
+    name = fp.rsplit("/", 1)[-1]
+    return (
+        "/tests/" in fp
+        or fp.startswith("tests/")
+        or name.startswith("test_")
+        or name.endswith("_test.py")
+        or "/testing/" in fp
+    )
+
+
+def is_test_module(filepath):
+    """True only for files pytest would collect: `test_*.py` / `*_test.py`.
+
+    `tests/conftest.py` and `tests/compat.py` live under a test directory but are
+    not commands you can run, so they are excluded from the `TEST:` suggestion.
+    """
+    name = filepath.replace("\\", "/").lower().rsplit("/", 1)[-1]
+    return name.startswith("test_") or name.endswith("_test.py")
+
+
+
+def path_weight(filepath):
+    """Multiplicative prior on a source path, before any content score.
+
+    Documentation examples and vendored trees are real fix sites far less often
+    than the package itself, but they are not impossible, so they are demoted
+    rather than dropped.
+    """
+    fp = filepath.replace("\\", "/").lower()
+    weight = 1.0
+    if "/docs_src/" in fp or fp.startswith("docs_src/"):
+        weight *= 0.5
+    if any(
+        seg in fp
+        for seg in ("/vendor/", "/vendored/", "/_vendor/", "/third_party/", "/third-party/")
+    ):
+        weight *= 0.3
+    return weight
+
 
 
 def score_candidate(sym, q, idf, N, avgdl, doc_tokens):
@@ -213,26 +292,43 @@ def score_candidate(sym, q, idf, N, avgdl, doc_tokens):
         idf_t = idf[t]
         denom = tf + 1.5 * (1 - 0.75 + 0.75 * dl / avgdl) if avgdl > 0 else tf
         score += idf_t * (tf * (1.5 + 1)) / (denom if denom else 1)
-    if "/tests/" in fp or fp.startswith("tests/") or "test_" in Path(fp).name:
-        score -= 1.5
-    if "/docs/" in fp:
-        score -= 1.0
     return score
 
 
-def locate(root, query, top_n=5):
-    files = walk(root)
+
+def locate(root, query, top_n=5, deadline=None, stats=None):
+    """Rank the files most likely to need the fix for `query`.
+
+    Returns `(ranked_symbols, ranked_files, test_files)`. `deadline` is a
+    `time.monotonic()` value: the scan stops between files and ranks whatever it
+    has, so a slow tree yields a partial answer instead of nothing. `stats`, if
+    given, is filled with `files_indexed`, `truncated` and `seconds`.
+    """
+    started = time.monotonic()
+    q = parse_query(query)
+    files = walk(root, deadline=deadline, max_files=MAX_FILES)
+    # Source first: if the deadline cuts the scan short it must not have spent
+    # the budget on test modules.
+    files.sort(key=lambda f: (is_test_path(str(f)), str(f)))
+
     allsyms = []
+    file_text = {}
+    truncated = False
     for f in files:
-        if f.suffix != ".py":
-            continue
+        if deadline is not None and time.monotonic() > deadline:
+            truncated = True
+            break
         try:
             text = f.read_text(encoding="utf-8", errors="replace")
         except Exception:
             continue
-        rel = str(f.relative_to(root)) if f.is_relative_to(root) else str(f)
+        try:
+            rel = str(f.relative_to(root))
+        except ValueError:
+            rel = str(f)
+        file_text[rel] = text
         allsyms.extend(extract_symbols(text, rel))
-    q = parse_query(query)
+
     docs = []
     for s in allsyms:
         dt = set()
@@ -264,33 +360,48 @@ def locate(root, query, top_n=5):
     file_nodes = {}
     for s in allsyms:
         file_nodes.setdefault(s["filepath"], []).append(s["_score"])
+    trace_names = {t.lower() for t in q["trace_files"]}
     for fp, ns in file_nodes.items():
         ordered = sorted(ns, reverse=True)
         top = ordered[0] if ordered else 0.0
         rest = sum(ordered[1:4]) if len(ordered) > 1 else 0.0
-        file_scores[fp] = top + 0.25 * rest
+        score = top + 0.25 * rest
+        # A test module is never the fix site. Zero it rather than merely
+        # penalising it: on the short issues the tests used to fill the top 5.
+        weight = 0.0 if is_test_path(fp) else path_weight(fp)
+        if weight:
+            low = fp.replace("\\", "/").lower()
+            base = low.rsplit("/", 1)[-1]
+            if trace_names and (base in trace_names or low in trace_names):
+                weight *= 6.0
+            if q["error_strings"] and any(
+                err in file_text.get(fp, "") for err in q["error_strings"]
+            ):
+                weight *= 4.0
+        file_scores[fp] = score * weight
 
-    ranked_files = sorted(file_scores, key=lambda f: file_scores[f], reverse=True)
+    ranked_files = sorted(
+        file_scores, key=lambda f: (is_test_path(f), -file_scores[f])
+    )
     ranked_syms = sorted(allsyms, key=lambda s: s["_score"], reverse=True)
+    tests = [{"filepath": fp} for fp in ranked_files if is_test_path(fp)]
 
-    tests = []
-    tseen = set()
-    for fp in ranked_files:
-        if ("/tests/" in fp or fp.startswith("tests/") or "test_" in Path(fp).name):
-            if fp not in tseen:
-                tseen.add(fp)
-                tests.append({"filepath": fp})
-    if len(tests) < 3:
-        for s in ranked_syms:
-            fp = s["filepath"]
-            if ("/tests/" in fp or fp.startswith("tests/") or "test_" in Path(fp).name):
-                if fp not in tseen:
-                    tseen.add(fp)
-                    tests.append({"filepath": fp})
-                    if len(tests) >= 3:
-                        break
+    if stats is not None:
+        stats.update(
+            {
+                "files_indexed": len(file_text),
+                "files_found": len(files),
+                "truncated": truncated,
+                "seconds": round(time.monotonic() - started, 3),
+                # Every collectable test module, names only. `swe.py` picks the
+                # `TEST:` line from this, because the BM25 top-20 is dominated
+                # by docs_src examples on fastapi.
+                "test_paths": [fp for fp in ranked_files if is_test_module(fp)],
+            }
+        )
 
-    return ranked_syms[:top_n], ranked_files[:top_n], tests[:3]
+    return ranked_syms[:top_n], ranked_files[:top_n], tests[:20]
+
 
 
 def _name_variants(name):
@@ -338,6 +449,7 @@ def twins(root, symbol):
         seen.add(key)
         out.append((kind, s))
 
+    add("def", t)
     # direct AST callers
     for s in allsyms:
         if symbol in s.get("calls", []):

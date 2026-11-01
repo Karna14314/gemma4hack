@@ -22,3 +22,7 @@ build/
 # Audit snapshots - 786 MB compressed / ~1.6 GB extracted, re-downloadable.
 # See docs/AUDIT_SNAPSHOTS.md for the manifest, usage audit and retention policy.
 audit_snapshots/
+
+# Third-party public notebooks pulled for the 2026-10-31 research audit.
+# Kept locally for provenance; not ours to redistribute.
+research/public_notebooks/

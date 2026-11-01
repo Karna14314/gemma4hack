@@ -50,21 +50,29 @@ are checked out at each task's `base_commit` and were only read.
 `_index.locate(root, problem_statement, top_n=10)`, file-level aggregation, no
 modifications. Gold files come from the task's `patch` field.
 
+**Re-measured 2026-11-01** after the T2 ranker changes (test demotion, `docs_src`/vendored
+priors, `.py`-only walk, cooperative deadline):
+
 | task | best gold rank | hit@1 | hit@3 | hit@5 | hit@10 | runtime |
 |---|---:|---|---|---|---|---:|
-| `httpx_3672` | 1 | yes | yes | yes | yes | 0.30 s |
-| `requests_7502` | 2 | no | yes | yes | yes | 0.40 s |
-| `requests_7315` | 1 | yes | yes | yes | yes | 0.38 s |
-| `rich_3061` | 1 | yes | yes | yes | yes | 1.11 s |
-| `rich_3470` | 10 | no | no | no | yes | 1.14 s |
-| `fastapi_15280` | 2 | no | yes | yes | yes | 3.04 s |
-| `fastapi_14371` | 1 | yes | yes | yes | yes | 3.14 s |
-| **overall** | | **4/7** | **6/7** | **6/7** | **7/7** | median 1.11 s |
+| `httpx_3672` | 1 | yes | yes | yes | yes | 0.85 s |
+| `requests_7502` | 1 | yes | yes | yes | yes | 1.14 s |
+| `requests_7315` | 1 | yes | yes | yes | yes | 1.10 s |
+| `rich_3061` | 1 | yes | yes | yes | yes | 3.26 s |
+| `rich_3470` | 2 | no | yes | yes | yes | 3.19 s |
+| `fastapi_15280` | 2 | no | yes | yes | yes | 6.87 s |
+| `fastapi_14371` | 1 | yes | yes | yes | yes | 6.29 s |
+| **overall** | | **5/7** | **7/7** | **7/7** | **7/7** | median 3.19 s |
 
-Runtime is well inside the 25 s locate deadline, including the 1,279-file FastAPI repo.
-The earlier ad-hoc lexical ranker needed 20–25 s on FastAPI and missed `fastapi_15280`;
-the prototype's AST/IDF ranker is both faster and better, so the prototype is the right
-base to extend.
+Tests occupy 0 of the top 3 in every task. Runtime is well inside the 20 s cooperative
+budget and the 25 s hard watchdog, including the 1,279-file FastAPI repo. A cold cache adds
+about 7 s to the first FastAPI run (10.9 s total), and a `--budget 1` run still returns
+`STATUS: PARTIAL (indexed 732/1279 files in 1.3s)` with the correct rank-1 file, so a cut
+scan degrades instead of failing.
+
+The 2026-10-30 numbers before these changes were hit@1 4/7, hit@3 6/7, median 1.11 s, with
+`rich_3470` at rank 10 and tests occupying its whole top 3. The ranker is now correct on
+both previous misses.
 
 ### 2.2 Test-demotion counterfactual
 
@@ -136,3 +144,4 @@ a partial re-download does not invalidate the rest of the benchmark.
 |---|---|---|
 | 2026-10-30 | downloaded and extracted 7 snapshots (786 MB) | localization audit for the 31B toolkit design |
 | 2026-10-30 | added `audit_snapshots/` to `.gitignore` | keep large artefacts out of git |
+| 2026-11-01 | re-ran the benchmark with the T2 ranker: hit@1 5/7, hit@3 7/7, median 3.19 s | verify the test-demotion + path-prior changes |
