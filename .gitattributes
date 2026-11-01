@@ -1,0 +1,8 @@
+# Bundle payloads are hashed byte-for-byte before submission and the recorded
+# sha256 values in RESULTS.md only reproduce with LF. `core.autocrlf` is true on
+# this machine, so pin the line endings instead of relying on the local config.
+ckpt/bundles/** text eol=lf
+bundles/** text eol=lf
+skills/** text eol=lf
+src/** text eol=lf
+tools/*.py text eol=lf
