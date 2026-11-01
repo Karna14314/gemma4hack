@@ -426,6 +426,33 @@ local Gate 3 build (docs/TASKLIST.md T7). The audit rows "no kernel push" line i
 by this postscript. No competition submission was made; E0 57836949 still PENDING and rule 1
 requires an explicit yes anyway.
 
+**Gate 4 closed for e4b_v3 (2026-11-01, kernel-only, no submission).** Bundle
+`tracks/e4b_small/bundles/e4b_v3_swe_toolkit` pushed as kernel
+`narisettichaitanya/g4-e4b-small-agent-submit` version 7. Run COMPLETE with DONE_OK at 11.8 s,
+0 tracebacks, 0 errors. Declared model strictly `gemma-4-e4b-it-qat-w4a16-ct` (zero 31B
+fallback, confirmed in the kernel log). Pulled `submission.zip` sha256
+`97c25136ca305a79e8e5ee3b559a67bfe91c3ba15dee9267ab6bd93f51adcc67` == local Gate-3
+artifact byte-for-byte (19,095 B, 10 members). Gate-3 notebook verification: ALL CHECKS PASSED
+(single base model E4B, real harness compile, unpacked 48,425 B). Pulled artifacts live under
+the gitignored `tracks/e4b_small/runs/`. No competition submission (rule 1; E0 57836949
+still PENDING).
+
+**Task 2 v6 measured (2026-11-01, no engine change).** `%TEMP%/opencode/symrank_v6.py` over
+129 tasks: file-rank regressions 0 (107 unchanged, 2 newly captured at rank 12, none
+worsened). Symbol hit@1/3/5/10: v4 0.157/0.231/0.306/0.364 -> v6 0.215/0.331/0.405/0.463
+(+0.058/+0.100/+0.099/+0.099). Ablation: v5A (top-12) 0.190/0.322/0.397/0.488; v5AB
+(+member boost) 0.215/0.322/0.388/0.455; v6 (+call-site) 0.215/0.331/0.405/0.463. Re-rank
+cost 1.310 s median / 2.589 s max (vs 0.235/0.534 for v5), still inside the 20 s locate
+budget. Gold-file-in-top-12 scope 106/121 (0.876). Strict all-gold on multi-file tasks:
+0.079/0.079/0.158 at @3/5/10 (vs any-gold 0.763/0.816/0.895) - the central limitation of
+single-pass retrieval. Per-task JSON: symrank_v6_results.json.
+
+**Paper track draft updated (2026-11-01).** `docs/PAPER_TRACK_DRAFT.md` now carries the
+file-recall ablation (base/v3/v4), the any-gold vs strict all-gold paradox, the intra-file
+symbol progression (v4/v5/v5A/v5AB/v6), the verified ADK 1.36.1 runtime mechanics, the
+cross-scale binomial SE model (SE ~0.052-0.054 at N=58) and the skill-offloading
+rationale, plus verified kernel artifact hashes. Word count ~2,900 (under the 3,000 limit).
+
 **Score-prediction doc written (2026-11-01, no submission).**
 `docs/SCORE_PREDICTION_AND_ROADMAP.md`: exp13 v4 (`c9135bcb...`) public-LB point
 prediction ~0.21, 90% CI [0.12, 0.30] at n=58 (locate R@5 0.744 x the exp05-anchor

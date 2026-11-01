@@ -286,3 +286,16 @@ the two highest noisy scores. Re-verify both artifacts byte-for-byte before sele
   `[WARN]` only); compiled `run_skill_script` declaration PASS — required
   `[skill_name, file_path]`, args list, no `command`.
 - No competition submission was made (rule 1); E0 `57836949` still PENDING.
+
+## 2026-11-01 follow-ups (second pass)
+
+- **Gate 4 closed for e4b_v3.** Kernel `narisettichaitanya/g4-e4b-small-agent-submit` v7:
+  COMPLETE + DONE_OK at 11.8 s, 0 tracebacks, declared model strictly
+  `gemma-4-e4b-it-qat-w4a16-ct`, pulled `submission.zip` sha256
+  `97c25136...` == local Gate-3 artifact byte-for-byte.
+- **Task 2 v6 measured.** 0 file-ranking regressions; symbol hit@3 0.231 -> 0.331,
+  @5 0.306 -> 0.405, @10 0.364 -> 0.463; re-rank cost 1.310 s median; strict
+  all-gold on multi-file tasks 0.079/0.079/0.158 vs any-gold 0.763/0.816/0.895.
+- **Paper track draft updated** to ~2,900 words (under the 3,000 limit) with the
+  file-recall ablation, symbol progression, ADK runtime mechanics, cross-scale SE
+  model, and verified kernel hashes.

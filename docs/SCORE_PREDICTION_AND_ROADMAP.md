@@ -139,11 +139,7 @@ the locked engine, bundle untouched). 121/129 tasks have gold symbols:
   structurally unreachable. Within that in-scope set v5 hits
   @1/3/5/10 = 0.208/0.366/0.446/0.564. All 359 gold qualifiers are bare names
   (no dotted paths), so the gold criterion itself has no class-path ambiguity.
-- **Target check.** Lifting hit@3 to ≥ 0.50 was not reached (0.322 overall,
-  0.366 in-scope). Next levers, to be tested only as a separate prototype:
-  container-vs-member weight rebalance (the +3.0 member bias was a guess), a
-  `gold-symbol-context` term (issue text immediately around the symbol mention),
-  and top-12 file scope for the 20 out-of-scope tasks.
+- **Follow-up: v6 (three levers).** Top-12 scope + member-over-container boost + call-site/attribute scoring, tested on the same 129 tasks: v4 0.157/0.231/0.306/0.364 → v6 0.215/0.331/0.405/0.463 (+0.058/+0.100/+0.099/+0.099). Ablation: v5A (top-12 only) 0.190/0.322/0.397/0.488; v5AB (+member boost) 0.215/0.322/0.388/0.455; v6 (+call-site) 0.215/0.331/0.405/0.463. The member boost trades @10 for @1 (right trade for early-exit agents); call-site adds +0.017 @5. Zero file-ranking regressions (107 unchanged, 2 newly captured at rank 12, none worsened). Re-rank cost rises to 1.310 s median / 2.589 s max (vs 0.235/0.534 for v5) — still inside the 20 s locate budget. Gold-file-in-top-12 scope: 106/121 (0.876). Prototype remains unshipped (exp14, pending approval).
 - **Prototype spec** (reproducible): `score(span) = 5.0·|high_tokens∩span| +
   1.5·|general∩span| + 80·exact-name + 40·trace-func + 40·trace-file + 3.0·member`
   multiplied by `1/file_rank`, over the top-8 files; deterministic sort key
