@@ -1,26 +1,43 @@
-# Session Final — Paper Track Complete Benchmarks
+# SESSION FINAL — e4b_v4_swe_toolkit submission
 
-Branch: `feat/paper-track-complete-benchmarks`
+Branch: feat/e4b-v4-submit
+Last commit: caecd3c (docs: record e4b_v4 submission ref 57889741 and kernel v1)
+PR: https://github.com/Karna14314/gemma4hack/pull/17 (draft -> ready after final verification)
+Base commit: a6405db (exp14_lean_toolkit + e4b_v4_swe_toolkit)
 
-## Verified benchmark artifacts
-- Kernel: `narisettichaitanya/g4-paper-graph-benchmark` v20, status COMPLETE.
-- Outputs: `research/paper_eval_outputs/` (`paper_experiments.json`, `PAPER_TABLES.md`, `PAPER_EXPERIMENTS.md`).
-- Committed verified tables: `research/PAPER_EXPERIMENTS.md`.
-
-## Key results
-- Tasks evaluated: 129; in-graph: 125; docs_src tasks lacking graph nodes: 1.
-- 1-hop neighborhood >5000-char cap exceedance: 80.88%.
-- M4 `swe_toolkit` file R@10: 0.4587 (all), 0.4734 (in-graph); MRR 0.4354.
-- M5 Hybrid RRF file R@10: 0.5701 (all), 0.5883 (in-graph); MRR 0.4332.
-- Lexical baseline file R@10: 0.3036.
-- Gold patch anatomy: median 1 file, 8 lines added, 2 deleted, 2 hunks; 70.5% single-file, 8.5% new files.
-- Playbook audit: 258 triggers, 32.6% precision.
-- e4b-v2 (ref 57806053): PENDING, no score yet.
-
-## e4b-v2 poll
-`kaggle competitions submissions -c gemma-4-developer-agent`: ref 57806053 status `pending` (submitted 2026-10-30T12:56:30Z). Not submitted today beyond existing.
+## Per-phase status
+- Phase 0 Audit: PASS. Kaggle auth via KAGGLE_API_TOKEN; check_resources.py all required resources present. No pending submissions; nothing submitted 2026-11-02 UTC. Disk ~14G. Venv .venv-harness created (Python 3.13), wheels installed. Commit 0b46d04.
+- Phase 1 Gates: PASS. verify_bundle_e4b_v4.py ALL CHECKS PASSED. build_notebook.py + verify_notebook.py ALL CHECKS PASSED (real harness compile, 7 tools). Commit caecd3c.
+- Phase 2 Recall: PASS. Best capped variant keyword hit@5 = 0.760 >= 0.694 threshold. No stop.
+- Phase 3 Submit: DONE. Submission ref 57889741, 2026-11-02T00:50:17Z, status PENDING (polled once).
+- Phase 4 Finalize: this file.
 
 ## Files changed
-- `research/kernel_paper_eval/paper_eval.py` (4 experiments)
-- `docs/PAPER_TRACK_DRAFT.md` (~2,240 words, submission-ready)
-- `research/PAPER_EXPERIMENTS.md` (verified tables)
+- docs/SUBMISSION_RUN_e4b_v4.md
+- docs/LEDGER.md
+- docs/SESSION_FINAL.md
+- tracks/e4b_small/kernel_e4b_v4_submit/kernel-metadata.json
+- tracks/e4b_small/kernel_e4b_v4_submit/submission_notebook.ipynb
+
+## Exact verification commands and results
+- `.venv-harness/bin/python tracks/e4b_small/verify_bundle_e4b_v4.py` -> E4B V4 VERIFY_BUNDLE: ALL CHECKS PASSED
+- `.venv-harness/bin/python tools/build_notebook.py --bundle tracks/e4b_small/bundles/e4b_v4_swe_toolkit --out build/e4b_v4_submission_notebook.ipynb` -> wrote notebook, 17 cells
+- `.venv-harness/bin/python tools/verify_notebook.py --notebook build/e4b_v4_submission_notebook.ipynb` -> ALL CHECKS PASSED; real harness compile_submission builds agent (7 tools); zip sha256 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
+- Kernel pushed: narisettichaitanya/g4-e4b-v4-small-agent-submit v1; status COMPLETE; no traceback; pulled zip sha256 matches local build.
+- Submission: ref 57889741; pending.
+
+## NOT-verified items
+- Score not yet available (pending scoring). Pre-registered rule vs E4B baseline (0.05-0.06): >=0.10 rerun once and keep as final E4B slot; 0.07-0.09 refine; <=0.06 ablate.
+- Harness wheels local registry warns E4B not registered (expected; docs permit it).
+
+## Known gaps
+- Full-issue recall recomputed (0.395/0.612/0.674/0.822) slightly below given baseline (0.419/0.651/0.744/0.829); likely engine/version drift. Capped keyword variant (0.403/0.682/0.760/0.837) exceeds baseline @5.
+
+## Next steps
+- Poll submission status later; record score in RESULTS.md and ckpt/STATE.md when available.
+- Apply pre-registered rule based on score.
+
+## Resume instructions
+- git checkout feat/e4b-v4-submit
+- Last commit caecd3c
+- PR https://github.com/Karna14314/gemma4hack/pull/17
