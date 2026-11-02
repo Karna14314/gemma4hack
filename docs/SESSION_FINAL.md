@@ -1,7 +1,7 @@
 # SESSION FINAL — e4b_v4_swe_toolkit submission
 
 Branch: feat/e4b-v4-submit
-Last commit: caecd3c (docs: record e4b_v4 submission ref 57889741 and kernel v1)
+Last commit: 1ddb160 (docs: record e4b_v4 submission ref 57889741 and kernel v1)
 PR: https://github.com/Karna14314/gemma4hack/pull/17 (draft -> ready after final verification)
 Base commit: a6405db (exp14_lean_toolkit + e4b_v4_swe_toolkit)
 
@@ -39,5 +39,5 @@ Base commit: a6405db (exp14_lean_toolkit + e4b_v4_swe_toolkit)
 
 ## Resume instructions
 - git checkout feat/e4b-v4-submit
-- Last commit caecd3c
+- Last commit 1ddb160
 - PR https://github.com/Karna14314/gemma4hack/pull/17
