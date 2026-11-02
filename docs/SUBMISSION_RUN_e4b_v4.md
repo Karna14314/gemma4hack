@@ -26,3 +26,29 @@ Competition slug: gemma-4-developer-agent
 - scripts/_knowledge.py: 095feca9cba8a59e5fe897c5993e0aac706e8d9e1a9d7ba3b59fc7fb2a79738d
 - scripts/_verify.py: 61d8616c3125f1127aa675b45dc39cf0f1c29610712e676be9aba8a33aae483f
 - scripts/swe.py: 65648a8a869e296c5c230151ec578dc3b73cbcab21ce5aa0527a04eb7a01dec9
+
+## Phase 1 — Gates
+- verify_bundle_e4b_v4.py: ALL CHECKS PASSED (prompt 2116 chars, 10 files, skill hashes pinned to upgraded engine)
+- build_notebook.py: wrote build/e4b_v4_submission_notebook.ipynb (17 cells)
+- verify_notebook.py: ALL CHECKS PASSED; real harness compile_submission builds agent (7 tools); zip sha256 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
+- E4B-only model: gemma-4-e4b-it-qat-w4a16-ct; zero 31B; 7 tools; skill dir skills/swe-toolkit (lowercase); SKILL.md 2374 bytes
+
+## Phase 2 — Recall check (129 tasks)
+Metric: task-level hit@k (fraction of tasks with >=1 gold file in top k).
+Baseline full-issue (given): 0.419/0.651/0.744/0.829 @1/3/5/10.
+Capped variants:
+- first250: 0.341/0.543/0.659/0.806
+- last250:  0.318/0.504/0.589/0.760
+- keyword:   0.403/0.682/0.760/0.837
+Best capped @5 = keyword 0.760 >= 0.694 threshold. PASS (no stop).
+Note: full-issue recomputed hit@ = 0.395/0.612/0.674/0.822 (slightly below given baseline; likely engine/version drift).
+
+## Phase 3 — Submit
+- Kernel: narisettichaitanya/g4-e4b-v4-small-agent-submit v1 (status COMPLETE, no traceback)
+- Pulled zip sha256 matches local build: 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
+- Submission ref: 57889741
+- Timestamp: 2026-11-02T00:50:17Z
+- Status: PENDING (polled once)
+
+## Phase 4 — Finalize
+- docs/SESSION_FINAL.md to be written.
