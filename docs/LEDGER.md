@@ -26,3 +26,13 @@
 - verify_bundle_e4b_v2.py: ALL CHECKS PASSED (prompt 2440 chars)
 - verify_notebook_e4b_v2.py: LOCAL E4B NOTEBOOK VERIFICATION ALL CHECKS PASSED
 - Final gate one-liner: tested in scratch repo covering no changes, changed .py, new untracked file, new ignored file, syntax error, filename with spaces, zero .py changes, only test/config files changed. All passed.
+
+## e4b-v4 submission (57889741)
+- Bundle: tracks/e4b_small/bundles/e4b_v4_swe_toolkit
+- Kernel: narisettichaitanya/g4-e4b-v4-small-agent-submit v1
+- Submission ref: 57889741
+- Time: 2026-11-02T00:50:17Z
+- Status: PENDING (polled once)
+- submission.zip sha256: 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
+- submission_notebook.ipynb sha256: 0b1a0a7217cb2eb5cd20ed7bdfc13e11470f54db99bc20ac5741b9085ce971f9
+- Bundle file hashes: see docs/SUBMISSION_RUN_e4b_v4.md
