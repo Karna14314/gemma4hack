@@ -69,6 +69,10 @@ Segment detail worth keeping pinned:
 agent's fallback / iteration over locate's top-10 is the mechanism that turns
 those into candidates, hence the expanded `FALLBACK` line in the exp13 prompt.)
 
+**Caveat on `exp13_swe_toolkit` (kernel verified, not submitted).** The kernel is verified (DONE_OK 14.4 s, hash-locked `c9135bcb...`), but the prompt reintroduces the `exp08`/`exp10` micro-rule pattern (`ANCHOR:` header, Call-21 and Call-24 circuit breaker) at 2.7x the bloat of `exp08` (+1,484 chars). The probability of beating 0.20 is estimated at ~0.15 (see `docs/EXP13_VS_EXP05_STRICT_AUDIT.md`). Prefer `exp14_lean_toolkit` (5,767-char prompt, zero micro-rules, upgraded engine) for any 31B submission. Also note: ADK's `SkillToolset` injects `_DEFAULT_SKILL_SYSTEM_INSTRUCTION` which mandates `load_skill` first, contradicting our cold-call instruction; `exp14`'s SKILL.md now acknowledges both paths. Run the compressed-query locate eval before submitting.
+
+**Compressed-query locate eval (pending).** `exp14` caps `--issue` at <= 300 chars. The 41.9/65.1/74.4% recall was measured on full issue text. Re-run `%TEMP%/opencode/locate_compressed_eval.py` (in progress) to confirm recall holds under first-300 / last-300 / keyword-extracted queries; if it drops, raise the cap (copy cost is minor next to losing traceback frames).
+
 ## 2. Why `e4b-v2` = 0.05 (ref `57806053`) and `exp11_e4b` = 0.06 were flat
 
 Baseline: `57777888` (`exp11_e4b`, exp05 prompt/tools/budgets verbatim, model
@@ -95,8 +99,13 @@ Mechanism diagnosis (each maps to a measured harness fact):
 4. **Compile-time failure modes.** A 4B-authored patch with a syntax error
    scores 0; no update in v2 addressed that failure mode.
 
-**Expected value of giving E4B the verified `swe-toolkit` v4 skill
-(`locate` + `verify`):** the deterministic locate stage replaces (2) with the
+**E4B decision rule (pre-registered, before submission):** on the public LB, with the
+`e4b-v2` baseline at 0.05 (≈3/58 tasks, 95% CI 1.8%–14.1%):
+- **≥ 0.10 (≥ 6/58 tasks):** rerun once to confirm, then keep.
+- **0.07–0.09 (4–5/58):** refine (prompt/timeout) before the next submission.
+- **≤ 0.06 (≤ 3/58):** ablate — the skill did not help E4B; revert to the v2
+  baseline and re-examine the protocol (tool-call count, compaction at calls 15/30,
+  nested `args` list handling). A single negative result is not dispositive.
 31B-line file rates (R@5 0.744 on identical snapshots; same Python, no model
 inference needed) and one tool call instead of 2–4 grep calls; verify gates (4)
 so a partial patch is at least parseable before submission. Rough conversion
