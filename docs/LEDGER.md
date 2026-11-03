@@ -36,3 +36,15 @@
 - submission.zip sha256: 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
 - submission_notebook.ipynb sha256: 0b1a0a7217cb2eb5cd20ed7bdfc13e11470f54db99bc20ac5741b9085ce971f9
 - Bundle file hashes: see docs/SUBMISSION_RUN_e4b_v4.md
+
+## exp14_lean_toolkit submission (57933618)
+- Bundle: bundles/exp14_lean_toolkit
+- Model: gemma-4-31b-it-qat-w4a16-ct
+- Kernel: narisettichaitanya/gemma4-devagent-exp14-lean-toolkit v1
+- Submission ref: 57933618
+- Time: 2026-11-03T05:02:14.867Z
+- Status: PENDING (polled once)
+- submission.zip sha256: 02fd7e818320c186ac57d9f3ca7b92f5413b96a00799899bb1cb9c8d91846ab8
+- submission_notebook.ipynb sha256: 828a51be29e925a1d5384999179c2f529ad24d6aa280d5b0a87d2be4a7f9be5d
+- Bundle file hashes: see docs/SUBMISSION_RUN_exp14.md
+- Single change: exp05 prompt + 306-char TOOLKIT block; swe-toolkit skill (9 tools, 28 calls/8 min).
