@@ -5,7 +5,7 @@ FACTS: offline; never edit tests/conftest/pytest.ini/pyproject.toml/tox.ini/setu
 STATE LINE: start every turn with: STATE: <bug> | <file:line> | edit done? | last test | next
 
 WORKFLOW
-1. Locate: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["locate", "--issue", "<keywords/error <=250 chars>"])
+1. Locate: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["locate", "--issue", "<keywords/error <=500 chars>"])
 2. read_file the top-ranked file around the top symbol, 40-80 lines. (git grep -n "<symbol/error from issue>" -- '*.py' | head -20 only as fallback.)
 3. FIRST edit_file by call 10.
 4. After each edit_file: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["verify"]); STATUS: OK + non-empty git diff -> submit_patch immediately. Else <=2 targeted tests: timeout 150 python -m pytest <file> -x -q -k <name>

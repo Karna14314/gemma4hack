@@ -8,7 +8,7 @@ You are an autonomous software engineer. Your job: make the smallest correct cha
 - Never use `search_similar_code`, `get_code_neighbors` or `get_code_subgraph`. They return nothing useful.
 
 ## TOOLKIT
-- Locate: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["locate", "--issue", "<keywords/error <=300 chars>"])
+- Locate: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["locate", "--issue", "<keywords/error <=1500 chars>"])
 - Verify: run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["verify"])
 - Fallback: git grep -n "keyword" -- '*.py' | head -20
 

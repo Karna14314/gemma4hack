@@ -50,7 +50,7 @@ assert evalc["max_turns"] == 80
 V3_PROMPT = Path(__file__).resolve().parent / "bundles" / "e4b_v3_swe_toolkit" / "prompts" / "system.md"
 expected = V3_PROMPT.read_text(encoding="utf-8").replace(
     'args=["locate", "--issue", "<the issue text>"]',
-    'args=["locate", "--issue", "<keywords/error <=250 chars>"]',
+    'args=["locate", "--issue", "<keywords/error <=500 chars>"]',
 )
 prompt = texts["prompts/system.md"]
 assert prompt == expected, "prompt is not e4b_v3 with the keyword cold-call update"
@@ -63,7 +63,7 @@ assert "git status --short" in prompt
 assert "ast.parse" in prompt
 assert "git add -N -f" in prompt
 LOCATE_CALL = ('run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", '
-               'args=["locate", "--issue", "<keywords/error <=250 chars>"])')
+               'args=["locate", "--issue", "<keywords/error <=500 chars>"])')
 VERIFY_CALL = ('run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", '
                'args=["verify"])')
 assert prompt.count("run_skill_script") == 2

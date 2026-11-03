@@ -18,7 +18,7 @@ description: "Locate the file for an issue, inspect a symbol, verify an edit in 
 
 ```
 run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py",
-                 args=["locate", "--issue", "<keywords/error <=300 chars>"])
+                 args=["locate", "--issue", "<keywords/error <=1500 chars>"])
 ```
 `args` is a list. To verify: `args=["verify"]`.
 
