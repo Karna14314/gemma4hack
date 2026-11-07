@@ -26,3 +26,5 @@ audit_snapshots/
 # Third-party public notebooks pulled for the 2026-10-31 research audit.
 # Kept locally for provenance; not ours to redistribute.
 research/public_notebooks/
+# Full 129-task eval snapshots (scripts/fetch_eval_data.py); ~21.5 GB, regenerable.
+eval_snapshots/
