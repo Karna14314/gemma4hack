@@ -36,3 +36,18 @@
 - submission.zip sha256: 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
 - submission_notebook.ipynb sha256: 0b1a0a7217cb2eb5cd20ed7bdfc13e11470f54db99bc20ac5741b9085ce971f9
 - Bundle file hashes: see docs/SUBMISSION_RUN_e4b_v4.md
+
+## sampling (temp 1.0, top_p 0.95, top_k 64) submission (58096981)
+- Bundle: kaggle_work/gemma-4-developer-agent/bundles/exp_sampling_temp1
+- Base: ckpt/bundles/exp05_patch_integrity (frozen exp05 bundle); scored artifact ckpt/exp05/submission.zip sha256 2ba7f9b118ea1837d1950038894cc856d1d33fe98c333d216afe6aaac1661774
+- Diff vs base: only configs/sampling.yaml (temperature 0.2 -> 1.0, added top_k: 64; top_p unchanged 0.95); thinking_config unchanged (budget 4096, include_thoughts true).
+- Model: gemma-4-31b-it-qat-w4a16-ct
+- Kernel: narisettichaitanya/g4-sampling-temp1-top-p95-top-k64-exp05-base v1
+- Submission ref: 58096981
+- Time: 2026-11-07T15:37:07Z
+- Status: PENDING
+- submission.zip sha256: 2891b1f8cca805fe7707c29711db334f8b8a18a83c678d25625a17790c069ba3
+- submission_notebook.ipynb sha256: (local build) see verify_notebook run
+- Hypothesis: low temperature 0.2 vs Gemma 4 model-card recommendation (1.0) causes loops/poor exploration; raising to 1.0 + top_p 0.95 + top_k 64 improves pass rate.
+- Pre-registered rule vs 31B pool (mean ~10.3 tasks, SD <1): >=13 tasks (0.22) real; 9-12 null; <=8 regression.
+- Gate results: verify_bundle ALL CHECKS PASSED; verify_notebook ALL CHECKS PASSED; kernel COMPLETE, no traceback; pulled sha matches local build.
