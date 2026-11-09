@@ -1,0 +1,15 @@
+{
+  "kernel": "hitarthjain0__gemma-4-agent-what-took-lb-0-12-0-24",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "3f1a07abea5b",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 1464,
+  "prompt_chars": 1006
+}

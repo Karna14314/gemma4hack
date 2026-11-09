@@ -1,0 +1,17 @@
+{
+  "kernel": "dmitriigluzdov__gemma-4-task-soundness-serving-and-evaluation",
+  "method": "static",
+  "payload_var": "ISSUE_CONTRACT_FILES",
+  "bundle_hash": "2fbb6305ff5a",
+  "members": [
+    "ATTRIBUTION.md",
+    "LICENSE.txt",
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 6,
+  "total_bytes": 17900,
+  "prompt_chars": 5182
+}

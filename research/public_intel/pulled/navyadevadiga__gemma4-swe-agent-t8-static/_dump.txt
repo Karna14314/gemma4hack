@@ -1,0 +1,126 @@
+============================== CELL 0 [markdown] len=2197
+# Gemma 4 Developer Agent: T8 static submission (8-minute task budget)
+
+**Author:** Navya Devadiga
+
+This notebook writes one complete agent submission for the Gemma 4 Developer Agent competition (agent YAML, sampling config, eval config and the system prompt), validates it with 16 checks on the extracted zip, and zips it. Nothing here reads the competition dataset: Kaggle **re-runs the notebook on the hidden dataset** at scoring time and grades the zip that re-run produces, so a fully static notebook cannot crash the re-run or silently change the submitted agent.
+
+T8 is my earlier variant Q256 (public LB 0.15) with one change, the per-task time budget: `max_time_minutes` 4 -> 8 and the command `timeout_seconds` 90 -> 240. Prompt, model (`gemma-4-31b-it-qat-w4a16-ct`), sampling and tools are unchanged.
+
+**Measured result:** public leaderboard **0.20** (submission of 2026-10-23), then **0.15** when the identical version was resubmitted (2026-10-28). Mean about 0.175, roughly 10 of 58 tasks. The two scores show the leaderboard noise is about 3 tasks, so read any single score with care. Paper with the full story: [Found the File, Ran Out of Time](https://www.kaggle.com/competitions/gemma-4-developer-agent-paper/writeups/found-the-file-ran-out-of-time) (Paper Track).
+
+**How to reuse:** edit the strings in `FILES` (the prompt is `prompts/system.md`), run all, and submit the notebook. The checks stop the notebook if the zip breaks a rule from the competition README (allowed tools, model name, no `{` `}` in the instruction, allowed file types, and so on).
+
+**Licence:** Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0). Copyright 2026 Navya Devadiga.
+
+**Credits:**
+- Agent format, tools and harness rules: the competition hosts, [Getting Started - Gemma 4 Developer Agent](https://www.kaggle.com/code/ryanholbrook/getting-started-gemma-4-developer-agent) by Ryan Holbrook.
+- The 8-minute budget idea (no code copied): [Gemma 4 | Budget-Aware Coding Agent v2](https://www.kaggle.com/code/flexonafft/gemma-4-budget-aware-coding-agent-v2) by Igor Zharov and [Gemma 4 Baseline | LB 0.24](https://www.kaggle.com/code/honghanhhh/gemma-4-baseline-lb-0-24) by Hanh Tran.
+
+============================== CELL 1 [code] len=7263
+import hashlib
+import json
+import shutil
+import tempfile
+import zipfile
+from pathlib import Path
+
+import yaml
+
+VARIANT = "T8"
+FILES = {'T8': {'agent.yaml': 'name: swe_root_coder\ndescription: Autonomous software engineer that localizes, fixes, verifies and submits a minimal patch.\nmodel: gemma-4-31b-it-qat-w4a16-ct\ninstruction: !include prompts/system.md\ntools:\n  - run_command\n  - read_file\n  - submit_patch\ngenerate_content_config: !include configs/sampling.yaml\n', 'configs/sampling.yaml': 'temperature: 0.3\ntop_p: 0.95\ntop_k: 64\nmax_output_tokens: 8192\nthinking_config:\n  thinking_budget: 256\n  include_thoughts: true\n', 'eval_config.yaml': 'evaluation:\n  timeout_seconds: 240\n  max_tool_calls: 25\n  max_time_minutes: 8\n  max_turns: 40\n', 'prompts/system.md': 'You are a senior Python engineer fixing one issue in the git repository at /workspace. Produce a correct, minimal source change, check it, and call `submit_patch`.\n\nHidden tests are added after you finish. They exercise the exact public names, parameters, error types, messages and behaviors described in the issue. Only those tests decide your score.\n\n## You have only a few minutes\n- Every model turn costs wall-clock time. Think in at most 3 to 5 short sentences per turn, then act. Never restate the issue or repeat earlier reasoning.\n- A typical successful run is 8 to 15 tool calls: about 4 to locate, 1 to 3 to edit, 1 to 3 to check, then submit.\n- Make your first real edit by roughly tool call 8. The working tree is graded even if time runs out, and an empty diff always fails, so a good edit early beats a perfect edit never.\n- When a tool response contains `budget_warning`, stop exploring: finish the edit you are making, then call `submit_patch` right away.\n- `submit_patch` does not use tool-call budget, but it still costs a turn.\n\n## Environment facts\n- Offline. Dependencies are installed. Never run pip install.\n- The workspace layout is already in the task message. Do not spend a call on `ls` or `find` just to look around.\n- `run_command` output is cut at 5000 chars; `read_file` returns at most 150 lines. Always narrow output.\n- There is no edit tool: you change files with a Python script run through `run_command` (see EDIT below). Anything you create under /workspace ends up in the patch. For throwaway scripts use `python - <<\'EOF\'` ... `EOF` (no file at all), or `cat > /tmp/check.py <<\'EOF\'` ... `EOF`.\n- Edits to tests, conftest.py, pytest.ini, pyproject.toml, setup.cfg or tox.ini are discarded before grading. Fix source code only.\n\n## Save calls by combining shell steps\nOne `run_command` can do several things. Prefer:\n- `grep -rn "exact_name" --include=*.py . | grep -v "^./tests" | head -20`\n- `grep -n "def target" pkg/mod.py && sed -n \'120,190p\' pkg/mod.py`\n- `grep -rn "target" --include=*.py tests | head -10` to find the covering test file\nExact strings from the issue (error messages, parameter names, function names) are the best search keys.\n\n## Keep every output small\nLong histories are summarised automatically, which costs time and loses detail. So keep each tool output short: end greps with `| head -20`, read at most 60 lines at a time (`sed -n \'120,180p\'` or `read_file` with a range), and use `cut -c1-160` on long lines. Never `cat` a whole file.\n\n## Workflow\n1. PLAN (in thought, no tool call): bug or feature; the observable behavior a test would check; the exact identifiers to match; the first grep.\n2. LOCATE with grep. Confirm the owning function by reading it with `sed -n` or `read_file` using a line range.\n3. For features, look at the closest sibling that already does something similar and mirror its signature, defaults, docstring style, type hints and exports (`__init__.py`, `__all__`).\n4. EDIT with a Python script in `run_command`. Replace exact old lines, copied character for character from your most recent `read_file` or `sed` output of those lines (including indentation), never retyped from memory. Template:\n\n       python - <<\'EOF\'\n       import pathlib\n       p = pathlib.Path("pkg/mod.py")\n       s = p.read_text()\n       old = \'\'\'    exact old lines, 1 to 6 lines\'\'\'\n       new = \'\'\'    new lines\'\'\'\n       assert s.count(old) == 1, s.count(old)\n       p.write_text(s.replace(old, new))\n       EOF\n\n   Write the heredoc lines without the indentation shown here. Use triple double quotes instead if the code itself contains triple single quotes. If the assertion fails, re-read those exact lines and retry with a shorter `old`. Several small edits are safer than one large one. Update every caller or sibling that must change together, including sync and async twins. Check the result with `git diff --stat`.\n5. CHECK once or twice, cheaply:\n   - Reproduce the issue\'s example: `python - <<\'EOF\'` ... `EOF`, or a script in /tmp.\n   - Run only the existing test file for the module you changed: `python -m pytest tests/test_x.py -x -q 2>&1 | tail -15`. Never the whole suite.\n   - If a failure is clearly unrelated to your change (missing optional dependency, network), ignore it and move on.\n6. FIX the cause if your check fails, at most two attempts, then submit the best version.\n7. SUBMIT: `git status --short && git diff --stat`, remove stray files with `rm`, then call `submit_patch` and reply with one line.\n\n## Rules for a patch the tests accept\n- Match names in the issue EXACTLY: parameter names, method names, exception classes, message text, defaults, return types.\n- Keep backward compatibility unless the issue asks otherwise. New parameters get defaults that preserve old behavior.\n- Deprecations: keep the old name working and emit the warning class the issue names, usually `DeprecationWarning`.\n- Use the maintainers\' hints in the task message when present; they often name the exact place to change.\n- No refactors, formatting changes, new test files, debug prints or dependency changes.\n- Never invent an API that already exists under another name; grep first.\n\n## Tool-call safety\n- Never write a backtick character in a command or in code you insert; tool calls that contain one often arrive broken. If inserted code needs a backtick, write it as chr(96) in the Python script. For shell command substitution use $( ), never backticks. Write comments and docstrings without markdown.\n- If a tool call reports a missing argument, never repeat the same call: shorten it and retry.\n'}}[VARIANT]
+
+WORK_DIR = Path("/kaggle/working") if Path("/kaggle/working").exists() else Path("working_" + VARIANT)
+SUBMISSION_DIR = WORK_DIR / "submission"
+SUBMISSION_ZIP = WORK_DIR / "submission.zip"
+COMPETITION_MODEL = "gemma-4-31b-it-qat-w4a16-ct"
+ALLOWED_TOOLS = {"run_command", "submit_patch", "get_status", "read_file", "edit_file", "write_file",
+                 "get_code_neighbors", "search_similar_code", "get_code_subgraph"}
+ALLOWED_EXTENSIONS = {".yaml", ".yml", ".md", ".txt", ".py", ".json", ".safetensors"}
+
+if SUBMISSION_DIR.exists():
+    shutil.rmtree(SUBMISSION_DIR)
+for rel, text in FILES.items():
+    path = SUBMISSION_DIR / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+    print(f"{len(text.encode()):>8,d}  {rel}")
+============================== CELL 2 [markdown] len=144
+## Zipping and validating
+
+Checks run on the extracted zip. `!include` is resolved as the README describes. Any failed check stops the notebook.
+============================== CELL 3 [code] len=4169
+def make_zip(src_dir, zip_path):
+    if zip_path.exists():
+        zip_path.unlink()
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for p in sorted(src_dir.rglob("*")):
+            if p.is_file():
+                zf.write(p, p.relative_to(src_dir).as_posix())   # agent.yaml sits at the zip root
+
+def load_with_includes(path, root, depth=0):
+    if depth > 10:
+        raise ValueError("include depth > 10")
+    class Loader(yaml.SafeLoader):
+        pass
+    def include(loader, node):
+        rel = loader.construct_scalar(node)
+        if rel.startswith("/") or ".." in Path(rel).parts:
+            raise ValueError(f"blocked include path: {rel}")
+        target = (path.parent / rel).resolve()
+        if root.resolve() not in target.parents or not target.is_file():
+            raise ValueError(f"include missing or outside root: {rel}")
+        return load_with_includes(target, root, depth + 1) if target.suffix in (".yaml", ".yml") else target.read_text(encoding="utf-8")
+    Loader.add_constructor("!include", include)
+    return yaml.load(path.read_text(encoding="utf-8"), Loader=Loader)
+
+def validate(zip_path):
+    checks = []
+    def chk(name, ok, detail=""):
+        checks.append((name, bool(ok), detail))
+    root = Path(tempfile.mkdtemp(prefix="subcheck_"))
+    with zipfile.ZipFile(zip_path) as zf:
+        names = zf.namelist()
+        chk("agent.yaml at zip root", "agent.yaml" in names)
+        chk("no nested folder or path traversal",
+            not any(x.startswith(("submission/", "/")) or ".." in Path(x).parts for x in names))
+        chk("no symlinks", not any((i.external_attr >> 16) & 0o170000 == 0o120000 for i in zf.infolist()))
+        zf.extractall(root)
+    files = [p for p in root.rglob("*") if p.is_file()]
+    bad_ext = sorted({p.suffix for p in files} - ALLOWED_EXTENSIONS)
+    chk("only allowed file extensions", not bad_ext, str(bad_ext))
+    chk("exactly one root config",
+        sum((root / x).exists() for x in ("agent.yaml", "agent.yml", "root_agent.yaml", "root_agent.yml")) == 1)
+    try:
+        cfg = load_with_includes(root / "agent.yaml", root)
+        chk("agent.yaml parses with includes", True)
+    except Exception as e:
+        chk("agent.yaml parses with includes", False, repr(e))
+        return checks
+    chk("model is the competition model", cfg.get("model") == COMPETITION_MODEL, cfg.get("model"))
+    tools = set(cfg.get("tools") or [])
+    chk("only allowed tools", tools <= ALLOWED_TOOLS, str(sorted(tools - ALLOWED_TOOLS)))
+    chk("submit_patch is attached", "submit_patch" in tools)
+    instruction = cfg.get("instruction") or ""
+    chk("instruction is non-empty", len(instruction) > 500, f"{len(instruction)} chars")
+    chk("no braces in instruction (ADK state templating)", "{" not in instruction and "}" not in instruction)
+    gcc = cfg.get("generate_content_config") or {}
+    forbidden = {"tools", "system_instruction", "http_options", "safety_settings", "response_schema"} & set(gcc)
+    chk("no forbidden generation fields", not forbidden, str(forbidden))
+    chk("max_output_tokens in 1..32768", 1 <= int(gcc.get("max_output_tokens", 16384)) <= 32768)
+    ev = yaml.safe_load((root / "eval_config.yaml").read_text()).get("evaluation", {})
+    chk("eval_config keys known", set(ev) <= {"timeout_seconds", "max_tool_calls", "max_time_minutes", "max_turns"}, str(ev))
+    chk("max_tool_calls >= 20 (keeps budget_warning)", ev.get("max_tool_calls", 0) >= 20)
+    chk("task cap <= 8 min (public 8-min notebooks score on the LB)", ev.get("max_time_minutes", 99) <= 8)
+    shutil.rmtree(root, ignore_errors=True)
+    return checks
+
+make_zip(SUBMISSION_DIR, SUBMISSION_ZIP)
+CHECKS = validate(SUBMISSION_ZIP)
+for name, ok, detail in CHECKS:
+    print(f"[{'x' if ok else ' '}] {name}" + (f"  -- {detail}" if detail else ""))
+failed = [c for c in CHECKS if not c[1]]
+assert not failed, f"Submission validation FAILED: {failed}"
+print("\nAll checks passed.")
+print(json.dumps({"variant": VARIANT, "zip": str(SUBMISSION_ZIP), "bytes": SUBMISSION_ZIP.stat().st_size,
+                  "sha256_16": hashlib.sha256(SUBMISSION_ZIP.read_bytes()).hexdigest()[:16]}, indent=2))

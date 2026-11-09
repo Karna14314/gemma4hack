@@ -1,0 +1,17 @@
+{
+  "kernel": "robinamirbahar__gemma-4-loop-breaker-adk-agent",
+  "title": "Gemma 4 Loop-Breaker ADK Agent",
+  "ref": "robinamirbahar/Gemma 4 Loop-Breaker ADK Agent",
+  "payload_var": "bundle_files",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 4224,
+  "zip_cell": 14,
+  "prompt_chars": 3756
+}

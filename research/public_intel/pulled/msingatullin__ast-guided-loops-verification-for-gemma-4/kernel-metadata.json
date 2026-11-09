@@ -1,0 +1,27 @@
+{
+  "id": "msingatullin/ast-guided-loops-verification-for-gemma-4",
+  "id_no": 142080990,
+  "title": "AST-Guided Loops Verification for Gemma 4",
+  "code_file": "ast-guided-loops-verification-for-gemma-4.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "artificial intelligence",
+    "programming",
+    "python",
+    "benchmark",
+    "research"
+  ],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [
+    "gemma-4-developer-agent-paper"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:17b2fc7f27c25c6c2fd4230ec8e66097ab2b89fc88e1e4d6f338b72e1ee0bc3e",
+  "machine_shape": "None"
+}

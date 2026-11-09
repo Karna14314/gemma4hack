@@ -1,0 +1,15 @@
+{
+  "kernel": "zbigniewkirchner__gemma-4-agent-do-gold-patches-pass-locally",
+  "method": "static",
+  "payload_var": "OWN",
+  "bundle_hash": "f6af4ac831f1",
+  "members": [
+    "Textualize/rich",
+    "encode/httpx",
+    "fastapi/fastapi",
+    "psf/requests"
+  ],
+  "member_count": 4,
+  "total_bytes": 24,
+  "prompt_chars": null
+}

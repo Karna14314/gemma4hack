@@ -1,0 +1,17 @@
+{
+  "kernel": "prvsiyan__gemma-and-the-shape-of-doubt",
+  "title": "Gemma and the Shape of Doubt",
+  "ref": "prvsiyan/Gemma and the Shape of Doubt",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 6850,
+  "zip_cell": null,
+  "prompt_chars": 6323
+}

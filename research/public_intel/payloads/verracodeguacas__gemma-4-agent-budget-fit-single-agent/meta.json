@@ -1,0 +1,15 @@
+{
+  "kernel": "verracodeguacas__gemma-4-agent-budget-fit-single-agent",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "c9829b6ac709",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 5204,
+  "prompt_chars": 4677
+}

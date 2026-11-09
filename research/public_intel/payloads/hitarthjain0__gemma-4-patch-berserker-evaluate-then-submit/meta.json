@@ -1,0 +1,15 @@
+{
+  "kernel": "hitarthjain0__gemma-4-patch-berserker-evaluate-then-submit",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "5d05a6e0430a",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 3698,
+  "prompt_chars": 3240
+}

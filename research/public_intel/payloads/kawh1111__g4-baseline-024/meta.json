@@ -1,0 +1,17 @@
+{
+  "kernel": "kawh1111__g4-baseline-024",
+  "title": "G4 baseline 024",
+  "ref": "kawh1111/G4 baseline 024",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 7512,
+  "zip_cell": 1,
+  "prompt_chars": 6985
+}

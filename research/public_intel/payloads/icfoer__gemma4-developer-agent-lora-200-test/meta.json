@@ -1,0 +1,12 @@
+{
+  "kernel": "icfoer__gemma4-developer-agent-lora-200-test",
+  "title": "Gemma4_developer_agent_lora_200_test",
+  "ref": "icfoer/Gemma4_developer_agent_lora_200_test",
+  "payload_var": null,
+  "digest": null,
+  "members": [],
+  "member_count": 0,
+  "total_bytes": 0,
+  "zip_cell": null,
+  "prompt_chars": null
+}

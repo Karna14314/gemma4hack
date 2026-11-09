@@ -1,0 +1,101 @@
+task_id,repo_domain,trap_category,arm,backend,resolved,turns_taken,entered_trap_loop,escaped_trap_loop,resets_triggered,total_thinking_tokens,total_kv_context_tokens,peak_kv_tokens,mean_action_entropy
+httpx-trap-01,httpx,Cross-Origin Redirect Auth Leakage,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179748,27165,1.5488
+httpx-trap-02,httpx,Query Param Multi-Value Merging,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179675,27153,1.5488
+httpx-trap-03,httpx,Timeout Tuple Unpacking Precedence,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179538,27130,1.5488
+httpx-trap-04,httpx,Content-Length vs Transfer-Encoding Chunked,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179576,27136,1.5488
+httpx-trap-05,httpx,IPv6 Host Header Bracket Formatting,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,180069,27219,1.5488
+requests-trap-06,requests,Session Cookie Domain Dot-Prefix Matching,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179293,27090,1.5488
+requests-trap-07,requests,Case-Insensitive Header Dict Lookup & Preservation,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179443,27115,1.5488
+requests-trap-08,requests,Netrc Auth Fallback vs Explicit Empty Auth,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179055,27050,1.5488
+requests-trap-09,requests,Redirect Method Preservation on 307/308 vs 302/303,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179991,27206,1.5488
+requests-trap-10,requests,NO_PROXY CIDR & Wildcard Subdomain Bypass,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179951,27199,1.5488
+fastapi-trap-11,fastapi,Response Model `exclude_unset` Default Mutation,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179601,27141,1.5488
+fastapi-trap-12,fastapi,Dependency Injection Cache Key with `use_cache=False`,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179441,27114,1.5488
+fastapi-trap-13,fastapi,APIRouter Prefix & Path Trailing Slash Normalization,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179181,27071,1.5488
+fastapi-trap-14,fastapi,JSON Encoder Custom Enum & Set Serialization,baseline_static,gemma-4-qat-ast-verified,True,6,True,True,0,24576,50108,13888,1.5975
+fastapi-trap-15,fastapi,BackgroundTask Exception Suppression in Middleware Chain,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,181496,27486,1.5488
+rich-trap-16,rich,ANSI SGR Escape Code Visible Width Calculation,baseline_static,gemma-4-qat-ast-verified,True,10,True,True,0,40960,127066,22599,1.5585
+rich-trap-17,rich,Markup Escaping with Double-Bracket Literal Syntax,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179306,27091,1.5488
+rich-trap-18,rich,Table Column Ratio Rounding Remainder Distribution,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179506,27124,1.5488
+rich-trap-19,rich,Progress Task Elapsed Time Freeze After Completion,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179716,27159,1.5488
+rich-trap-20,rich,Soft-Wrap Word Splitter Preserving Trailing Spaces,baseline_static,gemma-4-qat-ast-verified,True,4,True,True,0,16384,24445,9405,1.6462
+sci-trap-21,sci_compute,0-Based Half-Open BED vs 1-Based Closed VCF Coordinate Conversion,baseline_static,gemma-4-qat-ast-verified,True,4,True,True,0,16384,24370,9367,1.6462
+sci-trap-22,sci_compute,Reverse-Complement Strand Flip with IUPAC Ambiguity Codes,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179276,27086,1.5488
+sci-trap-23,sci_compute,AlphaFold pLDDT Confidence Domain Filtering with NaN/Missing Residues,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,176908,26667,1.5488
+sci-trap-24,sci_compute,"PDB Insertion Code Residue Sorting (`100`, `100A`, `100B`, `101`)",baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179116,27059,1.5488
+sci-trap-25,sci_compute,Log-Sum-Exp Numerical Underflow in Variant Impact Posterior,baseline_static,gemma-4-qat-ast-verified,False,12,True,False,0,49152,179520,27127,1.5488
+httpx-trap-01,httpx,Cross-Origin Redirect Auth Leakage,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223176,35061,1.5488
+httpx-trap-02,httpx,Query Param Multi-Value Merging,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223103,35049,1.5488
+httpx-trap-03,httpx,Timeout Tuple Unpacking Precedence,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222966,35026,1.5488
+httpx-trap-04,httpx,Content-Length vs Transfer-Encoding Chunked,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223004,35032,1.5488
+httpx-trap-05,httpx,IPv6 Host Header Bracket Formatting,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223497,35115,1.5488
+requests-trap-06,requests,Session Cookie Domain Dot-Prefix Matching,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222721,34986,1.5488
+requests-trap-07,requests,Case-Insensitive Header Dict Lookup & Preservation,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222871,35011,1.5488
+requests-trap-08,requests,Netrc Auth Fallback vs Explicit Empty Auth,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222483,34946,1.5488
+requests-trap-09,requests,Redirect Method Preservation on 307/308 vs 302/303,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223419,35102,1.5488
+requests-trap-10,requests,NO_PROXY CIDR & Wildcard Subdomain Bypass,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223379,35095,1.5488
+fastapi-trap-11,fastapi,Response Model `exclude_unset` Default Mutation,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223029,35037,1.5488
+fastapi-trap-12,fastapi,Dependency Injection Cache Key with `use_cache=False`,naive_subagent,gemma-4-qat-ast-verified,True,4,True,True,0,18432,28350,11357,1.6462
+fastapi-trap-13,fastapi,APIRouter Prefix & Path Trailing Slash Normalization,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222609,34967,1.5488
+fastapi-trap-14,fastapi,JSON Encoder Custom Enum & Set Serialization,naive_subagent,gemma-4-qat-ast-verified,True,6,True,True,0,28672,59978,17836,1.5975
+fastapi-trap-15,fastapi,BackgroundTask Exception Suppression in Middleware Chain,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,224924,35382,1.5488
+rich-trap-16,rich,ANSI SGR Escape Code Visible Width Calculation,naive_subagent,gemma-4-qat-ast-verified,True,10,True,True,0,47104,156676,28521,1.5585
+rich-trap-17,rich,Markup Escaping with Double-Bracket Literal Syntax,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222734,34987,1.5488
+rich-trap-18,rich,Table Column Ratio Rounding Remainder Distribution,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222934,35020,1.5488
+rich-trap-19,rich,Progress Task Elapsed Time Freeze After Completion,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,223144,35055,1.5488
+rich-trap-20,rich,Soft-Wrap Word Splitter Preserving Trailing Spaces,naive_subagent,gemma-4-qat-ast-verified,True,4,True,True,0,18432,28393,11379,1.6462
+sci-trap-21,sci_compute,0-Based Half-Open BED vs 1-Based Closed VCF Coordinate Conversion,naive_subagent,gemma-4-qat-ast-verified,True,4,True,True,0,18432,28318,11341,1.6462
+sci-trap-22,sci_compute,Reverse-Complement Strand Flip with IUPAC Ambiguity Codes,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222704,34982,1.5488
+sci-trap-23,sci_compute,AlphaFold pLDDT Confidence Domain Filtering with NaN/Missing Residues,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,220336,34563,1.5488
+sci-trap-24,sci_compute,"PDB Insertion Code Residue Sorting (`100`, `100A`, `100B`, `101`)",naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222544,34955,1.5488
+sci-trap-25,sci_compute,Log-Sum-Exp Numerical Underflow in Variant Impact Posterior,naive_subagent,gemma-4-qat-ast-verified,False,12,True,False,0,57344,222948,35023,1.5488
+httpx-trap-01,httpx,Cross-Origin Redirect Auth Leakage,ccr_only,gemma-4-qat-ast-verified,True,11,True,True,4,45056,116505,17695,1.5986
+httpx-trap-02,httpx,Query Param Multi-Value Merging,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134675,18153,1.5488
+httpx-trap-03,httpx,Timeout Tuple Unpacking Precedence,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134538,18130,1.5488
+httpx-trap-04,httpx,Content-Length vs Transfer-Encoding Chunked,ccr_only,gemma-4-qat-ast-verified,True,11,True,True,4,45056,116368,17672,1.5986
+httpx-trap-05,httpx,IPv6 Host Header Bracket Formatting,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,135069,18219,1.5488
+requests-trap-06,requests,Session Cookie Domain Dot-Prefix Matching,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134293,18090,1.5488
+requests-trap-07,requests,Case-Insensitive Header Dict Lookup & Preservation,ccr_only,gemma-4-qat-ast-verified,True,9,True,True,3,36864,83050,15025,1.6206
+requests-trap-08,requests,Netrc Auth Fallback vs Explicit Empty Auth,ccr_only,gemma-4-qat-ast-verified,True,5,True,True,1,20480,32364,9763,1.717
+requests-trap-09,requests,Redirect Method Preservation on 307/308 vs 302/303,ccr_only,gemma-4-qat-ast-verified,True,7,True,True,2,28672,55294,12480,1.655
+requests-trap-10,requests,NO_PROXY CIDR & Wildcard Subdomain Bypass,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134951,18199,1.5488
+fastapi-trap-11,fastapi,Response Model `exclude_unset` Default Mutation,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134601,18141,1.5488
+fastapi-trap-12,fastapi,Dependency Injection Cache Key with `use_cache=False`,ccr_only,gemma-4-qat-ast-verified,True,7,True,True,2,28672,55107,12403,1.655
+fastapi-trap-13,fastapi,APIRouter Prefix & Path Trailing Slash Normalization,ccr_only,gemma-4-qat-ast-verified,True,11,True,True,4,45056,116052,17620,1.5986
+fastapi-trap-14,fastapi,JSON Encoder Custom Enum & Set Serialization,ccr_only,gemma-4-qat-ast-verified,True,6,True,True,1,24576,44708,12088,1.5975
+fastapi-trap-15,fastapi,BackgroundTask Exception Suppression in Middleware Chain,ccr_only,gemma-4-qat-ast-verified,True,11,True,True,4,45056,116668,17640,1.5986
+rich-trap-16,rich,ANSI SGR Escape Code Visible Width Calculation,ccr_only,gemma-4-qat-ast-verified,True,9,True,True,3,36864,82813,14977,1.6206
+rich-trap-17,rich,Markup Escaping with Double-Bracket Literal Syntax,ccr_only,gemma-4-qat-ast-verified,True,7,True,True,2,28672,55072,12394,1.655
+rich-trap-18,rich,Table Column Ratio Rounding Remainder Distribution,ccr_only,gemma-4-qat-ast-verified,True,9,True,True,3,36864,83124,15072,1.6206
+rich-trap-19,rich,Progress Task Elapsed Time Freeze After Completion,ccr_only,gemma-4-qat-ast-verified,False,12,True,False,5,49152,134716,18159,1.5488
+rich-trap-20,rich,Soft-Wrap Word Splitter Preserving Trailing Spaces,ccr_only,gemma-4-qat-ast-verified,True,4,True,True,0,16384,24445,9405,1.6462
+sci-trap-21,sci_compute,0-Based Half-Open BED vs 1-Based Closed VCF Coordinate Conversion,ccr_only,gemma-4-qat-ast-verified,True,4,True,True,0,16384,24370,9367,1.6462
+sci-trap-22,sci_compute,Reverse-Complement Strand Flip with IUPAC Ambiguity Codes,ccr_only,gemma-4-qat-ast-verified,True,9,True,True,3,36864,82968,15008,1.6206
+sci-trap-23,sci_compute,AlphaFold pLDDT Confidence Domain Filtering with NaN/Missing Residues,ccr_only,gemma-4-qat-ast-verified,True,5,True,True,1,20480,32170,9690,1.717
+sci-trap-24,sci_compute,"PDB Insertion Code Residue Sorting (`100`, `100A`, `100B`, `101`)",ccr_only,gemma-4-qat-ast-verified,True,5,True,True,1,20480,32371,9765,1.717
+sci-trap-25,sci_compute,Log-Sum-Exp Numerical Underflow in Variant Impact Posterior,ccr_only,gemma-4-qat-ast-verified,True,5,True,True,1,20480,32410,9778,1.717
+httpx-trap-01,httpx,Cross-Origin Redirect Auth Leakage,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,11,True,True,4,45568,106777,17951,1.5986
+httpx-trap-02,httpx,Query Param Multi-Value Merging,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21168,6973,1.717
+httpx-trap-03,httpx,Timeout Tuple Unpacking Precedence,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21149,6963,1.717
+httpx-trap-04,httpx,Content-Length vs Transfer-Encoding Chunked,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,7,True,True,2,25088,42344,10620,1.655
+httpx-trap-05,httpx,IPv6 Host Header Bracket Formatting,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,7,True,True,2,25088,42474,10653,1.655
+requests-trap-06,requests,Session Cookie Domain Dot-Prefix Matching,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21124,6955,1.717
+requests-trap-07,requests,Case-Insensitive Header Dict Lookup & Preservation,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,9,True,True,3,35328,70762,14257,1.6206
+requests-trap-08,requests,Netrc Auth Fallback vs Explicit Empty Auth,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21100,6947,1.717
+requests-trap-09,requests,Redirect Method Preservation on 307/308 vs 302/303,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21233,7018,1.717
+requests-trap-10,requests,NO_PROXY CIDR & Wildcard Subdomain Bypass,ccr_adaptive_ours,gemma-4-qat-ast-verified,False,12,True,False,5,53760,128551,20503,1.5488
+fastapi-trap-11,fastapi,Response Model `exclude_unset` Default Mutation,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,9,True,True,3,35328,70842,14273,1.6206
+fastapi-trap-12,fastapi,Dependency Injection Cache Key with `use_cache=False`,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,6,True,True,1,18944,31423,9194,1.5975
+fastapi-trap-13,fastapi,APIRouter Prefix & Path Trailing Slash Normalization,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,11,True,True,4,45568,106324,17876,1.5986
+fastapi-trap-14,fastapi,JSON Encoder Custom Enum & Set Serialization,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,6,True,True,1,18944,31652,9272,1.5975
+fastapi-trap-15,fastapi,BackgroundTask Exception Suppression in Middleware Chain,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,7,True,True,2,25088,42628,10658,1.655
+rich-trap-16,rich,ANSI SGR Escape Code Visible Width Calculation,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,9,True,True,3,35328,70525,14209,1.6206
+rich-trap-17,rich,Markup Escaping with Double-Bracket Literal Syntax,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,7,True,True,2,25088,42272,10602,1.655
+rich-trap-18,rich,Table Column Ratio Rounding Remainder Distribution,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,9,True,True,3,35328,70836,14304,1.6206
+rich-trap-19,rich,Progress Task Elapsed Time Freeze After Completion,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,7,True,True,2,25088,42381,10629,1.655
+rich-trap-20,rich,Soft-Wrap Word Splitter Preserving Trailing Spaces,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,4,True,True,0,8704,13949,5565,1.6462
+sci-trap-21,sci_compute,0-Based Half-Open BED vs 1-Based Closed VCF Coordinate Conversion,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,4,True,True,0,8704,13874,5527,1.6462
+sci-trap-22,sci_compute,Reverse-Complement Strand Flip with IUPAC Ambiguity Codes,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,9,True,True,3,35328,70680,14240,1.6206
+sci-trap-23,sci_compute,AlphaFold pLDDT Confidence Domain Filtering with NaN/Missing Residues,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,20906,6874,1.717
+sci-trap-24,sci_compute,"PDB Insertion Code Residue Sorting (`100`, `100A`, `100B`, `101`)",ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21107,6949,1.717
+sci-trap-25,sci_compute,Log-Sum-Exp Numerical Underflow in Variant Impact Posterior,ccr_adaptive_ours,gemma-4-qat-ast-verified,True,5,True,True,1,14848,21146,6962,1.717

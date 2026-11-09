@@ -1,0 +1,17 @@
+{
+  "kernel": "shipship__gemma-4-dev-agent-lb024-fork",
+  "title": "Gemma 4 Dev Agent lb024 Fork",
+  "ref": "shipship/Gemma 4 Dev Agent lb024 Fork",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 3698,
+  "zip_cell": 7,
+  "prompt_chars": 3240
+}

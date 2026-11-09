@@ -1,0 +1,15 @@
+ref,date,config_family,tasks_passed,scale,byte_identical_group
+exp01,2026-10-03,exp01,3,31B,—
+exp02,2026-10-04,exp02,5,31B,—
+exp03,2026-10-10,exp03,10,31B,—
+exp05,2026-10-23,exp05-family,12,31B,A (sha 2ba7f9b1…)
+exp08,2026-10-25,exp05-family,10,31B,—
+exp10,2026-10-26,exp05-family,10,31B,—
+57697341,2026-10-27,exp11-fallback,8,31B,—
+exp12,2026-10-28,exp05-family,10,31B,—
+exp11_e4b,2026-10-29,e4b,4,E4B,—
+e4b-v2,2026-10-30,e4b,3,E4B,—
+57836949,2026-10-31,exp05-family,10,31B,A (sha 2ba7f9b1…)
+e4b-v4,2026-11-02,e4b,3,E4B,—
+exp14,2026-11-03,exp14,9,31B,—
+exp_sampling,2026-11-07,exp05-family,8,31B,—

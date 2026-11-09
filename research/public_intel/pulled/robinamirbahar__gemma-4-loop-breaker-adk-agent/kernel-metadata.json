@@ -1,0 +1,29 @@
+{
+  "id": "robinamirbahar/gemma-4-loop-breaker-adk-agent",
+  "id_no": 140383745,
+  "title": "Gemma 4 Loop-Breaker ADK Agent",
+  "code_file": "gemma-4-loop-breaker-adk-agent.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "nlp",
+    "python",
+    "deep learning"
+  ],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [
+    "gemma-4-developer-agent",
+    "gemma-4-developer-agent-paper"
+  ],
+  "model_sources": [
+    "google/gemma-4/Other/gemma-4-e4b-it-qat-w4a16-ct/2",
+    "robinamirbahar/gemma-4-31b-loop-breaker-lora/Transformers/v1-main-and-tool-lora/1"
+  ],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:17b2fc7f27c25c6c2fd4230ec8e66097ab2b89fc88e1e4d6f338b72e1ee0bc3e",
+  "machine_shape": "None"
+}

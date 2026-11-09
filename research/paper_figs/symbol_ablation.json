@@ -1,0 +1,29 @@
+{
+  "note": "Symbol recall ablation. v4 recomputed from committed eval_results (eval_results/t6_results_v4_repro.json, bare-name match per scripts/t6_run.py:118-121). v5/v5A/v5AB/v6 per-task re-ranked data is NOT committed, so only draft Table 2D values are recorded (draft-only, not recomputable). N=121 tasks with identifiable gold symbols.",
+  "source_committed_eval": "eval_results/t6_results_v4_repro.json",
+  "source_draft": "docs/PAPER_TRACK_DRAFT.md Table 2D",
+  "n_gold_symbol_tasks": 121,
+  "matching_rule": "bare-name equality: sym_names = [qualname.split('.')[-1] for qualname in top_syms]; hit if any gold_sym in top-k",
+  "recomputed_from_committed_eval": {
+    "v4": {
+      "symbol": {"@1": 0.1488, "@3": 0.2479, "@5": 0.3140, "@10": 0.3554},
+      "symbol_hits": {"@1": 18, "@3": 30, "@5": 38, "@10": 43},
+      "denominator": 121,
+      "re_rank_latency_s": null,
+      "enhancement": "shipped _index.py symbol ranking",
+      "status": "recomputed-from-committed-eval_results"
+    }
+  },
+  "draft_claims_not_recomputable": {
+    "v5": {"symbol": {"@1": 0.1900, "@3": 0.3220, "@5": 0.3880, "@10": 0.4880}, "re_rank_latency_s": 0.235, "enhancement": "signature + body token overlap, 1/rank prior, top-8 file scope"},
+    "v5A": {"symbol": {"@1": 0.1900, "@3": 0.3220, "@5": 0.3970, "@10": 0.4880}, "re_rank_latency_s": 0.235, "enhancement": "expanded candidate pool to top-12 files"},
+    "v5AB": {"symbol": {"@1": 0.2150, "@3": 0.3220, "@5": 0.3880, "@10": 0.4550}, "re_rank_latency_s": 1.310, "enhancement": "member-over-container boost (methods over container classes)"},
+    "v6": {"symbol": {"@1": 0.2150, "@3": 0.3310, "@5": 0.4050, "@10": 0.4630}, "re_rank_latency_s": 1.310, "enhancement": "call-site & attribute span re-ranking"}
+  },
+  "differences_vs_draft_section_3x": [
+    "v4 recompute (0.1488/0.2479/0.3140/0.3554) vs draft Table 2D (0.1570/0.2310/0.3060/0.3640): off by 1-2 tasks at every rank (@1 draft 19 vs recompute 18; @3 draft 28 vs recompute 30; @5 draft 37 vs recompute 38; @10 draft 44 vs recompute 43). Within the ±1-2 task noise noted in AGENTS.md §9, but a real mismatch between committed eval_results and the draft text.",
+    "v4 recompute denominator = 121 gold-symbol tasks, matching draft's '121 Identifiable Symbol Tasks'.",
+    "v5/v5A/v5AB/v6 per-task symbol rankings are NOT in committed eval_results, so their @1/@3/@5/@10 cannot be recomputed; only draft Table 2D values are available (draft-only claims).",
+    "Draft section 3.2 ('Why Raw Graph Tools Fail LLM Agents') concerns static graph tools (M1-M5), not the symbol ablation; the symbol recall ablation appears as Table 2D in the symbol re-ranking discussion (Regime B / _index.py). The task's 'section 3.2' reference is therefore treated as the draft's symbol-recall claims (Table 2D)."
+  ]
+}

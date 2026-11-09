@@ -1,0 +1,19 @@
+ref,name,scale,tasks_passed,date,config_family,byte_identical_group,source_path,status,score
+exp01,exp01 (v1),31B,3,2026-10-03,exp01,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.05
+exp02,exp02 (v2),31B,5,2026-10-04,exp02,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.08
+exp03,exp03 baseline replica,31B,10,2026-10-10,exp03,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.17
+exp05,exp05 patch integrity,31B,12,2026-10-23,exp05-family,A (sha 2ba7f9b1…),research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.20
+exp08,exp08 tool contract prompt,31B,10,2026-10-25,exp05-family,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.17
+exp10,exp10 consolidated,31B,10,2026-10-26,exp05-family,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.17
+57697341,31B-fallback (E4B alias rejected),31B,8,2026-10-27,exp11-fallback,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.13
+exp12,exp12 timing buffer,31B,10,2026-10-28,exp05-family,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.17
+57836949,E0 control: byte-identical exp05,31B,10,2026-10-31,exp05-family,A (sha 2ba7f9b1…),research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.17
+exp_sampling,exp_sampling temp 1.0 (ref 58096981),31B,8,2026-11-07,exp05-family,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.13
+exp_think1024,exp_think1024 (ref 58149803),31B,,2026-11-09,exp05-family,B (sha 5d80bac7…),research/paper_eval_outputs/paper_experiments.json:experiment4,pending,
+exp11_e4b,genuine E4B bundle (ref 57777888),E4B,4,2026-10-29,e4b,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.06
+e4b-v2,e4b-v2 (ref 57806053),E4B,3,2026-10-30,e4b,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.05
+e4b-v4,e4b_v4_swe_toolkit (ref 57889741),E4B,3,2026-11-02,e4b,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.05
+exp14,exp14 lean toolkit (ref 57933618),31B,9,2026-11-03,exp14,—,research/paper_eval_outputs/paper_experiments.json:experiment4,scored,0.15
+exp13,exp13 swe-toolkit v4 (kernel-verified, unsubmitted),31B,,—,exp13,—,research/paper_eval_outputs/paper_experiments.json:experiment4,kernel-verified-unsubmitted,
+e4b-v3,e4b-v3 swe-toolkit (kernel-verified, unsubmitted),E4B,,—,e4b,—,research/paper_eval_outputs/paper_experiments.json:experiment4,kernel-verified-unsubmitted,
+exp04,exp04 py_compile (offline ablation, unsubmitted),31B,,—,exp04,—,research/paper_eval_outputs/paper_experiments.json:experiment4,unsubmitted,

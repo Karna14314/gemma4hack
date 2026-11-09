@@ -1,0 +1,17 @@
+{
+  "kernel": "nihilisticneuralnet__gemma-4-developer-agent-direct-code-verifier",
+  "title": "Gemma 4 Developer Agent: Direct Code Verifier",
+  "ref": "nihilisticneuralnet/Gemma 4 Developer Agent: Direct Code Verifier",
+  "payload_var": "__SELECTED__",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 7112,
+  "zip_cell": null,
+  "prompt_chars": 6585
+}

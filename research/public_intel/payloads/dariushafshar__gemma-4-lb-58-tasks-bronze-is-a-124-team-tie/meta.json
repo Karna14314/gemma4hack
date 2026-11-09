@@ -1,0 +1,17 @@
+{
+  "kernel": "dariushafshar__gemma-4-lb-58-tasks-bronze-is-a-124-team-tie",
+  "method": "static",
+  "payload_var": "CONFIG",
+  "bundle_hash": "e33d2c0aebf5",
+  "members": [
+    "248b4a4c",
+    "56010e9e",
+    "5d05a6e0",
+    "9f8886a9",
+    "c9829b6a",
+    "d4460290"
+  ],
+  "member_count": 6,
+  "total_bytes": 263,
+  "prompt_chars": null
+}

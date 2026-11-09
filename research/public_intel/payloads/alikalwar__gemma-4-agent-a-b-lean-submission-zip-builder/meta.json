@@ -1,0 +1,14 @@
+{
+  "kernel": "alikalwar__gemma-4-agent-a-b-lean-submission-zip-builder",
+  "method": "sandbox_exec",
+  "error": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 4572,
+  "temp_root": "C:\\Users\\chait\\AppData\\Local\\Temp\\nbexec_3qsjla4d"
+}

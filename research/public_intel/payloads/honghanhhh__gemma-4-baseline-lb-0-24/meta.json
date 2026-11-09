@@ -1,0 +1,15 @@
+{
+  "kernel": "honghanhhh__gemma-4-baseline-lb-0-24",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "4a65b9a74a0b",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 7512,
+  "prompt_chars": 6985
+}

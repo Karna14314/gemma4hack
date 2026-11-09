@@ -1,0 +1,9 @@
+panel,method,R@1,R@3,R@5,R@10,recall_definition
+A,M1,0.0504,0.1819,0.2284,0.3036,mean per-task fraction (graph candidates)
+A,M2,0.0583,0.1772,0.2163,0.381,mean per-task fraction (graph candidates)
+A,M3,0.0504,0.1819,0.2265,0.2846,mean per-task fraction (graph candidates)
+A,M4,0.2661,0.3798,0.435,0.4587,mean per-task fraction (graph candidates)
+A,M5,0.2466,0.3742,0.4745,0.5701,mean per-task fraction (graph candidates)
+B,v4,0.4186,0.6512,0.7442,0.8295,any-gold binary (all files on disk)
+B,base,,,,,not committed
+B,v3,,,,,not committed

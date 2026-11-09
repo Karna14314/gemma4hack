@@ -1,0 +1,5835 @@
+{
+ "description": "Per-task any-gold file ranks for Instrument B (Regime B indexer). v4 per-task data committed from eval_results/t6_results_v4_repro.json (recomputed, matches stored file_hit with 0 mismatches). base and v3 per-task ranks are NOT committed (would require re-running against eval_snapshots, ~30 min for 129 tasks at ~14 s/task); regeneration command given in docs/PAPER_ASSETS.md.",
+ "source": "eval_results/t6_results_v4_repro.json (v4 only; scripts/t6_run.py uses skills/swe-toolkit/scripts/_index.py commit 41c2854)",
+ "n_tasks": 129,
+ "n_with_gold": 129,
+ "regeneration_command": ".venv-harness\\Scripts\\python.exe scripts/t6_run.py --out eval_results/t6_results_v4_repro.json  (requires eval_snapshots/ extracted by scripts/fetch_eval_data.py; ~30 min, >5 min so not rerun here)",
+ "regeneration_runtime_est": "~30 min for 129 tasks (~14 s/task); not rerun (read-only, snapshots not accessed)",
+ "tasks": [
+  {
+   "task_id": "fastapi_11194",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 617,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/routing.py",
+      "fastapi/responses.py",
+      "fastapi/applications.py",
+      "fastapi/security/oauth2.py",
+      "scripts/mkdocs_hooks.py",
+      "fastapi/openapi/models.py",
+      "fastapi/exceptions.py"
+     ],
+     "seconds": 13.66
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_11355",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 299,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "scripts/translate.py",
+      "scripts/notify_translations.py"
+     ],
+     "seconds": 9.31
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_12942",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1392,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/openapi/models.py",
+      "fastapi/_compat.py",
+      "fastapi/param_functions.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/params.py",
+      "fastapi/encoders.py",
+      "fastapi/datastructures.py"
+     ],
+     "seconds": 7.0
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_13207",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 354,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/applications.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/openapi/utils.py",
+      "scripts/playwright/separate_openapi_schemas/image04.py",
+      "fastapi/routing.py"
+     ],
+     "seconds": 8.18
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_13537",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1650,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/param_functions.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/shared.py"
+     ],
+     "seconds": 7.91
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_13713",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 756,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/security/api_key.py",
+      "fastapi/openapi/models.py",
+      "fastapi/routing.py",
+      "fastapi/security/http.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/param_functions.py",
+      "fastapi/exceptions.py",
+      "fastapi/params.py",
+      "fastapi/openapi/utils.py"
+     ],
+     "seconds": 7.27
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_13786",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/authentication_error_status_code/tutorial001_an.py",
+    "docs_src/authentication_error_status_code/tutorial001_an_py39.py",
+    "docs_src/security/tutorial003.py",
+    "docs_src/security/tutorial003_an.py",
+    "docs_src/security/tutorial003_an_py310.py",
+    "docs_src/security/tutorial003_an_py39.py",
+    "docs_src/security/tutorial003_py310.py",
+    "fastapi/security/api_key.py",
+    "fastapi/security/http.py",
+    "fastapi/security/oauth2.py",
+    "fastapi/security/open_id_connect_url.py"
+   ],
+   "gold_n": 11,
+   "issue_chars": 5328,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 7,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/http.py",
+      "fastapi/security/open_id_connect_url.py",
+      "fastapi/openapi/models.py"
+     ],
+     "seconds": 7.79
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_13920",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 225,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/applications.py",
+      "fastapi/openapi/models.py",
+      "fastapi/param_functions.py",
+      "fastapi/routing.py",
+      "fastapi/utils.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/openapi/utils.py"
+     ],
+     "seconds": 10.33
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14077",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/handling_errors/tutorial005.py",
+    "fastapi/exception_handlers.py",
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 3,
+   "issue_chars": 677,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat.py",
+      "fastapi/exception_handlers.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/utils.py",
+      "fastapi/responses.py",
+      "fastapi/security/http.py",
+      "fastapi/security/oauth2.py",
+      "scripts/sponsors.py"
+     ],
+     "seconds": 6.71
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14099",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/dependencies/tutorial013_an_py310.py",
+    "docs_src/dependencies/tutorial014_an_py310.py",
+    "fastapi/applications.py",
+    "fastapi/middleware/asyncexitstack.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 5,
+   "issue_chars": 644,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/datastructures.py",
+      "fastapi/routing.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/applications.py",
+      "fastapi/_compat.py",
+      "fastapi/background.py",
+      "fastapi/concurrency.py",
+      "fastapi/exceptions.py",
+      "docs_src/custom_response/tutorial008.py",
+      "fastapi/responses.py"
+     ],
+     "seconds": 6.24
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14186",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/__init__.py",
+    "fastapi/_compat/main.py",
+    "fastapi/_compat/may_v1.py",
+    "fastapi/_compat/shared.py",
+    "fastapi/_compat/v1.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/encoders.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ],
+   "gold_n": 10,
+   "issue_chars": 1009,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/applications.py",
+      "scripts/translate.py",
+      "scripts/contributors.py"
+     ],
+     "seconds": 6.94
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14246",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 273,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/utils.py",
+      "scripts/people.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py"
+     ],
+     "seconds": 6.96
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14258",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/routing.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 418,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "scripts/translate.py",
+      "scripts/people.py",
+      "scripts/contributors.py",
+      "fastapi/exceptions.py",
+      "scripts/sponsors.py",
+      "fastapi/openapi/models.py"
+     ],
+     "seconds": 8.9
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14262",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/dependencies/tutorial008e.py",
+    "docs_src/dependencies/tutorial008e_an.py",
+    "docs_src/dependencies/tutorial008e_an_py39.py",
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/exceptions.py",
+    "fastapi/param_functions.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/types.py"
+   ],
+   "gold_n": 10,
+   "issue_chars": 2437,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/param_functions.py",
+      "fastapi/routing.py",
+      "fastapi/params.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/applications.py",
+      "fastapi/background.py",
+      "docs_src/app_testing/tutorial004.py",
+      "fastapi/dependencies/utils.py",
+      "docs_src/events/tutorial003.py",
+      "scripts/playwright/request_form_models/image01.py"
+     ],
+     "seconds": 7.58
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14266",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 247,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/main.py",
+      "fastapi/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/applications.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 7.13
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14297",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1219,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/datastructures.py",
+      "fastapi/_compat/main.py"
+     ],
+     "seconds": 7.26
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14301",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 739,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/applications.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/utils.py",
+      "fastapi/security/api_key.py",
+      "fastapi/dependencies/models.py"
+     ],
+     "seconds": 7.22
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14303",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 2644,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/utils.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/may_v1.py"
+     ],
+     "seconds": 7.47
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14306",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/exceptions.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 2791,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/exceptions.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py"
+     ],
+     "seconds": 7.86
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14349",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 169,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py"
+     ],
+     "seconds": 7.2
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14356",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1481,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 7,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 8.86
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14360",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 753,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/param_functions.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/utils.py",
+      "scripts/docs.py"
+     ],
+     "seconds": 7.3
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14361",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 96,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/openapi/models.py",
+      "scripts/notify_translations.py",
+      "scripts/docs.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/_compat/main.py",
+      "fastapi/utils.py",
+      "scripts/people.py",
+      "fastapi/_compat/shared.py"
+     ],
+     "seconds": 7.55
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14371",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/params.py"
+   ],
+   "gold_n": 4,
+   "issue_chars": 397,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/applications.py"
+     ],
+     "seconds": 8.65
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14372",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/params.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 1160,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/security/http.py",
+      "fastapi/security/oauth2.py"
+     ],
+     "seconds": 7.5
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14419",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 689,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 8,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/dependencies/models.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 8.77
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14430",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 335,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/applications.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/security/http.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 8.44
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14448",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 1226,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/routing.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/param_functions.py",
+      "fastapi/applications.py"
+     ],
+     "seconds": 8.76
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14455",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 283,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/main.py",
+      "fastapi/openapi/models.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/http.py",
+      "fastapi/utils.py"
+     ],
+     "seconds": 8.46
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14458",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 591,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/models.py",
+      "fastapi/security/http.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/applications.py",
+      "fastapi/security/open_id_connect_url.py",
+      "fastapi/middleware/asyncexitstack.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py"
+     ],
+     "seconds": 8.34
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14459",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 3,
+   "issue_chars": 815,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 9,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/openapi/models.py",
+      "fastapi/dependencies/models.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 8.27
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14463",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 10095,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/utils.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/security/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 9.89
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14479",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 2455,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/utils.py",
+      "fastapi/routing.py",
+      "fastapi/security/utils.py",
+      "fastapi/applications.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/api_key.py"
+     ],
+     "seconds": 9.97
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14482",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 266,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/param_functions.py",
+      "fastapi/utils.py",
+      "fastapi/routing.py",
+      "fastapi/applications.py"
+     ],
+     "seconds": 9.54
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14485",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 317,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 10,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/utils.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/dependencies/utils.py"
+     ],
+     "seconds": 7.96
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14487",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/handling_errors/tutorial004.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 204,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/exceptions.py",
+      "fastapi/routing.py",
+      "scripts/docs.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/datastructures.py",
+      "fastapi/exception_handlers.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/may_v1.py"
+     ],
+     "seconds": 8.06
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14492",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/metadata/tutorial001_1_py39.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 159,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/openapi/models.py",
+      "fastapi/applications.py",
+      "scripts/translation_fixer.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/http.py",
+      "scripts/docs.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/openapi/docs.py",
+      "fastapi/routing.py",
+      "scripts/doc_parsing_utils.py"
+     ],
+     "seconds": 8.32
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14512",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/_compat/v2.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 289,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/utils.py"
+     ],
+     "seconds": 8.88
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14583",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 104,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+      "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+      "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+      "docs_src/request_form_models/tutorial002_pv1_py39.py",
+      "docs_src/schema_extra_example/tutorial001_pv1_py310.py",
+      "docs_src/schema_extra_example/tutorial001_pv1_py39.py",
+      "docs_src/pydantic_v1_in_v2/tutorial002_an_py310.py"
+     ],
+     "seconds": 7.77
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14605",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/exceptions.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ],
+   "gold_n": 7,
+   "issue_chars": 242,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/utils.py",
+      "fastapi/security/http.py",
+      "fastapi/param_functions.py",
+      "fastapi/security/oauth2.py"
+     ],
+     "seconds": 8.5
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14609",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+    "docs_src/request_form_models/tutorial002_pv1_py39.py",
+    "fastapi/_compat/__init__.py",
+    "fastapi/_compat/main.py",
+    "fastapi/_compat/may_v1.py",
+    "fastapi/_compat/model_field.py",
+    "fastapi/_compat/shared.py",
+    "fastapi/_compat/v1.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/datastructures.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/encoders.py",
+    "fastapi/exceptions.py",
+    "fastapi/openapi/models.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/param_functions.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ],
+   "gold_n": 20,
+   "issue_chars": 144,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/may_v1.py",
+      "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+      "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+      "docs_src/request_form_models/tutorial002_pv1_py39.py",
+      "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+      "docs_src/schema_extra_example/tutorial001_pv1_py310.py",
+      "docs_src/schema_extra_example/tutorial001_pv1_py39.py",
+      "docs_src/pydantic_v1_in_v2/tutorial002_an_py310.py"
+     ],
+     "seconds": 7.8
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14616",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1176,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 8,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/datastructures.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 7.7
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14786",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/security/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 2303,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/security/http.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/api_key.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/utils.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/openapi/models.py"
+     ],
+     "seconds": 7.69
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14791",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/openapi/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 591,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/openapi/utils.py",
+      "fastapi/applications.py",
+      "fastapi/exceptions.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/routing.py",
+      "fastapi/utils.py",
+      "fastapi/dependencies/utils.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/exception_handlers.py",
+      "fastapi/security/utils.py"
+     ],
+     "seconds": 8.29
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14794",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 816,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/param_functions.py",
+      "fastapi/applications.py",
+      "fastapi/params.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/openapi/models.py",
+      "fastapi/routing.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/http.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/datastructures.py"
+     ],
+     "seconds": 8.19
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14851",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/routing.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 464,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "docs_src/app_testing/tutorial004_py39.py",
+      "docs_src/events/tutorial003_py39.py",
+      "scripts/mkdocs_hooks.py",
+      "fastapi/param_functions.py",
+      "fastapi/utils.py",
+      "fastapi/openapi/utils.py",
+      "scripts/notify_translations.py",
+      "fastapi/security/oauth2.py"
+     ],
+     "seconds": 7.49
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14873",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/routing.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 674,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/param_functions.py",
+      "fastapi/security/http.py",
+      "fastapi/exceptions.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/background.py"
+     ],
+     "seconds": 8.79
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14953",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/json_base64_bytes/tutorial001_py310.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/datastructures.py",
+    "scripts/playwright/json_base64_bytes/image01.py"
+   ],
+   "gold_n": 4,
+   "issue_chars": 1775,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/datastructures.py",
+      "fastapi/routing.py",
+      "fastapi/openapi/models.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/background.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/param_functions.py",
+      "fastapi/responses.py",
+      "fastapi/params.py",
+      "fastapi/exceptions.py"
+     ],
+     "seconds": 10.18
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14962",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/custom_response/tutorial010_py310.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 3,
+   "issue_chars": 210,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/openapi/models.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/datastructures.py",
+      "fastapi/responses.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/exceptions.py",
+      "fastapi/routing.py",
+      "fastapi/params.py",
+      "fastapi/utils.py"
+     ],
+     "seconds": 6.91
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14964",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/responses.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 370,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/responses.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/exceptions.py",
+      "fastapi/openapi/models.py",
+      "fastapi/utils.py",
+      "fastapi/param_functions.py",
+      "fastapi/openapi/docs.py"
+     ],
+     "seconds": 7.27
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14978",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/strict_content_type/tutorial001_py310.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 3,
+   "issue_chars": 112,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/openapi/models.py",
+      "fastapi/params.py",
+      "fastapi/applications.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/param_functions.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/datastructures.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/routing.py"
+     ],
+     "seconds": 8.87
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_14986",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/applications.py",
+    "fastapi/openapi/docs.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 1000,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/param_functions.py",
+      "fastapi/openapi/models.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/routing.py",
+      "scripts/docs.py",
+      "fastapi/security/http.py",
+      "fastapi/security/api_key.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/dependencies/utils.py"
+     ],
+     "seconds": 8.99
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15023",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/stream_data/tutorial002_py310.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 112,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 7,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "scripts/docs.py",
+      "scripts/translate.py",
+      "fastapi/applications.py",
+      "docs_src/stream_json_lines/tutorial001_py310.py",
+      "docs_src/stream_data/tutorial001_py310.py",
+      "docs_src/stream_data/tutorial002_py310.py",
+      "fastapi/openapi/models.py",
+      "scripts/people.py",
+      "fastapi/_compat/v2.py"
+     ],
+     "seconds": 6.96
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15030",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/server_sent_events/tutorial001_py310.py",
+    "docs_src/server_sent_events/tutorial002_py310.py",
+    "docs_src/server_sent_events/tutorial003_py310.py",
+    "docs_src/server_sent_events/tutorial004_py310.py",
+    "docs_src/server_sent_events/tutorial005_py310.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/responses.py",
+    "fastapi/routing.py",
+    "fastapi/sse.py"
+   ],
+   "gold_n": 9,
+   "issue_chars": 148,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/exceptions.py",
+      "fastapi/routing.py",
+      "fastapi/background.py",
+      "fastapi/security/api_key.py",
+      "fastapi/openapi/models.py",
+      "scripts/translate.py",
+      "fastapi/security/http.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 7.06
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15280",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/vibe/tutorial001_py310.py",
+    "fastapi/applications.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 64,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "fastapi/exceptions.py",
+      "scripts/docs.py",
+      "fastapi/param_functions.py",
+      "fastapi/middleware/asyncexitstack.py",
+      "fastapi/background.py",
+      "scripts/notify_translations.py",
+      "fastapi/security/api_key.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 7.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15588",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/sse.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1891,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/sse.py",
+      "scripts/notify_translations.py",
+      "fastapi/param_functions.py",
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/security/oauth2.py",
+      "scripts/people.py",
+      "scripts/contributors.py",
+      "scripts/translate.py",
+      "scripts/docs.py"
+     ],
+     "seconds": 7.27
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15589",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1247,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/param_functions.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/http.py",
+      "fastapi/security/api_key.py",
+      "fastapi/params.py",
+      "scripts/docs.py",
+      "scripts/contributors.py",
+      "scripts/translate.py",
+      "fastapi/applications.py"
+     ],
+     "seconds": 7.18
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15661",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "scripts/prepare_release.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1025,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "scripts/notify_translations.py",
+      "scripts/people.py",
+      "scripts/contributors.py",
+      "scripts/translate.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/routing.py",
+      "scripts/sponsors.py",
+      "scripts/docs.py"
+     ],
+     "seconds": 7.18
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15745",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/path_operation_advanced_configuration/tutorial002_py310.py",
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 4,
+   "issue_chars": 4304,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "fastapi/applications.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/param_functions.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/_compat/shared.py",
+      "scripts/docs.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/exceptions.py"
+     ],
+     "seconds": 7.75
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15763",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/routing.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1064,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/shared.py",
+      "fastapi/routing.py",
+      "scripts/people.py",
+      "scripts/contributors.py",
+      "scripts/notify_translations.py",
+      "scripts/translate.py",
+      "scripts/sponsors.py",
+      "fastapi/openapi/models.py",
+      "fastapi/param_functions.py"
+     ],
+     "seconds": 7.53
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15785",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/openapi/utils.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 1263,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "scripts/doc_parsing_utils.py",
+      "fastapi/background.py",
+      "fastapi/_compat/v2.py",
+      "scripts/playwright/cookie_param_models/image01.py",
+      "scripts/playwright/separate_openapi_schemas/image01.py",
+      "scripts/playwright/request_form_models/image01.py",
+      "scripts/playwright/sql_databases/image01.py",
+      "scripts/playwright/sql_databases/image02.py",
+      "scripts/playwright/header_param_models/image01.py"
+     ],
+     "seconds": 8.54
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_15800",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "docs_src/frontend/tutorial001_py310.py",
+    "docs_src/frontend/tutorial002_py310.py",
+    "docs_src/frontend/tutorial003_py310.py",
+    "docs_src/frontend/tutorial004_py310.py",
+    "docs_src/frontend/tutorial005_py310.py",
+    "docs_src/frontend/tutorial006_py310.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+   ],
+   "gold_n": 8,
+   "issue_chars": 1236,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/routing.py",
+      "scripts/docs.py",
+      "fastapi/applications.py",
+      "scripts/notify_translations.py",
+      "scripts/people.py",
+      "scripts/contributors.py",
+      "scripts/translate.py",
+      "scripts/sponsors.py",
+      "fastapi/param_functions.py",
+      "scripts/doc_parsing_utils.py"
+     ],
+     "seconds": 7.65
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_5077",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 2679,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/routing.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/utils.py",
+      "fastapi/applications.py",
+      "fastapi/security/utils.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 10.43
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_5624",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 63,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/dependencies/models.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/routing.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/applications.py",
+      "scripts/docs.py",
+      "fastapi/middleware/asyncexitstack.py",
+      "fastapi/params.py",
+      "fastapi/security/http.py",
+      "fastapi/openapi/models.py"
+     ],
+     "seconds": 9.1
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_9425",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 235,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 5,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "fastapi/openapi/models.py",
+      "fastapi/routing.py",
+      "scripts/docs.py",
+      "fastapi/responses.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/applications.py",
+      "fastapi/_compat.py",
+      "fastapi/openapi/utils.py",
+      "fastapi/datastructures.py",
+      "fastapi/params.py"
+     ],
+     "seconds": 6.99
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_9555",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 2934,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/applications.py",
+      "fastapi/routing.py",
+      "fastapi/param_functions.py",
+      "fastapi/params.py",
+      "fastapi/temp_pydantic_v1_params.py",
+      "fastapi/security/http.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/dependencies/utils.py",
+      "fastapi/security/api_key.py",
+      "fastapi/_compat/v2.py"
+     ],
+     "seconds": 7.55
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "fastapi_9753",
+   "repo": "fastapi/fastapi",
+   "gold_files": [
+    "fastapi/dependencies/models.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 689,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "fastapi/_compat/shared.py",
+      "fastapi/_compat/v1.py",
+      "fastapi/_compat/v2.py",
+      "fastapi/_compat/may_v1.py",
+      "fastapi/_compat/main.py",
+      "fastapi/_compat/model_field.py",
+      "fastapi/routing.py",
+      "fastapi/security/oauth2.py",
+      "fastapi/params.py",
+      "fastapi/security/http.py"
+     ],
+     "seconds": 7.55
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "httpx_3672",
+   "repo": "encode/httpx",
+   "gold_files": [
+    "src/ahttpx/_parsers.py",
+    "src/ahttpx/_pool.py",
+    "src/ahttpx/_server.py",
+    "src/httpx/_network.py",
+    "src/httpx/_parsers.py",
+    "src/httpx/_pool.py",
+    "src/httpx/_server.py"
+   ],
+   "gold_n": 7,
+   "issue_chars": 243,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/httpx/_parsers.py",
+      "src/ahttpx/_parsers.py",
+      "src/httpx/_server.py",
+      "src/ahttpx/_server.py",
+      "src/httpx/_pool.py",
+      "src/ahttpx/_pool.py",
+      "src/httpx/_streams.py",
+      "src/ahttpx/_streams.py",
+      "src/httpx/_urls.py",
+      "src/ahttpx/_urls.py"
+     ],
+     "seconds": 0.88
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_6589",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 237,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/utils.py",
+      "src/requests/models.py",
+      "src/requests/sessions.py",
+      "src/requests/adapters.py",
+      "src/requests/cookies.py",
+      "src/requests/structures.py",
+      "src/requests/exceptions.py",
+      "setup.py",
+      "src/requests/auth.py",
+      "src/requests/__init__.py"
+     ],
+     "seconds": 0.75
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_6592",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/status_codes.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 239,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 6,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/models.py",
+      "src/requests/cookies.py",
+      "src/requests/status_codes.py",
+      "src/requests/adapters.py",
+      "src/requests/auth.py",
+      "src/requests/structures.py",
+      "src/requests/_internal_utils.py"
+     ],
+     "seconds": 0.57
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_6629",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/exceptions.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 836,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/models.py",
+      "src/requests/exceptions.py",
+      "src/requests/help.py",
+      "src/requests/cookies.py",
+      "src/requests/adapters.py",
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/api.py",
+      "src/requests/auth.py",
+      "src/requests/structures.py"
+     ],
+     "seconds": 0.52
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_6644",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/adapters.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 295,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/adapters.py",
+      "src/requests/cookies.py",
+      "src/requests/utils.py",
+      "src/requests/models.py",
+      "src/requests/exceptions.py",
+      "src/requests/sessions.py",
+      "src/requests/auth.py",
+      "src/requests/__init__.py",
+      "src/requests/api.py",
+      "src/requests/help.py"
+     ],
+     "seconds": 0.54
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_6757",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/compat.py",
+    "src/requests/utils.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 268,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/adapters.py",
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/models.py",
+      "src/requests/auth.py",
+      "src/requests/cookies.py",
+      "src/requests/help.py",
+      "src/requests/__init__.py",
+      "docs/_themes/flask_theme_support.py"
+     ],
+     "seconds": 0.6
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7205",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 609,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/utils.py",
+      "src/requests/sessions.py",
+      "src/requests/auth.py",
+      "src/requests/models.py",
+      "src/requests/adapters.py",
+      "src/requests/cookies.py",
+      "src/requests/exceptions.py",
+      "src/requests/api.py",
+      "src/requests/_internal_utils.py",
+      "src/requests/__init__.py"
+     ],
+     "seconds": 0.66
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7309",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 406,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/utils.py",
+      "src/requests/models.py",
+      "src/requests/adapters.py",
+      "src/requests/auth.py",
+      "src/requests/sessions.py",
+      "src/requests/compat.py",
+      "src/requests/cookies.py",
+      "src/requests/exceptions.py",
+      "src/requests/structures.py",
+      "src/requests/api.py"
+     ],
+     "seconds": 0.56
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7315",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/adapters.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 694,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/adapters.py",
+      "src/requests/compat.py",
+      "src/requests/models.py",
+      "src/requests/utils.py",
+      "src/requests/api.py",
+      "src/requests/sessions.py",
+      "src/requests/cookies.py",
+      "src/requests/auth.py",
+      "src/requests/exceptions.py",
+      "src/requests/structures.py"
+     ],
+     "seconds": 0.61
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7328",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/sessions.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 580,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/sessions.py",
+      "src/requests/adapters.py",
+      "src/requests/models.py",
+      "src/requests/api.py",
+      "src/requests/auth.py",
+      "src/requests/cookies.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/structures.py",
+      "src/requests/__init__.py"
+     ],
+     "seconds": 0.54
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7427",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/utils.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 394,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/cookies.py",
+      "src/requests/adapters.py",
+      "src/requests/help.py",
+      "src/requests/api.py",
+      "src/requests/auth.py",
+      "src/requests/structures.py",
+      "src/requests/exceptions.py",
+      "src/requests/models.py"
+     ],
+     "seconds": 0.72
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7433",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/models.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 498,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/models.py",
+      "src/requests/structures.py",
+      "src/requests/cookies.py",
+      "src/requests/sessions.py",
+      "src/requests/api.py",
+      "src/requests/utils.py",
+      "src/requests/adapters.py",
+      "src/requests/auth.py",
+      "src/requests/hooks.py",
+      "src/requests/_types.py"
+     ],
+     "seconds": 0.62
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7502",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/models.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 67,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/models.py",
+      "src/requests/structures.py",
+      "src/requests/utils.py",
+      "src/requests/auth.py",
+      "src/requests/sessions.py",
+      "src/requests/adapters.py",
+      "src/requests/cookies.py",
+      "src/requests/api.py",
+      "src/requests/_types.py",
+      "src/requests/_internal_utils.py"
+     ],
+     "seconds": 0.67
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "requests_7505",
+   "repo": "psf/requests",
+   "gold_files": [
+    "src/requests/_types.py",
+    "src/requests/models.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 518,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "src/requests/_types.py",
+      "src/requests/models.py",
+      "src/requests/adapters.py",
+      "src/requests/api.py",
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/cookies.py",
+      "src/requests/auth.py",
+      "src/requests/structures.py"
+     ],
+     "seconds": 0.64
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_2725",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/table.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1779,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/box.py",
+      "rich/table.py",
+      "benchmarks/benchmarks.py",
+      "examples/export.py",
+      "rich/__main__.py",
+      "rich/panel.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/columns.py",
+      "rich/progress.py"
+     ],
+     "seconds": 3.22
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_2943",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/style.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 473,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/style.py",
+      "rich/segment.py",
+      "rich/live_render.py",
+      "rich/traceback.py",
+      "rich/prompt.py",
+      "rich/text.py",
+      "rich/control.py",
+      "rich/_win32_console.py"
+     ],
+     "seconds": 2.08
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3006",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/repr.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 677,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 5,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/text.py",
+      "rich/style.py",
+      "rich/console.py",
+      "rich/pretty.py",
+      "rich/repr.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/traceback.py",
+      "rich/_win32_console.py",
+      "rich/prompt.py"
+     ],
+     "seconds": 2.25
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3043",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/_export_format.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 286,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/theme.py",
+      "rich/prompt.py",
+      "rich/jupyter.py",
+      "rich/text.py",
+      "rich/progress_bar.py",
+      "rich/status.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/_inspect.py"
+     ],
+     "seconds": 2.05
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3052",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/prompt.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 863,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/prompt.py",
+      "rich/color.py",
+      "rich/progress.py",
+      "rich/console.py",
+      "rich/text.py",
+      "rich/traceback.py",
+      "rich/pretty.py",
+      "rich/__init__.py",
+      "rich/theme.py",
+      "rich/live.py"
+     ],
+     "seconds": 2.1
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3061",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/text.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 411,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/text.py",
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/rule.py",
+      "rich/syntax.py",
+      "rich/panel.py",
+      "rich/containers.py",
+      "rich/_win32_console.py",
+      "rich/segment.py",
+      "examples/fullscreen.py"
+     ],
+     "seconds": 2.25
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3063",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/markup.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 85,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/highlighter.py",
+      "rich/box.py",
+      "rich/pretty.py",
+      "rich/_fileno.py",
+      "rich/syntax.py",
+      "rich/status.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3064",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/markdown.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 76,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/markdown.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/table.py",
+      "rich/_win32_console.py",
+      "rich/highlighter.py",
+      "benchmarks/benchmarks.py",
+      "rich/box.py",
+      "tools/make_terminal_widths.py"
+     ],
+     "seconds": 2.04
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3067",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/highlighter.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 584,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/prompt.py",
+      "rich/markdown.py",
+      "examples/fullscreen.py",
+      "rich/text.py",
+      "rich/json.py",
+      "rich/style.py",
+      "rich/live_render.py"
+     ],
+     "seconds": 2.1
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3105",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/_export_format.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 452,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/syntax.py",
+      "rich/prompt.py",
+      "rich/live_render.py",
+      "rich/_win32_console.py",
+      "examples/fullscreen.py",
+      "rich/progress_bar.py",
+      "rich/control.py"
+     ],
+     "seconds": 2.23
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3130",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/markdown.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 878,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/markdown.py",
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/prompt.py",
+      "rich/text.py",
+      "rich/syntax.py",
+      "rich/segment.py",
+      "rich/style.py",
+      "rich/live_render.py",
+      "rich/table.py"
+     ],
+     "seconds": 2.11
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3180",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/_wrap.py",
+    "rich/cells.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 1189,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/segment.py",
+      "rich/text.py",
+      "rich/console.py",
+      "benchmarks/benchmarks.py",
+      "rich/syntax.py",
+      "rich/table.py",
+      "rich/prompt.py",
+      "rich/progress.py",
+      "rich/traceback.py",
+      "rich/containers.py"
+     ],
+     "seconds": 2.04
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3278",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/ansi.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1216,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/markup.py",
+      "rich/jupyter.py",
+      "rich/style.py",
+      "rich/live_render.py",
+      "rich/pretty.py",
+      "rich/console.py",
+      "benchmarks/benchmarks.py",
+      "rich/control.py",
+      "rich/_win32_console.py",
+      "rich/progress.py"
+     ],
+     "seconds": 2.13
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3296",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/syntax.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 818,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 5,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/segment.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/syntax.py",
+      "benchmarks/benchmarks.py",
+      "rich/_win32_console.py",
+      "rich/markdown.py",
+      "rich/color.py",
+      "rich/layout.py"
+     ],
+     "seconds": 2.11
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3454",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/highlighter.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 865,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/highlighter.py",
+      "examples/highlighter.py",
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/_inspect.py",
+      "rich/traceback.py",
+      "rich/color.py",
+      "rich/prompt.py",
+      "rich/segment.py",
+      "rich/pretty.py"
+     ],
+     "seconds": 2.22
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3468",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 146,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 6,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/_win32_console.py",
+      "rich/traceback.py",
+      "rich/pretty.py",
+      "rich/console.py",
+      "rich/highlighter.py",
+      "rich/box.py",
+      "rich/prompt.py",
+      "rich/_fileno.py"
+     ],
+     "seconds": 2.12
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3469",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/markdown.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 75,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/highlighter.py",
+      "rich/text.py",
+      "rich/_win32_console.py",
+      "rich/align.py",
+      "rich/box.py",
+      "rich/panel.py",
+      "rich/_fileno.py"
+     ],
+     "seconds": 2.11
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3470",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 74,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/console.py",
+      "examples/fullscreen.py",
+      "rich/_win32_console.py",
+      "rich/logging.py",
+      "rich/highlighter.py",
+      "rich/box.py",
+      "rich/_fileno.py",
+      "rich/pretty.py",
+      "rich/traceback.py"
+     ],
+     "seconds": 2.14
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3471",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/text.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 86,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/text.py",
+      "rich/console.py",
+      "rich/pretty.py",
+      "examples/fullscreen.py",
+      "rich/syntax.py",
+      "rich/table.py",
+      "rich/markdown.py",
+      "rich/_win32_console.py",
+      "rich/containers.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3472",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/pretty.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 88,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/traceback.py",
+      "rich/console.py",
+      "rich/pretty.py",
+      "examples/fullscreen.py",
+      "rich/syntax.py",
+      "rich/errors.py",
+      "rich/_win32_console.py",
+      "rich/_ratio.py",
+      "rich/table.py"
+     ],
+     "seconds": 2.06
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3480",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/text.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 81,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 6,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/console.py",
+      "rich/box.py",
+      "examples/fullscreen.py",
+      "rich/protocol.py",
+      "rich/text.py",
+      "rich/_win32_console.py",
+      "rich/markdown.py",
+      "rich/highlighter.py",
+      "rich/_loop.py"
+     ],
+     "seconds": 2.1
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3486",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/default_styles.py",
+    "rich/syntax.py",
+    "rich/traceback.py"
+   ],
+   "gold_n": 3,
+   "issue_chars": 98,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/traceback.py",
+      "rich/segment.py",
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/syntax.py",
+      "rich/filesize.py",
+      "rich/status.py",
+      "rich/_null_file.py",
+      "rich/diagnose.py",
+      "rich/live.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3506",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/segment.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 115,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/segment.py",
+      "rich/console.py",
+      "rich/text.py",
+      "rich/cells.py",
+      "rich/table.py",
+      "rich/align.py",
+      "rich/layout.py",
+      "rich/syntax.py",
+      "benchmarks/benchmarks.py",
+      "rich/containers.py"
+     ],
+     "seconds": 2.08
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3518",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/table.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 658,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/highlighter.py",
+      "rich/table.py",
+      "rich/syntax.py",
+      "examples/rainbow.py",
+      "examples/fullscreen.py",
+      "examples/highlighter.py",
+      "rich/progress.py",
+      "rich/layout.py",
+      "rich/markdown.py",
+      "benchmarks/benchmarks.py"
+     ],
+     "seconds": 2.21
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3521",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/segment.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 80,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/segment.py",
+      "rich/progress.py",
+      "rich/console.py",
+      "examples/fullscreen.py",
+      "rich/_win32_console.py",
+      "rich/text.py",
+      "rich/cells.py",
+      "benchmarks/benchmarks.py",
+      "rich/table.py",
+      "rich/markdown.py"
+     ],
+     "seconds": 2.08
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3535",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/cells.py",
+    "rich/segment.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 193,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/segment.py",
+      "rich/highlighter.py",
+      "rich/traceback.py",
+      "rich/syntax.py",
+      "rich/console.py",
+      "rich/text.py",
+      "examples/log.py",
+      "rich/progress.py",
+      "rich/rule.py",
+      "rich/style.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3675",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py",
+    "rich/diagnose.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 168,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/progress.py",
+      "rich/box.py",
+      "examples/fullscreen.py",
+      "rich/_win32_console.py",
+      "rich/text.py",
+      "rich/segment.py",
+      "rich/highlighter.py",
+      "rich/style.py",
+      "rich/markdown.py"
+     ],
+     "seconds": 2.13
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3676",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/default_styles.py",
+    "rich/traceback.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 42,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/layout.py",
+      "rich/prompt.py",
+      "rich/progress.py",
+      "rich/text.py",
+      "rich/repr.py",
+      "rich/table.py",
+      "rich/live.py",
+      "rich/errors.py",
+      "benchmarks/benchmarks.py"
+     ],
+     "seconds": 2.05
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3718",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/panel.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 749,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/panel.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/segment.py",
+      "rich/syntax.py",
+      "rich/_inspect.py",
+      "rich/layout.py",
+      "rich/progress.py",
+      "rich/style.py",
+      "rich/theme.py"
+     ],
+     "seconds": 2.22
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3772",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/traceback.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 131,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/console.py",
+      "examples/fullscreen.py",
+      "rich/traceback.py",
+      "rich/_win32_console.py",
+      "rich/highlighter.py",
+      "rich/status.py",
+      "rich/box.py",
+      "rich/_null_file.py",
+      "rich/live.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3777",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py",
+    "rich/diagnose.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 341,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/diagnose.py",
+      "rich/progress.py",
+      "rich/live.py",
+      "examples/dynamic_progress.py",
+      "rich/segment.py",
+      "rich/progress_bar.py",
+      "rich/traceback.py",
+      "rich/status.py",
+      "rich/theme.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3782",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/syntax.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 68,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/syntax.py",
+      "rich/markdown.py",
+      "rich/console.py",
+      "rich/table.py",
+      "rich/padding.py",
+      "rich/_win32_console.py",
+      "rich/traceback.py",
+      "rich/highlighter.py"
+     ],
+     "seconds": 2.11
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3882",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/prompt.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 652,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/prompt.py",
+      "rich/console.py",
+      "rich/errors.py",
+      "rich/markdown.py",
+      "rich/progress.py",
+      "rich/syntax.py",
+      "rich/theme.py",
+      "rich/live_render.py",
+      "rich/traceback.py",
+      "rich/segment.py"
+     ],
+     "seconds": 2.09
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3894",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/_inspect.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1974,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 10,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "top10": [
+      "rich/traceback.py",
+      "rich/pretty.py",
+      "rich/__init__.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/progress_bar.py",
+      "rich/logging.py",
+      "rich/console.py",
+      "rich/style.py",
+      "rich/_inspect.py"
+     ],
+     "seconds": 2.16
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3905",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/progress.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 1672,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/live.py",
+      "rich/progress_bar.py",
+      "rich/status.py",
+      "examples/dynamic_progress.py",
+      "rich/console.py",
+      "rich/syntax.py",
+      "rich/text.py",
+      "rich/traceback.py",
+      "rich/segment.py"
+     ],
+     "seconds": 3.16
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3930",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/__main__.py",
+    "rich/_cell_widths.py",
+    "rich/_unicode_data/__init__.py",
+    "rich/_unicode_data/_versions.py",
+    "rich/_unicode_data/unicode10-0-0.py",
+    "rich/_unicode_data/unicode11-0-0.py",
+    "rich/_unicode_data/unicode12-0-0.py",
+    "rich/_unicode_data/unicode12-1-0.py",
+    "rich/_unicode_data/unicode13-0-0.py",
+    "rich/_unicode_data/unicode14-0-0.py",
+    "rich/_unicode_data/unicode15-0-0.py",
+    "rich/_unicode_data/unicode15-1-0.py",
+    "rich/_unicode_data/unicode16-0-0.py",
+    "rich/_unicode_data/unicode17-0-0.py",
+    "rich/_unicode_data/unicode4-1-0.py",
+    "rich/_unicode_data/unicode5-0-0.py",
+    "rich/_unicode_data/unicode5-1-0.py",
+    "rich/_unicode_data/unicode5-2-0.py",
+    "rich/_unicode_data/unicode6-0-0.py",
+    "rich/_unicode_data/unicode6-1-0.py",
+    "rich/_unicode_data/unicode6-2-0.py",
+    "rich/_unicode_data/unicode6-3-0.py",
+    "rich/_unicode_data/unicode7-0-0.py",
+    "rich/_unicode_data/unicode8-0-0.py",
+    "rich/_unicode_data/unicode9-0-0.py",
+    "rich/cells.py"
+   ],
+   "gold_n": 26,
+   "issue_chars": 1224,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/console.py",
+      "tools/make_terminal_widths.py",
+      "benchmarks/benchmarks.py",
+      "rich/cells.py",
+      "rich/progress.py",
+      "rich/box.py",
+      "rich/segment.py",
+      "rich/syntax.py",
+      "rich/logging.py",
+      "rich/highlighter.py"
+     ],
+     "seconds": 2.83
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3934",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/live.py",
+    "rich/live_render.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 64,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 3,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/console.py",
+      "rich/live.py",
+      "rich/status.py",
+      "examples/fullscreen.py",
+      "rich/live_render.py",
+      "rich/_win32_console.py",
+      "rich/errors.py",
+      "rich/highlighter.py",
+      "rich/pretty.py"
+     ],
+     "seconds": 2.93
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3935",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/table.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 75,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 4,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/table.py",
+      "rich/syntax.py",
+      "rich/padding.py",
+      "rich/markdown.py",
+      "rich/_win32_console.py",
+      "rich/panel.py",
+      "rich/segment.py"
+     ],
+     "seconds": 2.48
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3938",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py",
+    "rich/segment.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 89,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 5,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/syntax.py",
+      "rich/style.py",
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/text.py",
+      "rich/pretty.py",
+      "rich/highlighter.py",
+      "benchmarks/benchmarks.py"
+     ],
+     "seconds": 2.44
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3942",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/default_styles.py",
+    "rich/markdown.py"
+   ],
+   "gold_n": 2,
+   "issue_chars": 54,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/markdown.py",
+      "rich/spinner.py",
+      "rich/theme.py",
+      "rich/progress.py",
+      "rich/segment.py",
+      "rich/console.py",
+      "rich/style.py",
+      "rich/text.py",
+      "rich/table.py",
+      "rich/layout.py"
+     ],
+     "seconds": 2.38
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3944",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/cells.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 63,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/highlighter.py",
+      "rich/box.py",
+      "rich/_fileno.py",
+      "rich/table.py",
+      "rich/syntax.py",
+      "rich/panel.py"
+     ],
+     "seconds": 2.4
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_3953",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/cells.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 130,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/table.py",
+      "rich/console.py",
+      "rich/pretty.py",
+      "rich/_ratio.py",
+      "rich/_win32_console.py",
+      "rich/box.py",
+      "rich/highlighter.py",
+      "rich/__main__.py"
+     ],
+     "seconds": 2.39
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4006",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/cells.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 96,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/cells.py",
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/protocol.py",
+      "rich/console.py",
+      "rich/text.py",
+      "rich/layout.py",
+      "rich/box.py",
+      "rich/_win32_console.py",
+      "rich/_loop.py"
+     ],
+     "seconds": 2.43
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4070",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/_emoji_replace.py",
+    "rich/console.py",
+    "rich/emoji.py",
+    "rich/logging.py",
+    "rich/protocol.py",
+    "rich/repr.py",
+    "rich/segment.py",
+    "rich/syntax.py",
+    "rich/theme.py"
+   ],
+   "gold_n": 9,
+   "issue_chars": 3096,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/syntax.py",
+      "rich/traceback.py",
+      "rich/repr.py",
+      "rich/markdown.py",
+      "rich/segment.py",
+      "rich/__init__.py",
+      "rich/logging.py",
+      "rich/_log_render.py"
+     ],
+     "seconds": 2.47
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4075",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/console.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 101,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/console.py",
+      "examples/fullscreen.py",
+      "rich/text.py",
+      "benchmarks/benchmarks.py",
+      "rich/_win32_console.py",
+      "rich/live.py",
+      "rich/highlighter.py",
+      "rich/pretty.py",
+      "rich/bar.py"
+     ],
+     "seconds": 2.47
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4076",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/ansi.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 71,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": null,
+     "any_gold_hit": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "top10": [
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/_win32_console.py",
+      "rich/segment.py",
+      "rich/syntax.py",
+      "rich/highlighter.py",
+      "rich/box.py",
+      "rich/_fileno.py",
+      "rich/markdown.py"
+     ],
+     "seconds": 2.36
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4077",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/file_proxy.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 66,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 2,
+     "any_gold_hit": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/progress.py",
+      "rich/file_proxy.py",
+      "rich/console.py",
+      "examples/fullscreen.py",
+      "rich/_null_file.py",
+      "rich/jupyter.py",
+      "rich/_win32_console.py",
+      "rich/live.py",
+      "rich/highlighter.py",
+      "rich/box.py"
+     ],
+     "seconds": 2.43
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  },
+  {
+   "task_id": "rich_4079",
+   "repo": "Textualize/rich",
+   "gold_files": [
+    "rich/markdown.py"
+   ],
+   "gold_n": 1,
+   "issue_chars": 71,
+   "variants": {
+    "v4": {
+     "available": true,
+     "rank_of_first_gold": 1,
+     "any_gold_hit": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "top10": [
+      "rich/markdown.py",
+      "rich/progress.py",
+      "examples/fullscreen.py",
+      "rich/console.py",
+      "rich/table.py",
+      "rich/_win32_console.py",
+      "rich/control.py",
+      "rich/syntax.py",
+      "benchmarks/benchmarks.py",
+      "rich/highlighter.py"
+     ],
+     "seconds": 2.39
+    },
+    "v3": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task v3 ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    },
+    "base": {
+     "available": false,
+     "rank_of_first_gold": null,
+     "note": "per-task base ranks not committed; regenerate via t6_run.py variant against eval_snapshots"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "kernel": "flexonafft__gemma-4-budget-aware-coding-agent-v2",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "56010e9e9d4c",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 6850,
+  "prompt_chars": 6323
+}

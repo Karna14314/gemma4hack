@@ -1,0 +1,15 @@
+{
+  "kernel": "dmitriigluzdov__gemma-4-public-agent-ideas-and-evidence",
+  "method": "static",
+  "payload_var": "expected_members",
+  "bundle_hash": "d1822f0ecb69",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 256,
+  "prompt_chars": 64
+}

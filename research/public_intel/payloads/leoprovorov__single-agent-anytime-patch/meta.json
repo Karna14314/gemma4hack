@@ -1,0 +1,15 @@
+{
+  "kernel": "leoprovorov__single-agent-anytime-patch",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "b8905aeba117",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 6603,
+  "prompt_chars": 6145
+}

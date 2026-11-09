@@ -1,0 +1,21 @@
+{
+  "id": "alikalwar/gemma-4-agent-a-b-lean-submission-zip-builder",
+  "id_no": 140507740,
+  "title": "Gemma 4 Agent A/B: Lean submission.zip Builder",
+  "code_file": "gemma-4-agent-a-b-lean-submission-zip-builder.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [
+    "gemma-4-developer-agent"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:17b2fc7f27c25c6c2fd4230ec8e66097ab2b89fc88e1e4d6f338b72e1ee0bc3e",
+  "machine_shape": "None"
+}

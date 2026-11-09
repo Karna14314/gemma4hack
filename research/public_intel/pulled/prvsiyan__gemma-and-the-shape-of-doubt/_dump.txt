@@ -1,0 +1,1226 @@
+============================== CELL 0 [markdown] len=999
+# Gemma and the Shape of Doubt
+
+**Best measured public score: 0.18** (completed submissions 57111761 and 57329048; source: [`sub-hist-a/submissions.csv`](../sub-hist-a/submissions.csv)). This notebook explains the credited Gemma coding-agent bundle—its model, prompt, tools, sampling settings, and evaluation limits—and checks and rebuilds its deterministic four-file ZIP. It does not run Gemma inference or submit a score.
+
+**Contents:** [Credits and provenance](#credits-and-provenance) · [Method](#method) · [Score mechanics](#score-mechanics) · [Scoring contract](#scoring-is-a-two-stage-contract) · [What we tested](#what-we-tested) · [Local uncertainty and correctness](#local-uncertainty-and-correctness) · [Budget and failures](#budget-and-failures) · [Public frontier](#public-frontier-how-the-top-public-bundles-differ) · [Leading notebooks](#what-the-five-leading-notebooks-add) · [Version comparison](#version-comparison) · [Measured score and next ideas](#measured-score-and-next-ideas)
+============================== CELL 1 [markdown] len=690
+## Credits and provenance
+
+The reproduction base is Flexonafft's [Budget-Aware Coding Agent V10](https://www.kaggle.com/code/flexonafft/gemma-4-budget-aware-coding-agent-v2), licensed Apache-2.0. Its source credits Matterhorn3838's [Gemma 4 SuperAgent](https://www.kaggle.com/code/matterhorn3838/gemma-4-superagent); that attribution remains in the preserved prompt.
+
+Hitarth Jain's [agent analysis](https://www.kaggle.com/code/hitarthjain0/gemma-4-agent-what-took-lb-0-12-0-24) informed the graph-tool discussion. Its scores are not attributed to this candidate. Other pulled notebooks were comparison references only; their license fields were unavailable, so no code is reused from them.
+============================== CELL 2 [markdown] len=1367
+## Method
+
+Four embedded text files define the agent, sampling settings, evaluation limits, and system prompt. The include loader resolves those files locally. Non-fatal checks report the model, tools, sampling, limits, and graph-tool prohibitions without stopping ZIP creation.
+
+Fifteen figures are generated from the prompt, configuration, and embedded local result tables. Figures 1–4 explain design and instructions; Figures 5–7 show score mechanics; Figures 8–14 summarize local results, correctness, uncertainty, and development checks; Figure 15 compares public prompt lengths. Each figure reports the data or configuration shown; none predicts model behavior or a leaderboard score. The submission ZIP remains byte-identical to the credited Flexonafft V10 package.
+
+The final cell writes a sorted four-file ZIP with fixed timestamps, then reopens it and compares every member with its source text. The submission logic is unchanged. No Gemma weights are loaded, no issue tasks run, and no submission is made.
+
+## Run order
+
+Run every cell from top to bottom with Python 3, PyYAML, and Matplotlib. Local execution validates the package and creates the ZIP; official model evaluation requires Kaggle's competition runtime.
+
+**Start here:** 1. Run all cells. 2. Inspect the packaging checks. 3. Use the generated ZIP only in the authorized competition workflow.
+
+============================== CELL 3 [code] len=678
+from pathlib import Path
+import hashlib
+import os
+import zipfile
+
+try:
+    import yaml
+except Exception as error:
+    yaml = None
+    print('WARNING: PyYAML unavailable; using the embedded configuration fallback:', type(error).__name__, error)
+
+OUTPUT_DIR = Path(os.environ.get('GEMMA_OUTPUT_ROOT', '/kaggle/working'))
+if not OUTPUT_DIR.is_dir() and 'GEMMA_OUTPUT_ROOT' not in os.environ:
+    OUTPUT_DIR = Path.cwd() / 'gemma4_output'
+try:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+except Exception as error:
+    print('WARNING: output directory could not be created; file outputs will be skipped:', type(error).__name__, error)
+ZIP_PATH = OUTPUT_DIR / 'submission.zip'
+
+============================== CELL 4 [code] len=7146
+'''Reproduce Flexonafft V10 with its three graph tools restored; preserve the source prompt that prohibits calling them.'''
+
+SYSTEM_PROMPT = """You are an autonomous software engineer. Your job: make the smallest correct change to the SOURCE code in /workspace so that the hidden tests for the issue below pass. The hidden tests were written from the issue text, so the exact names, messages, types and behaviours in the issue are the specification.
+
+# HARD LIMITS
+- 28 tool calls and 8 minutes in total. When either runs out, the working tree is graded as it is. An edit that exists counts, even if you never call `submit_patch`. An unedited tree always scores zero.
+- Never create, modify or delete test files (`test_*.py`, `*_test.py`, anything under `tests/`). This is an automatic failure.
+- Never run a full test suite (bare `pytest`, `pytest .`, `unittest discover`). Always name one test file, and add `-k` when you can.
+- Never look outside /workspace. All dependencies are already installed.
+- Never use `search_similar_code`, `get_code_neighbors` or `get_code_subgraph`. They return nothing useful.
+
+# CALL PLAN
+- Calls 1-8: locate and read. Calls 9-12: edit. You MUST have edited a source file by call 12. If you are unsure, make your best-guess edit in the most likely place now. A wrong edit can still be corrected. Pure reading cannot score.
+- Calls 13-20: verify and correct.
+- Call 20 onward: no new exploration. Check, fix, submit.
+- Always finish with `git diff` followed by `submit_patch`.
+
+# PROCEDURE
+
+## 1. Extract the specification (no tool call)
+From the issue, list for yourself: the exact file, function, class or CLI name; the exact error message and exception type; the expected return value or output; the inputs that trigger the bug; every edge case mentioned (None, empty, negative, unicode, duplicates, defaults). Treat every concrete string and name in the issue as a literal that must appear exactly in your code.
+
+## 2. Locate
+- Use exact paths from the issue directly. When searches are necessary, combine independent searches for the issue's exact symbols, their callers and relevant test paths into one run_command. Use git grep with fixed-string patterns for literal identifiers and git ls-files for tracked file paths; each result should show its file path and line number where applicable.
+- Batch only searches whose inputs are already known. If the next search depends on the first result, inspect that result before searching again. Limit each search to about 20 matching lines and keep total output short; never dump whole files or the repository tree.
+- Once the target is located, read the relevant implementation plus one relevant caller or test case. When both paths and line ranges are known, read these small regions in one run_command using sed with explicit line ranges, or use read_file for a single region. Aim for about 40 lines per region and at most three regions per command. Include enough surrounding code to understand signatures, defaults and error handling.
+- For a bug: find where the wrong behaviour is produced and use the caller or test to understand the contract before editing.
+- For a feature: find the closest existing sibling (a similar function, option, class, or doc example) and copy its pattern, including registration points such as __all__, option lists, dispatch tables and imports.
+- Reuse paths and test names already discovered. Do not spend another tool call repeating a search that already answered the question.
+- If the issue includes a code snippet that reproduces the problem, you may run it once with python -c (one call, never create a file) to see the real error.
+
+## 3. Edit
+- Use edit_file for changes to existing code. Copy old_string exactly from the source, including whitespace, and choose a short unique match. Use write_file only for a genuinely new source file that the issue requires.
+- If edit_file reports no match or multiple matches, read the exact source region and retry with a smaller unique snippet. Never repeat an identical failed edit. After two matching failures, use one inline Python script through run_command with a quoted heredoc; assert that the old text occurs exactly once before replacing it and writing the file. Preserve unrelated content and do not rewrite the file from memory.
+- Fix the cause, not the symptom. Do not special-case the example from the issue.
+- Change only what the issue requires. Keep existing signatures, defaults, and backward compatibility unless the issue says otherwise. Match the style, naming and error-handling idioms of the surrounding code.
+- Use the exact exception class and exact message text from the issue. If the issue only describes the error, reuse the wording style of neighbouring error messages.
+- Handle every edge case you listed in step 1.
+- For documentation-code tasks (for example FastAPI), edit the executable code under `docs_src/`.
+
+## 4. Verify (at most 2 calls)
+- Find the test file with `find tests -name "*keyword*.py"`, then run `timeout 150 python -m pytest tests/path/test_x.py -x -q -k keyword`. Use `python3 -m unittest tests.test_x` for unittest projects.
+- Failures that come from missing fixtures, missing data, or import errors unrelated to your change are pre-existing. Ignore them. Never repair tests or the environment.
+- If a test related to your change fails, read the traceback, fix the source once, and rerun once. If no test can run, do one `python -c` check or `python -m py_compile` on the edited file.
+
+## 5. Final check and submit
+- Run `git diff`. Confirm that: only source files changed; every name, message and type from step 1 appears exactly; nothing unrelated was touched; there are no leftover debug prints or stray files.
+- Call `submit_patch`. Confirm `patch_size > 0` and `files_changed > 0`. If either is 0, you have not edited anything. Edit now and submit again.
+- End with a single-sentence summary of the fix.
+
+# DECISION RULES
+- Ambiguous issue: choose the most literal reading of the issue text and act on it. Do not ask questions and do not stall.
+- Several possible locations: pick the one where the wrong behaviour is produced, not where it is merely observed.
+- Search returned nothing: try one different specific string, then edit your best candidate anyway.
+- Stuck after a failed fix: make a different, smaller change. Do not repeat the same edit.
+- Never conclude that nothing needs to change. Every task requires a non-empty source patch.
+"""
+
+FILES = {
+    "agent.yaml": """name: swe_agent
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include prompts/system.md
+tools:
+  - run_command
+  - read_file
+  - edit_file
+  - write_file
+  - get_status
+  - submit_patch
+  - get_code_neighbors
+  - search_similar_code
+  - get_code_subgraph
+generate_content_config: !include configs/sampling.yaml
+""",
+    "configs/sampling.yaml": """temperature: 0.2
+top_p: 0.95
+max_output_tokens: 8192
+thinking_config:
+  thinking_budget: 4096
+  include_thoughts: true
+""",
+    "eval_config.yaml": """evaluation:
+  timeout_seconds: 240
+  max_tool_calls: 28
+  max_time_minutes: 8
+  max_turns: 80
+""",
+    "prompts/system.md": SYSTEM_PROMPT,
+}
+
+============================== CELL 5 [code] len=2600
+'''Check the original single-agent configuration and local includes without stopping ZIP creation.'''
+
+def note_check(condition, label):
+    if condition:
+        print('PASS:', label)
+    else:
+        print('WARNING:', label)
+
+if yaml is not None:
+    class IncludeLoader(yaml.SafeLoader):
+        pass
+
+    def include(loader, node):
+        relative = loader.construct_scalar(node)
+        if relative not in FILES:
+            print('WARNING: missing local include:', relative)
+            return ''
+        return FILES[relative] if relative.endswith('.md') else yaml.safe_load(FILES[relative])
+
+    IncludeLoader.add_constructor('!include', include)
+    agent = yaml.load(FILES['agent.yaml'], Loader=IncludeLoader)
+    evaluation = yaml.safe_load(FILES['eval_config.yaml'])['evaluation']
+    sampling = yaml.safe_load(FILES['configs/sampling.yaml'])
+else:
+    agent = {
+        'model': 'gemma-4-31b-it-qat-w4a16-ct',
+        'instruction': SYSTEM_PROMPT,
+        'generate_content_config': {
+            'temperature': 0.2, 'top_p': 0.95, 'max_output_tokens': 8192,
+            'thinking_config': {'thinking_budget': 4096, 'include_thoughts': True},
+        },
+        'tools': ['run_command', 'read_file', 'edit_file', 'write_file', 'get_status',
+                  'submit_patch', 'get_code_neighbors', 'search_similar_code', 'get_code_subgraph'],
+    }
+    evaluation = {'timeout_seconds': 240, 'max_tool_calls': 28,
+                  'max_time_minutes': 8, 'max_turns': 80}
+    sampling = agent['generate_content_config']
+
+expected_tools = {
+    'run_command', 'read_file', 'edit_file', 'write_file', 'get_status', 'submit_patch',
+    'get_code_neighbors', 'search_similar_code', 'get_code_subgraph',
+}
+note_check(agent.get('model') == 'gemma-4-31b-it-qat-w4a16-ct', 'model matches the preserved 31B configuration')
+note_check(agent.get('instruction') == SYSTEM_PROMPT, 'embedded system prompt matches the package member')
+note_check(agent.get('generate_content_config') == sampling, 'sampling matches the package member')
+note_check(set(agent.get('tools', [])) == expected_tools, 'all nine declared tools are present')
+note_check(len(agent.get('tools', [])) == 9, 'tool count is nine')
+note_check(evaluation == {
+    'timeout_seconds': 240, 'max_tool_calls': 28,
+    'max_time_minutes': 8, 'max_turns': 80,
+}, 'evaluation limits match the preserved package')
+note_check(set(FILES) == {'agent.yaml', 'configs/sampling.yaml', 'eval_config.yaml', 'prompts/system.md'}, 'package has the four expected members')
+print('The local package checks do not run Gemma inference or evaluate a task.')
+
+============================== CELL 6 [code] len=1343
+'''Package the preserved submission files in a reproducible ZIP archive.'''
+
+try:
+    with zipfile.ZipFile(ZIP_PATH, 'w') as archive:
+        for relative, content in sorted(FILES.items()):
+            entry = zipfile.ZipInfo(relative, date_time=(1980, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_DEFLATED
+            entry.external_attr = 0o100644 << 16
+            archive.writestr(entry, content.encode('utf-8'))
+    with zipfile.ZipFile(ZIP_PATH) as archive:
+        members = archive.namelist()
+        note_check(archive.testzip() is None, 'ZIP CRC check passes')
+        note_check('agent.yaml' in members, 'agent.yaml is present')
+        note_check(set(members) == set(FILES), 'ZIP members match all four embedded package files')
+        for relative, content in FILES.items():
+            note_check(relative in members and archive.read(relative) == content.encode('utf-8'),
+                       'ZIP member matches embedded source: ' + relative)
+    print('Submission:', ZIP_PATH)
+    print('SHA-256:', hashlib.sha256(ZIP_PATH.read_bytes()).hexdigest())
+    print('Archive files:', sorted(FILES))
+    print('Official model evaluation and leaderboard scoring were not run.')
+except Exception as error:
+    print('WARNING: submission ZIP could not be written or checked; continuing:', type(error).__name__, error)
+
+============================== CELL 7 [code] len=8999
+try:
+    from datetime import date
+    from math import ceil, sqrt
+    from statistics import NormalDist
+    import matplotlib.pyplot as plt
+
+    BLUE = "#2563a6"
+    ORANGE = "#d87928"
+    TEAL = "#16877a"
+    GRAY = "#687386"
+    OFFICIAL_SCORES = [
+        # Source for every row: sub-hist-a/submissions.csv, matched to the fresh read-only CLI output.
+        ("2026-09-24", 0.08, "56528080", "V10"),  # official scored row 56528080
+        ("2026-10-02", 0.06, "56781875", "repeat"),  # official scored row 56781875
+        ("2026-10-03", 0.08, "56794711", "A_scout"),  # official scored row 56794711
+        ("2026-10-04", 0.05, "56818847", "B_scout"),  # official scored row 56818847
+        ("2026-10-05", 0.06, "56859742", "A_repeat"),  # official scored row 56859742
+        ("2026-10-07", 0.05, "56921186", "timeout"),  # official scored row 56921186
+        ("2026-10-08", 0.12, "56949760", "thinking"),  # official scored row 56949760
+        ("2026-10-10", 0.13, "57039340", "D_v4"),  # official scored row 57039340
+        ("2026-10-12", 0.18, "57111761", "E01"),  # official scored row 57111761
+        ("2026-10-14", 0.17, "57183017", "E03"),  # official scored row 57183017
+        ("2026-10-15", 0.17, "57237203", "V10_ref"),  # official scored row 57237203
+        ("2026-10-17", 0.18, "57329048", "E05"),  # official scored row 57329048
+        ("2026-10-19", 0.17, "57374841", "E06"),  # official scored row 57374841
+        ("2026-10-20", 0.15, "57431737", "E07"),  # official scored row 57431737
+    ]
+
+    def score_quantization_figure():
+        """Show the one-task score step and the competition's truncated display."""
+        TASKS = 58  # PLAN.md section 1: public leaderboard uses 58 tasks.
+        SUCCESS_COUNTS = [13, 14]  # PLAN.md: 13/58 displays 0.22 and 14/58 displays 0.24.
+        rates = [count / TASKS for count in SUCCESS_COUNTS]
+        displayed = [int(rate * 100) / 100 for rate in rates]  # PLAN.md says score display is truncated.
+
+        fig, ax = plt.subplots(figsize=(7.4, 4.1), constrained_layout=True)
+        bars = ax.bar(["13 passed tasks", "14 passed tasks"], rates, color=[BLUE, ORANGE], width=0.58)
+        for bar, count, rate, shown in zip(bars, SUCCESS_COUNTS, rates, displayed):
+            ax.text(bar.get_x() + bar.get_width() / 2, rate + 0.008,
+                    f"{count}/{TASKS} = {rate:.4f}\ndisplayed {shown:.2f}",
+                    ha="center", va="bottom", fontsize=10)
+        ax.annotate("one task = 1/58 ≈ 0.0172", xy=(0.5, 0.232), xytext=(0.5, 0.12),
+                    ha="center", arrowprops={"arrowstyle": "<->", "color": GRAY}, color=GRAY, fontsize=9)
+        ax.set_ylim(0, 0.29)
+        ax.set_ylabel("Underlying fraction of public tasks")
+        ax.set_title("A one-task change crosses the displayed score step")
+        ax.grid(axis="y", alpha=0.22)
+        caption = (
+            "The public score is based on 58 tasks and the displayed value is truncated: 13/58 is "
+            "0.2241… → 0.22, while 14/58 is 0.2413… → 0.24."
+        )
+        return fig, caption
+
+    def binomial_noise_figure():
+        """A binomial planning band for distinguishing 13/58 from 14/58."""
+        TASKS_PER_DRAW = 58  # PLAN.md section 1: public leaderboard uses 58 tasks.
+        K_BASE = 13  # PLAN.md: displayed 0.22 corresponds to 13/58.
+        K_ALT = 14  # PLAN.md: displayed 0.24 corresponds to 14/58.
+        P_BASE = K_BASE / TASKS_PER_DRAW
+        P_ALT = K_ALT / TASKS_PER_DRAW
+        DELTA = P_ALT - P_BASE
+        Z_95 = NormalDist().inv_cdf(0.975)  # two-sided 95% normal planning band
+        Z_80 = NormalDist().inv_cdf(0.80)  # target power for the planning calculation
+        VAR_BASE = P_BASE * (1 - P_BASE)
+        VAR_ALT = P_ALT * (1 - P_ALT)
+        draws_for_80_power = ceil(((Z_95 + Z_80) ** 2 * (VAR_BASE + VAR_ALT)) /
+                                  (TASKS_PER_DRAW * DELTA ** 2))
+
+        reps = list(range(1, 221))
+        base_half = [Z_95 * sqrt(VAR_BASE / (TASKS_PER_DRAW * n)) for n in reps]
+        alt_half = [Z_95 * sqrt(VAR_ALT / (TASKS_PER_DRAW * n)) for n in reps]
+        power = []
+        normal = NormalDist()
+        for n in reps:
+            se = sqrt((VAR_BASE + VAR_ALT) / (TASKS_PER_DRAW * n))
+            effect = DELTA / se
+            power.append(1 - normal.cdf(Z_95 - effect) + normal.cdf(-Z_95 - effect))
+
+        fig, ax = plt.subplots(figsize=(9.0, 4.6), constrained_layout=True)
+        ax.fill_between(reps, [max(0, P_BASE - h) for h in base_half],
+                        [min(1, P_BASE + h) for h in base_half], color=BLUE, alpha=0.15)
+        ax.fill_between(reps, [max(0, P_ALT - h) for h in alt_half],
+                        [min(1, P_ALT + h) for h in alt_half], color=ORANGE, alpha=0.15)
+        ax.plot(reps, [P_BASE] * len(reps), color=BLUE, linewidth=2, label="13/58 rate")
+        ax.plot(reps, [P_ALT] * len(reps), color=ORANGE, linewidth=2, label="14/58 rate")
+        ax.set_xlim(1, 220)
+        ax.set_ylim(0.10, 0.36)
+        ax.set_xlabel("Independent 58-task draws per setting")
+        ax.set_ylabel("Mean score and approximate 95% band")
+        ax.set_title("One-task score gaps are small beside binomial draw noise")
+        ax.grid(alpha=0.2)
+        ax.legend(frameon=False, loc="upper right")
+        ax.axvline(draws_for_80_power, color="#55478f", linestyle="--", linewidth=1.0, alpha=0.6)
+        ax.text(0.025, 0.035, f"Approx. 80% power at α = 0.05: {draws_for_80_power} draws per setting",
+                transform=ax.transAxes, fontsize=9, color=GRAY,
+                bbox={"boxstyle": "round,pad=0.35", "facecolor": "white", "edgecolor": "#d7dce3"})
+        ax2 = ax.twinx()
+        ax2.plot(reps, power, color="#55478f", linewidth=1.5, alpha=0.85, label="two-sided test power")
+        ax2.axhline(0.80, color="#55478f", linestyle=":", linewidth=1.0, alpha=0.75)
+        ax2.set_ylim(0, 1)
+        ax2.set_ylabel("Approximate power")
+        caption = (
+            f"Planning model only: treat each repeated draw as {TASKS_PER_DRAW} independent Bernoulli "
+            f"task outcomes with rates {K_BASE}/{TASKS_PER_DRAW} and {K_ALT}/{TASKS_PER_DRAW}. The shaded "
+            f"bands are normal approximations to 95% binomial intervals for mean score. Under these "
+            f"assumptions, about {draws_for_80_power} independent draws per setting are needed for 80% "
+            "power at a two-sided 5% level. This is not an empirical estimate of actual run-to-run variance."
+        )
+        return fig, caption
+
+    def local_dev_results_figure():
+        """Keep tiny local E2B proxy measurements separate from official leaderboard scores."""
+        # Source for all outcomes: draft-ah/validation.json; this is MLX E2B local proxy evidence.
+        calibration_resolved = 1  # V10 calibration resolved count
+        calibration_tasks = 3  # fixed calibration task pool
+        screen = [
+            ("V10", 0, 2),  # resolved seeds / two seeds on primary task
+            ("temp 0.05", 2, 2),  # resolved seeds / same primary task and seeds
+            ("top-p 0.90", 0, 2),  # resolved seeds / same primary task and seeds
+        ]
+        paired_p = 0.5  # exact two-sided paired test, V10 versus temp 0.05
+
+        fig, (cal, arms) = plt.subplots(1, 2, figsize=(9.7, 4.0), constrained_layout=True,
+                                        gridspec_kw={"width_ratios": [0.8, 1.4]})
+        rate = calibration_resolved / calibration_tasks
+        cal.bar(["V10 calibration"], [rate], color=BLUE, width=0.56)
+        cal.text(0, rate + 0.05, f"{calibration_resolved}/{calibration_tasks}", ha="center", fontsize=10)
+        cal.set_ylim(0, 1.15)
+        cal.set_ylabel("Observed resolved fraction")
+        cal.set_title("Distinct-task calibration")
+        cal.grid(axis="y", alpha=0.2)
+
+        values = [resolved / total for _, resolved, total in screen]
+        bars = arms.bar([name for name, _, _ in screen], values, color=[BLUE, ORANGE, TEAL], width=0.62)
+        for bar, (_, resolved, total) in zip(bars, screen):
+            arms.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.05,
+                      f"{resolved}/{total} seeds", ha="center", fontsize=9)
+        arms.set_ylim(0, 1.15)
+        arms.set_title(f"Two seeds on one shared primary task\npaired exact p(V10 vs temp 0.05) = {paired_p:g}", fontsize=10)
+        arms.grid(axis="y", alpha=0.2)
+        fig.suptitle("Local E2B proxy only — not a Kaggle score", fontsize=13)
+        caption = (
+            "The MLX Gemma 4 E2B proxy resolved 1/3 distinct calibration tasks. In the tiny paired "
+            "screen, two seeds on one primary task yielded V10 0/2, temperature 0.05 2/2, and top-p "
+            "0.90 0/2; the V10-versus-temperature exact paired test was p = 0.5. These local outcomes "
+            "do not predict the official 31B leaderboard score."
+        )
+        return fig, caption
+except Exception as error:
+    print('WARNING: figure cell 7 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 8 [markdown] len=242
+**Figure 1 — Decorative header art.**
+
+**Takeaway:** The artwork is decorative context and encodes no score or task outcome.
+
+*Alt text: A question mark sits inside a frame beside three differently shaped tool nodes; the image is decorative.*
+============================== CELL 9 [code] len=2687
+try:
+    from IPython.display import display as _display
+    import hashlib
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Circle, FancyBboxPatch, RegularPolygon
+
+    HEADER_VISUAL_BRIEF = (
+        'Decorative vector art: a question mark inside a bounded frame, '
+        'with three distinct tool nodes; encode no score or task outcome.'
+    )
+    HEADER_PATH = OUTPUT_DIR / 'shape_of_doubt_header.png'
+    NAVY = '#16324F'
+    BLUE = '#0072B2'
+    ORANGE = '#E69F00'
+    GREEN = '#009E73'
+    GREY = '#6B7280'
+
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, ax = plt.subplots(figsize=(10, 2.5), dpi=150)
+    fig.patch.set_facecolor('#F7F9FC')
+    ax.set_facecolor('#F7F9FC')
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 2.5)
+    ax.axis('off')
+    frame = FancyBboxPatch((0.25, 0.25), 9.5, 2.0, boxstyle='round,pad=0.08',
+                           facecolor='#F7F9FC', edgecolor=NAVY, linewidth=1.8)
+    ax.add_patch(frame)
+    ax.text(2.0, 1.25, '?', ha='center', va='center', fontsize=48,
+            weight='bold', color=NAVY)
+    ax.text(3.2, 1.25, 'SHAPE OF DOUBT', ha='left', va='center', fontsize=17,
+            weight='bold', color=NAVY)
+    ax.text(3.22, 0.78, 'bounded search  ·  focused reads  ·  verified patch',
+            ha='left', va='center', fontsize=11, color=GREY)
+    ax.plot([7.15, 7.8, 8.45], [1.25, 1.25, 1.25], color=GREY, linewidth=1.5)
+    ax.add_patch(Circle((7.15, 1.25), 0.22, facecolor=BLUE, edgecolor=NAVY, linewidth=1))
+    ax.add_patch(RegularPolygon((7.8, 1.25), 4, radius=0.22, orientation=0.785,
+                                facecolor=ORANGE, edgecolor=NAVY, linewidth=1))
+    ax.add_patch(Circle((8.45, 1.25), 0.22, facecolor=GREEN, edgecolor=NAVY,
+                        linewidth=1, hatch='//'))
+    ax.text(7.15, 0.46, 'read', ha='center', fontsize=9, color=NAVY)
+    ax.text(7.8, 0.46, 'edit', ha='center', fontsize=9, color=NAVY)
+    ax.text(8.45, 0.46, 'check', ha='center', fontsize=9, color=NAVY)
+    fig.tight_layout(pad=0.5)
+    fig.savefig(HEADER_PATH, format='png', dpi=150, bbox_inches='tight',
+                facecolor=fig.get_facecolor(), metadata={'Software': 'Matplotlib'})
+    header_sha256 = hashlib.sha256(HEADER_PATH.read_bytes()).hexdigest()
+    print('Visual brief:', HEADER_VISUAL_BRIEF)
+    print('Decorative header PNG SHA-256:', header_sha256)
+    plt.gcf().supxlabel('Illustration width')
+    plt.gcf().supylabel('Illustration height')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 9 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 10 [markdown] len=284
+**Figure 2 — Configured task limits.**
+
+**Takeaway:** The configured limits are 28 tool calls, 8 minutes, 240 seconds per command, and 80 turns; they are caps rather than observed usage.
+
+*Alt text: Four labeled cards show caps of 28 tool calls, 8 minutes, 240 seconds, and 80 turns.*
+============================== CELL 11 [code] len=1891
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+
+    palette = {'navy': '#16324F', 'blue': '#0072B2', 'orange': '#E69F00',
+               'green': '#009E73', 'grey': '#6B7280'}
+    budget_cards = [
+        ('Tool calls', evaluation['max_tool_calls'], 'calls', palette['blue']),
+        ('Task cap', evaluation['max_time_minutes'], 'minutes', palette['orange']),
+        ('Command timeout', evaluation['timeout_seconds'], 'seconds', palette['green']),
+        ('Turn cap', evaluation['max_turns'], 'turns', palette['navy']),
+    ]
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, axes = plt.subplots(1, len(budget_cards), figsize=(12, 3.2))
+    fig.patch.set_facecolor('white')
+    for ax, (label, value, unit, color) in zip(axes, budget_cards):
+        ax.set_facecolor('white')
+        ax.axis('off')
+        ax.add_patch(plt.Rectangle((0.08, 0.12), 0.84, 0.76, transform=ax.transAxes,
+                                   facecolor='#F7F9FC', edgecolor=color, linewidth=2))
+        ax.text(0.5, 0.62, str(value), transform=ax.transAxes, ha='center',
+                va='center', fontsize=26, weight='bold', color=color)
+        ax.text(0.5, 0.32, unit, transform=ax.transAxes, ha='center',
+                va='center', fontsize=12, color=palette['navy'])
+        ax.set_title(label, fontsize=12, color=palette['navy'], pad=10)
+    fig.suptitle('Configured caps: 28 calls, 8 minutes, 240 seconds, and 80 turns',
+                 fontsize=14, color=palette['navy'])
+    fig.tight_layout(rect=(0, 0, 1, 0.86))
+    plt.gcf().supxlabel('Budget category')
+    plt.gcf().supylabel('Configured limit')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 11 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 12 [markdown] len=330
+**Figure 3 — Tool declarations and explicit bans.**
+
+**Takeaway:** The bundle declares nine tools, while the prompt explicitly prohibits three graph tools; declaration alone does not show use.
+
+*Alt text: Nine tool names are listed; three have a cross and the label Prompt prohibits, while six are labeled No explicit ban stated.*
+============================== CELL 13 [code] len=1907
+try:
+    from IPython.display import display as _display
+    import re
+    import matplotlib.pyplot as plt
+
+    hard_limits_text = SYSTEM_PROMPT.split('# HARD LIMITS\n', 1)[1].split('\n# CALL PLAN', 1)[0]
+    prohibited_tools = set()
+    for line in hard_limits_text.splitlines():
+        if 'Never use ' in line:
+            prohibited_tools.update(re.findall(r'`([^`]+)`', line))
+    note_check(prohibited_tools <= set(agent['tools']), 'all prompt-prohibited tools are declared')
+    note_check(len(prohibited_tools) == 3, 'three graph tools are explicitly prohibited')
+
+    tool_names = agent['tools']
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, ax = plt.subplots(figsize=(10, 5))
+    for row, tool_name in enumerate(tool_names):
+        prohibited = tool_name in prohibited_tools
+        color = '#D55E00' if prohibited else '#0072B2'
+        marker = 'X' if prohibited else 'o'
+        ax.scatter([1 if prohibited else 0], [row], s=100, color=color,
+                   marker=marker, edgecolor='#16324F', linewidth=0.5, zorder=3)
+    ax.set_yticks(range(len(tool_names)), tool_names)
+    ax.set_xticks([0, 1], ['No explicit ban stated', 'Prompt prohibits'])
+    ax.set_xlim(-0.35, 1.35)
+    ax.set_ylim(len(tool_names) - 0.5, -0.5)
+    ax.set_xlabel('Prompt status for each declared tool')
+    ax.set_title('The prompt explicitly prohibits 3 of 9 declared tools', pad=14)
+    ax.grid(axis='x', alpha=0.25)
+    ax.text(0.02, -0.16, 'Marker shape and label carry status; color is supplementary.',
+            transform=ax.transAxes, fontsize=10, color='#4B5563')
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    plt.gcf().supylabel('Declared tool')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 13 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 14 [markdown] len=448
+**Figure 4 — A bounded call plan.**
+
+**Takeaway:** The call plan reserves work through a 28-call ceiling and shares call 20 between its verification window and stop-exploring instruction.
+
+*Alt text: A horizontal timeline spans calls 1 through 28. The prompt assigns calls 1–8 to locating and reading, 9–12 to editing, 13–20 to verification and correction, and call 20 onward to checking, fixing, and submitting. The boundary at call 20 is shared.*
+============================== CELL 15 [code] len=1628
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+
+    stages = [
+        (1, 8, 'Locate and read', '#0072B2'),
+        (9, 12, 'Edit by call 12', '#E69F00'),
+        (13, 20, 'Verify and correct', '#009E73'),
+        (20, 28, 'Stop exploring; check, fix, submit', '#16324F'),
+    ]
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, ax = plt.subplots(figsize=(11, 4.3))
+    for y, (start, end, label, color) in enumerate(stages[::-1]):
+        ax.barh(y, end - start + 1, left=start, height=0.62,
+                color=color, edgecolor='white', linewidth=1.5)
+        ax.text((start + end) / 2, y, label, ha='center', va='center',
+                color='white', fontsize=10, weight='bold')
+    ax.set_yticks([])
+    ax.set_xlim(0, 29)
+    ax.set_xticks(range(0, 29, 2))
+    ax.set_xlabel('Tool call number (configured maximum: 28)')
+    ax.set_title('The plan reaches editing by call 12 and checking at call 20', pad=14)
+    ax.axvline(20, color='#D55E00', linestyle='--', linewidth=1.5)
+    ax.grid(axis='x', alpha=0.2)
+    ax.set_axisbelow(True)
+    fig.tight_layout(rect=(0, 0.10, 1, 1))
+    fig.text(0.5, 0.025, 'Call 20 is the shared boundary between verification and the final-call stage.',
+             ha='center', fontsize=10, color='#4B5563')
+    plt.gcf().supylabel('Prompt stage')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 15 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 16 [markdown] len=455
+## Score mechanics
+
+The official harness gives each task a binary resolution result. Phase 1 produces a patch. A non-empty patch is applied to a fresh baseline in Phase 2, then the task's required tests run. A task resolves only when pytest exits successfully and the JUnit report validates with passing required tests and no failures, errors, or skipped required tests. The metric is:
+
+`resolution rate = resolved tasks / tasks in the evaluation split`.
+
+============================== CELL 17 [markdown] len=352
+**Figure 5 — One-task score quantization.**
+
+**Takeaway:** Under the recorded 58-task denominator and truncation rule, moving from 13 to 14 resolved tasks changes the displayed score from 0.22 to 0.24.
+
+*Alt text: Two bars compare 13 of 58 tasks, displayed as 0.22, with 14 of 58 tasks, displayed as 0.24; an annotation marks one task as about 0.0172.*
+============================== CELL 18 [code] len=301
+try:
+    figure, _ = score_quantization_figure()
+    plt.gcf().supxlabel('Independent draws')
+    plt.gcf().supylabel('Score or power')
+    display(figure)
+    plt.close(figure)
+except Exception as error:
+    print('WARNING: figure cell 18 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 19 [markdown] len=349
+**Figure 6 — Binomial planning band.**
+
+**Takeaway:** The shaded bands are approximate planning intervals under independent Bernoulli outcomes, not measured run-to-run variance.
+
+*Alt text: Shaded approximate 95% bands around the 13/58 and 14/58 mean rates narrow as independent draws increase; a second axis shows approximate two-sided test power.*
+============================== CELL 20 [code] len=210
+try:
+    figure, _ = binomial_noise_figure()
+    display(figure)
+    plt.close(figure)
+except Exception as error:
+    print('WARNING: figure cell 20 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 21 [markdown] len=376
+## Scoring is a two-stage contract
+
+The official README is more specific than a generic “the tests passed” description: the patch is applied in a fresh verification container, and required JUnit test nodes must pass. A packaging pass is not a task resolution. An inference-server startup failure is also a different event from a model-generated patch that fails verification.
+
+============================== CELL 22 [markdown] len=407
+**Figure 7 — Official resolution path.**
+
+**Takeaway:** A task counts as resolved only after a nonempty patch passes fresh-container verification and produces a valid passing JUnit report.
+
+*Alt text: A non-empty patch flows through fresh-container verification and required tests; only a valid passing JUnit result becomes resolved equals one, then resolved tasks are divided by the evaluation-split size.*
+============================== CELL 23 [code] len=1710
+try:
+    try:
+        import matplotlib.pyplot as plt
+        from matplotlib.patches import FancyBboxPatch
+
+        fig, ax = plt.subplots(figsize=(11, 3.6))
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        ax.axis("off")
+        boxes = [
+            (0.03, "Phase 1\nagent patch", "#EAF2F8"),
+            (0.27, "Fresh Container B\napply patch", "#EAF2F8"),
+            (0.51, "Required tests\n+ valid JUnit", "#EAF2F8"),
+            (0.75, "Resolved = 1\notherwise 0", "#E8F5E9"),
+        ]
+        for x, label, color in boxes:
+            patch = FancyBboxPatch((x, 0.38), 0.20, 0.30,
+                                   boxstyle="round,pad=0.012", facecolor=color,
+                                   edgecolor="#16324F", linewidth=1.4)
+            ax.add_patch(patch)
+            ax.text(x + 0.10, 0.53, label, ha="center", va="center", fontsize=10)
+        for x in (0.235, 0.475, 0.715):
+            ax.annotate("", xy=(x + 0.025, 0.53), xytext=(x, 0.53),
+                        arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": "#16324F"})
+        ax.text(0.50, 0.16, "Resolution rate = resolved tasks / tasks in the evaluation split",
+                ha="center", fontsize=12, weight="bold", color="#16324F")
+        ax.set_title("A package check does not pass Phase 2", fontsize=14)
+        fig.tight_layout()
+        plt.gcf().supxlabel('Workflow stage')
+        plt.gcf().supylabel('Resolution state')
+        display(fig)
+        plt.close(fig)
+    except Exception as error:
+        print("WARNING: Figure 4 could not render:", type(error).__name__, error)
+except Exception as error:
+    print('WARNING: figure cell 24 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 24 [markdown] len=3633
+## What we tested
+
+| Experiment | Tasks/examples | Measured result | Exact fixture/task ID | Evidence receipt | What the result does not establish |
+|---|---|---|---|---|---|
+| Draft AA retrieval proxy | 1 supplied Requests task | Gold file in top eight: baseline 0/1, repo-map 1/1; separate E2B screen: both 0/1 | `requests_7427` retrieval fixture; `requests_6629` E2B task | AA preflight — local receipt `draft-aa/retrieval_metric.json` (campaign artifact; not attached to this Kaggle notebook); AA task receipt — local receipt `draft-aa/validation.json` (campaign artifact; not attached to this Kaggle notebook) | Model behavior or competition performance |
+| Draft AD test-first prompt | 2 supplied Requests tasks | Base and variant each resolved 0/2 in the local E2B screen | `requests_6589`, `requests_6629` | AD local evaluation receipt — local receipt `draft-ad/local_evaluation.json` (campaign artifact; not attached to this Kaggle notebook) | 31B competition performance |
+| Draft AF consensus prompt | No model tasks evaluated | Package/schema check passed; inference and task evaluation were not run | No task IDs (inference not run) | No model-run receipt | Any prompt or model effect |
+| Draft AB temperature proxy | 1 paired task | Base 0.2 and candidate 0.05 each resolved 0/1; calls: 3 and 0; both outputs were empty patches | `requests_6629` | AB local evaluation receipt — local receipt `draft-ab/local-evaluation/report-20261027T094212152001Z-seed20261027.json` (campaign artifact; not attached to this Kaggle notebook) | An accuracy gain or official score |
+
+
+- **Draft AA — retrieval proxy:** on one supplied Requests task, the gold file appeared in the selected top eight in 0/1 baseline examples and 1/1 repo-map examples. This measures deterministic retrieval, not model behavior. Its separate local E2B screen resolved 0/1 for both packages.
+- **Draft AD — test-first prompt proxy:** the base and prompt variant each resolved 0/2 supplied Requests tasks in a local Gemma 4 E2B 4-bit screen. This does not measure competition 31B performance.
+- **Draft AF — consensus prompt:** the package/schema check passed, but model inference and task evaluation were not run. Its model effect is unmeasured.
+- **Draft AB — temperature proxy:** base temperature 0.2 and candidate 0.05 each resolved 0/1 task. The base used 3 tool calls; the candidate used 0. Both produced empty patches and stopped at the response-token limit. This sample shows no accuracy gain.
+
+The retrieval, prompt, and temperature screens use different task counts and are not directly comparable. None supports an official score claim.
+
+**Sources:** The reproduced base is Flexonafft's [Gemma 4 Budget-Aware Coding Agent v2](https://www.kaggle.com/code/flexonafft/gemma-4-budget-aware-coding-agent-v2), which credits Matterhorn3838's [Gemma 4 SuperAgent](https://www.kaggle.com/code/matterhorn3838/gemma-4-superagent). Draft AA also cites Hitarth Jain's [agent analysis](https://www.kaggle.com/code/hitarthjain0/gemma-4-agent-what-took-lb-0-12-0-24). Related prompt patterns are credited to [jvnhonglei](https://www.kaggle.com/code/jvnhonglei/gemma-4-superagent-reproduction), [evgendvorkin](https://www.kaggle.com/code/evgendvorkin/can-gemma-4-become-a-software-engineer), [verracodeguacas](https://www.kaggle.com/code/verracodeguacas/gemma-4-agent-budget-fit-single-agent), [honghanhhh](https://www.kaggle.com/code/honghanhhh/gemma-4-baseline-lb-0-24), and [lynnsakurai](https://www.kaggle.com/code/lynnsakurai/gemma-4-budget-fit-agent-w-bounded-rescue). These are idea references; no source code or prose is copied into this evidence section.
+
+============================== CELL 25 [markdown] len=396
+**Figure 8 — Draft AA retrieval and local task outcomes.**
+
+**Takeaway:** The one-task retrieval proxy favors repo-map for finding the gold file, while both separate one-task E2B checks resolve zero tasks.
+
+*Alt text: Repo-map retrieval finds the gold file in one of one examples versus zero of one for filename-only ranking; the separate base and repo-map E2B run each resolve zero of one task.*
+============================== CELL 26 [code] len=1753
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+
+    retrieval = [
+        {'method': 'Filename-only', 'hits': 0, 'tasks': 1},
+        {'method': 'Repo-map', 'hits': 1, 'tasks': 1},
+    ]
+    local_model = [
+        {'package': 'Base', 'resolved': 0, 'tasks': 1},
+        {'package': 'Repo-map v4', 'resolved': 0, 'tasks': 1},
+    ]
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 13, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.4))
+    for ax, rows, label_key, value_key, title in [
+        (axes[0], retrieval, 'method', 'hits', 'Gold file in selected top eight'),
+        (axes[1], local_model, 'package', 'resolved', 'Separate local E2B task screen'),
+    ]:
+        values = [row[value_key] for row in rows]
+        labels = [row[label_key] for row in rows]
+        bars = ax.bar(labels, values, color=['#6B7280', '#0072B2'], width=0.62)
+        ax.set_ylim(0, 1.2)
+        ax.set_yticks([0, 1])
+        ax.set_ylabel('Gold-file hits (tasks)' if ax is axes[0] else 'Resolved tasks')
+        ax.set_title(title, fontsize=12, pad=10)
+        for bar, row in zip(bars, rows):
+            count = row[value_key]
+            ax.text(bar.get_x() + bar.get_width() / 2, max(0.04, count + 0.04),
+                    f"{count}/{row['tasks']}", ha='center', va='bottom', fontsize=10)
+        ax.grid(axis='y', alpha=0.2)
+    fig.suptitle('Repo-map finds the gold file in 1/1; both local variants resolve 0/1', fontsize=14)
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
+    _display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 28 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 27 [markdown] len=289
+**Figure 9 — Draft AD test-first prompt.**
+
+**Takeaway:** Neither the preserved base nor the test-first prompt resolves either task in this two-task local screen.
+
+*Alt text: Both the preserved base and test-first prompt variant resolve zero of two tasks in this small local model screen.*
+============================== CELL 28 [code] len=1327
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+
+    results = [
+        {'variant': 'Flexonafft base', 'resolved': 0, 'tasks': 2},
+        {'variant': 'Test-first prompt', 'resolved': 0, 'tasks': 2},
+    ]
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 11})
+    fig, ax = plt.subplots(figsize=(9, 3.4))
+    for row_index, row in enumerate(results):
+        ax.scatter([row['resolved']], [row_index], s=95, color=['#6B7280', '#0072B2'][row_index], zorder=3)
+        ax.annotate(f"{row['resolved']}/{row['tasks']}", xy=(row['resolved'], row_index),
+                    xytext=(12, 0), textcoords='offset points', va='center', fontsize=11)
+    ax.set_yticks(range(len(results)), [row['variant'] for row in results])
+    ax.set_xlim(-0.25, 2)
+    ax.set_xticks([0, 1, 2])
+    ax.set_xlabel('Resolved tasks (out of 2)')
+    ax.set_title('Neither prompt variant resolves either supplied task', pad=14)
+    ax.grid(axis='x', alpha=0.2)
+    ax.set_axisbelow(True)
+    fig.tight_layout(rect=(0, 0, 1, 0.90))
+    plt.gcf().supylabel('Prompt variant')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 30 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 29 [markdown] len=293
+**Figure 10 — Draft AF consensus prompt status.**
+
+**Takeaway:** The package/schema check passed, but this experiment measured neither inference nor task performance.
+
+*Alt text: The local package/schema check passed; model inference, task evaluation, and an official score were not measured.*
+============================== CELL 30 [code] len=1391
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+
+    status_rows = [
+        ('Package and schema check', 'Passed', '#009E73'),
+        ('Gemma inference', 'Not run', '#6B7280'),
+        ('Local task evaluation', 'Not run', '#6B7280'),
+        ('Official leaderboard result', 'Not measured', '#6B7280'),
+    ]
+    plt.rcParams.update({'font.size': 12, 'axes.titlesize': 14, 'axes.labelsize': 12, 'xtick.labelsize': 11, 'ytick.labelsize': 11})
+    fig, ax = plt.subplots(figsize=(9, 3.2))
+    ax.axis('off')
+    for row_index, (check, result, color) in enumerate(status_rows):
+        y = len(status_rows) - row_index - 1
+        ax.text(0.02, y, check, va='center', fontsize=12, color='#16324F')
+        ax.text(0.98, y, result, va='center', ha='right', fontsize=12, weight='bold', color=color)
+        ax.plot([0.02, 0.98], [y - 0.38, y - 0.38], color='#E5E7EB', linewidth=0.8)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(-0.5, len(status_rows) - 0.5)
+    ax.set_title('Only package/schema checks passed; model performance is unmeasured', loc='left', color='#16324F', pad=14)
+    fig.tight_layout()
+    plt.gcf().supxlabel('Check or status')
+    plt.gcf().supylabel('Observed package state')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 32 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 31 [markdown] len=351
+**Figure 11 — Draft AB lower-temperature proxy.**
+
+**Takeaway:** Lowering temperature from 0.2 to 0.05 did not resolve the paired task, and both variants returned empty patches.
+
+*Alt text: Base and lower-temperature candidate each resolve zero of one task; the base used three calls, the candidate zero, and both stopped at the response-token limit.*
+============================== CELL 32 [code] len=1488
+try:
+    from IPython.display import display as _display
+    import matplotlib.pyplot as plt
+
+    paired_results = [
+        {'variant': 'Base, T=0.2', 'resolved': 0, 'tasks': 1, 'calls': 3, 'patch': 'empty'},
+        {'variant': 'Candidate, T=0.05', 'resolved': 0, 'tasks': 1, 'calls': 0, 'patch': 'empty'},
+    ]
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 14, 'axes.labelsize': 11, 'xtick.labelsize': 10, 'ytick.labelsize': 11})
+    fig, ax = plt.subplots(figsize=(9, 3.5))
+    for row_index, row in enumerate(paired_results):
+        ax.scatter([row['resolved']], [row_index], s=95, color=['#6B7280', '#0072B2'][row_index], zorder=3)
+        ax.annotate(f"{row['resolved']}/{row['tasks']} resolved · {row['calls']} calls · {row['patch']} patch",
+                    xy=(row['resolved'], row_index), xytext=(12, 0), textcoords='offset points',
+                    va='center', fontsize=11)
+    ax.set_yticks(range(len(paired_results)), [row['variant'] for row in paired_results])
+    ax.set_xlim(-0.25, 1)
+    ax.set_xticks([0, 1])
+    ax.set_xlabel('Resolved tasks (out of 1)')
+    ax.set_title('Neither temperature setting resolves the paired task', pad=14)
+    ax.grid(axis='x', alpha=0.2)
+    ax.set_axisbelow(True)
+    fig.tight_layout(rect=(0, 0, 1, 0.90))
+    plt.gcf().supylabel('Temperature setting')
+    display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 34 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 33 [markdown] len=1222
+## Local uncertainty and correctness
+
+This diagnostic uses the 12 unique public Requests tasks in the completed `fail-a` local run of the Flexonafft V10 package. The pinned local model was Gemma 4 E2B 4-bit; this proxy is not the competition's 31B evaluation. The V10 package hash matches the ZIP produced by this notebook's source candidate (`6ff73d104725cc31deadd18787f3f55e5ce534889cec82387e3b280637d34887`). The receipts record **1/12 tasks resolved**, with **9 model-request timeouts** and **2 tool-call-budget stops**. The same-byte result is reused here; this notebook update did not rerun inference.
+
+The task receipts contain 0 confidence fields, and a review of the corresponding assistant transcript lines found 0 explicit confidence/uncertainty statements. Correctness is labeled for all 12 tasks by the named-test verifier, but confidence is not. A reliability diagram, ECE, or Brier score cannot be estimated from this evidence; Figure 13 shows the missing calibration input instead of inventing probabilities.
+
+Sources: `fail-a/TAXONOMY.md`, `fail-a/validation.json`, and the four completed `fail-a/batch-*/harness-validation.json` receipts. All measurements are local proxy results, not leaderboard scores.
+============================== CELL 34 [markdown] len=309
+**Figure 12 — V10 local correctness and stop outcomes.**
+
+**Takeaway:** The 12-task V10 proxy resolved one task; nine stopped on model-request timeouts and two on the tool-call budget.
+
+*Alt text: One of twelve tasks resolved; nine stopped after model-request timeouts and two exhausted the tool-call budget.*
+============================== CELL 35 [code] len=3989
+try:
+    from IPython.display import display as _display
+    # Embedded receipts from the 12-task local V10 proxy run.
+    TASK_OUTCOMES = [{'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_6589'},
+     {'patch_bytes': 577,
+      'resolved': True,
+      'stop_reason': 'patch_submitted',
+      'task_id': 'requests_6592'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_6629'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_6644'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_6757'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_7205'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'tool_call_budget',
+      'task_id': 'requests_7315'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_7328'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_7427'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_7433'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'tool_call_budget',
+      'task_id': 'requests_7502'},
+     {'patch_bytes': 0,
+      'resolved': False,
+      'stop_reason': 'wall_time_budget_model_timeout',
+      'task_id': 'requests_7505'}]
+    OUTCOME_COUNTS = {'wall_time_budget_model_timeout': 9, 'resolved': 1, 'tool_call_budget': 2}
+    LOCAL_TASK_TOTAL = len(TASK_OUTCOMES)
+
+    try:
+        import matplotlib.pyplot as plt
+        from IPython.display import Image
+
+        categories = [
+            ("Resolved", OUTCOME_COUNTS.get("resolved", 0), "#009E73"),
+            ("Model timeout", OUTCOME_COUNTS.get("wall_time_budget_model_timeout", 0), "#E69F00"),
+            ("Tool-call budget", OUTCOME_COUNTS.get("tool_call_budget", 0), "#D55E00"),
+        ]
+        fig, ax = plt.subplots(figsize=(10, 3.7))
+        left = 0
+        for label, count, color in categories:
+            ax.barh([0], [count], left=left, color=color, edgecolor="white", height=0.55, label=label)
+            if count:
+                ax.text(left + count / 2, 0, f"{label}\n{count}/{LOCAL_TASK_TOTAL}",
+                        ha="center", va="center", color="white", weight="bold", fontsize=10)
+            left += count
+        ax.set_xlim(0, LOCAL_TASK_TOTAL)
+        ax.set_xticks(range(0, LOCAL_TASK_TOTAL + 1, 2))
+        ax.set_yticks([])
+        ax.set_xlabel("Unique local Requests tasks")
+        ax.set_title("V10 E2B proxy: 1/12 resolved; 11/12 stopped without a passing patch", pad=12)
+        ax.grid(axis="x", alpha=0.2)
+        ax.set_axisbelow(True)
+        ax.legend(ncols=3, loc="upper center", bbox_to_anchor=(0.5, -0.24), frameon=False)
+        fig.text(0.5, 0.01, "Failure stop reasons from fail-a receipts; local proxy, not official competition scoring.",
+                 ha="center", fontsize=9, color="#4B5563")
+        fig.tight_layout(rect=(0, 0.12, 1, 1))
+        fig.savefig(OUTPUT_DIR / "local_correctness_proxy.png", dpi=150, bbox_inches="tight")
+        plt.gcf().supylabel('Local outcome')
+        display(Image(filename=str(OUTPUT_DIR / "local_correctness_proxy.png")))
+        plt.close(fig)
+    except (ImportError, OSError) as error:
+        print("Figure 10 could not render in this offline environment:", error)
+        print("Measured local counts remain: 1 resolved, 9 timeouts, 2 tool-call-budget stops, out of 12.")
+except Exception as error:
+    print('WARNING: figure cell 37 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 36 [markdown] len=351
+**Figure 13 — Confidence coverage versus verified correctness.**
+
+**Takeaway:** The proxy recorded 12 correctness labels but no confidence scores, so it cannot support a calibration metric.
+
+*Alt text: The verifier recorded twelve binary correctness labels, while the run recorded zero explicit confidence scores; calibration metrics are unavailable.*
+============================== CELL 37 [code] len=2068
+try:
+    from IPython.display import display as _display
+    # A calibration score needs predicted confidence paired with the verifier outcome.
+    CORRECTNESS_LABELS = 12
+    EXPLICIT_CONFIDENCE_SCORES = 0
+    EXPLICIT_UNCERTAINTY_STATEMENTS = 0
+
+    try:
+        import matplotlib.pyplot as plt
+        from IPython.display import Image
+
+        labels = ["Verifier correctness labels", "Explicit confidence scores"]
+        values = [CORRECTNESS_LABELS, EXPLICIT_CONFIDENCE_SCORES]
+        colors = ["#0072B2", "#9CA3AF"]
+        fig, ax = plt.subplots(figsize=(9, 3.7))
+        bars = ax.barh(labels, values, color=colors, height=0.52)
+        ax.invert_yaxis()
+        ax.set_xlim(0, max(1, CORRECTNESS_LABELS) + 1)
+        ax.set_xlabel("Recorded observations (of 12 tasks)")
+        ax.set_title("Correctness is observable; confidence calibration is not", pad=12)
+        ax.grid(axis="x", alpha=0.2)
+        ax.set_axisbelow(True)
+        for bar, value in zip(bars, values):
+            ax.text(max(0.16, value) + 0.12, bar.get_y() + bar.get_height() / 2,
+                    f"{value}/{CORRECTNESS_LABELS}", va="center", fontsize=11)
+        ax.text(0.52, 0.34,
+                "No recorded confidence probabilities\nCalibration error is undefined for this run",
+                transform=ax.transAxes, ha="center", va="center", color="#4B5563",
+                bbox={"boxstyle": "round,pad=0.55", "facecolor": "#F7F9FC", "edgecolor": "#D1D5DB"})
+        fig.tight_layout()
+        fig.savefig(OUTPUT_DIR / "confidence_coverage.png", dpi=150, bbox_inches="tight")
+        plt.gcf().supylabel('Recorded signal')
+        display(Image(filename=str(OUTPUT_DIR / "confidence_coverage.png")))
+        plt.close(fig)
+    except (ImportError, OSError) as error:
+        print("Figure 11 could not render in this offline environment:", error)
+        print("Calibration remains unavailable: 12 verifier labels, 0 explicit confidence scores.")
+except Exception as error:
+    print('WARNING: figure cell 39 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 38 [markdown] len=879
+## Budget and failures
+
+The live bundle declares a 240-second command timeout, an 8-minute per-task cap, 28 tool calls, and 80 turns. These limits do not by themselves prove that a full run fits the competition-wide 12-hour ceiling. The Budget-Fit notebook gives its author-reported rationale: caps were selected from 129 local runs, and identical submissions reportedly varied by about two tasks on a 58-task public leaderboard. Treat those as source claims, not measurements from this draft.
+
+The existing local V10 proxy receipt classifies 12 unique Requests tasks as 1 resolved, 9 model-request timeouts, and 2 tool-call-budget stops. Lucifer19 separately reports a GPU pilot that ran 738.1 seconds on four L4s, failed its 600-second inference-server health guard, and completed zero task pairs. That is an infrastructure-startup failure, not evidence of zero agent quality.
+
+============================== CELL 39 [markdown] len=411
+**Figure 14 — Local E2B development results.**
+
+**Takeaway:** The small local E2B screen shows mixed outcomes across variants and is not evidence of Kaggle performance.
+
+*Alt text: One of three distinct calibration tasks resolved; on two seeds for one shared primary task, V10 resolved zero, temperature 0.05 resolved two, and top-p 0.90 resolved zero. These are local MLX E2B proxy results, not Kaggle scores.*
+============================== CELL 40 [code] len=213
+try:
+    figure, _ = local_dev_results_figure()
+    display(figure)
+    plt.close(figure)
+except Exception as error:
+    print('WARNING: figure cell 42 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 41 [markdown] len=4323
+## Public frontier: how the top public bundles differ
+
+The comparison below describes the eight complete public `submission.zip` bundles in the local read-only pull snapshot, relative to Flexonafft's V10 reference. Every score shown is **self-reported in the author's kernel or notebook title; we did not measure it**. A missing claim means the title supplied no score. Where titles disagree, both claims are shown with their source. The model identifier is the same across all eight bundles; the declared tools, sampling, evaluation caps, and system-prompt lengths differ.
+
+Authors are credited by Kaggle account name; each name links to the pulled notebook's Kaggle ref. Prompt lengths count characters in `prompts/system.md`. Sampling lists temperature (`T`), top-p (`p`), top-k (`k`; — means absent), and output-token cap (`out`). Evaluation caps are seconds, tool calls, minutes, and turns, in that order.
+
+### Frontier snapshot and source manifest
+
+**Collection snapshot: 2026-10-27.** `lastRunTime` is a single run-recency point only; it is not an update interval, cadence measure, or explanation of votes. The current read-only listing reported exact `lastRunTime` values for the alikalwar and cosmorin rows; the earlier same-day vote snapshot reported one for Flexonafft. For other refs, the current listing query returned no usable row, so the timestamp is marked unavailable rather than inferred.
+
+The source archive did not record individual pull dates for these eight cached notebooks. The pull-date field therefore says `not recorded; present in 2026-10-27 local snapshot`. SHA-256 values identify the exact notebook bytes used in the comparison.
+
+| Kaggle ref | Pull date | Source notebook SHA-256 |
+|---|---|---|
+| `alikalwar/gemma-4-agent-a-b-lean-submission-zip-builder` | Not recorded; 2026-10-27 local snapshot | `a0390f3946527fcac4a3a61ca1cae5324ec697911be14d117578811a0541c646` |
+| `cosmorin/gemma-4-idris-v24-e07-faithful-replica` | Not recorded; 2026-10-27 local snapshot | `bcc12f7bfc36acf4af4072d37faafb52992f0d5e457055c2bea6d1e7dc0a7fbc` |
+| `davis0178/gemma-4-agent-baseline` | Not recorded; 2026-10-27 local snapshot | `91b83d11f66a7e386173eee5d127efbbd1fdfbc006b5760bc89ce8ad8d9c53f6` |
+| `flexonafft/gemma-4-budget-aware-coding-agent-v2` | Not recorded; 2026-10-27 local snapshot | `ec76bd9a4dedc4626bee9d31781469023e6cfe29b666afd095dff5723f717e7b` |
+| `hitarthjain0/gemma-4-agent-what-took-lb-0-12-0-24` | Not recorded; 2026-10-27 local snapshot | `32c11ef211d7cbea367fa3af9f3a8542014f6441dfe219ca1480739ffca0dc20` |
+| `hitarthjain0/gemma-4-apex-silver-agent-lb-0-24` | Not recorded; 2026-10-27 local snapshot | `15baaf20cafeb0e73f93a7d380cb98a49abbbc1d9d065eef9940a1422f68e051` |
+| `honghanhhh/gemma-4-baseline-lb-0-24` | Not recorded; 2026-10-27 local snapshot | `17cb26fcc95ce9b587b7a7bf98a0321882c4f4deb0cfa7a02445a05740b5f60f` |
+| `jasonxusk/gemma-4-fusion-repair-agent` | Not recorded; 2026-10-27 local snapshot | `84eae819043684a3a504ae2bb932fd3b94c32ad4fe13538c7c3bfa5d0a2f464d` |
+
+### Local proxy receipts
+
+These are small local checks. Their task counts and outcomes do not estimate general agent quality or leaderboard performance. Relative evidence links point to the repository receipts when this notebook is viewed with the source tree.
+
+| Local check | Exact fixture/task IDs | Small-check label | Receipt |
+|---|---|---|---|
+| Draft AA retrieval and E2B screen | Retrieval fixture `requests_7427`; E2B task `requests_6629` | Retrieval: 1 fixture; E2B: 0/1 for each package | AA preflight validation — local receipt `draft-aa/retrieval_metric.json` (campaign artifact; not attached to this Kaggle notebook); AA task receipt — local receipt `draft-aa/validation.json` (campaign artifact; not attached to this Kaggle notebook) |
+| Draft AB lower-temperature proxy | `requests_6629` | 1 paired local task; base 0.2 and candidate 0.05 both 0/1; 3 vs 0 calls; empty patches | AB run receipt — local receipt `draft-ab/local-evaluation/report-20261027T094212152001Z-seed20261027.json` (campaign artifact; not attached to this Kaggle notebook) |
+| Draft AD test-first prompt | `requests_6589`, `requests_6629` | 2 paired local tasks; both variants 0/2 | AD local evaluation — local receipt `draft-ad/local_evaluation.json` (campaign artifact; not attached to this Kaggle notebook) |
+
+
+============================== CELL 42 [markdown] len=1746
+## What the five leading notebooks add
+
+Vote counts are a read-only CLI snapshot from **2026-10-27**; they do not show that any notebook feature caused votes. These notebooks add useful detail that the live V10 explainer did not foreground:
+
+| Rank / votes | Notebook | Useful missing explanation |
+|---:|---|---|
+| 1 / 1,967 | [Getting Started — Ryan Holbrook](https://www.kaggle.com/code/ryanholbrook/getting-started-gemma-4-developer-agent) | GPU/runtime setup, offline wheel installation, server startup, then Phase 1 inference and Phase 2 verification. |
+| 2 / 356 | [Budget-Aware Coding Agent v2 — Flexonafft](https://www.kaggle.com/code/flexonafft/gemma-4-budget-aware-coding-agent-v2) | Why its author chose a per-task budget and how the prompt turns that budget into an edit/check schedule. |
+| 3 / 235 | [EDA Baseline — Roman Rozen](https://www.kaggle.com/code/romanrozen/gemma-eda-baseline-for-a-start-lb-top-1) | Task-data discovery, harness-grounded tool checks, issue/repository anatomy, patch safety, and a transparent baseline workflow. |
+| 4 / 223 | [Budget-Fit Single Agent — Verracodeguacas](https://www.kaggle.com/code/verracodeguacas/gemma-4-agent-budget-fit-single-agent) | Author-reported evidence behind the 4-to-8-minute / 40-to-28-call tradeoff and run-to-run leaderboard variation. |
+| 5 / 141 | [Black Cat SWE Agent — Lucifer19](https://www.kaggle.com/code/lucifer19/black-cat-swe-agent-pack-instinct) | A concrete separation between packaging/compiler success and inference-service startup: its reported pilot timed out before any matched task pair ran. |
+
+The pulled peer metadata did not expose license fields. This notebook credits each source and uses only short factual summaries; no peer code is redistributed.
+
+============================== CELL 43 [markdown] len=723
+## Version comparison
+
+The current read-only output from the V2-titled Flexonafft notebook and the latest live V10 output have identical bytes and the same four members. That establishes equality for these two latest-run artifacts, not a historical Version 2-versus-Version 10 diff. Explicit CLI pulls for Flexonafft `/2` and `/10` each returned `403 Forbidden`, so this draft does not claim what changed between those numbered versions.
+
+The current notebook source pull also omits the `FILES` assignment even though its latest run log records successful package checks. The exact current output archive is therefore the evidence used here; it hashes to `6ff73d104725cc31deadd18787f3f55e5ce534889cec82387e3b280637d34887`.
+
+============================== CELL 44 [markdown] len=349
+**Figure 15 — Prompt lengths in the 2026-10-27 public snapshot.**
+
+**Takeaway:** The eight prompt lengths describe text size only; title score claims in this snapshot are unverified.
+
+*Alt text: Eight prompts range from 1,006 to 6,985 characters; the bar color marks whether the notebook title states a score claim, and those claims are unverified.*
+============================== CELL 45 [code] len=7288
+try:
+    # Figure 12 — Prompt lengths in the 2026-10-27 public snapshot was renumbered as Figure 15 after section reordering.
+    from IPython.display import display as _display
+    from html import escape
+    from IPython.display import HTML, display
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+
+    # Snapshot-derived values from draft-ai/frontier.json and its V10-relative DIFF.md.
+    # Scores are title claims only; they are never treated as measured results.
+    PUBLIC_FRONTIER = [
+      {
+        "author": "alikalwar",
+        "ref": "alikalwar/gemma-4-agent-a-b-lean-submission-zip-builder",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 8,
+        "sampling": "T=1.0, p=0.95, k=—, out=16384",
+        "caps": "120s · 50 calls · 6m · 100 turns",
+        "prompt_chars": 4074,
+        "claims": "None stated",
+        "last_run": "2026-10-27 07:49:45 UTC",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "cosmorin",
+        "ref": "cosmorin/gemma-4-idris-v24-e07-faithful-replica",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 6,
+        "sampling": "T=1.0, p=0.95, k=64, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 3240,
+        "claims": "0.24 (unverified notebook-title claim)",
+        "last_run": "2026-10-26 07:56:32 UTC",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "davis0178",
+        "ref": "davis0178/gemma-4-agent-baseline",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 6,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "300s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 4041,
+        "claims": "None stated",
+        "last_run": "Unavailable in current listing",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "flexonafft",
+        "ref": "flexonafft/gemma-4-budget-aware-coding-agent-v2",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 9,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 6323,
+        "claims": "None stated",
+        "last_run": "2026-10-13 10:14 UTC",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "hitarthjain0",
+        "ref": "hitarthjain0/gemma-4-agent-what-took-lb-0-12-0-24",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 6,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 1006,
+        "claims": "0.12 → 0.24 (unverified kernel-title claim)",
+        "last_run": "Unavailable in current listing",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "hitarthjain0",
+        "ref": "hitarthjain0/gemma-4-apex-silver-agent-lb-0-24",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 6,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 3240,
+        "claims": "0.24 (unverified title claim); 0.26+ target (not achieved)",
+        "last_run": "Unavailable in current listing",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "honghanhhh",
+        "ref": "honghanhhh/gemma-4-baseline-lb-0-24",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 9,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 6985,
+        "claims": "0.24 (unverified kernel claim); 0.22 (unverified notebook-title claim)",
+        "last_run": "Unavailable in current listing",
+        "score_status": "Unverified title claim"
+      },
+      {
+        "author": "jasonxusk",
+        "ref": "jasonxusk/gemma-4-fusion-repair-agent",
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": 4,
+        "sampling": "T=0.2, p=0.95, k=—, out=8192",
+        "caps": "240s · 28 calls · 8m · 80 turns",
+        "prompt_chars": 3985,
+        "claims": "None stated",
+        "last_run": "Unavailable in current listing",
+        "score_status": "Unverified title claim"
+      }
+    ]
+
+    headers = ['Author / Kaggle ref', 'Model', 'Tools', 'Sampling', 'Eval caps', 'Prompt chars', 'Author score claim', 'lastRunTime (recency only)', 'Score provenance']
+    rows = []
+    for row in PUBLIC_FRONTIER:
+        ref = escape(row['ref'])
+        author = escape(row['author'])
+        link = f"https://www.kaggle.com/code/{ref}"
+        cells = [f'<a href="{link}">{author}</a>', escape(row['model']), str(row['tools']),
+                 escape(row['sampling']), escape(row['caps']), f"{row['prompt_chars']:,}", escape(row['claims']), escape(row['last_run']), escape(row['score_status'])]
+        rows.append('<tr>' + ''.join(f'<td>{cell}</td>' for cell in cells) + '</tr>')
+    head = ''.join(f'<th>{escape(label)}</th>' for label in headers)
+    table_style = "border-collapse:collapse;font-size:11px;white-space:normal;table-layout:fixed;width:100%"
+    cell_style = "border:1px solid #d0d7de;padding:5px 7px;text-align:left;overflow-wrap:anywhere"
+    try:
+        header_cells = ''.join('<th style="' + cell_style + '">' + escape(label) + '</th>' for label in headers)
+        table = '<table style="' + table_style + '"><thead><tr>' + header_cells + '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table>'
+        plt.gcf().supylabel('Public bundle')
+        display(HTML(table))
+    except Exception as error:
+        print('WARNING: frontier table could not render; continuing with the prompt-length figure:', type(error).__name__, error)
+
+    ordered = sorted(PUBLIC_FRONTIER, key=lambda row: row['prompt_chars'])
+    plt.rcParams.update({'font.size': 11, 'axes.titlesize': 15, 'axes.labelsize': 12, 'xtick.labelsize': 10, 'ytick.labelsize': 10})
+    fig, ax = plt.subplots(figsize=(15, 7.5))
+    colors = ['#0072B2' if row['claims'] != 'None stated' else '#9CA3AF' for row in ordered]
+    y = list(range(len(ordered)))
+    ax.barh(y, [row['prompt_chars'] for row in ordered], color=colors, height=0.68)
+    ax.set_yticks(y, [row['author'] + ' · ' + row['ref'].split('/', 1)[1] for row in ordered], fontsize=10)
+    ax.invert_yaxis()
+    ax.set_xlabel('System prompt length (characters)')
+    ax.set_title('Public prompt lengths range from 1,006 to 6,985 characters; title claims are unverified', pad=16)
+    ax.set_xlabel('System prompt length (characters); run timestamps are recency only')
+    ax.grid(axis='x', alpha=0.2)
+    ax.set_axisbelow(True)
+    ax.legend(handles=[Patch(facecolor='#0072B2', label='Self-reported title claim'),
+                      Patch(facecolor='#9CA3AF', label='No title claim stated')],
+              loc='upper right', frameon=False, fontsize=10)
+    for index, row in enumerate(ordered):
+        ax.text(row['prompt_chars'] + 90, index, row['claims'], va='center', fontsize=9.5, color='#243447')
+    ax.set_xlim(0, max(row['prompt_chars'] for row in ordered) * 1.72)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    _display(fig)
+    plt.close(fig)
+except Exception as error:
+    print('WARNING: figure cell 47 could not render; continuing:', type(error).__name__, error)
+
+============================== CELL 46 [markdown] len=796
+## Measured score and next ideas
+
+The highest measured public score in this lane is **0.18**, for completed submissions 57111761 and 57329048 in [`sub-hist-a/submissions.csv`](../sub-hist-a/submissions.csv). The ZIP built here has SHA-256 `6ff73d104725cc31deadd18787f3f55e5ce534889cec82387e3b280637d34887`, matching completed submission 57237203 (V31), scored 0.17; the two 0.18 submissions have different historical bundle hashes that are not established by the retained receipts. This notebook rebuilds and verifies the package; its run is not a new competition score.
+
+**What to try next:**
+
+- Ask the agent to state uncertainty before each tool call.
+- Compare bounded search strategies under the same model and limits.
+- Test recovery from exact-match editing failures, one change at a time.
+============================== CELL 47 [markdown] len=288
+## Next
+
+**What next:** Explore how the agent could make uncertainty explicit before each tool call, prioritize bounded searches and focused reads, and recover reliably from exact-match editing failures. Evaluate one idea at a time under the same model, sampling, tools, and task limits.

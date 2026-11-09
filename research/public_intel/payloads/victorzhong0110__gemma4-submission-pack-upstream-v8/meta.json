@@ -1,0 +1,17 @@
+{
+  "kernel": "victorzhong0110__gemma4-submission-pack-upstream-v8",
+  "title": "gemma4-submission-pack-upstream-v8",
+  "ref": "victorzhong0110/gemma4-submission-pack-upstream-v8",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 7512,
+  "zip_cell": 1,
+  "prompt_chars": 6985
+}

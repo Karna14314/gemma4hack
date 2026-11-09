@@ -1,0 +1,90 @@
+{
+  "baseline_static": {
+    "backend": "gemma-4-qat-ast-verified",
+    "tasks_evaluated": 25,
+    "tasks_resolved": 4,
+    "resolution_rate_pct": 16.0,
+    "loop_escape_rate_pct": 16.0,
+    "avg_turns_per_task": 11.04,
+    "avg_thinking_tokens": 45220,
+    "avg_cumulative_kv_tokens": 159816,
+    "avg_peak_kv_tokens": 24994,
+    "avg_resets_triggered": 0.0,
+    "mean_action_entropy_bits": 1.559,
+    "domain_resolution_pct": {
+      "httpx": 0.0,
+      "requests": 0.0,
+      "fastapi": 20.0,
+      "rich": 40.0,
+      "sci_compute": 20.0
+    },
+    "thinking_token_change_pct": 0.0,
+    "kv_cache_token_change_pct": 0.0
+  },
+  "naive_subagent": {
+    "backend": "gemma-4-qat-ast-verified",
+    "tasks_evaluated": 25,
+    "tasks_resolved": 5,
+    "resolution_rate_pct": 20.0,
+    "loop_escape_rate_pct": 20.0,
+    "avg_turns_per_task": 10.72,
+    "avg_thinking_tokens": 51118,
+    "avg_cumulative_kv_tokens": 190410,
+    "avg_peak_kv_tokens": 31233,
+    "avg_resets_triggered": 0.0,
+    "mean_action_entropy_bits": 1.563,
+    "domain_resolution_pct": {
+      "httpx": 0.0,
+      "requests": 0.0,
+      "fastapi": 40.0,
+      "rich": 40.0,
+      "sci_compute": 20.0
+    },
+    "thinking_token_change_pct": 13.0,
+    "kv_cache_token_change_pct": 19.1
+  },
+  "ccr_only": {
+    "backend": "gemma-4-qat-ast-verified",
+    "tasks_evaluated": 25,
+    "tasks_resolved": 18,
+    "resolution_rate_pct": 72.0,
+    "loop_escape_rate_pct": 72.0,
+    "avg_turns_per_task": 8.76,
+    "avg_thinking_tokens": 35881,
+    "avg_cumulative_kv_tokens": 85148,
+    "avg_peak_kv_tokens": 14597,
+    "avg_resets_triggered": 2.96,
+    "mean_action_entropy_bits": 1.618,
+    "domain_resolution_pct": {
+      "httpx": 40.0,
+      "requests": 60.0,
+      "fastapi": 80.0,
+      "rich": 80.0,
+      "sci_compute": 100.0
+    },
+    "thinking_token_change_pct": -20.7,
+    "kv_cache_token_change_pct": -46.7
+  },
+  "ccr_adaptive_ours": {
+    "backend": "gemma-4-qat-ast-verified",
+    "tasks_evaluated": 25,
+    "tasks_resolved": 24,
+    "resolution_rate_pct": 96.0,
+    "loop_escape_rate_pct": 96.0,
+    "avg_turns_per_task": 6.96,
+    "avg_thinking_tokens": 24842,
+    "avg_cumulative_kv_tokens": 46689,
+    "avg_peak_kv_tokens": 10639,
+    "avg_resets_triggered": 1.92,
+    "mean_action_entropy_bits": 1.654,
+    "domain_resolution_pct": {
+      "httpx": 100.0,
+      "requests": 80.0,
+      "fastapi": 100.0,
+      "rich": 100.0,
+      "sci_compute": 100.0
+    },
+    "thinking_token_change_pct": -45.1,
+    "kv_cache_token_change_pct": -70.8
+  }
+}

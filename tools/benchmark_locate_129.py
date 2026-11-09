@@ -13,7 +13,8 @@ from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BUNDLE_SCRIPTS = REPO_ROOT / "bundles" / "exp13_swe_toolkit" / "skills" / "swe-toolkit" / "scripts"
+DEFAULT_SCRIPTS = REPO_ROOT / "bundles" / "exp13_swe_toolkit" / "skills" / "swe-toolkit" / "scripts"
+BUNDLE_SCRIPTS = Path(os.environ.get("SWE_BENCH_SCRIPTS") or DEFAULT_SCRIPTS)
 TASKS_PATH = (
     REPO_ROOT
     / "kaggle_work"
@@ -22,11 +23,10 @@ TASKS_PATH = (
     / "competition"
     / "tasks.jsonl"
 )
-SNAPX_DIR = Path(r"C:\Users\chait\AppData\Local\Temp\opencode\snapx")
+SNAPX_DIR = Path(os.environ.get("SWE_BENCH_SNAPX") or r"C:\Users\chait\AppData\Local\Temp\opencode\snapx")
 
 sys.path.insert(0, str(BUNDLE_SCRIPTS))
 import _index
-
 
 def load_tasks() -> dict[str, dict]:
     rows = {}

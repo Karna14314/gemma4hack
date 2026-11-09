@@ -1,0 +1,15 @@
+{
+  "kernel": "matterhorn3838__gemma-4-superagent",
+  "method": "static",
+  "payload_var": "FILES",
+  "bundle_hash": "9f8886a9f09c",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 5440,
+  "prompt_chars": 4913
+}

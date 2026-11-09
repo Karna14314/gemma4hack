@@ -1,0 +1,8 @@
+module_id,description,temperature,top_p,top_k,thinking_budget,include_thoughts,declared_tools_count,read_window_line_cap,call_12_edit_deadline,cochange_graph_guard,red_test_submit_guard,avg_tool_calls_per_task,peak_prompt_tokens,compaction_trigger_rate_pct,swegemma_129_solved,swegemma_129_rate_pct,public_lb_58_solved,public_lb_score
+M0_Starter_Baseline,"Default starter template (T=0.2, 9 tools including unindexed graph schema advertisement)",0.2,0.95,40,4096,False,9,0,False,False,False,24.6,28400,68.2,15,11.6,7,0.121
+M1_Lean6_Workspace_Tools,Unregister 3 unindexed graph tools to suppress build_agent_prompt Code Intelligence advertisement,0.2,0.95,40,4096,False,6,0,False,False,False,21.2,22100,44.0,18,14.0,8,0.138
+M2_Calibrated_Thinking_Sampling,"Calibrated thinking-mode sampling (T=1.0, top_p=0.95, top_k=64, thinking_budget=4096, include_thoughts=true)",1.0,0.95,64,4096,True,6,0,False,False,False,18.9,18600,31.0,22,17.1,10,0.172
+M3_Contract_Ledger_120L_ReadCap,Turn-1 verbatim symbol/exception contract extraction + 1-grep localization + 120-line read_file cap,1.0,0.95,64,4096,True,6,120,False,False,False,15.4,11200,8.5,25,19.4,11,0.19
+M4_Call12_Mandatory_Edit_Deadline,"Enforce first source edit_file by Tool Call 12 (max_tool_calls=28, max_time_minutes=8)",1.0,0.95,64,4096,True,6,120,True,False,False,13.8,10400,6.2,27,20.9,12,0.207
+M5_CoChange_Graph_Coupling,"Structural co-change coupling across Client/AsyncClient, @overload, __all__, and FastAPI docs_src/",1.0,0.95,64,4096,True,6,120,True,True,False,13.1,9850,5.4,29,22.5,13,0.224
+M6_OneCheck_OneRepair_RedTestSubmit,"Two-Container differential verification (1 focused pytest check, 1 assertion repair, red-test submit_patch)",1.0,0.95,64,4096,True,6,120,True,True,True,12.4,9420,4.7,31,24.0,14,0.241

@@ -1,0 +1,26 @@
+{
+  "id": "victorzhong0110/gemma4-submission-pack-upstream-v8",
+  "id_no": 140660414,
+  "title": "gemma4-submission-pack-upstream-v8",
+  "code_file": "gemma4-submission-pack-upstream-v8.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "nlp",
+    "python"
+  ],
+  "dataset_sources": [
+    "metric/gemma-4-developer-agent-wheelhouse"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "gemma-4-developer-agent"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:17b2fc7f27c25c6c2fd4230ec8e66097ab2b89fc88e1e4d6f338b72e1ee0bc3e",
+  "machine_shape": "None"
+}

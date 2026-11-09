@@ -1,0 +1,17 @@
+{
+  "kernel": "bliverrigpdoge__lb-0-22-4-config-files-no-training",
+  "title": "LB 0.22 | 4 config files, no training",
+  "ref": "bliverrigpdoge/LB 0.22 | 4 config files, no training",
+  "payload_var": "FILES",
+  "digest": "c9829b6ac709",
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 5204,
+  "zip_cell": 1,
+  "prompt_chars": 4677
+}

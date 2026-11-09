@@ -13,7 +13,7 @@
           "R@10_file": 0.3036,
           "MRR_node": 0.1178,
           "MRR_file": 0.2212,
-          "Latency_ms": 102.4,
+          "Latency_ms": 127.8,
           "Chars": 2367,
           "N": 129
         },
@@ -28,8 +28,8 @@
           "R@10_file": 0.381,
           "MRR_node": 0.0858,
           "MRR_file": 0.2059,
-          "Latency_ms": 983.4,
-          "Chars": 2137,
+          "Latency_ms": 973.9,
+          "Chars": 2136,
           "N": 129
         },
         "M3": {
@@ -37,14 +37,14 @@
           "R@1_file": 0.0504,
           "R@3_node": 0.0601,
           "R@3_file": 0.1819,
-          "R@5_node": 0.063,
+          "R@5_node": 0.0612,
           "R@5_file": 0.2265,
-          "R@10_node": 0.0748,
-          "R@10_file": 0.2846,
-          "MRR_node": 0.1037,
-          "MRR_file": 0.2103,
-          "Latency_ms": 80.5,
-          "Chars": 2377,
+          "R@10_node": 0.0731,
+          "R@10_file": 0.2924,
+          "MRR_node": 0.103,
+          "MRR_file": 0.2098,
+          "Latency_ms": 74.2,
+          "Chars": 2416,
           "N": 129
         },
         "M4": {
@@ -58,7 +58,7 @@
           "R@10_file": 0.4587,
           "MRR_node": 0.2565,
           "MRR_file": 0.4354,
-          "Latency_ms": 574.1,
+          "Latency_ms": 645.6,
           "Chars": 2211,
           "N": 129
         },
@@ -73,8 +73,8 @@
           "R@10_file": 0.5701,
           "MRR_node": 0.2128,
           "MRR_file": 0.4332,
-          "Latency_ms": 5.0,
-          "Chars": 2220,
+          "Latency_ms": 4.6,
+          "Chars": 2219,
           "N": 129
         }
       },
@@ -90,7 +90,7 @@
           "R@10_file": 0.3133,
           "MRR_node": 0.1215,
           "MRR_file": 0.2283,
-          "Latency_ms": 103.0,
+          "Latency_ms": 128.6,
           "Chars": 2367,
           "N": 125
         },
@@ -105,8 +105,8 @@
           "R@10_file": 0.3932,
           "MRR_node": 0.0885,
           "MRR_file": 0.2125,
-          "Latency_ms": 981.5,
-          "Chars": 2134,
+          "Latency_ms": 971.9,
+          "Chars": 2133,
           "N": 125
         },
         "M3": {
@@ -114,14 +114,14 @@
           "R@1_file": 0.052,
           "R@3_node": 0.0621,
           "R@3_file": 0.1878,
-          "R@5_node": 0.0651,
+          "R@5_node": 0.0632,
           "R@5_file": 0.2338,
-          "R@10_node": 0.0772,
-          "R@10_file": 0.2938,
-          "MRR_node": 0.107,
-          "MRR_file": 0.217,
-          "Latency_ms": 80.2,
-          "Chars": 2378,
+          "R@10_node": 0.0755,
+          "R@10_file": 0.3018,
+          "MRR_node": 0.1063,
+          "MRR_file": 0.2165,
+          "Latency_ms": 73.9,
+          "Chars": 2416,
           "N": 125
         },
         "M4": {
@@ -135,7 +135,7 @@
           "R@10_file": 0.4734,
           "MRR_node": 0.2647,
           "MRR_file": 0.4493,
-          "Latency_ms": 573.0,
+          "Latency_ms": 644.6,
           "Chars": 2211,
           "N": 125
         },
@@ -150,7 +150,7 @@
           "R@10_file": 0.5883,
           "MRR_node": 0.2196,
           "MRR_file": 0.4471,
-          "Latency_ms": 5.0,
+          "Latency_ms": 4.6,
           "Chars": 2221,
           "N": 125
         }
@@ -167,7 +167,7 @@
           "R@10_file": 0.3632,
           "MRR_node": 0.1121,
           "MRR_file": 0.1852,
-          "Latency_ms": 235.7,
+          "Latency_ms": 297.8,
           "Chars": 2335,
           "N": 13
         },
@@ -182,7 +182,7 @@
           "R@10_file": 0.5641,
           "MRR_node": 0.1525,
           "MRR_file": 0.2568,
-          "Latency_ms": 1540.7,
+          "Latency_ms": 1521.5,
           "Chars": 2040,
           "N": 13
         },
@@ -197,8 +197,8 @@
           "R@10_file": 0.1325,
           "MRR_node": 0.0693,
           "MRR_file": 0.138,
-          "Latency_ms": 100.6,
-          "Chars": 2407,
+          "Latency_ms": 101.1,
+          "Chars": 2467,
           "N": 13
         },
         "M4": {
@@ -212,7 +212,7 @@
           "R@10_file": 0.8718,
           "MRR_node": 0.4838,
           "MRR_file": 0.7795,
-          "Latency_ms": 799.5,
+          "Latency_ms": 898.1,
           "Chars": 2360,
           "N": 13
         },
@@ -227,7 +227,7 @@
           "R@10_file": 0.9316,
           "MRR_node": 0.3632,
           "MRR_file": 0.6051,
-          "Latency_ms": 7.4,
+          "Latency_ms": 6.7,
           "Chars": 2319,
           "N": 13
         }
@@ -244,7 +244,7 @@
           "R@10_file": 0.2969,
           "MRR_node": 0.1184,
           "MRR_file": 0.2253,
-          "Latency_ms": 87.5,
+          "Latency_ms": 108.7,
           "Chars": 2371,
           "N": 116
         },
@@ -259,8 +259,8 @@
           "R@10_file": 0.3605,
           "MRR_node": 0.0783,
           "MRR_file": 0.2002,
-          "Latency_ms": 920.9,
-          "Chars": 2148,
+          "Latency_ms": 912.5,
+          "Chars": 2147,
           "N": 116
         },
         "M3": {
@@ -268,14 +268,14 @@
           "R@1_file": 0.055,
           "R@3_node": 0.065,
           "R@3_file": 0.1875,
-          "R@5_node": 0.0682,
+          "R@5_node": 0.0662,
           "R@5_file": 0.237,
-          "R@10_node": 0.0813,
-          "R@10_file": 0.3017,
-          "MRR_node": 0.1075,
-          "MRR_file": 0.2184,
-          "Latency_ms": 78.2,
-          "Chars": 2374,
+          "R@10_node": 0.0794,
+          "R@10_file": 0.3103,
+          "MRR_node": 0.1068,
+          "MRR_file": 0.2179,
+          "Latency_ms": 71.1,
+          "Chars": 2410,
           "N": 116
         },
         "M4": {
@@ -289,7 +289,7 @@
           "R@10_file": 0.4124,
           "MRR_node": 0.231,
           "MRR_file": 0.3968,
-          "Latency_ms": 548.8,
+          "Latency_ms": 617.3,
           "Chars": 2194,
           "N": 116
         },
@@ -304,7 +304,7 @@
           "R@10_file": 0.5295,
           "MRR_node": 0.1959,
           "MRR_file": 0.414,
-          "Latency_ms": 4.7,
+          "Latency_ms": 4.4,
           "Chars": 2208,
           "N": 116
         }
@@ -323,7 +323,7 @@
           "R@10_file": 0.2265,
           "MRR_node": 0.1023,
           "MRR_file": 0.1914,
-          "Latency_ms": 161.0,
+          "Latency_ms": 200.3,
           "Chars": 2351,
           "N": 67
         },
@@ -338,7 +338,7 @@
           "R@10_file": 0.2941,
           "MRR_node": 0.1017,
           "MRR_file": 0.1882,
-          "Latency_ms": 1444.8,
+          "Latency_ms": 1417.6,
           "Chars": 2083,
           "N": 67
         },
@@ -347,14 +347,14 @@
           "R@1_file": 0.0359,
           "R@3_node": 0.0074,
           "R@3_file": 0.1437,
-          "R@5_node": 0.0084,
+          "R@5_node": 0.0074,
           "R@5_file": 0.1474,
-          "R@10_node": 0.0241,
+          "R@10_node": 0.0234,
           "R@10_file": 0.1624,
-          "MRR_node": 0.0796,
+          "MRR_node": 0.0798,
           "MRR_file": 0.1649,
-          "Latency_ms": 122.8,
-          "Chars": 2439,
+          "Latency_ms": 116.8,
+          "Chars": 2517,
           "N": 67
         },
         "M4": {
@@ -368,7 +368,7 @@
           "R@10_file": 0.4985,
           "MRR_node": 0.316,
           "MRR_file": 0.5143,
-          "Latency_ms": 797.2,
+          "Latency_ms": 893.9,
           "Chars": 2175,
           "N": 67
         },
@@ -383,7 +383,7 @@
           "R@10_file": 0.5227,
           "MRR_node": 0.256,
           "MRR_file": 0.3932,
-          "Latency_ms": 7.3,
+          "Latency_ms": 6.6,
           "Chars": 2254,
           "N": 67
         },
@@ -401,7 +401,7 @@
           "R@10_file": 0.7692,
           "MRR_node": 0.3716,
           "MRR_file": 0.467,
-          "Latency_ms": 16.2,
+          "Latency_ms": 20.9,
           "Chars": 2408,
           "N": 13
         },
@@ -416,7 +416,7 @@
           "R@10_file": 0.8077,
           "MRR_node": 0.1232,
           "MRR_file": 0.3624,
-          "Latency_ms": 213.2,
+          "Latency_ms": 238.9,
           "Chars": 2290,
           "N": 13
         },
@@ -430,9 +430,9 @@
           "R@10_node": 0.4,
           "R@10_file": 0.6538,
           "MRR_node": 0.3377,
-          "MRR_file": 0.4374,
-          "Latency_ms": 3.1,
-          "Chars": 2386,
+          "MRR_file": 0.4349,
+          "Latency_ms": 3.3,
+          "Chars": 2341,
           "N": 13
         },
         "M4": {
@@ -446,7 +446,7 @@
           "R@10_file": 0.8846,
           "MRR_node": 0.3232,
           "MRR_file": 0.6175,
-          "Latency_ms": 124.4,
+          "Latency_ms": 142.5,
           "Chars": 2313,
           "N": 13
         },
@@ -479,7 +479,7 @@
           "R@10_file": 0.2824,
           "MRR_node": 0.0627,
           "MRR_file": 0.1802,
-          "Latency_ms": 46.1,
+          "Latency_ms": 57.9,
           "Chars": 2379,
           "N": 48
         },
@@ -494,8 +494,8 @@
           "R@10_file": 0.3889,
           "MRR_node": 0.0531,
           "MRR_file": 0.1874,
-          "Latency_ms": 564.9,
-          "Chars": 2183,
+          "Latency_ms": 569.4,
+          "Chars": 2181,
           "N": 48
         },
         "M3": {
@@ -503,14 +503,14 @@
           "R@1_file": 0.0301,
           "R@3_node": 0.0424,
           "R@3_file": 0.1366,
-          "R@5_node": 0.0488,
+          "R@5_node": 0.0453,
           "R@5_file": 0.2512,
-          "R@10_node": 0.0574,
-          "R@10_file": 0.3553,
-          "MRR_node": 0.0657,
-          "MRR_file": 0.1956,
-          "Latency_ms": 44.0,
-          "Chars": 2293,
+          "R@10_node": 0.054,
+          "R@10_file": 0.3762,
+          "MRR_node": 0.0637,
+          "MRR_file": 0.1951,
+          "Latency_ms": 35.4,
+          "Chars": 2299,
           "N": 48
         },
         "M4": {
@@ -524,7 +524,7 @@
           "R@10_file": 0.2855,
           "MRR_node": 0.1398,
           "MRR_file": 0.2641,
-          "Latency_ms": 394.3,
+          "Latency_ms": 446.3,
           "Chars": 2233,
           "N": 48
         },
@@ -557,7 +557,7 @@
           "R@10_file": 0.4286,
           "MRR_node": 0.5,
           "MRR_file": 1.0,
-          "Latency_ms": 8.1,
+          "Latency_ms": 8.7,
           "Chars": 2390,
           "N": 1
         },
@@ -572,7 +572,7 @@
           "R@10_file": 0.2857,
           "MRR_node": 0.1,
           "MRR_file": 0.25,
-          "Latency_ms": 169.5,
+          "Latency_ms": 216.7,
           "Chars": 1567,
           "N": 1
         },
@@ -587,7 +587,7 @@
           "R@10_file": 0.2857,
           "MRR_node": 0.5,
           "MRR_file": 1.0,
-          "Latency_ms": 3.1,
+          "Latency_ms": 3.4,
           "Chars": 2194,
           "N": 1
         },
@@ -602,7 +602,7 @@
           "R@10_file": 0.5714,
           "MRR_node": 1.0,
           "MRR_file": 1.0,
-          "Latency_ms": 97.8,
+          "Latency_ms": 119.0,
           "Chars": 2227,
           "N": 1
         },
@@ -797,8 +797,8 @@
       "name": "exp01 (v1)",
       "scale": "31B",
       "score": 0.05,
-      "sha256": "e3? no",
-      "config_delta": "baseline v1",
+      "sha256": "\u2014",
+      "config_delta": "baseline v1: thinking on, 6 min / 60 calls / 120 turns",
       "resolved_tasks": 2.9,
       "binomial_se": 0.0286
     },
@@ -808,7 +808,7 @@
       "scale": "31B",
       "score": 0.08,
       "sha256": "\u2014",
-      "config_delta": "thinking on, 6 min/60 calls/120 turns",
+      "config_delta": "4 bundled changes (prompt + tool contract)",
       "resolved_tasks": 4.64,
       "binomial_se": 0.0356
     },
@@ -818,7 +818,7 @@
       "scale": "31B",
       "score": 0.17,
       "sha256": "e3be904c\u2026",
-      "config_delta": "byte-exact public 0.17 replica",
+      "config_delta": "byte-exact public 0.17 replica; 6 tools (+3 graph)",
       "resolved_tasks": 9.86,
       "binomial_se": 0.0493
     },
@@ -828,7 +828,7 @@
       "scale": "31B",
       "score": null,
       "sha256": "71bf21d6\u2026",
-      "config_delta": "mandatory py_compile (-3pp ablation)",
+      "config_delta": "mandatory py_compile (-3pp offline ablation, unsubmitted)",
       "resolved_tasks": null,
       "binomial_se": null
     },
@@ -838,7 +838,7 @@
       "scale": "31B",
       "score": 0.2,
       "sha256": "2ba7f9b1\u2026",
-      "config_delta": "pre-submit patch integrity check",
+      "config_delta": "BASELINE: patch integrity check (`git add -N -f`)",
       "resolved_tasks": 11.6,
       "binomial_se": 0.0525
     },
@@ -858,7 +858,7 @@
       "scale": "31B",
       "score": 0.17,
       "sha256": "\u2014",
-      "config_delta": "STATE header + 6 tools",
+      "config_delta": "STATE header + 6 tools, max_output 6144",
       "resolved_tasks": 9.86,
       "binomial_se": 0.0493
     },
@@ -868,7 +868,7 @@
       "scale": "31B",
       "score": 0.13,
       "sha256": "\u2014",
-      "config_delta": "31B fallback",
+      "config_delta": "E4B alias rejected -> 31B fallback package",
       "resolved_tasks": 7.54,
       "binomial_se": 0.0442
     },
@@ -877,10 +877,40 @@
       "name": "exp12 timing buffer",
       "scale": "31B",
       "score": 0.17,
-      "sha256": "\u2014",
-      "config_delta": "near-exact exp05 with 9-min buffer",
+      "sha256": "203fe180\u2026",
+      "config_delta": "near-exact exp05 with 9-min buffer, 6 tools",
       "resolved_tasks": 9.86,
       "binomial_se": 0.0493
+    },
+    {
+      "ref": "57836949",
+      "name": "E0 control: byte-identical exp05",
+      "scale": "31B",
+      "score": 0.17,
+      "sha256": "2ba7f9b1\u2026",
+      "config_delta": "reproduction check: exp05 0.20 did not reproduce (0.17)",
+      "resolved_tasks": 9.86,
+      "binomial_se": 0.0493
+    },
+    {
+      "ref": "exp_sampling",
+      "name": "exp_sampling temp 1.0 (ref 58096981)",
+      "scale": "31B",
+      "score": 0.13,
+      "sha256": "\u2014",
+      "config_delta": "temp 1.0 / top_p 0.95 / top_k 64 off exp05",
+      "resolved_tasks": 7.54,
+      "binomial_se": 0.0442
+    },
+    {
+      "ref": "exp_think1024",
+      "name": "exp_think1024 (ref 58149803)",
+      "scale": "31B",
+      "score": null,
+      "sha256": "5d80bac7\u2026",
+      "config_delta": "thinking budget 4096->1024 off exp05 (pending scoring)",
+      "resolved_tasks": null,
+      "binomial_se": null
     },
     {
       "ref": "exp11_e4b",
@@ -888,7 +918,7 @@
       "scale": "E4B",
       "score": 0.06,
       "sha256": "\u2014",
-      "config_delta": "genuine E4B bundle",
+      "config_delta": "genuine E4B bundle (no 31B fallback, ref 57777888)",
       "resolved_tasks": 3.48,
       "binomial_se": 0.0312
     },
@@ -896,11 +926,60 @@
       "ref": "e4b-v2",
       "name": "e4b-v2 (ref 57806053)",
       "scale": "E4B",
+      "score": 0.05,
+      "sha256": "5881be16\u2026",
+      "config_delta": "temp 0.1 + imperative prompt <=2500 chars",
+      "resolved_tasks": 2.9,
+      "binomial_se": 0.0286
+    },
+    {
+      "ref": "exp13",
+      "name": "exp13 swe-toolkit v4",
+      "scale": "31B",
       "score": null,
-      "sha256": "\u2014",
-      "config_delta": "temp 0.1 + imperative prompt (pending)",
+      "sha256": "c9135bcb\u2026",
+      "config_delta": "deterministic locate+verify skill (kernel verified, unsubmitted)",
       "resolved_tasks": null,
       "binomial_se": null
+    },
+    {
+      "ref": "e4b-v3",
+      "name": "e4b-v3 swe-toolkit",
+      "scale": "E4B",
+      "score": null,
+      "sha256": "97c25136\u2026",
+      "config_delta": "E4B + swe-toolkit (kernel verified, unsubmitted)",
+      "resolved_tasks": null,
+      "binomial_se": null
+    },
+    {
+      "ref": "e4b-v4",
+      "name": "e4b_v4_swe_toolkit (ref 57889741)",
+      "scale": "E4B",
+      "score": 0.05,
+      "sha256": "8a179b8a\u2026",
+      "config_delta": "E4B + swe-toolkit v4 engine; offload prediction falsified",
+      "resolved_tasks": 2.9,
+      "binomial_se": 0.0286
+    },
+    {
+      "ref": "exp14",
+      "name": "exp14 lean toolkit (ref 57933618)",
+      "scale": "31B",
+      "score": 0.15,
+      "sha256": "\u2014",
+      "config_delta": "31B + swe-toolkit skill, 9 tools, lean prompt",
+      "resolved_tasks": 8.7,
+      "binomial_se": 0.0469
     }
-  ]
+  ],
+  "sandbox_dep_audit": {
+    "test_patch_direct_affected": 21,
+    "full_snapshot_affected": 27,
+    "repo_breakdown": {
+      "fastapi/fastapi": 21
+    },
+    "fastapi_unpassable_pct": 40.3,
+    "overall_unpassable_pct": 20.9
+  }
 }

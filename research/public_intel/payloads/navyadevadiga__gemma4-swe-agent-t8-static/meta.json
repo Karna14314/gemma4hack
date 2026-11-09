@@ -1,0 +1,17 @@
+{
+  "kernel": "navyadevadiga__gemma4-swe-agent-t8-static",
+  "title": "Gemma4 SWE Agent T8 Static",
+  "ref": "navyadevadiga/Gemma4 SWE Agent T8 Static",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 6112,
+  "zip_cell": null,
+  "prompt_chars": 5581
+}
