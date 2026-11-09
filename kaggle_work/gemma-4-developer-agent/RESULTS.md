@@ -492,3 +492,61 @@ wheelhouse-registry [WARN] is the documented non-blocker); compiled
 `run_skill_script` declaration PASS (required [skill_name, file_path], args list,
 no command). Kernel push deliberately deferred while E0 57836949 is PENDING; a
 kernel run is not needed for this task per user scoping.
+
+## 2026-11-09 — leaderboard catch-up + exp_think1024 submitted (ref 58149803)
+
+First, four scored entries that landed after 2026-11-01 without a ledger row (recorded now,
+from the live API; also in docs/LEADERBOARD_STATS.md and commit 1f6ca99):
+
+| ref | date (UTC) | bundle / artifact | score | interpretation |
+|---|---|---|---|---|
+| 57836949 | 2026-10-31 | E0 control: byte-identical exp05 resubmission (sha256 2ba7f9b1…) | 0.17 | **exp05's 0.20 did not reproduce** — the identical artifact scored 0.17, so exp05's 0.20 was a high draw of pooled 31B noise |
+| 57889741 | 2026-11-02 | e4b_v4_swe_toolkit (E4B + swe-toolkit v4 engine, 7 tools) | 0.05 | E4B flat-line persists even with the deterministic skill offload → the skill-offload prediction (0.09–0.13) is falsified; E4B line closed at 0.05–0.06 (four submissions) |
+| 57933618 | 2026-11-03 | exp14_lean_toolkit (31B + swe-toolkit skill, 9 tools, lean prompt) | 0.15 | −1 task vs the 0.17 cluster → within noise |
+| 58096981 | 2026-11-07 | exp_sampling: temp 1.0 / top_p .95 / top_k 64 off exp05 | 0.13 | −2 tasks → within noise; decoding change unresolved |
+
+Converged-config 31B pool is now eight scored runs (0.20, 0.17×5, 0.15, 0.13 ⇒
+≈77/464 = 0.166; pooled SE ≈ 0.05/√8 ≈ 0.018). No scoring loop exists locally; public-LB
+deltas ≤2 tasks remain statistically unresolvable (docs/AUDIT_E4B_AND_ANCHOR.md).
+
+## exp_think1024 — thinking_budget 4096 → 1024 (single change off exp05 anchor) — SUBMITTED
+
+- **Origin.** Kilo Code branch `kilo/steep-blossom-hio` (commit `54c63bf`);
+  `git diff --no-index` vs `kaggle_work/.../bundles/exp05_patch_integrity`: exactly
+  1 file, 1 insertion, 1 deletion — `configs/sampling.yaml`
+  `thinking_budget: 4096 → 1024`. Synced to
+  `kaggle_work/gemma-4-developer-agent/bundles/exp_think1024` and root-`bundles/exp_think1024`.
+- **Hypothesis (mechanism).** The thinking budget is engine-enforced per vLLM call
+  (`ThinkingTokenBudgetLogitsProcessor`), not prompt text: 1024 caps thought tokens
+  per call, leaving more of the 8192-token response for action text, and (with
+  `include_thoughts: true`) grows the per-turn history less → fewer compaction events
+  at the 14,336-token threshold. Risk: less deliberation on hard tasks.
+- **Payload proof (STOP GATE: not triggered — positive).**
+  `scripts/probe_thinking_budget.py` (artifacts `build/probe_payloads/*.json`,
+  sha256 exp_think1024 `7BEAE700…`, exp05 `060503DF…`): the outgoing vLLM request
+  carries top-level `extra_body.thinking_token_budget = 1024` (`enable_thinking: true`),
+  identical to exp05's payload except that field. vLLM 0.19.1 enforces it
+  (`protocol.py:183/519`, `builtin.py:294/494-552`) independently of max_tokens.
+- **Gates.** Gate 1 (2026-11-09) all required resources present, docs hashes unchanged.
+  Gate 2 `verify_bundle.py --bundle bundles\exp_think1024` ALL CHECKS PASSED
+  (pack digest `5d80bac751b9ae22`, compile root swe_agent, model 31B, tools=9).
+  Gate 3 `verify_notebook.py` ALL CHECKS PASSED; `submission.zip` sha256
+  `5d80bac751b9ae2218e5bffa32bc7078f8c9a3dd9abc4b21edf44d2b50ad7082` (3,403 B).
+  Gate 4: kernel `narisettichaitanya/gemma4-devagent-exp-think1024` v1 pushed 2026-11-09,
+  status COMPLETE, log ends `DONE_OK`, no traceback; pulled output
+  (`kaggle_work/.../runs/exp_think1024/`) byte-identical to the local build.
+- **Submission.** User pre-authorized a conditional submission (payload proof positive +
+  Gates 2–3 pass); conditions verified: nothing PENDING, nothing submitted
+  2026-11-09 UTC before the call. **Ref 58149803**, 2026-11-09T03:27:31Z, status pending,
+  message "exp_think1024: single change off exp05 …", artifact sha256 `5d80bac7…`.
+- Tool note: `kaggle competitions submit` (CLI 2.2.4) → HTTP 400 (the JSON-vs-multipart
+  trap documented in `tools/kaggle_rest.py`; field-by-field body silently ignored);
+  submitted successfully via `tools/kaggle_rest.py submit --competition ... --kernel ... --version 1 --filename submission.zip`.
+- **Pre-registered interpretation** (public LB = ~58 tasks; 1 task ≈ 0.017; SE ≈ 0.05;
+  pooled 31B anchor ≈ 0.166): score ≥13/58 (≈0.22+) real win; 9–12 (0.155–0.207) null;
+  ≤8 (≤0.138) regression.
+- **Docs.** Phase 1+2 audit: `docs/ENV_AUDIT.md` (wheel inventory, `--sandbox subprocess`
+  runner, 5/5 harness-trap repros, payload proof). Handover: `docs/SESSION_FINAL.md`.
+  Paper: `docs/PAPER_TRACK_DRAFT.md` §2.2 now carries the engine-enforcement finding and
+  the E0-control statistical update (2,997 words, under the 3,000 limit).
+

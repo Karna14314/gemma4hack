@@ -36,3 +36,14 @@
 - submission.zip sha256: 8a179b8af032ca97dbc64f54f0dbd3721434a10765e5c01167f36250822329a0
 - submission_notebook.ipynb sha256: 0b1a0a7217cb2eb5cd20ed7bdfc13e11470f54db99bc20ac5741b9085ce971f9
 - Bundle file hashes: see docs/SUBMISSION_RUN_e4b_v4.md
+
+## exp_think1024 submission (58149803) — 2026-11-09
+
+- Bundle: `kaggle_work/gemma-4-developer-agent/bundles/exp_think1024` (= root `bundles/exp_think1024`), synced from `origin/kilo/steep-blossom-hio` (commit `54c63bf`); single change vs exp05 (2ba7f9b1…): `configs/sampling.yaml` `thinking_budget: 4096 → 1024` (git diff --no-index: 1 file, 1+/1−)
+- Kernel: `narisettichaitanya/gemma4-devagent-exp-think1024` v1 (scriptVersionId 367147645), CPU-only, status COMPLETE, DONE_OK, no traceback
+- Submission ref: **58149803**, 2026-11-09T03:27:31Z, status pending (submitted via `tools/kaggle_rest.py submit` — the `kaggle` CLI path returned HTTP 400, see multipart trap)
+- submission.zip sha256: `5d80bac751b9ae2218e5bffa32bc7078f8c9a3dd9abc4b21edf44d2b50ad7082` (3,403 B)
+- Gates: Gate 1 pass (2026-11-09); Gate 2 ALL CHECKS PASSED; Gate 3 ALL CHECKS PASSED; Gate 4 COMPLETE + pulled hash == local build
+- Payload proof: `extra_body.thinking_token_budget=1024` reaches the outgoing vLLM request (`scripts/probe_thinking_budget.py`, artifacts `build/probe_payloads/`); enforcement verified in vLLM 0.19.1 (`ThinkingTokenBudgetLogitsProcessor`)
+- Hypothesis + pre-registered rule recorded in `kaggle_work/gemma-4-developer-agent/RESULTS.md` (2026-11-09 section): ≥13/58 real win, 9–12 null, ≤8 regression vs pooled 31B ≈ 0.166
+- Session summary: `docs/SESSION_FINAL.md`; phase audit: `docs/ENV_AUDIT.md`
