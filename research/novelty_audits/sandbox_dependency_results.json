@@ -1,0 +1,1598 @@
+{
+  "audit_name": "Sandbox Test-Suite Dependency & Missing Plugin Audit",
+  "timestamp": "2026-11-10 22:40:17",
+  "total_tasks_audited": 129,
+  "summary": {
+    "test_patch_direct_affected": 22,
+    "full_snapshot_affected": 28,
+    "overall_unpassable_pct": 21.71,
+    "fastapi_unpassable_pct": 41.79,
+    "missing_plugin_frequency": {
+      "inline_snapshot": 18,
+      "dirty_equals": 5,
+      "anyio": 1
+    }
+  },
+  "repo_breakdown": {
+    "fastapi/fastapi": {
+      "total_tasks": 67,
+      "direct_patch_imports": 22,
+      "full_snapshot_affected": 28,
+      "unpassable_collection_pct": 41.79
+    },
+    "psf/requests": {
+      "total_tasks": 13,
+      "direct_patch_imports": 0,
+      "full_snapshot_affected": 0,
+      "unpassable_collection_pct": 0.0
+    },
+    "Textualize/rich": {
+      "total_tasks": 48,
+      "direct_patch_imports": 0,
+      "full_snapshot_affected": 0,
+      "unpassable_collection_pct": 0.0
+    },
+    "encode/httpx": {
+      "total_tasks": 1,
+      "direct_patch_imports": 0,
+      "full_snapshot_affected": 0,
+      "unpassable_collection_pct": 0.0
+    }
+  },
+  "architectural_implications": {
+    "bare_pytest_failure_mode": "Running bare `pytest <test_file>` on 27/129 tasks (40.3% of FastAPI) fails during the pytest collection phase with `ModuleNotFoundError: No module named 'inline_snapshot'` or `dirty_equals` before any test assertions execute.",
+    "agent_traps": "Agents without plugin-tolerant verification interpret exitcode 2/4 (collection error) as test assertion failures, entering destructive patch mutation loops or falsely reverting working code changes.",
+    "solution_swe_toolkit_verify": "`swe-toolkit`'s `_verify.py` implements an AST-guided test executor that parses the target test AST, isolates standard assertions from missing plugin fixtures, and executes in a clean sandbox namespace without requiring third-party wheelhouse plugins."
+  },
+  "per_task_records": [
+    {
+      "task_id": "fastapi_15661",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_prepare_release.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15588",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_sse.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15589",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_query_cookie_header_model_extra_params.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15030",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_sse.py",
+        "tests/test_tutorial/test_server_sent_events/test_tutorial001.py",
+        "tests/test_tutorial/test_server_sent_events/test_tutorial002.py",
+        "tests/test_tutorial/test_server_sent_events/test_tutorial003.py",
+        "tests/test_tutorial/test_server_sent_events/test_tutorial004.py",
+        "tests/test_tutorial/test_server_sent_events/test_tutorial005.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14962",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_dump_json_fast_path.py",
+        "tests/test_tutorial/test_custom_response/test_tutorial001.py",
+        "tests/test_tutorial/test_custom_response/test_tutorial010.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15280",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_vibe.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14964",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_deprecated_responses.py",
+        "tests/test_orjson_response_class.py",
+        "tests/test_tutorial/test_custom_response/test_tutorial001.py",
+        "tests/test_tutorial/test_custom_response/test_tutorial001b.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15023",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_tutorial/test_stream_data/test_tutorial002.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14986",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_openapi_cache_root_path.py",
+        "tests/test_swagger_ui_escape.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14978",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_strict_content_type_app_level.py",
+        "tests/test_strict_content_type_nested.py",
+        "tests/test_strict_content_type_router_level.py",
+        "tests/test_tutorial/test_body/test_tutorial001.py",
+        "tests/test_tutorial/test_strict_content_type/test_tutorial001.py"
+      ]
+    },
+    {
+      "task_id": "requests_7505",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_7502",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_7433",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_7427",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_utils.py"
+      ]
+    },
+    {
+      "task_id": "requests_7315",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_adapters.py"
+      ]
+    },
+    {
+      "task_id": "requests_7328",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_7309",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_utils.py"
+      ]
+    },
+    {
+      "task_id": "requests_7205",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_utils.py"
+      ]
+    },
+    {
+      "task_id": "rich_4070",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py",
+        "tests/test_syntax.py"
+      ]
+    },
+    {
+      "task_id": "rich_4077",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_file_proxy.py"
+      ]
+    },
+    {
+      "task_id": "rich_4079",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_markdown.py"
+      ]
+    },
+    {
+      "task_id": "rich_4076",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_ansi.py"
+      ]
+    },
+    {
+      "task_id": "rich_4075",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_4006",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14258",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_router_circular_import.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14851",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_router_events.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14873",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_router_events.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_13920",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_pep695.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14794",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_response_dependency.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14786",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_security_http_base.py",
+        "tests/test_security_oauth2_authorization_code_bearer.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14492",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_tutorial/test_metadata/test_tutorial001_1.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14479",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_invalid_sequence_param.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14463",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_additional_responses_union_duplicate_anyof.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_12942",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_union_body_discriminator.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14099",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_after_yield_raise.py",
+        "tests/test_dependency_after_yield_streaming.py",
+        "tests/test_dependency_after_yield_websockets.py",
+        "tests/test_dependency_contextmanager.py",
+        "tests/test_route_scope.py",
+        "tests/test_tutorial/test_dependencies/test_tutorial008c.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14609",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_compat.py",
+        "tests/test_compat_params_v1.py",
+        "tests/test_datetime_custom_encoder.py",
+        "tests/test_filter_pydantic_sub_model/app_pv1.py",
+        "tests/test_filter_pydantic_sub_model/test_filter_pydantic_sub_model_pv1.py",
+        "tests/test_get_model_definitions_formfeed_escape.py",
+        "tests/test_inherited_custom_class.py",
+        "tests/test_jsonable_encoder.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14372",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_depends_hashable.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14349",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_schema_ref_pydantic_v2.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14512",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_union_body_discriminator_annotated.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14487",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_tutorial/test_handling_errors/test_tutorial004.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_11355",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_stringified_annotations_simple.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14485",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_stringified_annotation_dependency.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14482",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_arbitrary_types.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14306",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_validation_error_context.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14458",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_class.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14459",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi.py",
+        "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi_simple.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14448",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_wrapped.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14455",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_9753",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_partial.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14430",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_compat.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_5077",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/forward_reference_type.py",
+        "tests/test_wrapped_method_forward_reference.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_9555",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_wrapped.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14361",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_schema_compat_pydantic_v2.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_13207",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_computed_fields.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14360",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "dirty_equals"
+      ],
+      "full_snapshot_test_plugins": [
+        "dirty_equals"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_request_param_model_by_alias.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14356",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_query_cookie_header_model_extra_params.py",
+        "tests/test_tutorial/test_header_param_models/test_tutorial003.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_5624",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_security_scopes_dont_propagate.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14419",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_security_scopes.py",
+        "tests/test_security_scopes_sub_dependency.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14301",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_yield_scope.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14262",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_dependency_yield_scope.py",
+        "tests/test_dependency_yield_scope_websockets.py",
+        "tests/test_tutorial/test_dependencies/test_tutorial008e.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14266",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_top_level_security_scheme_in_openapi.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14246",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_no_schema_split.py",
+        "tests/test_pydantic_v1_v2_multifile/test_multifile.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14186",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_compat.py",
+        "tests/test_get_model_definitions_formfeed_escape.py",
+        "tests/test_response_model_as_return_annotation.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_9425",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_return_none_stringified_annotations.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_13713",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "dirty_equals"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/main.py",
+        "tests/test_application.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14077",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_enforce_once_required_parameter.py"
+      ]
+    },
+    {
+      "task_id": "rich_3718",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_panel.py"
+      ]
+    },
+    {
+      "task_id": "rich_3934",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_live.py"
+      ]
+    },
+    {
+      "task_id": "rich_3953",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py"
+      ]
+    },
+    {
+      "task_id": "rich_3944",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py"
+      ]
+    },
+    {
+      "task_id": "rich_3942",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/_card_render.py",
+        "tests/test_markdown.py",
+        "tests/test_markdown_no_hyperlinks.py"
+      ]
+    },
+    {
+      "task_id": "rich_3938",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_segment.py",
+        "tests/test_text.py"
+      ]
+    },
+    {
+      "task_id": "rich_3882",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_prompt.py"
+      ]
+    },
+    {
+      "task_id": "rich_3894",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_inspect.py"
+      ]
+    },
+    {
+      "task_id": "rich_3935",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_columns.py",
+        "tests/test_table.py"
+      ]
+    },
+    {
+      "task_id": "rich_3905",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_progress.py"
+      ]
+    },
+    {
+      "task_id": "rich_3930",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py",
+        "tests/test_text.py",
+        "tests/test_unicode_data.py"
+      ]
+    },
+    {
+      "task_id": "httpx_3672",
+      "repo": "encode/httpx",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_parsers.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14791",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_additional_properties.py",
+        "tests/test_additional_properties_bool.py",
+        "tests/test_additional_responses_custom_model_in_callback.py",
+        "tests/test_additional_responses_default_validationerror.py",
+        "tests/test_annotated.py",
+        "tests/test_application.py",
+        "tests/test_dependency_duplicates.py",
+        "tests/test_enforce_once_required_parameter.py",
+        "tests/test_extra_routes.py",
+        "tests/test_filter_pydantic_sub_model_pv2.py",
+        "tests/test_forms_single_param.py",
+        "tests/test_generate_unique_id_function.py",
+        "tests/test_get_model_definitions_formfeed_escape.py",
+        "tests/test_get_request_body.py",
+        "tests/test_include_router_defaults_overrides.py",
+        "tests/test_infer_param_optionality.py",
+        "tests/test_modules_same_name_body/test_main.py",
+        "tests/test_multi_body_errors.py",
+        "tests/test_multi_query_errors.py",
+        "tests/test_no_schema_split.py",
+        "tests/test_openapi_examples.py",
+        "tests/test_openapi_query_parameter_extension.py",
+        "tests/test_openapi_separate_input_output_schemas.py",
+        "tests/test_param_in_path_and_dependency.py",
+        "tests/test_param_include_in_schema.py",
+        "tests/test_put_no_body.py",
+        "tests/test_regex_deprecated_body.py",
+        "tests/test_regex_deprecated_params.py",
+        "tests/test_repeated_dependency_schema.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15800",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "anyio"
+      ],
+      "full_snapshot_test_plugins": [
+        "anyio"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_frontend.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15785",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_router_include_context.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14371",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "dirty_equals"
+      ],
+      "full_snapshot_test_plugins": [
+        "dirty_equals"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_request_params/test_body/test_list.py",
+        "tests/test_request_params/test_body/test_optional_list.py",
+        "tests/test_request_params/test_body/test_optional_str.py",
+        "tests/test_request_params/test_body/test_required_str.py",
+        "tests/test_request_params/test_cookie/test_optional_str.py",
+        "tests/test_request_params/test_cookie/test_required_str.py",
+        "tests/test_request_params/test_file/test_list.py",
+        "tests/test_request_params/test_file/test_optional.py",
+        "tests/test_request_params/test_file/test_optional_list.py",
+        "tests/test_request_params/test_file/test_required.py",
+        "tests/test_request_params/test_form/test_list.py",
+        "tests/test_request_params/test_form/test_optional_list.py",
+        "tests/test_request_params/test_form/test_optional_str.py",
+        "tests/test_request_params/test_form/test_required_str.py",
+        "tests/test_request_params/test_header/test_list.py",
+        "tests/test_request_params/test_header/test_optional_list.py",
+        "tests/test_request_params/test_header/test_optional_str.py",
+        "tests/test_request_params/test_header/test_required_str.py",
+        "tests/test_request_params/test_path/test_required_str.py",
+        "tests/test_request_params/test_query/test_list.py",
+        "tests/test_request_params/test_query/test_optional_list.py",
+        "tests/test_request_params/test_query/test_optional_str.py",
+        "tests/test_request_params/test_query/test_required_str.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14605",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "dirty_equals",
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/benchmarks/test_general_performance.py",
+        "tests/test_compat_params_v1.py",
+        "tests/test_pydantic_v1_deprecation_warnings.py",
+        "tests/test_regex_deprecated_body.py",
+        "tests/test_regex_deprecated_params.py",
+        "tests/test_schema_extra_examples.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial002.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial003.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial004.py",
+        "tests/test_tutorial/test_query_params_str_validations/test_tutorial004.py",
+        "tests/test_tutorial/test_request_form_models/test_tutorial002_pv1.py",
+        "tests/test_tutorial/test_schema_extra_example/test_tutorial001_pv1.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15763",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_router_include_context.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14583",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/benchmarks/test_general_performance.py",
+        "tests/test_compat_params_v1.py",
+        "tests/test_datetime_custom_encoder.py",
+        "tests/test_filter_pydantic_sub_model/app_pv1.py",
+        "tests/test_get_model_definitions_formfeed_escape.py",
+        "tests/test_pydantic_v1_deprecation_warnings.py",
+        "tests/test_pydantic_v1_v2_01.py",
+        "tests/test_pydantic_v1_v2_list.py",
+        "tests/test_pydantic_v1_v2_mixed.py",
+        "tests/test_pydantic_v1_v2_multifile/main.py",
+        "tests/test_pydantic_v1_v2_noneable.py",
+        "tests/test_read_with_orm_mode.py",
+        "tests/test_response_model_as_return_annotation.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial002.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial003.py",
+        "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial004.py",
+        "tests/test_tutorial/test_request_form_models/test_tutorial002_pv1.py",
+        "tests/test_tutorial/test_schema_extra_example/test_tutorial001_pv1.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_15745",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_custom_route_class.py",
+        "tests/test_router_include_context.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14297",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_compat.py",
+        "tests/test_optional_file_list.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14303",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "dirty_equals"
+      ],
+      "full_snapshot_test_plugins": [
+        "dirty_equals"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_forms_single_model.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_13537",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_form_default.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14953",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [
+        "inline_snapshot"
+      ],
+      "full_snapshot_test_plugins": [
+        "inline_snapshot"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_request_params/test_file/test_list.py",
+        "tests/test_request_params/test_file/test_optional.py",
+        "tests/test_request_params/test_file/test_optional_list.py",
+        "tests/test_request_params/test_file/test_required.py",
+        "tests/test_tutorial/test_json_base64_bytes/test_tutorial001.py",
+        "tests/test_tutorial/test_request_files/test_tutorial001.py",
+        "tests/test_tutorial/test_request_files/test_tutorial001_02.py",
+        "tests/test_tutorial/test_request_files/test_tutorial001_03.py",
+        "tests/test_tutorial/test_request_files/test_tutorial002.py",
+        "tests/test_tutorial/test_request_files/test_tutorial003.py",
+        "tests/test_tutorial/test_request_forms_and_files/test_tutorial001.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_13786",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [
+        "dirty_equals"
+      ],
+      "bare_pytest_collection_unpassable": true,
+      "touched_test_files": [
+        "tests/test_security_api_key_cookie.py",
+        "tests/test_security_api_key_cookie_description.py",
+        "tests/test_security_api_key_header.py",
+        "tests/test_security_api_key_header_description.py",
+        "tests/test_security_api_key_query.py",
+        "tests/test_security_api_key_query_description.py",
+        "tests/test_security_http_base.py",
+        "tests/test_security_http_base_description.py",
+        "tests/test_security_http_basic_optional.py",
+        "tests/test_security_http_basic_realm.py",
+        "tests/test_security_http_basic_realm_description.py",
+        "tests/test_security_http_bearer.py",
+        "tests/test_security_http_bearer_description.py",
+        "tests/test_security_http_digest.py",
+        "tests/test_security_http_digest_description.py",
+        "tests/test_security_oauth2.py",
+        "tests/test_security_openid_connect.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_14616",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_json_type.py"
+      ]
+    },
+    {
+      "task_id": "fastapi_11194",
+      "repo": "fastapi/fastapi",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_file_and_form_order_issue_9116.py"
+      ]
+    },
+    {
+      "task_id": "requests_6757",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_6629",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_6644",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_adapters.py"
+      ]
+    },
+    {
+      "task_id": "requests_6589",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "requests_6592",
+      "repo": "psf/requests",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_requests.py"
+      ]
+    },
+    {
+      "task_id": "rich_3180",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py",
+        "tests/test_text.py"
+      ]
+    },
+    {
+      "task_id": "rich_3486",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_traceback.py"
+      ]
+    },
+    {
+      "task_id": "rich_3777",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3468",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3782",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_syntax.py"
+      ]
+    },
+    {
+      "task_id": "rich_3772",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_traceback.py"
+      ]
+    },
+    {
+      "task_id": "rich_3296",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_syntax.py"
+      ]
+    },
+    {
+      "task_id": "rich_3675",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3676",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_traceback.py"
+      ]
+    },
+    {
+      "task_id": "rich_3518",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_table.py"
+      ]
+    },
+    {
+      "task_id": "rich_3535",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_cells.py"
+      ]
+    },
+    {
+      "task_id": "rich_3521",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_segment.py"
+      ]
+    },
+    {
+      "task_id": "rich_3506",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_segment.py"
+      ]
+    },
+    {
+      "task_id": "rich_3480",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_text.py"
+      ]
+    },
+    {
+      "task_id": "rich_3472",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_pretty.py"
+      ]
+    },
+    {
+      "task_id": "rich_3454",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_highlighter.py"
+      ]
+    },
+    {
+      "task_id": "rich_3471",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_text.py"
+      ]
+    },
+    {
+      "task_id": "rich_3470",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3469",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_markdown.py"
+      ]
+    },
+    {
+      "task_id": "rich_3052",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_prompt.py"
+      ]
+    },
+    {
+      "task_id": "rich_3278",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_ansi.py"
+      ]
+    },
+    {
+      "task_id": "rich_2943",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_style.py"
+      ]
+    },
+    {
+      "task_id": "rich_2725",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_table.py"
+      ]
+    },
+    {
+      "task_id": "rich_3105",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3130",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_markdown.py"
+      ]
+    },
+    {
+      "task_id": "rich_3043",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_console.py"
+      ]
+    },
+    {
+      "task_id": "rich_3067",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_highlighter.py"
+      ]
+    },
+    {
+      "task_id": "rich_3006",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_repr.py"
+      ]
+    },
+    {
+      "task_id": "rich_3064",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_markdown.py"
+      ]
+    },
+    {
+      "task_id": "rich_3063",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_markup.py"
+      ]
+    },
+    {
+      "task_id": "rich_3061",
+      "repo": "Textualize/rich",
+      "test_patch_direct_plugins": [],
+      "full_snapshot_test_plugins": [],
+      "bare_pytest_collection_unpassable": false,
+      "touched_test_files": [
+        "tests/test_panel.py",
+        "tests/test_text.py"
+      ]
+    }
+  ]
+}

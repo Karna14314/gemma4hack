@@ -199,11 +199,11 @@ def render_fig1_harness_architecture():
     ax.set_ylim(0, 7.8)
     ax.axis("off")
 
-    # Title
-    ax.text(5.6, 7.50, "Offline Evaluation Lifecycle & 4 Exact Failure Sites",
-            ha="center", va="center", fontsize=14, weight="bold", color=C_DARK)
-    ax.text(5.6, 7.15, "ADK 1.36.1 <-> litellm <-> vLLM 0.19.1 <-> /workspace Sandbox on 4x L4 GPUs",
-            ha="center", va="center", fontsize=10, color="#64748b")
+    # Headline Takeaway Suptitle & Sub-Banner
+    fig.suptitle("Offline Evaluation Lifecycle & 4 Exact Failure Sites: Compaction Cliff (14,336 Tok), Thought Stripping & Sandbox Trap",
+                 fontsize=12.5, weight="bold", color=C_DARK, y=0.975)
+    ax.text(5.6, 7.20, "ADK 1.36.1 <-> litellm <-> vLLM 0.19.1 <-> /workspace Sandbox on 4x L4 GPUs (12h Hard Container Timeout)",
+            ha="center", va="center", fontsize=9.8, color="#64748b")
 
     # 4 Main Pipeline Stage Boxes at y = 6.1
     stages = [
@@ -287,44 +287,49 @@ def render_fig1_harness_architecture():
 # FIGURE 2: Retrieval 2x2 Decomposition (M1-M5 & Waterfall)
 # ==============================================================================
 def render_fig2_retrieval_2x2_decomposition():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 5.8), dpi=300)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14.2, 6.0), dpi=300)
     fig.patch.set_facecolor("#ffffff")
 
+    fig.suptitle("Decomposing the +30.9 pp (0.435 -> 0.744) R@5 Leap: Candidate Set Gain (+18.32 pp, p < 0.001) vs Metric Def (+12.58 pp)",
+                 fontsize=12.5, weight="bold", color=C_DARK, y=0.98)
+
     # -------------------------------------------------------------
-    # Left Panel: M1-M5 Recall Across Ranks @1, @3, @5, @10
+    # Left Panel: M1-M5 Recall Across Ranks @1, @3, @5, @10 (with M3-IDF)
     # -------------------------------------------------------------
     ranks = ["R@1", "R@3", "R@5", "R@10"]
     x = np.arange(len(ranks))
-    width = 0.15
+    width = 0.125
 
     m1 = [0.0504, 0.1819, 0.2284, 0.3036]
     m2 = [0.0583, 0.1772, 0.2163, 0.3810]
     m3 = [0.0504, 0.1819, 0.2265, 0.2846]
+    m3_idf = [0.1494, 0.2588, 0.3016, 0.3301]
     m4 = [0.2661, 0.3798, 0.4350, 0.4587]
     m5 = [0.2466, 0.3742, 0.4745, 0.5701]
 
-    rects1 = ax1.bar(x - 2 * width, m1, width, label="M1: Lexical Grep", color=C_GRAY, edgecolor="#333333", lw=0.6)
-    rects2 = ax1.bar(x - width, m2, width, label="M2: Dense Embedding", color=C_PURPLE, edgecolor="#333333", lw=0.6)
-    rects3 = ax1.bar(x, m3, width, label="M3: 1-Hop AST Graph", color=C_RED, edgecolor="#333333", lw=0.6)
-    rects4 = ax1.bar(x + width, m4, width, label="M4: swe_toolkit (Graph)", color=C_BLUE, edgecolor="#333333", lw=0.6)
-    rects5 = ax1.bar(x + 2 * width, m5, width, label="M5: Hybrid RRF", color=C_GREEN, edgecolor="#333333", lw=0.6)
+    rects1 = ax1.bar(x - 2.5 * width, m1, width, label="M1: Lexical Grep", color=C_GRAY, edgecolor="#333333", lw=0.6)
+    rects2 = ax1.bar(x - 1.5 * width, m2, width, label="M2: Dense Embedding", color=C_PURPLE, edgecolor="#333333", lw=0.6)
+    rects3 = ax1.bar(x - 0.5 * width, m3, width, label="M3: Raw 1-Hop AST", color=C_RED, edgecolor="#333333", lw=0.6)
+    rects3_idf = ax1.bar(x + 0.5 * width, m3_idf, width, label="M3-IDF (Inverse-Deg Pruned)", color="#f59e0b", edgecolor="#78350f", lw=0.9)
+    rects4 = ax1.bar(x + 1.5 * width, m4, width, label="M4: swe_toolkit (Graph)", color=C_BLUE, edgecolor="#333333", lw=0.6)
+    rects5 = ax1.bar(x + 2.5 * width, m5, width, label="M5: Hybrid RRF", color=C_GREEN, edgecolor="#333333", lw=0.6)
 
     ax1.set_ylabel("File Recall (Mean Fraction)")
-    ax1.set_title("(A) Regime A: Static Graph Retrieval (125 In-Graph Tasks)")
+    ax1.set_title("(A) Static Graph Methods (Shared N=125, p < 0.001 vs M1/M3)")
     ax1.set_xticks(x)
     ax1.set_xticklabels(ranks, weight="semibold")
     ax1.set_ylim(0, 0.85)
     ax1.grid(axis="y", alpha=0.5)
     despine(ax1)
-    ax1.legend(loc="upper left", bbox_to_anchor=(0.01, 0.99), frameon=True, framealpha=0.95, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.5)
+    ax1.legend(loc="upper left", bbox_to_anchor=(0.01, 0.99), frameon=True, framealpha=0.95, facecolor="#ffffff", edgecolor="#cccccc", fontsize=7.8)
 
-    # Inset callout box: placed in open space above R@3 & R@5 (x <= 2.2 in data), strictly avoiding R@10 green bar!
-    inset_box = patches.FancyBboxPatch((0.27, 0.60), 0.46, 0.35, boxstyle="round,pad=0.03",
+    # Inset callout box: placed in open space above R@3 & R@5
+    inset_box = patches.FancyBboxPatch((0.27, 0.58), 0.46, 0.36, boxstyle="round,pad=0.03",
                                        facecolor="#fef2f2", edgecolor=C_RED, linewidth=1.2, transform=ax1.transAxes)
     ax1.add_patch(inset_box)
-    ax1.text(0.50, 0.86, "M3 Context Exceedance Trap", ha="center", color=C_RED, fontsize=9.0, weight="bold", transform=ax1.transAxes)
-    ax1.text(0.50, 0.69, "80.9% (313 / 387)\nof raw 1-hop AST neighborhoods\nexceed the 5,000-char tool cap!",
-             ha="center", color="#1e293b", fontsize=8.0, linespacing=1.2, transform=ax1.transAxes)
+    ax1.text(0.50, 0.86, "M3 Hub Pollution & IDF Fix", ha="center", color=C_RED, fontsize=8.8, weight="bold", transform=ax1.transAxes)
+    ax1.text(0.50, 0.68, "80.9% of raw 1-hop AST neighborhoods\nexceed 5,000-char tool cap!\nM3-IDF prunes hubs by 1/log2(deg),\nfitting <3,500 chars (+7.51 pp R@5).",
+             ha="center", color="#1e293b", fontsize=7.6, linespacing=1.2, transform=ax1.transAxes)
 
     # -------------------------------------------------------------
     # Right Panel: Waterfall Decomposition of 0.435 -> 0.744 (+30.9 pp)
@@ -352,7 +357,7 @@ def render_fig2_retrieval_2x2_decomposition():
 
     # Value text labels on bars
     ax2.text(0, 0.4350 / 2, "0.4350\n(43.5%)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=9.2)
-    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(+42.1%)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.8)
+    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(p < 0.001)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.6)
     ax2.text(2, 0.6182 / 2, "0.6182\n(61.8%)", ha="center", va="center", color="#0f172a", weight="bold", fontsize=9.2)
     ax2.text(3, 0.6182 + 0.1258 / 2, "+12.58 pp\n(+20.4%)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.8)
     ax2.text(4, 0.7440 / 2, "0.7440\n(96 / 129)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=9.5)
@@ -372,7 +377,7 @@ def render_fig2_retrieval_2x2_decomposition():
     ax2.grid(axis="y", alpha=0.5)
     despine(ax2)
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     out_p = ASSETS_DIR / "fig2_retrieval_2x2_decomposition.png"
     plt.savefig(out_p, dpi=300)
     plt.close()
@@ -385,6 +390,9 @@ def render_fig2_retrieval_2x2_decomposition():
 def render_fig3_symbol_and_multifile_paradox():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 6.0), dpi=300)
     fig.patch.set_facecolor("#ffffff")
+
+    fig.suptitle("Intra-File Symbol Localization (+9.9 pp R@5, p = 0.045) & The Multi-File All-Gold Paradox (-73.7 pp Collapse)",
+                 fontsize=12.5, weight="bold", color=C_DARK, y=0.98)
 
     # -------------------------------------------------------------
     # Left Panel: Symbol Recall Progression (Table 2D) on 121 Tasks
@@ -458,7 +466,7 @@ def render_fig3_symbol_and_multifile_paradox():
     ax2.grid(axis="y", alpha=0.5)
     despine(ax2)
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     out_p = ASSETS_DIR / "fig3_symbol_and_multifile_paradox.png"
     plt.savefig(out_p, dpi=300)
     plt.close()
@@ -469,8 +477,11 @@ def render_fig3_symbol_and_multifile_paradox():
 # FIGURE 4: Leaderboard Statistical Power & Noise Floor
 # ==============================================================================
 def render_fig4_leaderboard_statistical_power():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 5.8), dpi=300, gridspec_kw={"width_ratios": [2.3, 1.0]})
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14.2, 5.8), dpi=300, gridspec_kw={"width_ratios": [2.3, 1.0]})
     fig.patch.set_facecolor("#ffffff")
+
+    fig.suptitle("Leaderboard Noise Floor: Binomial SE = ±0.0503 (±2.9 Tasks) Renders Sub-0.05 Deltas Statistically Unresolvable",
+                 fontsize=12.5, weight="bold", color=C_DARK, y=0.98)
 
     # -------------------------------------------------------------
     # Left Panel: Submission Ladder & Statistical Confidence Bands
@@ -488,6 +499,7 @@ def render_fig4_leaderboard_statistical_power():
         ("e4b-v4\n(toolkit)", "2026-11-02", 0.05, "E4B", 3),
         ("exp14\n(lean)", "2026-11-03", 0.15, "31B", 9),
         ("exp_samp\n(temp 1.0)", "2026-11-07", 0.13, "31B", 8),
+        ("exp15\n(zero-schema)", "2026-11-10", 0.13, "31B", 8),
     ]
 
     x_idx = np.arange(len(subs))
@@ -561,7 +573,7 @@ def render_fig4_leaderboard_statistical_power():
     ax2.text(0.61, 0.71, "Entire Top-20 cluster spans\nonly 4 tasks (13 to 17).\nDeltas ≤ 2 tasks are within\nbinomial run-to-run noise.",
              ha="center", va="center", color="#475569", fontsize=7.6, linespacing=1.2, transform=ax2.transAxes)
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     out_p = ASSETS_DIR / "fig4_leaderboard_statistical_power.png"
     plt.savefig(out_p, dpi=300)
     plt.close()
@@ -574,6 +586,9 @@ def render_fig4_leaderboard_statistical_power():
 def render_fig5_patch_anatomy_and_playbooks():
     fig = plt.figure(figsize=(14.8, 6.4), dpi=300)
     fig.patch.set_facecolor("#ffffff")
+
+    fig.suptitle("Gold Patch Anatomy (70.5% Single-File, 8.5% New) & 10 AST Playbooks with 40.3% Sandbox Dependency Fragility",
+                 fontsize=12.5, weight="bold", color=C_DARK, y=0.98)
 
     # Use GridSpec with generous wspace (0.38) to guarantee zero label collisions with Panel B ticks
     gs = fig.add_gridspec(1, 2, width_ratios=[1.05, 1.95], wspace=0.38)

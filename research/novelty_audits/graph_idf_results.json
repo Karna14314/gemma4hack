@@ -1,0 +1,5085 @@
+{
+  "audit_name": "Hub-Node Explosion & Graph-IDF Pruning Audit",
+  "timestamp": "2026-11-10 22:33:59",
+  "elapsed_seconds": 6.37,
+  "dataset": {
+    "n_in_graph": 126,
+    "hub_degree_threshold": 20
+  },
+  "hub_node_pollution_metrics": {
+    "cap_exceedance_pct": 14.81,
+    "cap_exceedance_count": 56,
+    "cap_exceedance_total_seeds": 378,
+    "hub_node_character_consumption_pct": 47.44,
+    "hub_neighbor_false_positive_pct": 86.48,
+    "top_polluting_hub_symbols": [
+      {
+        "symbol": "__init__",
+        "expanded_count": 1375
+      },
+      {
+        "symbol": "render",
+        "expanded_count": 311
+      },
+      {
+        "symbol": "get",
+        "expanded_count": 283
+      },
+      {
+        "symbol": "update",
+        "expanded_count": 167
+      },
+      {
+        "symbol": "Form",
+        "expanded_count": 146
+      },
+      {
+        "symbol": "print",
+        "expanded_count": 98
+      },
+      {
+        "symbol": "__rich_console__",
+        "expanded_count": 83
+      },
+      {
+        "symbol": "append",
+        "expanded_count": 70
+      },
+      {
+        "symbol": "close",
+        "expanded_count": 45
+      },
+      {
+        "symbol": "Text",
+        "expanded_count": 40
+      },
+      {
+        "symbol": "copy",
+        "expanded_count": 40
+      },
+      {
+        "symbol": "line",
+        "expanded_count": 36
+      }
+    ]
+  },
+  "benchmarks": {
+    "raw_m3_1hop_baseline": {
+      "R@1_file_any": 0.1984,
+      "R@3_file_any": 0.3651,
+      "R@5_file_any": 0.4127,
+      "R@10_file_any": 0.4683,
+      "R@1_file_frac": 0.1494,
+      "R@3_file_frac": 0.2579,
+      "R@5_file_frac": 0.3015,
+      "R@10_file_frac": 0.354,
+      "R@1_sym_any": 0.0794,
+      "R@3_sym_any": 0.1349,
+      "R@5_sym_any": 0.2143,
+      "R@10_sym_any": 0.246
+    },
+    "m3_idf_inverse_degree_pruned": {
+      "R@1_file_any": 0.1984,
+      "R@3_file_any": 0.3492,
+      "R@5_file_any": 0.3968,
+      "R@10_file_any": 0.4286,
+      "R@1_file_frac": 0.1494,
+      "R@3_file_frac": 0.2588,
+      "R@5_file_frac": 0.3016,
+      "R@10_file_frac": 0.3301,
+      "R@1_sym_any": 0.0794,
+      "R@3_sym_any": 0.1508,
+      "R@5_sym_any": 0.1984,
+      "R@10_sym_any": 0.246
+    },
+    "m5_hybrid_rrf_with_m3_idf": {
+      "R@1_file_any": 0.1984,
+      "R@3_file_any": 0.3651,
+      "R@5_file_any": 0.4206,
+      "R@10_file_any": 0.4921,
+      "R@1_file_frac": 0.1494,
+      "R@3_file_frac": 0.2674,
+      "R@5_file_frac": 0.3151,
+      "R@10_file_frac": 0.3812
+    }
+  },
+  "key_takeaways": {
+    "raw_m3_file_r5": 0.3015,
+    "m3_idf_file_r5": 0.3016,
+    "m3_idf_gain_pp": 0.01,
+    "m3_idf_relative_gain_pct": 0.03,
+    "character_budget_fitted": "< 3,500 chars (100% compliant)"
+  },
+  "per_task_results": [
+    {
+      "task_id": "fastapi_15661",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "scripts/prepare_release.py"
+      ],
+      "gold_syms": [
+        "bump_version",
+        "current_version",
+        "get_current_version",
+        "get_release_notes_body",
+        "parse_version",
+        "prepare",
+        "release_notes",
+        "update_release_notes",
+        "update_version_file"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "scripts/people.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15588",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/sse.py"
+      ],
+      "gold_syms": [
+        "EventSourceResponse",
+        "ServerSentEvent",
+        "_check_event_single_line",
+        "_check_id_no_null",
+        "_check_id_valid",
+        "_check_single_line"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15589",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/datastructures.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15030",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/server_sent_events/tutorial001_py310.py",
+        "docs_src/server_sent_events/tutorial002_py310.py",
+        "docs_src/server_sent_events/tutorial003_py310.py",
+        "docs_src/server_sent_events/tutorial004_py310.py",
+        "docs_src/server_sent_events/tutorial005_py310.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/responses.py",
+        "fastapi/routing.py",
+        "fastapi/sse.py"
+      ],
+      "gold_syms": [
+        "EventSourceResponse",
+        "Item",
+        "Prompt",
+        "ServerSentEvent",
+        "__init__",
+        "_async_stream_jsonl",
+        "_async_stream_sse",
+        "_check_data_exclusive",
+        "_check_id_no_null",
+        "_producer",
+        "_serialize_data",
+        "_serialize_item",
+        "_serialize_sse_item",
+        "_sync_stream_jsonl",
+        "app",
+        "format_sse_event",
+        "get_openapi_path",
+        "get_request_handler",
+        "sse_items",
+        "sse_items_no_annotation",
+        "sse_items_no_async",
+        "sse_items_no_async_no_annotation",
+        "stream_chat",
+        "stream_items",
+        "stream_logs"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/sse.py",
+        "fastapi/openapi/models.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/api_key.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "docs_src/dependencies/tutorial011_py310.py",
+        "docs_src/dependencies/tutorial011_an_py310.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "fastapi/sse.py",
+        "fastapi/security/api_key.py",
+        "fastapi/openapi/docs.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14962",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/custom_response/tutorial010_py310.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "__hash__",
+        "app",
+        "serialize",
+        "serialize_json",
+        "serialize_response"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/sse.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "docs_src/server_sent_events/tutorial005_py310.py",
+        "docs_src/server_sent_events/tutorial004_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/sse.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "fastapi/openapi/docs.py",
+        "fastapi/background.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/sse.py",
+        "fastapi/openapi/docs.py",
+        "fastapi/background.py",
+        "fastapi/encoders.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15280",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/vibe/tutorial001_py310.py",
+        "fastapi/applications.py"
+      ],
+      "gold_syms": [
+        "ai_vibes",
+        "trace_item",
+        "vibe",
+        "websocket_route"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/applications.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "docs_src/middleware/tutorial001_py310.py",
+        "docs_src/handling_errors/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/applications.py",
+        "docs_src/middleware/tutorial001_py310.py",
+        "docs_src/handling_errors/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/applications.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "docs_src/middleware/tutorial001_py310.py",
+        "docs_src/handling_errors/tutorial003_py310.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14964",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/responses.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "fastapi/param_functions.py",
+        "fastapi/routing.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/routing.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_15023",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/stream_data/tutorial002_py310.py"
+      ],
+      "gold_syms": [
+        "PNGStreamingResponse",
+        "stream_image_no_async_yield_from"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/sse.py",
+        "fastapi/param_functions.py",
+        "fastapi/responses.py",
+        "fastapi/params.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/sse.py",
+        "fastapi/param_functions.py",
+        "fastapi/responses.py",
+        "docs_src/security/tutorial005_an_py310.py",
+        "docs_src/security/tutorial005_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/sse.py",
+        "fastapi/param_functions.py",
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14986",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/applications.py",
+        "fastapi/openapi/docs.py"
+      ],
+      "gold_syms": [
+        "_html_safe_json",
+        "get_swagger_ui_html",
+        "openapi"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14978",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/strict_content_type/tutorial001_py310.py",
+        "fastapi/applications.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "Item",
+        "__init__",
+        "add_api_route",
+        "app",
+        "create_item",
+        "get_request_handler",
+        "get_route_handler",
+        "read_users"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "docs_src/sql_databases/tutorial002_py310.py",
+        "docs_src/events/tutorial001_py310.py",
+        "fastapi/routing.py",
+        "docs_src/app_testing/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "docs_src/events/tutorial001_py310.py",
+        "docs_src/app_testing/tutorial003_py310.py",
+        "docs_src/events/tutorial002_py310.py",
+        "docs_src/sql_databases/tutorial002_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/background.py",
+        "fastapi/routing.py",
+        "fastapi/encoders.py",
+        "fastapi/responses.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7505",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/_types.py",
+        "src/requests/models.py"
+      ],
+      "gold_syms": [
+        "SupportsRead",
+        "_encode_files",
+        "_encode_params",
+        "has_read",
+        "prepare_body"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/auth.py",
+        "src/requests/utils.py",
+        "src/requests/exceptions.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/auth.py",
+        "src/requests/api.py",
+        "src/requests/utils.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/api.py",
+        "src/requests/utils.py",
+        "src/requests/auth.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7502",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/models.py"
+      ],
+      "gold_syms": [
+        "_encode_files"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/models.py",
+        "src/requests/structures.py",
+        "src/requests/adapters.py",
+        "src/requests/_types.py",
+        "src/requests/utils.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/models.py",
+        "src/requests/utils.py",
+        "src/requests/structures.py",
+        "src/requests/_types.py",
+        "src/requests/adapters.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/models.py",
+        "src/requests/structures.py",
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/utils.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7433",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/models.py"
+      ],
+      "gold_syms": [
+        "prepare_body"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/cookies.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": false,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7427",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/utils.py"
+      ],
+      "gold_syms": [
+        "get_proxy"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py",
+        "src/requests/structures.py",
+        "src/requests/sessions.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py",
+        "src/requests/structures.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/structures.py",
+        "src/requests/models.py",
+        "src/requests/help.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "requests_7315",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/adapters.py"
+      ],
+      "gold_syms": [
+        "request_url"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/cookies.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7328",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/sessions.py"
+      ],
+      "gold_syms": [
+        "resolve_redirects"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/exceptions.py",
+        "src/requests/auth.py",
+        "src/requests/sessions.py",
+        "src/requests/api.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/exceptions.py",
+        "src/requests/sessions.py",
+        "src/requests/auth.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/sessions.py",
+        "src/requests/exceptions.py",
+        "src/requests/auth.py",
+        "src/requests/api.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7309",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/utils.py"
+      ],
+      "gold_syms": [
+        "get_encodings_from_content"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/exceptions.py",
+        "src/requests/structures.py",
+        "src/requests/cookies.py",
+        "src/requests/sessions.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py",
+        "src/requests/utils.py",
+        "src/requests/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py",
+        "src/requests/utils.py",
+        "src/requests/exceptions.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_7205",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/utils.py"
+      ],
+      "gold_syms": [
+        "get_netrc_auth"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/cookies.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_4070",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/_emoji_replace.py",
+        "rich/console.py",
+        "rich/emoji.py",
+        "rich/logging.py",
+        "rich/protocol.py",
+        "rich/repr.py",
+        "rich/segment.py",
+        "rich/syntax.py",
+        "rich/theme.py"
+      ],
+      "gold_syms": [
+        "ControlType",
+        "NoEmoji",
+        "__init__",
+        "__rich_console__",
+        "_caller_frame_info",
+        "_collect_renderables",
+        "_emoji_replace",
+        "_svg_hash",
+        "auto_repr",
+        "check_text",
+        "emit",
+        "export_html",
+        "export_svg",
+        "from_file",
+        "input",
+        "is_expandable",
+        "log",
+        "print_exception",
+        "render",
+        "render_message",
+        "rich_cast",
+        "save_svg"
+      ],
+      "raw_m3_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/_log_render.py",
+        "rich/live_render.py",
+        "rich/theme.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/logging.py",
+        "rich/text.py",
+        "rich/theme.py",
+        "rich/jupyter.py",
+        "rich/console.py"
+      ],
+      "m5_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/theme.py",
+        "rich/traceback.py",
+        "rich/syntax.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_4077",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/file_proxy.py"
+      ],
+      "gold_syms": [
+        "flush",
+        "isatty"
+      ],
+      "raw_m3_top5_files": [
+        "rich/progress.py",
+        "rich/_null_file.py",
+        "rich/highlighter.py",
+        "rich/console.py",
+        "rich/_win32_console.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/progress.py",
+        "rich/_null_file.py",
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/_win32_console.py"
+      ],
+      "m5_top5_files": [
+        "rich/progress.py",
+        "rich/_null_file.py",
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/console.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_4079",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/markdown.py"
+      ],
+      "gold_syms": [
+        "__init__"
+      ],
+      "raw_m3_top5_files": [
+        "rich/align.py",
+        "rich/console.py",
+        "rich/segment.py",
+        "rich/markup.py",
+        "rich/live.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/align.py",
+        "rich/console.py",
+        "rich/segment.py",
+        "rich/style.py",
+        "rich/control.py"
+      ],
+      "m5_top5_files": [
+        "rich/align.py",
+        "rich/console.py",
+        "rich/control.py",
+        "rich/highlighter.py",
+        "rich/segment.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_4076",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/ansi.py"
+      ],
+      "gold_syms": [
+        "decode"
+      ],
+      "raw_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "m5_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_4075",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py"
+      ],
+      "gold_syms": [
+        "export_text",
+        "print",
+        "save_text"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/measure.py",
+        "rich/pager.py",
+        "rich/_log_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/pager.py",
+        "rich/measure.py",
+        "rich/status.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/measure.py",
+        "rich/status.py",
+        "rich/syntax.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_4006",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/cells.py"
+      ],
+      "gold_syms": [
+        "_cell_len",
+        "split_graphemes"
+      ],
+      "raw_m3_top5_files": [
+        "rich/cells.py",
+        "rich/box.py",
+        "rich/console.py",
+        "rich/text.py",
+        "rich/containers.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/cells.py",
+        "rich/box.py",
+        "rich/console.py",
+        "rich/containers.py",
+        "rich/text.py"
+      ],
+      "m5_top5_files": [
+        "rich/cells.py",
+        "rich/box.py",
+        "rich/console.py",
+        "rich/table.py",
+        "rich/containers.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14258",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "read_users"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/openapi/docs.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/_compat/shared.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14851",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "_AsyncLiftContextManager",
+        "_DefaultLifespan",
+        "__aenter__",
+        "__aexit__",
+        "__call__",
+        "__init__",
+        "_merge_lifespan_context",
+        "_shutdown",
+        "_startup",
+        "_wrap_gen_lifespan_context",
+        "add_event_handler",
+        "app",
+        "merged_lifespan",
+        "trace_item",
+        "wrapper"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "docs_src/sql_databases/tutorial002_py310.py",
+        "docs_src/events/tutorial001_py310.py",
+        "docs_src/app_testing/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "docs_src/events/tutorial001_py310.py",
+        "docs_src/app_testing/tutorial003_py310.py",
+        "docs_src/events/tutorial002_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14873",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "__init__"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/security/oauth2.py",
+        "scripts/people.py",
+        "fastapi/datastructures.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/exceptions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/exceptions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_13920",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14794",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial005_an_py310.py",
+        "docs_src/dependencies/tutorial008c_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py",
+        "docs_src/security/tutorial007_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14786",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/security/utils.py"
+      ],
+      "gold_syms": [
+        "get_authorization_scheme_param"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/utils.py",
+        "fastapi/security/api_key.py",
+        "fastapi/applications.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/utils.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14479",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/params.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/params.py",
+        "fastapi/datastructures.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14463",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [
+        "get_openapi_path"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_12942",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat.py"
+      ],
+      "gold_syms": [
+        "field_annotation_is_complex"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/applications.py",
+        "scripts/people.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/applications.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14099",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/dependencies/tutorial013_an_py310.py",
+        "docs_src/dependencies/tutorial014_an_py310.py",
+        "fastapi/applications.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "AsyncExitStackMiddleware",
+        "Item",
+        "User",
+        "__call__",
+        "__init__",
+        "_prepare_response_content",
+        "app",
+        "build_middleware_stack",
+        "generate",
+        "generate_stream",
+        "get_request_handler",
+        "get_session",
+        "get_user",
+        "get_websocket_app",
+        "openapi",
+        "request_response",
+        "websocket_session"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/applications.py",
+        "fastapi/sse.py",
+        "docs_src/middleware/tutorial001_py310.py",
+        "fastapi/security/oauth2.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/applications.py",
+        "fastapi/sse.py",
+        "docs_src/middleware/tutorial001_py310.py",
+        "fastapi/security/oauth2.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/applications.py",
+        "fastapi/sse.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14609",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+        "docs_src/request_form_models/tutorial002_pv1_py39.py",
+        "fastapi/_compat/__init__.py",
+        "fastapi/_compat/main.py",
+        "fastapi/_compat/may_v1.py",
+        "fastapi/_compat/model_field.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/_compat/v1.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/datastructures.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/openapi/models.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_syms": [
+        "AnyUrl",
+        "BaseConfig",
+        "BaseModel",
+        "Body",
+        "Color",
+        "Config",
+        "Cookie",
+        "CoreSchema",
+        "ErrorWrapper",
+        "FastAPIDeprecationWarning",
+        "FieldInfo",
+        "File",
+        "Form",
+        "FormData",
+        "GenerateJsonSchema",
+        "GetJsonSchemaHandler",
+        "Header",
+        "JsonSchemaValue",
+        "ModelField",
+        "NameEmail",
+        "Param",
+        "Path",
+        "PydanticSchemaGenerationError",
+        "PydanticV1NotSupportedError",
+        "Query",
+        "RequiredParam",
+        "SecretBytes",
+        "SecretStr",
+        "Undefined",
+        "UndefinedType",
+        "Url",
+        "__hash__",
+        "__init__",
+        "__repr__",
+        "_extract_form_body",
+        "_get_flat_fields_from_params",
+        "_get_model_config",
+        "_get_multidict_value",
+        "_get_openapi_operation_parameters",
+        "_has_computed_fields",
+        "_is_error_wrapper",
+        "_is_model_class",
+        "_is_model_field",
+        "_is_undefined",
+        "_merge_lifespan_context",
+        "_model_dump",
+        "_normalize_errors",
+        "_prepare_response_content",
+        "_regenerate_error_with_loc",
+        "_should_embed_body_fields",
+        "_validate",
+        "_validate_value_with_model_field",
+        "alias",
+        "analyze_param",
+        "annotation_is_pydantic_v1",
+        "app",
+        "copy_field_info",
+        "create_body_model",
+        "create_cloned_field",
+        "create_model_field",
+        "decimal_encoder",
+        "default",
+        "get_annotation_from_field_info",
+        "get_body_field",
+        "get_cached_model_fields",
+        "get_compat_model_name_map",
+        "get_default",
+        "get_definitions",
+        "get_dependant",
+        "get_fields_from_routes",
+        "get_flat_models_from_fields",
+        "get_flat_models_from_model",
+        "get_long_model_name",
+        "get_model_definitions",
+        "get_model_fields",
+        "get_openapi_operation_request_body",
+        "get_openapi_path",
+        "get_request_handler",
+        "get_schema_from_model_field",
+        "is_bytes_field",
+        "is_bytes_sequence_field",
+        "is_pv1_scalar_field",
+        "is_pydantic_v1_model_class",
+        "is_pydantic_v1_model_instance",
+        "is_scalar_field",
+        "is_scalar_sequence_field",
+        "is_sequence_field",
+        "is_union_of_base_models",
+        "is_uploadfile_sequence_annotation",
+        "jsonable_encoder",
+        "login",
+        "normalize_name",
+        "request_body_to_args",
+        "request_params_to_args",
+        "required",
+        "serialize",
+        "serialize_response",
+        "serialize_sequence_value",
+        "type_",
+        "validate",
+        "value_is_sequence",
+        "with_info_plain_validator_function"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/responses.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/api_key.py",
+        "fastapi/routing.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "docs_src/dependencies/tutorial011_py310.py",
+        "docs_src/dependencies/tutorial011_an_py310.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "fastapi/openapi/docs.py",
+        "fastapi/security/api_key.py",
+        "docs_src/dependencies/tutorial011_py310.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14372",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/params.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "analyze_param"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14349",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "_replace_refs"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/openapi/models.py",
+        "fastapi/applications.py",
+        "fastapi/encoders.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/handling_errors/tutorial004_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/openapi/models.py",
+        "fastapi/applications.py",
+        "fastapi/encoders.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "fastapi/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/openapi/models.py",
+        "fastapi/applications.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/responses.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_11355",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_flat_params",
+        "get_typed_annotation"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/params.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/encoders.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14485",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "_get_signature",
+        "get_flat_params",
+        "get_typed_annotation",
+        "get_typed_signature"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/background.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/background.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14482",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "ModelField",
+        "__post_init__",
+        "create_body_model"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/applications.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial002_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/applications.py",
+        "fastapi/datastructures.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "fastapi/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/responses.py",
+        "fastapi/applications.py",
+        "fastapi/datastructures.py",
+        "fastapi/exceptions.py",
+        "fastapi/routing.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14306",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/exceptions.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "DependencyScopeError",
+        "EndpointContext",
+        "HTTPException",
+        "RequestValidationError",
+        "__init__",
+        "__str__",
+        "_extract_endpoint_context",
+        "_format_endpoint_context",
+        "app",
+        "get_websocket_app",
+        "merged_lifespan",
+        "serialize_response"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/sse.py",
+        "fastapi/exceptions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/sse.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py",
+        "fastapi/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/sse.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14458",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py"
+      ],
+      "gold_syms": [
+        "is_async_gen_callable",
+        "is_coroutine_callable",
+        "is_gen_callable"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/api_key.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "docs_src/dependencies/tutorial011_py310.py",
+        "docs_src/dependencies/tutorial011_an_py310.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/security/http.py",
+        "fastapi/security/api_key.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14459",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [
+        "Dependant",
+        "SecurityRequirement",
+        "_impartial",
+        "_is_security_scheme",
+        "_security_dependencies",
+        "_security_scheme",
+        "_uses_scopes",
+        "get_dependant",
+        "get_flat_dependant",
+        "get_openapi_security_definitions"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/applications.py",
+        "fastapi/security/http.py",
+        "docs_src/websockets_/tutorial001_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/open_id_connect_url.py",
+        "docs_src/authentication_error_status_code/tutorial001_an_py310.py",
+        "fastapi/security/http.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/http.py",
+        "fastapi/security/open_id_connect_url.py",
+        "fastapi/param_functions.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14448",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "_impartial",
+        "_solve_generator",
+        "_unwrapped_call",
+        "_uses_scopes"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/applications.py",
+        "fastapi/security/http.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/open_id_connect_url.py",
+        "docs_src/authentication_error_status_code/tutorial001_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/datastructures.py",
+        "fastapi/routing.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14455",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [
+        "get_openapi_security_definitions"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/applications.py",
+        "fastapi/security/http.py",
+        "docs_src/websockets_/tutorial001_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/open_id_connect_url.py",
+        "docs_src/authentication_error_status_code/tutorial001_an_py310.py",
+        "fastapi/security/http.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_9753",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py"
+      ],
+      "gold_syms": [
+        "_uses_scopes"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/datastructures.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/responses.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14430",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "copy_field_info"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "scripts/people.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_5077",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_flat_params",
+        "get_typed_annotation"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_9555",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py"
+      ],
+      "gold_syms": [
+        "_unwrapped_call",
+        "_uses_scopes"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial005_an_py310.py",
+        "docs_src/dependencies/tutorial008c_an_py310.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14361",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "_remap_definitions_and_field_mappings"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/responses.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "docs_src/custom_response/tutorial001b_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "docs_src/custom_response/tutorial001b_py310.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_13207",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "get_definitions",
+        "get_schema_from_model_field"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/api_key.py",
+        "fastapi/routing.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/routing.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial011_py310.py",
+        "docs_src/dependencies/tutorial011_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/security/api_key.py",
+        "fastapi/openapi/docs.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14360",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py",
+        "fastapi/security/api_key.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14356",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/datastructures.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_5624",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_dependant"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/params.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/param_functions.py",
+        "fastapi/exceptions.py",
+        "fastapi/routing.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14419",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "Dependant",
+        "_uses_scopes",
+        "get_dependant",
+        "get_parameterless_sub_dependant",
+        "oauth_scopes",
+        "solve_dependencies"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/dependencies/utils.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/openapi/docs.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14301",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_parameterless_sub_dependant"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial005_an_py310.py",
+        "docs_src/dependencies/tutorial008c_an_py310.py",
+        "docs_src/security/tutorial005_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/oauth2.py",
+        "docs_src/dependencies/tutorial008_py310.py",
+        "docs_src/security/tutorial004_an_py310.py",
+        "docs_src/dependencies/tutorial008_an_py310.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14262",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/dependencies/tutorial008e.py",
+        "docs_src/dependencies/tutorial008e_an.py",
+        "docs_src/dependencies/tutorial008e_an_py39.py",
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/types.py"
+      ],
+      "gold_syms": [
+        "Dependant",
+        "DependencyScopeError",
+        "Depends",
+        "FastAPIError",
+        "SolvedDependency",
+        "ValidationException",
+        "__init__",
+        "__post_init__",
+        "_solve_generator",
+        "add_param_to_fields",
+        "app",
+        "cache_key",
+        "computed_scope",
+        "get_dependant",
+        "get_flat_dependant",
+        "get_parameterless_sub_dependant",
+        "get_user_me",
+        "get_username",
+        "is_async_gen_callable",
+        "is_coroutine_callable",
+        "is_gen_callable",
+        "read_items",
+        "solve_dependencies",
+        "solve_generator"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/datastructures.py",
+        "docs_src/handling_errors/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14266",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_dependant"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/params.py",
+        "docs_src/security/tutorial005_an_py310.py",
+        "docs_src/security/tutorial005_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "docs_src/security/tutorial005_an_py310.py",
+        "docs_src/security/tutorial005_py310.py",
+        "fastapi/params.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/routing.py",
+        "fastapi/openapi/models.py",
+        "fastapi/security/oauth2.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14246",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "get_definitions"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/params.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/background.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/background.py",
+        "fastapi/param_functions.py",
+        "fastapi/encoders.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14186",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/__init__.py",
+        "fastapi/_compat/main.py",
+        "fastapi/_compat/may_v1.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/_compat/v1.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/encoders.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_syms": [
+        "AnyUrl",
+        "BaseConfig",
+        "BaseModel",
+        "Color",
+        "CoreSchema",
+        "ErrorWrapper",
+        "FieldInfo",
+        "GetJsonSchemaHandler",
+        "JsonSchemaValue",
+        "ModelField",
+        "NameEmail",
+        "RequiredParam",
+        "SecretBytes",
+        "SecretStr",
+        "Undefined",
+        "UndefinedType",
+        "Url",
+        "_get_model_config",
+        "_is_error_wrapper",
+        "_is_model_field",
+        "_is_undefined",
+        "_model_dump",
+        "_model_rebuild",
+        "_normalize_errors",
+        "_regenerate_error_with_loc",
+        "_validate_value_with_model_field",
+        "analyze_param",
+        "copy_field_info",
+        "create_body_model",
+        "create_cloned_field",
+        "create_model_field",
+        "decimal_encoder",
+        "get_annotation_from_field_info",
+        "get_cached_model_fields",
+        "get_compat_model_name_map",
+        "get_definitions",
+        "get_schema_from_model_field",
+        "is_bytes_field",
+        "is_bytes_sequence_field",
+        "is_pv1_scalar_sequence_field",
+        "is_scalar_field",
+        "is_scalar_sequence_field",
+        "is_sequence_field",
+        "is_uploadfile_sequence_annotation",
+        "jsonable_encoder",
+        "serialize_sequence_value",
+        "validate",
+        "value_is_sequence"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_9425",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "get_typed_annotation"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/websockets_/tutorial002_an_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/routing.py",
+        "docs_src/websockets_/tutorial002_an_py310.py",
+        "docs_src/websockets_/tutorial002_py310.py",
+        "fastapi/datastructures.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "fastapi/encoders.py",
+        "fastapi/security/oauth2.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_13713",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/applications.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [
+        "Item",
+        "get_openapi",
+        "openapi"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/http.py",
+        "scripts/people.py",
+        "fastapi/datastructures.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14077",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/handling_errors/tutorial005.py",
+        "fastapi/exception_handlers.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [
+        "get_openapi_path",
+        "request_validation_exception_handler"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/applications.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/routing.py",
+        "fastapi/datastructures.py",
+        "fastapi/applications.py",
+        "fastapi/param_functions.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3718",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/panel.py"
+      ],
+      "gold_syms": [
+        "__rich_console__",
+        "align_text"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/panel.py",
+        "rich/syntax.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/panel.py",
+        "rich/syntax.py",
+        "rich/text.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/panel.py",
+        "rich/syntax.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3934",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/live.py",
+        "rich/live_render.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "last_render_height",
+        "set_renderable",
+        "stop"
+      ],
+      "raw_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "m5_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3953",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/cells.py"
+      ],
+      "gold_syms": [
+        "_cell_len",
+        "get_character_cell_size"
+      ],
+      "raw_m3_top5_files": [
+        "rich/_ratio.py",
+        "rich/console.py",
+        "rich/layout.py",
+        "rich/pager.py",
+        "rich/status.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/_ratio.py",
+        "rich/layout.py",
+        "rich/console.py",
+        "rich/pager.py",
+        "rich/control.py"
+      ],
+      "m5_top5_files": [
+        "rich/_ratio.py",
+        "rich/console.py",
+        "rich/control.py",
+        "rich/highlighter.py",
+        "rich/logging.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3944",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/cells.py"
+      ],
+      "gold_syms": [
+        "get_character_cell_size"
+      ],
+      "raw_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/_win32_console.py",
+        "rich/markup.py",
+        "rich/box.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/_win32_console.py",
+        "rich/segment.py",
+        "examples/top_lite_simulator.py"
+      ],
+      "m5_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/_win32_console.py",
+        "rich/box.py",
+        "rich/segment.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3942",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/markdown.py"
+      ],
+      "gold_syms": [
+        "Heading",
+        "HeadingFormat",
+        "__init__",
+        "__rich_console__",
+        "on_child_close"
+      ],
+      "raw_m3_top5_files": [
+        "rich/markdown.py",
+        "rich/progress.py",
+        "rich/containers.py",
+        "rich/style.py",
+        "rich/markup.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/markdown.py",
+        "rich/_stack.py",
+        "rich/style.py",
+        "rich/containers.py",
+        "rich/segment.py"
+      ],
+      "m5_top5_files": [
+        "rich/markdown.py",
+        "rich/console.py",
+        "rich/segment.py",
+        "rich/style.py",
+        "rich/progress_bar.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3938",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/segment.py"
+      ],
+      "gold_syms": [
+        "print",
+        "split_lines",
+        "split_lines_terminator"
+      ],
+      "raw_m3_top5_files": [
+        "rich/text.py",
+        "rich/align.py",
+        "benchmarks/benchmarks.py",
+        "rich/_pick.py",
+        "rich/_null_file.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/text.py",
+        "benchmarks/benchmarks.py",
+        "rich/align.py",
+        "rich/_pick.py",
+        "rich/logging.py"
+      ],
+      "m5_top5_files": [
+        "rich/text.py",
+        "rich/align.py",
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/segment.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3882",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/prompt.py"
+      ],
+      "gold_syms": [
+        "on_validate_error"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/prompt.py",
+        "rich/control.py",
+        "rich/table.py",
+        "rich/jupyter.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/prompt.py",
+        "rich/control.py",
+        "rich/syntax.py",
+        "rich/logging.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/prompt.py",
+        "rich/syntax.py",
+        "rich/logging.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3894",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/_inspect.py"
+      ],
+      "gold_syms": [
+        "_get_signature"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/traceback.py",
+        "rich/logging.py",
+        "rich/control.py",
+        "rich/layout.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/traceback.py",
+        "rich/logging.py",
+        "rich/_extension.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/traceback.py",
+        "rich/logging.py",
+        "rich/__init__.py",
+        "rich/json.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3935",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/table.py"
+      ],
+      "gold_syms": [
+        "__rich_console__",
+        "_calculate_column_widths",
+        "_measure_column",
+        "_render",
+        "get_padding"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/syntax.py",
+        "rich/padding.py",
+        "rich/color.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/syntax.py",
+        "examples/fullscreen.py",
+        "rich/padding.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/syntax.py",
+        "rich/padding.py",
+        "rich/columns.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3905",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/progress.py"
+      ],
+      "gold_syms": [
+        "start"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/control.py",
+        "rich/_log_render.py",
+        "rich/live_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/logging.py",
+        "rich/text.py",
+        "rich/json.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/syntax.py",
+        "rich/json.py",
+        "rich/control.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3930",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/__main__.py",
+        "rich/_cell_widths.py",
+        "rich/_unicode_data/__init__.py",
+        "rich/_unicode_data/_versions.py",
+        "rich/_unicode_data/unicode10-0-0.py",
+        "rich/_unicode_data/unicode11-0-0.py",
+        "rich/_unicode_data/unicode12-0-0.py",
+        "rich/_unicode_data/unicode12-1-0.py",
+        "rich/_unicode_data/unicode13-0-0.py",
+        "rich/_unicode_data/unicode14-0-0.py",
+        "rich/_unicode_data/unicode15-0-0.py",
+        "rich/_unicode_data/unicode15-1-0.py",
+        "rich/_unicode_data/unicode16-0-0.py",
+        "rich/_unicode_data/unicode17-0-0.py",
+        "rich/_unicode_data/unicode4-1-0.py",
+        "rich/_unicode_data/unicode5-0-0.py",
+        "rich/_unicode_data/unicode5-1-0.py",
+        "rich/_unicode_data/unicode5-2-0.py",
+        "rich/_unicode_data/unicode6-0-0.py",
+        "rich/_unicode_data/unicode6-1-0.py",
+        "rich/_unicode_data/unicode6-2-0.py",
+        "rich/_unicode_data/unicode6-3-0.py",
+        "rich/_unicode_data/unicode7-0-0.py",
+        "rich/_unicode_data/unicode8-0-0.py",
+        "rich/_unicode_data/unicode9-0-0.py",
+        "rich/cells.py"
+      ],
+      "gold_syms": [
+        "CellTable",
+        "_cell_len",
+        "_parse_version",
+        "_split_text",
+        "cached_cell_len",
+        "cell_len",
+        "chop_cells",
+        "get_character_cell_size",
+        "iter_last",
+        "load",
+        "set_cell_size",
+        "split_graphemes",
+        "split_text"
+      ],
+      "raw_m3_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/_log_render.py",
+        "rich/live_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/text.py",
+        "rich/progress_bar.py",
+        "rich/constrain.py"
+      ],
+      "m5_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/traceback.py",
+        "rich/text.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": false,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "httpx_3672",
+      "repo": "encode/httpx",
+      "gold_files": [
+        "src/ahttpx/_parsers.py",
+        "src/ahttpx/_pool.py",
+        "src/ahttpx/_server.py",
+        "src/httpx/_network.py",
+        "src/httpx/_parsers.py",
+        "src/httpx/_pool.py",
+        "src/httpx/_server.py"
+      ],
+      "gold_syms": [
+        "__enter__",
+        "__init__",
+        "__repr__",
+        "_complete",
+        "_recv_head",
+        "_reset",
+        "_send_body",
+        "close",
+        "complete",
+        "handle_requests",
+        "is_closed",
+        "is_idle",
+        "is_keepalive",
+        "recv_body",
+        "reset",
+        "send"
+      ],
+      "raw_m3_top5_files": [
+        "src/ahttpx/_parsers.py",
+        "src/httpx/_parsers.py",
+        "src/ahttpx/_network.py",
+        "src/httpx/_request.py",
+        "src/ahttpx/_content.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/ahttpx/_parsers.py",
+        "src/httpx/_pool.py",
+        "src/ahttpx/_pool.py",
+        "src/httpx/_parsers.py",
+        "src/httpx/_network.py"
+      ],
+      "m5_top5_files": [
+        "src/ahttpx/_parsers.py",
+        "src/httpx/_parsers.py",
+        "src/ahttpx/_pool.py",
+        "src/ahttpx/_network.py",
+        "src/httpx/_pool.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14791",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15800",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/frontend/tutorial001_py310.py",
+        "docs_src/frontend/tutorial002_py310.py",
+        "docs_src/frontend/tutorial003_py310.py",
+        "docs_src/frontend/tutorial004_py310.py",
+        "docs_src/frontend/tutorial005_py310.py",
+        "docs_src/frontend/tutorial006_py310.py",
+        "fastapi/applications.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "APIRouter",
+        "_FrontendRoute",
+        "_FrontendRouteGroup",
+        "_FrontendStaticFiles",
+        "_IncludedRouter",
+        "_RouteWithPath",
+        "__init__",
+        "_build_effective_context",
+        "_check_fallback_file",
+        "_fallback_file_exists",
+        "_fallback_response",
+        "_frontend_path_specificity",
+        "_get_fastapi_scope",
+        "_get_frontend_path",
+        "_get_resolved_absolute_path",
+        "_get_resolved_directory",
+        "_get_scope_effective_route_context",
+        "_is_frontend_navigation_request",
+        "_iter_accept_media_types",
+        "_iter_low_priority_routes",
+        "_iter_routes_with_context",
+        "_join_frontend_paths",
+        "_match",
+        "_match_low_priority",
+        "_normalize_frontend_path",
+        "_update_scope",
+        "add_api_route",
+        "add_frontend_route",
+        "add_websocket_route",
+        "api_route",
+        "app",
+        "combine",
+        "effective_candidates",
+        "effective_low_priority_routes",
+        "frontend",
+        "get_path",
+        "get_response",
+        "handle",
+        "matches",
+        "path_for",
+        "route",
+        "url_path_for",
+        "with_path",
+        "with_prefix"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "docs_src/background_tasks/tutorial001_py310.py",
+        "docs_src/background_tasks/tutorial002_an_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15785",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/openapi/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "RouteContext",
+        "__getattr__",
+        "_effective_route",
+        "_iter_included_route_candidates",
+        "_iter_routes_with_context",
+        "endpoint",
+        "get_openapi",
+        "get_openapi_path",
+        "iter_route_contexts",
+        "methods",
+        "name",
+        "original_route",
+        "path",
+        "path_format",
+        "url_path_for"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "scripts/people.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14371",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/params.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "_get_openapi_operation_parameters",
+        "_validate_value_with_model_field",
+        "alias",
+        "get_body_field",
+        "get_schema_from_model_field",
+        "get_validation_alias",
+        "process_fn",
+        "request_body_to_args",
+        "request_params_to_args",
+        "serialization_alias",
+        "validation_alias"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/encoders.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/encoders.py",
+        "fastapi/datastructures.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/param_functions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/encoders.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/exceptions.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14605",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/exceptions.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_syms": [
+        "FastAPIDeprecationWarning",
+        "__init__",
+        "generate_operation_id",
+        "generate_operation_id_for_path",
+        "get_dependant"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/responses.py",
+        "docs_src/custom_response/tutorial001b_py310.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/datastructures.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/exceptions.py",
+        "fastapi/responses.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/applications.py",
+        "fastapi/datastructures.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_15763",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "read_users"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14583",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "get_dependant"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/applications.py",
+        "fastapi/datastructures.py",
+        "docs_src/body_multiple_params/tutorial005_an_py310.py",
+        "docs_src/bigger_applications/app_an_py310/routers/items.py",
+        "fastapi/routing.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/applications.py",
+        "docs_src/body/tutorial003_py310.py",
+        "docs_src/body_nested_models/tutorial003_py310.py",
+        "docs_src/body_nested_models/tutorial004_py310.py",
+        "docs_src/body_nested_models/tutorial005_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/applications.py",
+        "docs_src/body/tutorial003_py310.py",
+        "docs_src/body_nested_models/tutorial003_py310.py",
+        "docs_src/body_nested_models/tutorial004_py310.py",
+        "docs_src/body_nested_models/tutorial005_py310.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_15745",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/path_operation_advanced_configuration/tutorial002_py310.py",
+        "fastapi/applications.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_syms": [
+        "APIRoute",
+        "APIRouter",
+        "Item",
+        "_APIRouteLike",
+        "_EffectiveRouteContext",
+        "_IncludedRouter",
+        "_RouterIncludeContext",
+        "__init__",
+        "_build_effective_context",
+        "_contains_router",
+        "_get_api_route_for_openapi",
+        "_get_fastapi_scope",
+        "_get_routes_version",
+        "_get_scope_effective_route_context",
+        "_get_scope_included_router",
+        "_handle_selected",
+        "_iter_included_route_candidates",
+        "_iter_routes_with_context",
+        "_mark_routes_changed",
+        "_match",
+        "_populate_api_route_state",
+        "_restore_fastapi_scope_key",
+        "add_api_route",
+        "add_api_websocket_route",
+        "add_route",
+        "add_websocket_route",
+        "combine",
+        "custom_generate_unique_id",
+        "effective_candidates",
+        "effective_route_contexts",
+        "for_include",
+        "from_api_route",
+        "generate_operation_id",
+        "generate_operation_summary",
+        "get_fields_from_routes",
+        "get_openapi",
+        "get_openapi_operation_metadata",
+        "get_openapi_operation_request_body",
+        "get_openapi_path",
+        "handle",
+        "matches",
+        "openapi",
+        "path_for",
+        "read_items",
+        "read_users",
+        "url_path_for",
+        "use_route_names_as_operation_ids"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py",
+        "docs_src/dependencies/tutorial010_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/param_functions.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py",
+        "fastapi/datastructures.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14297",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py"
+      ],
+      "gold_syms": [
+        "copy_field_info"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/background.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/exceptions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/background.py",
+        "fastapi/exceptions.py",
+        "fastapi/responses.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14303",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "process_fn"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/datastructures.py",
+        "fastapi/params.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/api_key.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_13537",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "process_fn"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/sse.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "fastapi/params.py",
+        "fastapi/sse.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/param_functions.py",
+        "fastapi/sse.py",
+        "fastapi/datastructures.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_14953",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/json_base64_bytes/tutorial001_py310.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/datastructures.py",
+        "scripts/playwright/json_base64_bytes/image01.py"
+      ],
+      "gold_syms": [
+        "DataInput",
+        "DataInputOutput",
+        "DataOutput",
+        "GenerateJsonSchema",
+        "_validate",
+        "bytes_schema",
+        "get_data",
+        "post_data",
+        "post_data_in_out",
+        "run"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "docs_src/handling_errors/tutorial003_py310.py",
+        "docs_src/python_types/tutorial010_py310.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "docs_src/handling_errors/tutorial003_py310.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_13786",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "docs_src/authentication_error_status_code/tutorial001_an.py",
+        "docs_src/authentication_error_status_code/tutorial001_an_py39.py",
+        "docs_src/security/tutorial003.py",
+        "docs_src/security/tutorial003_an.py",
+        "docs_src/security/tutorial003_an_py310.py",
+        "docs_src/security/tutorial003_an_py39.py",
+        "docs_src/security/tutorial003_py310.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "gold_syms": [
+        "HTTPBasic",
+        "HTTPBearer403",
+        "HTTPDigest",
+        "__call__",
+        "__init__",
+        "check_api_key",
+        "get_current_user",
+        "make_authenticate_headers",
+        "make_not_authenticated_error",
+        "read_me"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/dependencies/tutorial002_py310.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/security/http.py",
+        "fastapi/param_functions.py",
+        "fastapi/datastructures.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "fastapi_14616",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "_get_multidict_value",
+        "_is_json_field",
+        "_validate_value_with_model_field"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py",
+        "docs_src/websockets_/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/middleware/asyncexitstack.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/datastructures.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/api_key.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "fastapi_11194",
+      "repo": "fastapi/fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_syms": [
+        "_extract_form_body"
+      ],
+      "raw_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/dependencies/utils.py",
+        "scripts/people.py",
+        "docs_src/dependencies/tutorial003_py310.py"
+      ],
+      "idf_m3_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/param_functions.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/params.py"
+      ],
+      "m5_top5_files": [
+        "fastapi/security/oauth2.py",
+        "fastapi/datastructures.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/param_functions.py",
+        "fastapi/security/http.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_6757",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/compat.py",
+        "src/requests/utils.py"
+      ],
+      "gold_syms": [
+        "super_len"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/sessions.py",
+        "src/requests/auth.py",
+        "src/requests/utils.py",
+        "src/requests/api.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/sessions.py",
+        "src/requests/api.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/sessions.py",
+        "src/requests/api.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "requests_6629",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/exceptions.py"
+      ],
+      "gold_syms": [
+        "HTTPError",
+        "__init__",
+        "__reduce__"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/exceptions.py",
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/api.py",
+        "src/requests/cookies.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/exceptions.py",
+        "src/requests/adapters.py",
+        "src/requests/models.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/exceptions.py",
+        "src/requests/adapters.py",
+        "src/requests/models.py",
+        "src/requests/api.py",
+        "src/requests/cookies.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_6644",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/adapters.py"
+      ],
+      "gold_syms": [
+        "request_url"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/cookies.py",
+        "src/requests/models.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/api.py",
+        "src/requests/sessions.py",
+        "src/requests/cookies.py",
+        "src/requests/utils.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_6589",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/utils.py"
+      ],
+      "gold_syms": [
+        "super_len"
+      ],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/cookies.py",
+        "src/requests/exceptions.py",
+        "src/requests/structures.py",
+        "src/requests/sessions.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/utils.py",
+        "src/requests/exceptions.py",
+        "src/requests/cookies.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/utils.py",
+        "src/requests/cookies.py",
+        "src/requests/exceptions.py",
+        "src/requests/models.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "requests_6592",
+      "repo": "psf/requests",
+      "gold_files": [
+        "src/requests/status_codes.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/utils.py",
+        "src/requests/auth.py",
+        "src/requests/api.py",
+        "src/requests/cookies.py"
+      ],
+      "idf_m3_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/utils.py",
+        "src/requests/auth.py"
+      ],
+      "m5_top5_files": [
+        "src/requests/adapters.py",
+        "src/requests/utils.py",
+        "src/requests/auth.py",
+        "src/requests/api.py",
+        "src/requests/cookies.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3180",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/_wrap.py",
+        "rich/cells.py"
+      ],
+      "gold_syms": [
+        "chop_cells",
+        "divide_line",
+        "set_cell_size",
+        "words"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/cells.py",
+        "rich/control.py",
+        "rich/_log_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/logging.py",
+        "rich/text.py",
+        "rich/cells.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/cells.py",
+        "rich/text.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3486",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/syntax.py",
+        "rich/traceback.py"
+      ],
+      "gold_syms": [
+        "Frame",
+        "_SyntaxHighlightRange",
+        "_apply_stylized_ranges",
+        "bar",
+        "foo",
+        "get_locals",
+        "render_locals",
+        "stylize_range",
+        "tokens_to_spans"
+      ],
+      "raw_m3_top5_files": [
+        "rich/diagnose.py",
+        "rich/traceback.py",
+        "rich/console.py",
+        "rich/panel.py",
+        "rich/_windows.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/diagnose.py",
+        "rich/traceback.py",
+        "rich/color.py",
+        "rich/console.py",
+        "rich/_windows.py"
+      ],
+      "m5_top5_files": [
+        "rich/diagnose.py",
+        "rich/traceback.py",
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/abc.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3777",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/diagnose.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "report"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/_null_file.py",
+        "rich/progress.py",
+        "rich/file_proxy.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/progress.py",
+        "rich/_null_file.py",
+        "rich/text.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/progress.py",
+        "rich/traceback.py",
+        "rich/_win32_console.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3468",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py"
+      ],
+      "gold_syms": [
+        "_check_buffer",
+        "_write_buffer",
+        "log",
+        "on_broken_pipe",
+        "render_lines",
+        "render_str"
+      ],
+      "raw_m3_top5_files": [
+        "rich/traceback.py",
+        "rich/_win32_console.py",
+        "rich/box.py",
+        "rich/layout.py",
+        "rich/console.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/traceback.py",
+        "rich/_win32_console.py",
+        "rich/_extension.py",
+        "rich/box.py",
+        "rich/console.py"
+      ],
+      "m5_top5_files": [
+        "rich/traceback.py",
+        "rich/_win32_console.py",
+        "rich/box.py",
+        "rich/console.py",
+        "rich/measure.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3782",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/syntax.py"
+      ],
+      "gold_syms": [
+        "PaddingProperty",
+        "Syntax",
+        "_SyntaxHighlightRange",
+        "__get__",
+        "__init__",
+        "__rich_console__",
+        "__set__",
+        "_get_number_styles",
+        "_get_syntax",
+        "guess_lexer"
+      ],
+      "raw_m3_top5_files": [
+        "rich/syntax.py",
+        "rich/table.py",
+        "rich/color.py",
+        "rich/markup.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/syntax.py",
+        "examples/fullscreen.py",
+        "rich/markdown.py",
+        "rich/text.py",
+        "rich/table.py"
+      ],
+      "m5_top5_files": [
+        "rich/syntax.py",
+        "rich/table.py",
+        "rich/markdown.py",
+        "rich/segment.py",
+        "examples/fullscreen.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3772",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/traceback.py"
+      ],
+      "gold_syms": [
+        "extract",
+        "get_locals",
+        "safe_str"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/__init__.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/logging.py",
+        "examples/exception.py",
+        "rich/traceback.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/_win32_console.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3296",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/syntax.py"
+      ],
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/syntax.py",
+        "rich/logging.py",
+        "rich/control.py",
+        "rich/_log_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/syntax.py",
+        "rich/logging.py",
+        "rich/tree.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/syntax.py",
+        "rich/logging.py",
+        "rich/tree.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3675",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/diagnose.py"
+      ],
+      "gold_syms": [
+        "__init__",
+        "group",
+        "is_terminal",
+        "report"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/pretty.py",
+        "rich/theme.py",
+        "rich/_pick.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/pretty.py",
+        "rich/theme.py",
+        "rich/progress.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/pretty.py",
+        "rich/progress.py",
+        "rich/_win32_console.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3676",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/traceback.py"
+      ],
+      "gold_syms": [
+        "Stack",
+        "_SyntaxError",
+        "__rich_console__",
+        "extract",
+        "safe_str"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/progress.py",
+        "rich/control.py",
+        "rich/markdown.py",
+        "rich/panel.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/progress.py",
+        "rich/control.py",
+        "rich/prompt.py",
+        "rich/table.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/progress.py",
+        "rich/prompt.py",
+        "rich/table.py",
+        "rich/text.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3518",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/table.py"
+      ],
+      "gold_syms": [
+        "add_cell"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/control.py",
+        "rich/progress.py",
+        "rich/emoji.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/control.py",
+        "rich/progress.py",
+        "rich/logging.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/table.py",
+        "rich/logging.py",
+        "rich/progress.py",
+        "rich/control.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3535",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/cells.py",
+        "rich/segment.py"
+      ],
+      "gold_syms": [
+        "split_cells"
+      ],
+      "raw_m3_top5_files": [
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/text.py",
+        "rich/containers.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/text.py",
+        "rich/progress_bar.py"
+      ],
+      "m5_top5_files": [
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/console.py",
+        "rich/progress_bar.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3521",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/segment.py"
+      ],
+      "gold_syms": [
+        "_split_cells"
+      ],
+      "raw_m3_top5_files": [
+        "rich/segment.py",
+        "rich/highlighter.py",
+        "rich/palette.py",
+        "rich/panel.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/segment.py",
+        "rich/repr.py",
+        "rich/style.py",
+        "benchmarks/benchmarks.py",
+        "rich/emoji.py"
+      ],
+      "m5_top5_files": [
+        "rich/segment.py",
+        "rich/console.py",
+        "rich/highlighter.py",
+        "benchmarks/benchmarks.py",
+        "rich/repr.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3506",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/segment.py"
+      ],
+      "gold_syms": [
+        "is_control"
+      ],
+      "raw_m3_top5_files": [
+        "rich/segment.py",
+        "rich/layout.py",
+        "rich/text.py",
+        "rich/cells.py",
+        "examples/fullscreen.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/segment.py",
+        "rich/layout.py",
+        "rich/table.py",
+        "benchmarks/benchmarks.py",
+        "rich/text.py"
+      ],
+      "m5_top5_files": [
+        "rich/segment.py",
+        "rich/layout.py",
+        "rich/table.py",
+        "rich/text.py",
+        "rich/cells.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3480",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/text.py"
+      ],
+      "gold_syms": [
+        "append",
+        "append_text"
+      ],
+      "raw_m3_top5_files": [
+        "rich/containers.py",
+        "rich/text.py",
+        "rich/highlighter.py",
+        "rich/markup.py",
+        "rich/box.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/containers.py",
+        "rich/text.py",
+        "rich/columns.py",
+        "rich/markdown.py",
+        "rich/console.py"
+      ],
+      "m5_top5_files": [
+        "rich/containers.py",
+        "rich/text.py",
+        "rich/console.py",
+        "rich/markdown.py",
+        "rich/segment.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3472",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/pretty.py"
+      ],
+      "gold_syms": [
+        "iter_attrs"
+      ],
+      "raw_m3_top5_files": [
+        "rich/box.py",
+        "rich/console.py",
+        "rich/table.py",
+        "rich/panel.py",
+        "rich/measure.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/box.py",
+        "rich/console.py",
+        "rich/table.py",
+        "rich/panel.py",
+        "rich/layout.py"
+      ],
+      "m5_top5_files": [
+        "rich/box.py",
+        "rich/console.py",
+        "rich/measure.py",
+        "rich/table.py",
+        "rich/panel.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3454",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/highlighter.py"
+      ],
+      "gold_syms": [
+        "ReprHighlighter"
+      ],
+      "raw_m3_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/traceback.py",
+        "rich/_log_render.py",
+        "rich/live_render.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/text.py",
+        "rich/pretty.py",
+        "rich/json.py"
+      ],
+      "m5_top5_files": [
+        "rich/logging.py",
+        "rich/console.py",
+        "rich/pretty.py",
+        "rich/json.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3471",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/text.py"
+      ],
+      "gold_syms": [
+        "append_tokens"
+      ],
+      "raw_m3_top5_files": [
+        "rich/text.py",
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/control.py",
+        "rich/syntax.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/text.py",
+        "rich/control.py",
+        "rich/syntax.py",
+        "rich/console.py",
+        "rich/highlighter.py"
+      ],
+      "m5_top5_files": [
+        "rich/text.py",
+        "rich/console.py",
+        "rich/highlighter.py",
+        "rich/control.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3470",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/console.py"
+      ],
+      "gold_syms": [
+        "_write_buffer"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/pretty.py",
+        "rich/markup.py",
+        "rich/style.py",
+        "rich/control.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/pretty.py",
+        "examples/log.py",
+        "rich/control.py",
+        "rich/errors.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/__init__.py",
+        "rich/pretty.py",
+        "examples/log.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3469",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/markdown.py"
+      ],
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "raw_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/markup.py",
+        "rich/box.py",
+        "rich/progress_bar.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/_win32_console.py",
+        "rich/segment.py",
+        "examples/top_lite_simulator.py"
+      ],
+      "m5_top5_files": [
+        "rich/highlighter.py",
+        "rich/table.py",
+        "rich/_win32_console.py",
+        "rich/box.py",
+        "rich/segment.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3052",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/prompt.py"
+      ],
+      "gold_syms": [
+        "PromptBase",
+        "__init__",
+        "ask",
+        "check_choice",
+        "process_response"
+      ],
+      "raw_m3_top5_files": [
+        "rich/prompt.py",
+        "rich/console.py",
+        "rich/tree.py",
+        "rich/control.py",
+        "rich/traceback.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/prompt.py",
+        "rich/console.py",
+        "rich/tree.py",
+        "rich/control.py",
+        "rich/logging.py"
+      ],
+      "m5_top5_files": [
+        "rich/prompt.py",
+        "rich/console.py",
+        "rich/tree.py",
+        "rich/logging.py",
+        "rich/traceback.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3278",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/ansi.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/traceback.py",
+        "rich/text.py",
+        "rich/markup.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/logging.py",
+        "rich/_timer.py",
+        "benchmarks/benchmarks.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/logging.py",
+        "rich/traceback.py",
+        "rich/control.py",
+        "rich/json.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_2943",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/style.py"
+      ],
+      "gold_syms": [
+        "clear_meta_and_links"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/color.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/color.py",
+        "rich/json.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_2725",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/table.py"
+      ],
+      "gold_syms": [
+        "_render"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/tree.py",
+        "rich/control.py",
+        "rich/traceback.py",
+        "rich/layout.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/tree.py",
+        "rich/layout.py",
+        "rich/json.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/tree.py",
+        "rich/json.py",
+        "rich/__init__.py",
+        "rich/control.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3105",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/_export_format.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/color.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/cells.py",
+        "rich/color.py",
+        "rich/json.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/color.py",
+        "rich/json.py",
+        "rich/logging.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3130",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/markdown.py"
+      ],
+      "gold_syms": [
+        "TableDataElement",
+        "create"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/markup.py",
+        "rich/style.py",
+        "rich/columns.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/json.py",
+        "rich/text.py",
+        "rich/jupyter.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/json.py",
+        "rich/text.py",
+        "rich/segment.py",
+        "rich/control.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3043",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/_export_format.py"
+      ],
+      "gold_syms": [],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/live.py",
+        "rich/progress_bar.py",
+        "rich/markdown.py",
+        "rich/panel.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/live.py",
+        "rich/progress.py",
+        "rich/style.py",
+        "rich/progress_bar.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/live.py",
+        "rich/progress_bar.py",
+        "rich/progress.py",
+        "rich/status.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3067",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/highlighter.py"
+      ],
+      "gold_syms": [
+        "ReprHighlighter"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/progress.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/logging.py",
+        "rich/progress.py",
+        "rich/json.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3006",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/repr.py"
+      ],
+      "gold_syms": [
+        "auto_rich_repr"
+      ],
+      "raw_m3_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/json.py",
+        "rich/control.py",
+        "rich/text.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/console.py",
+        "rich/control.py",
+        "rich/cells.py",
+        "rich/json.py",
+        "rich/logging.py"
+      ],
+      "m5_top5_files": [
+        "rich/console.py",
+        "rich/cells.py",
+        "rich/json.py",
+        "rich/logging.py",
+        "rich/progress.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3064",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/markdown.py"
+      ],
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "raw_m3_top5_files": [
+        "rich/markdown.py",
+        "rich/table.py",
+        "rich/box.py",
+        "rich/containers.py",
+        "rich/style.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/markdown.py",
+        "rich/table.py",
+        "rich/box.py",
+        "rich/segment.py",
+        "examples/top_lite_simulator.py"
+      ],
+      "m5_top5_files": [
+        "rich/markdown.py",
+        "rich/table.py",
+        "rich/box.py",
+        "rich/segment.py",
+        "examples/top_lite_simulator.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    },
+    {
+      "task_id": "rich_3063",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/markup.py"
+      ],
+      "gold_syms": [
+        "escape_backslashes",
+        "pop_style"
+      ],
+      "raw_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "m5_top5_files": [
+        "rich/highlighter.py",
+        "rich/_win32_console.py",
+        "rich/abc.py",
+        "rich/align.py",
+        "rich/box.py"
+      ],
+      "raw_m3_hit5": false,
+      "idf_m3_hit5": false,
+      "m5_hit5": false
+    },
+    {
+      "task_id": "rich_3061",
+      "repo": "Textualize/rich",
+      "gold_files": [
+        "rich/text.py"
+      ],
+      "gold_syms": [
+        "Text",
+        "__init__",
+        "append",
+        "append_text",
+        "append_tokens",
+        "assemble",
+        "divide",
+        "expand_tabs",
+        "extend",
+        "extend_style",
+        "from_ansi",
+        "get_style_at_offset",
+        "highlight_regex",
+        "right_crop",
+        "set_length"
+      ],
+      "raw_m3_top5_files": [
+        "rich/text.py",
+        "rich/table.py",
+        "rich/console.py",
+        "rich/markup.py",
+        "rich/style.py"
+      ],
+      "idf_m3_top5_files": [
+        "rich/text.py",
+        "rich/style.py",
+        "examples/layout.py",
+        "rich/progress.py",
+        "benchmarks/benchmarks.py"
+      ],
+      "m5_top5_files": [
+        "rich/text.py",
+        "rich/table.py",
+        "rich/style.py",
+        "rich/progress.py",
+        "examples/layout.py"
+      ],
+      "raw_m3_hit5": true,
+      "idf_m3_hit5": true,
+      "m5_hit5": true
+    }
+  ]
+}

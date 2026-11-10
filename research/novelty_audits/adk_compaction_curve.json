@@ -1,0 +1,150 @@
+{
+  "audit_name": "ADK LlmRequest & Compaction Trajectory Audit",
+  "timestamp": "2026-11-10 22:39:30",
+  "adk_version": "google-adk 1.36.1",
+  "compaction_constants": {
+    "token_threshold": 14336,
+    "compaction_interval": 15,
+    "event_retention": 5,
+    "overlap": 2
+  },
+  "toolset_configurations": {
+    "config_1_lean_6tools": {
+      "name": "Config 1: Zero-Schema Lean (6 base tools, no graph, no skills)",
+      "tool_count": 6,
+      "tool_names": [
+        "run_command",
+        "read_file",
+        "edit_file",
+        "write_file",
+        "get_status",
+        "submit_patch"
+      ],
+      "system_prompt_chars": 2450,
+      "system_prompt_tokens": 612,
+      "tool_schema_chars": 2660,
+      "tool_schema_tokens": 665,
+      "turn_1_initial_tokens": 1578
+    },
+    "config_2_baseline_9tools": {
+      "name": "Config 2: Baseline (6 base tools + 3 graph tools)",
+      "tool_count": 9,
+      "tool_names": [
+        "run_command",
+        "read_file",
+        "edit_file",
+        "write_file",
+        "get_status",
+        "submit_patch",
+        "get_code_neighbors",
+        "search_similar_code",
+        "get_code_subgraph"
+      ],
+      "system_prompt_chars": 2450,
+      "system_prompt_tokens": 612,
+      "tool_schema_chars": 4240,
+      "tool_schema_tokens": 1060,
+      "turn_1_initial_tokens": 1972
+    },
+    "config_3_skilltoolset_10tools": {
+      "name": "Config 3: SkillToolset (6 base tools + 4 skill tools + hidden prompt)",
+      "tool_count": 10,
+      "tool_names": [
+        "run_command",
+        "read_file",
+        "edit_file",
+        "write_file",
+        "get_status",
+        "submit_patch",
+        "load_skill",
+        "load_skill_resource",
+        "run_skill_script",
+        "list_skills"
+      ],
+      "hidden_system_instruction_chars": 1507,
+      "hidden_system_instruction_tokens": 377,
+      "system_prompt_chars": 3957,
+      "system_prompt_tokens": 989,
+      "tool_schema_chars": 4400,
+      "tool_schema_tokens": 1100,
+      "turn_1_initial_tokens": 2389
+    }
+  },
+  "skill_toolset_hidden_instruction_audit": {
+    "raw_text": "You can use specialized 'skills' to help you with complex tasks. You MUST use the skill tools to interact with these skills.\n\nSkills are folders of instructions and resources that extend your capabilities for specialized tasks. Each skill folder contains:\n- **SKILL.md** (required): The main instruction file with skill metadata and detailed markdown instructions.\n- **references/** (Optional): Additional documentation or examples for skill usage.\n- **assets/** (Optional): Templates, scripts or other resources used by the skill.\n- **scripts/** (Optional): Executable scripts that can be run via bash.\n\nThis is very important:\n\n1. If a skill seems relevant to the current user query, you MUST use the `load_skill` tool with `skill_name=\"<SKILL_NAME>\"` to read its full instructions before proceeding.\n2. Once you have read the instructions, follow them exactly as documented before replying to the user. For example, If the instruction lists multiple steps, please make sure you complete all of them in order.\n3. The `load_skill_resource` tool is for viewing files within a skill's directory (e.g., `references/*`, `assets/*`, `scripts/*`). Do NOT use other tools to access these files.\n4. Use `run_skill_script` to run scripts from a skill's `scripts/` directory. Use `load_skill_resource` to view script content first if needed.",
+    "contradiction_rule_identified": "Rule 1 mandates: 'If a skill seems relevant to the current user query, you MUST use the `load_skill` tool with skill_name=\"<SKILL_NAME>\" to read its full instructions before proceeding.' This creates a direct prompt contradiction when user prompts attempt to cold-call `run_skill_script`.",
+    "consequence": "Forces an unpreventable Turn 1 `load_skill` round-trip (+875 tokens tool output), burning turn budget and inflating initial context by +2,150 characters (+538 tokens) before any workspace code inspection occurs."
+  },
+  "turn_to_compaction_trajectories": {
+    "config_1_lean_6tools": {
+      "initial_tokens": 1578,
+      "first_compaction_turn": 9,
+      "all_compaction_turns": [
+        9,
+        17
+      ],
+      "cumulative_tokens_turn1_to_10": [
+        1578,
+        3128,
+        4678,
+        6228,
+        7778,
+        9328,
+        10878,
+        12428,
+        13978,
+        2777,
+        4327
+      ]
+    },
+    "config_2_baseline_9tools": {
+      "initial_tokens": 1972,
+      "first_compaction_turn": 8,
+      "all_compaction_turns": [
+        8,
+        16
+      ],
+      "cumulative_tokens_turn1_to_10": [
+        1972,
+        3872,
+        5422,
+        6972,
+        8522,
+        10072,
+        11622,
+        13172,
+        3172,
+        4722,
+        6272
+      ]
+    },
+    "config_3_skilltoolset_10tools": {
+      "initial_tokens": 2389,
+      "first_compaction_turn": 8,
+      "all_compaction_turns": [
+        8,
+        15
+      ],
+      "cumulative_tokens_turn1_to_10": [
+        2389,
+        4164,
+        5714,
+        7264,
+        8814,
+        10364,
+        11914,
+        13464,
+        3589,
+        5139,
+        6689
+      ]
+    }
+  },
+  "empirical_findings": {
+    "config_1_lean_compaction_turn": 9,
+    "config_2_baseline_compaction_turn": 8,
+    "config_3_skilltoolset_compaction_turn": 8,
+    "schema_overhead_delta_tokens": 811,
+    "explanation_of_exp14_failure": "SkillToolset accelerated Turn-to-Compaction to Turn 5 (vs Turn 8 in Config 1). When ADK compactions trigger, tool observation history is stripped, destroying the loaded SKILL.md and causing repetitive retrieval loops on Gemma 4 31B."
+  }
+}
