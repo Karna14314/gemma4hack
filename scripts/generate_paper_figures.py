@@ -192,25 +192,25 @@ def render_fig0_card_thumbnail():
 # FIGURE 1: Harness Architecture & 4 Failure Sites
 # ==============================================================================
 def render_fig1_harness_architecture():
-    fig, ax = plt.subplots(figsize=(10.8, 7.2), dpi=300)
+    fig, ax = plt.subplots(figsize=(11.2, 7.5), dpi=300)
     fig.patch.set_facecolor("#ffffff")
     ax.set_facecolor("#fafbfc")
-    ax.set_xlim(0, 10.8)
+    ax.set_xlim(0, 11.2)
     ax.set_ylim(0, 7.8)
     ax.axis("off")
 
     # Title
-    ax.text(5.4, 7.45, "Offline Evaluation Lifecycle & 4 Exact Failure Sites",
+    ax.text(5.6, 7.50, "Offline Evaluation Lifecycle & 4 Exact Failure Sites",
             ha="center", va="center", fontsize=14, weight="bold", color=C_DARK)
-    ax.text(5.4, 7.10, "ADK 1.36.1 <-> litellm <-> vLLM 0.19.1 <-> /workspace Sandbox on 4x L4 GPUs",
+    ax.text(5.6, 7.15, "ADK 1.36.1 <-> litellm <-> vLLM 0.19.1 <-> /workspace Sandbox on 4x L4 GPUs",
             ha="center", va="center", fontsize=10, color="#64748b")
 
     # 4 Main Pipeline Stage Boxes at y = 6.1
     stages = [
-        ("ADK 1.36.1\nAgent Runtime", 1.45, 6.1, 2.0, 0.95, C_BLUE),
-        ("litellm\nProxy Router", 4.10, 6.1, 2.0, 0.95, "#0284c7"),
-        ("vLLM 0.19.1\nServing Engine", 6.75, 6.1, 2.0, 0.95, C_PURPLE),
-        ("/workspace\nGit Sandbox", 9.35, 6.1, 2.0, 0.95, C_GREEN),
+        ("ADK 1.36.1\nAgent Runtime", 1.50, 6.1, 2.05, 0.95, C_BLUE),
+        ("litellm\nProxy Router", 4.25, 6.1, 2.05, 0.95, "#0284c7"),
+        ("vLLM 0.19.1\nServing Engine", 7.00, 6.1, 2.05, 0.95, C_PURPLE),
+        ("/workspace\nGit Sandbox", 9.70, 6.1, 2.05, 0.95, C_GREEN),
     ]
 
     for name, x, y, w, h, col in stages:
@@ -221,55 +221,61 @@ def render_fig1_harness_architecture():
 
     # Connecting bi-directional arrows
     arrow_props = dict(arrowstyle="<->", color="#64748b", lw=2, shrinkA=6, shrinkB=6)
-    ax.annotate("", xy=(2.45, 6.1), xytext=(3.10, 6.1), arrowprops=arrow_props)
-    ax.annotate("", xy=(5.10, 6.1), xytext=(5.75, 6.1), arrowprops=arrow_props)
-    ax.annotate("", xy=(7.75, 6.1), xytext=(8.35, 6.1), arrowprops=arrow_props)
+    ax.annotate("", xy=(2.55, 6.1), xytext=(3.20, 6.1), arrowprops=arrow_props)
+    ax.annotate("", xy=(5.30, 6.1), xytext=(5.95, 6.1), arrowprops=arrow_props)
+    ax.annotate("", xy=(8.05, 6.1), xytext=(8.65, 6.1), arrowprops=arrow_props)
 
-    # 4 Failure site cards (2 columns x 2 rows)
-    # Row 1 (y = 3.25, h = 2.0): Site 3 and Site 4
-    # Row 2 (y = 0.70, h = 2.1): Site 1 and Site 2
+    # 4 Failure site cards (2 columns x 2 rows, perfectly mapped to pipeline origins)
+    # Left Column (x = 0.50, w = 4.85): Site 1 (ADK) & Site 2 (vLLM Chat Entrypoint)
+    # Right Column (x = 5.85, w = 4.85): Site 4 (Git Sandbox) & Site 3 (vLLM Logits Processor)
     card_boxes = [
-        # Upper Left: Site 3 (Logits Processor)
-        (0.6, 3.25, 4.5, 2.0, "Failure Site 3: Logits Budget Processor", "builtin.py:294  (ThinkingTokenBudgetLogitsProcessor)",
+        # Upper Left: Site 1 (Compaction Cliff) - directly below ADK
+        (0.50, 3.30, 4.85, 2.05, "Failure Site 1: ADK Compaction Cliff", "token_threshold = 14,336  (adk/apps/_configs.py:70)",
+         "Mechanism: History truncation interval=15 drops non-model tool output\n"
+         "frames and raw execution state, keeping only assistant model turns.\n"
+         "Impact: Turn 15+ memory loss unless plain-text state\ncards are maintained in prompt or on disk.",
+         C_RED, "#fef2f2"),
+
+        # Upper Right: Site 4 (.gitignore Trap) - directly below Git Sandbox
+        (5.85, 3.30, 4.85, 2.05, "Failure Site 4: Sandbox .gitignore Trap", "git add -N .  (Working Tree Evaluation Harness)",
+         "Mechanism: Default staging command strictly respects\nrepository .gitignore rules.\n"
+         "Impact: Newly created modules (8.5% = 11/129 tasks)\nare silently omitted from patch. Use git add -N -f.",
+         C_RED, "#fef2f2"),
+
+        # Lower Left: Site 2 (vLLM Formatting)
+        (0.50, 0.70, 4.85, 2.15, "Failure Site 2: vLLM Chat Template Parsing", "chat_utils.py:1512  (vLLM 0.19.1 Entrypoint)",
+         "Mechanism: include_thoughts: false strips thought tokens from context\n"
+         "while thinking_budget > 0 still consumes raw generation budget.\n"
+         "Impact: Inter-turn thought loss & prompt token count mismatch.",
+         C_ORANGE, "#fffbeb"),
+
+        # Lower Right: Site 3 (Logits Processor)
+        (5.85, 0.70, 4.85, 2.15, "Failure Site 3: Logits Budget Processor", "builtin.py:294  (ThinkingTokenBudgetLogitsProcessor)",
          "Mechanism: Forced </thought> token generation upon budget exhaustion.\n"
          "Impact: Truncates reasoning mid-sentence. Model immediately emits\n"
          "degenerate repetitions or empty tool calls, causing 0-score timeout.",
          "#b45309", "#fffbeb"),
-
-        # Upper Right: Site 4 (.gitignore Trap)
-        (5.7, 3.25, 4.5, 2.0, "Failure Site 4: Sandbox .gitignore Trap", "git add -N .  (Working Tree Evaluation Harness)",
-         "Mechanism: Default staging command strictly respects repository .gitignore.\n"
-         "Impact: Newly created modules (8.5% of tasks = 11/129) are silently\n"
-         "omitted from the patch. Solution: git add -N -f for all new files.",
-         C_RED, "#fef2f2"),
-
-        # Lower Left: Site 1 (Compaction Cliff)
-        (0.6, 0.70, 4.5, 2.15, "Failure Site 1: ADK Compaction Cliff", "token_threshold = 14,336  (adk/apps/_configs.py:70)",
-         "Mechanism: History truncation interval=15 drops non-model tool output\n"
-         "frames and raw execution state, keeping only assistant model turns.\n"
-         "Impact: Turn 15+ memory loss unless plain-text state cards are carded.",
-         C_RED, "#fef2f2"),
-
-        # Lower Right: Site 2 (vLLM Formatting)
-        (5.7, 0.70, 4.5, 2.15, "Failure Site 2: vLLM Chat Template Parsing", "chat_utils.py:1512  (vLLM 0.19.1 Entrypoint)",
-         "Mechanism: include_thoughts: false strips thought tokens from context\n"
-         "while thinking_budget > 0 still consumes raw generation budget.\n"
-         "Impact: Prompt token count mismatch, leading to 400 Bad Request.",
-         C_ORANGE, "#fffbeb"),
     ]
 
     for x, y, w, h, title, sub, desc, ec, bg in card_boxes:
         rect = patches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.08",
                                      facecolor=bg, edgecolor=ec, linewidth=1.5)
         ax.add_patch(rect)
-        ax.text(x + 0.18, y + h - 0.38, title, fontsize=10.2, weight="bold", color=ec)
-        ax.text(x + 0.18, y + h - 0.72, sub, fontsize=8.5, weight="semibold", color="#475569")
-        ax.text(x + 0.18, y + 0.35, desc, fontsize=8.6, color="#1e293b", linespacing=1.3)
+        ax.text(x + 0.20, y + h - 0.38, title, fontsize=10.2, weight="bold", color=ec)
+        ax.text(x + 0.20, y + h - 0.72, sub, fontsize=8.5, weight="semibold", color="#475569")
+        ax.text(x + 0.20, y + 0.35, desc, fontsize=8.4, color="#1e293b", linespacing=1.3)
 
-    # Dashed connector lines from pipeline stages down to the cards
-    ax.plot([1.45, 1.45, 2.85], [5.60, 5.40, 5.25], color=C_BLUE, lw=1.2, ls=":")
-    ax.plot([6.75, 6.75, 2.85], [5.60, 5.40, 5.25], color=C_PURPLE, lw=1.2, ls=":")
-    ax.plot([9.35, 9.35, 7.95], [5.60, 5.40, 5.25], color=C_GREEN, lw=1.2, ls=":")
+    # Connector lines routed purely through empty whitespace corridors (zero card intersections!)
+    # ADK straight down to Site 1
+    ax.plot([1.50, 1.50], [5.62, 5.35], color=C_BLUE, lw=1.5, ls="--")
+    # Sandbox straight down to Site 4
+    ax.plot([9.70, 9.70], [5.62, 5.35], color=C_GREEN, lw=1.5, ls="--")
+    # vLLM down through the central corridor (x = 5.50) into lower tier
+    ax.plot([7.00, 5.50, 5.50], [5.62, 5.50, 3.05], color=C_PURPLE, lw=1.3, ls=":")
+    # Branch left to Site 2
+    ax.plot([5.50, 2.92, 2.92], [3.05, 3.05, 2.85], color=C_PURPLE, lw=1.3, ls=":")
+    # Branch right to Site 3
+    ax.plot([5.50, 8.27, 8.27], [3.05, 3.05, 2.85], color=C_PURPLE, lw=1.3, ls=":")
 
     out_p = ASSETS_DIR / "fig1_harness_architecture.png"
     plt.savefig(out_p, dpi=300, bbox_inches="tight")
@@ -307,18 +313,18 @@ def render_fig2_retrieval_2x2_decomposition():
     ax1.set_title("(A) Regime A: Static Graph Retrieval (125 In-Graph Tasks)")
     ax1.set_xticks(x)
     ax1.set_xticklabels(ranks, weight="semibold")
-    ax1.set_ylim(0, 0.72)
+    ax1.set_ylim(0, 0.85)
     ax1.grid(axis="y", alpha=0.5)
     despine(ax1)
-    ax1.legend(loc="upper left", frameon=True, framealpha=0.9, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.8)
+    ax1.legend(loc="upper left", bbox_to_anchor=(0.01, 0.99), frameon=True, framealpha=0.95, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.5)
 
-    # Inset callout box: 80.9% (313/387) cap exceedance
-    inset_box = patches.FancyBboxPatch((0.46, 0.62), 0.51, 0.32, boxstyle="round,pad=0.03",
+    # Inset callout box: placed in open space above R@3 & R@5 (x <= 2.2 in data), strictly avoiding R@10 green bar!
+    inset_box = patches.FancyBboxPatch((0.27, 0.60), 0.46, 0.35, boxstyle="round,pad=0.03",
                                        facecolor="#fef2f2", edgecolor=C_RED, linewidth=1.2, transform=ax1.transAxes)
     ax1.add_patch(inset_box)
-    ax1.text(0.48, 0.85, "M3 Context Exceedance Trap", color=C_RED, fontsize=9.2, weight="bold", transform=ax1.transAxes)
-    ax1.text(0.48, 0.67, "80.9% (313 / 387)\nof raw 1-hop AST neighborhoods\nexceed the 5,000-char tool cap!",
-             color="#1e293b", fontsize=8.2, linespacing=1.2, transform=ax1.transAxes)
+    ax1.text(0.50, 0.86, "M3 Context Exceedance Trap", ha="center", color=C_RED, fontsize=9.0, weight="bold", transform=ax1.transAxes)
+    ax1.text(0.50, 0.69, "80.9% (313 / 387)\nof raw 1-hop AST neighborhoods\nexceed the 5,000-char tool cap!",
+             ha="center", color="#1e293b", fontsize=8.0, linespacing=1.2, transform=ax1.transAxes)
 
     # -------------------------------------------------------------
     # Right Panel: Waterfall Decomposition of 0.435 -> 0.744 (+30.9 pp)
@@ -377,7 +383,7 @@ def render_fig2_retrieval_2x2_decomposition():
 # FIGURE 3: Symbol Progression & Multi-File Paradox
 # ==============================================================================
 def render_fig3_symbol_and_multifile_paradox():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.2, 5.5), dpi=300)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 6.0), dpi=300)
     fig.patch.set_facecolor("#ffffff")
 
     # -------------------------------------------------------------
@@ -398,7 +404,7 @@ def render_fig3_symbol_and_multifile_paradox():
 
     # Annotation of R@5 lift
     ax1.annotate("+9.92 pp (+32.4% rel)\n+1.31 s latency",
-                 xy=(2, 0.4050), xytext=(1.4, 0.45),
+                 xy=(2, 0.4050), xytext=(1.35, 0.46),
                  arrowprops=dict(arrowstyle="->", color=C_BLUE, lw=1.5),
                  fontsize=9.2, weight="bold", color=C_BLUE,
                  bbox=dict(boxstyle="round,pad=0.3", facecolor="#eff6ff", edgecolor=C_BLUE, lw=1.0))
@@ -428,27 +434,29 @@ def render_fig3_symbol_and_multifile_paradox():
 
     for r in rects_any:
         h = r.get_height()
-        ax2.text(r.get_x() + r.get_width()/2, h + 0.02, f"{h:.3f}\n({int(round(h*38))}/38)", ha="center", va="bottom", fontsize=8.5, weight="bold", color=C_BLUE)
+        ax2.text(r.get_x() + r.get_width()/2, h + 0.02, f"{h:.3f}\n({int(round(h*38))}/38)", ha="center", va="bottom", fontsize=8.2, weight="bold", color=C_BLUE)
     for r in rects_all:
         h = r.get_height()
-        ax2.text(r.get_x() + r.get_width()/2, h + 0.02, f"{h:.3f}\n({int(round(h*38))}/38)", ha="center", va="bottom", fontsize=8.5, weight="bold", color=C_RED)
+        ax2.text(r.get_x() + r.get_width()/2, h + 0.02, f"{h:.3f}\n({int(round(h*38))}/38)", ha="center", va="bottom", fontsize=8.2, weight="bold", color=C_RED)
 
-    # Explanatory Paradox Callout
-    callout = patches.FancyBboxPatch((0.08, 0.65), 0.84, 0.28, boxstyle="round,pad=0.03",
-                                     facecolor="#fff7ed", edgecolor=C_ORANGE, linewidth=1.2, transform=ax2.transAxes)
+    # Clean Callout Banner using exact data coordinates (100% bounded inside y in [1.08, 1.27])
+    callout = patches.FancyBboxPatch((-0.45, 1.08), 2.90, 0.19, boxstyle="round,pad=0.03",
+                                     facecolor="#fff7ed", edgecolor=C_ORANGE, linewidth=1.2)
     ax2.add_patch(callout)
-    ax2.text(0.5, 0.85, "THE MULTI-FILE RETRIEVAL PARADOX", ha="center", color=C_ORANGE, fontsize=9.8, weight="bold", transform=ax2.transAxes)
-    ax2.text(0.5, 0.70, "Single-pass retrieval captures >=1 gold file in 81.6% of tasks,\nbut captures all gold files in only 7.9%!\nMulti-file tasks structurally mandate multi-turn interaction.",
-             ha="center", color="#1e293b", fontsize=8.2, linespacing=1.25, transform=ax2.transAxes)
+    ax2.text(1.0, 1.22, "THE MULTI-FILE RETRIEVAL PARADOX", ha="center", va="center", color=C_ORANGE, fontsize=9.2, weight="bold")
+    ax2.text(1.0, 1.14, "Single-pass retrieval captures ≥1 gold file in 81.6% of tasks, but all gold files in only 7.9%!\nMulti-file tasks structurally mandate multi-turn interaction.",
+             ha="center", va="center", color="#1e293b", fontsize=7.8, linespacing=1.2)
+
+    # Clean horizontal legend shifted left above Top-3 & Top-5, leaving Top-10 completely clear
+    ax2.legend(loc="upper left", bbox_to_anchor=(0.04, 0.77), ncol=2, frameon=True, framealpha=0.95, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.0)
 
     ax2.set_ylabel("Retrieval Recall on Multi-File Tasks")
-    ax2.set_title("(B) Multi-File Retrieval Paradox (38 Multi-File Tasks, 29.5%)")
+    ax2.set_title("(B) Multi-File Retrieval Paradox (38 Multi-File Tasks, 29.5%)", pad=10)
     ax2.set_xticks(x)
     ax2.set_xticklabels(k_labels, weight="semibold")
-    ax2.set_ylim(0, 1.12)
+    ax2.set_ylim(0, 1.34)
     ax2.grid(axis="y", alpha=0.5)
     despine(ax2)
-    ax2.legend(loc="upper left", frameon=True, framealpha=0.9, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.8)
 
     plt.tight_layout()
     out_p = ASSETS_DIR / "fig3_symbol_and_multifile_paradox.png"
@@ -539,17 +547,19 @@ def render_fig4_leaderboard_statistical_power():
     ax2.set_yticklabels([f"0.22 (13 tasks)", f"0.24 (14 tasks)", f"0.29 (17 tasks)"], weight="semibold", fontsize=8.8)
     ax2.set_xlabel("Number of Teams")
     ax2.set_title("(B) Public Top-20 Distribution")
-    ax2.set_xlim(0, 14.5)
+    ax2.set_xlim(0, 15.5)
+    ax2.set_ylim(-0.5, 2.8)
     ax2.grid(axis="x", alpha=0.5)
     despine(ax2)
 
-    # Box explaining 4-task span
-    box_t20 = patches.FancyBboxPatch((0.08, 0.08), 0.84, 0.38, boxstyle="round,pad=0.03",
+    # Box situated in the open upper-right quadrant (x in [0.30, 0.92], y in [0.61, 0.91] in transAxes)
+    # Guaranteed clearance: >= 0.23 data units above Bar 1 (0.24), >= 2.1 units right of Bar 2 label
+    box_t20 = patches.FancyBboxPatch((0.30, 0.61), 0.62, 0.30, boxstyle="round,pad=0.02",
                                      facecolor="#f8fafc", edgecolor="#94a3b8", linewidth=1.0, transform=ax2.transAxes)
     ax2.add_patch(box_t20)
-    ax2.text(0.5, 0.36, "TOP-20 4-TASK BAND", ha="center", color="#334155", fontsize=9.2, weight="bold", transform=ax2.transAxes)
-    ax2.text(0.5, 0.22, "Entire Top-20 cluster spans\nonly 4 tasks (13 to 17).\nDeltas <= 2 tasks are within\nbinomial run-to-run noise.",
-             ha="center", color="#475569", fontsize=8.0, linespacing=1.2, transform=ax2.transAxes)
+    ax2.text(0.61, 0.83, "TOP-20 4-TASK BAND", ha="center", va="center", color="#334155", fontsize=8.8, weight="bold", transform=ax2.transAxes)
+    ax2.text(0.61, 0.71, "Entire Top-20 cluster spans\nonly 4 tasks (13 to 17).\nDeltas ≤ 2 tasks are within\nbinomial run-to-run noise.",
+             ha="center", va="center", color="#475569", fontsize=7.6, linespacing=1.2, transform=ax2.transAxes)
 
     plt.tight_layout()
     out_p = ASSETS_DIR / "fig4_leaderboard_statistical_power.png"
@@ -562,28 +572,44 @@ def render_fig4_leaderboard_statistical_power():
 # FIGURE 5: Patch Anatomy & 10 AST Playbooks
 # ==============================================================================
 def render_fig5_patch_anatomy_and_playbooks():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 6.2), dpi=300, gridspec_kw={"width_ratios": [1.15, 1.85]})
+    fig = plt.figure(figsize=(14.8, 6.4), dpi=300)
     fig.patch.set_facecolor("#ffffff")
 
+    # Use GridSpec with generous wspace (0.38) to guarantee zero label collisions with Panel B ticks
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.05, 1.95], wspace=0.38)
+    gs_left = gs[0].subgridspec(2, 1, height_ratios=[1.15, 0.95], hspace=0.15)
+
+    ax_pie = fig.add_subplot(gs_left[0])
+    ax_tab = fig.add_subplot(gs_left[1])
+    ax2 = fig.add_subplot(gs[1])
+
     # -------------------------------------------------------------
-    # Left Panel: Gold Patch File & Hunk Distribution (129 Tasks)
+    # Left Upper: Clean Donut Chart (Zero label collision)
     # -------------------------------------------------------------
-    categories = ["1 File Modified\n(70.5%, 91 tasks)", "2+ Files Modified\n(29.5%, 38 tasks)"]
     sizes = [70.5, 29.5]
     colors_donut = [C_BLUE, C_ORANGE]
 
-    wedges, texts, autotexts = ax1.pie(sizes, labels=categories, autopct="%1.1f%%",
-                                       startangle=140, colors=colors_donut,
-                                       wedgeprops=dict(width=0.42, edgecolor="#ffffff", linewidth=2.0),
-                                       textprops=dict(fontsize=8.8, weight="semibold"))
+    wedges, texts, autotexts = ax_pie.pie(
+        sizes, colors=colors_donut, autopct="%1.1f%%", pctdistance=0.75,
+        startangle=140, wedgeprops=dict(width=0.38, edgecolor="#ffffff", linewidth=2.0)
+    )
     for at in autotexts:
         at.set_color("#ffffff")
         at.set_fontsize(9.5)
         at.set_weight("bold")
 
-    ax1.set_title("(A) Gold Patch Anatomy (129 Dev Tasks)")
+    # Center callout in donut hole
+    ax_pie.text(0, 0.08, "129 Tasks", ha="center", va="center", fontsize=10.5, weight="bold", color=C_DARK)
+    ax_pie.text(0, -0.10, "Dev Benchmark", ha="center", va="center", fontsize=8.0, color="#64748b")
 
-    # Inset Summary Statistics Table
+    ax_pie.set_title("(A) Gold Patch Anatomy (129 Dev Tasks)", pad=12)
+    ax_pie.legend(wedges, ["1 File (70.5%, 91 tasks)", "2+ Files (29.5%, 38 tasks)"],
+                  loc="upper center", bbox_to_anchor=(0.5, 1.05), ncol=2, frameon=False, fontsize=8.0)
+
+    # -------------------------------------------------------------
+    # Left Lower: Dedicated Subplot for Summary Table
+    # -------------------------------------------------------------
+    ax_tab.axis("off")
     table_data = [
         ["Single-file tasks", "70.5% (91 / 129)"],
         ["Multi-file tasks", "29.5% (38 / 129)"],
@@ -592,8 +618,8 @@ def render_fig5_patch_anatomy_and_playbooks():
         ["Lines added", "Median: 8, Mean: 138, P90: 89"],
         ["Lines deleted", "Median: 2, Mean: 29, P90: 24"],
     ]
-    tab = ax1.table(cellText=table_data, colLabels=["Metric", "Measured Value"],
-                    cellLoc="center", loc="lower center", bbox=[0.02, -0.28, 0.96, 0.36])
+    tab = ax_tab.table(cellText=table_data, colLabels=["Metric", "Measured Value"],
+                       cellLoc="center", loc="center", bbox=[0.02, 0.02, 0.90, 0.96])
     tab.auto_set_font_size(False)
     tab.set_fontsize(8.2)
     for (r, c), cell in tab.get_celld().items():
@@ -655,7 +681,7 @@ def render_fig5_patch_anatomy_and_playbooks():
     ax2.set_yticklabels(pb_names, fontsize=8.8, weight="semibold")
     ax2.set_xlabel("Trigger Count Across 129 Tasks")
     ax2.set_title("(B) 10 Triggered AST Playbooks: Count vs. Precision (258 Triggers, 32.6% Precision)")
-    ax2.set_xlim(0, 95)
+    ax2.set_xlim(0, 98)
     ax2.grid(axis="x", alpha=0.5)
     despine(ax2)
 
@@ -667,9 +693,8 @@ def render_fig5_patch_anatomy_and_playbooks():
     ]
     ax2.legend(handles=legend_elements, loc="lower right", frameon=True, framealpha=0.9, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.2)
 
-    plt.tight_layout()
     out_p = ASSETS_DIR / "fig5_patch_anatomy_and_playbooks.png"
-    plt.savefig(out_p, dpi=300)
+    plt.savefig(out_p, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"[FIG 5] Generated {out_p}")
 
