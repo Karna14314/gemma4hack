@@ -1,0 +1,4859 @@
+{
+  "summary": {
+    "engine": "symrank_v5",
+    "description": "Intra-file symbol span re-ranking (signature + body token overlap, 1/rank prior, top-8 file scope)",
+    "denominator": 121,
+    "median_re_rank_latency_s": 0.239,
+    "recall": {
+      "@1": 0.1901,
+      "@3": 0.3223,
+      "@5": 0.3884,
+      "@10": 0.4876
+    },
+    "hits": {
+      "@1": 23,
+      "@3": 39,
+      "@5": 47,
+      "@10": 59
+    }
+  },
+  "per_task": [
+    {
+      "task": "fastapi_11194",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_extract_form_body"
+      ],
+      "top_syms_v4": [
+        "File",
+        "Form",
+        "File",
+        "Form",
+        "test_is_uploadfile_sequence_annotation",
+        "main",
+        "main",
+        "test_post_form_no_body",
+        "test_openapi_schema",
+        "main"
+      ],
+      "top_syms_v5": [
+        "Body",
+        "Depends",
+        "Security",
+        "Path",
+        "Query",
+        "Header",
+        "Cookie",
+        "Form",
+        "File",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2453
+    },
+    {
+      "task": "fastapi_11355",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_flat_params",
+        "get_typed_return_annotation"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "validate",
+        "_model_dump",
+        "_model_dump",
+        "test_form_data_valid",
+        "_model_dump",
+        "lenient_issubclass",
+        "serialize",
+        "get_flat_models_from_annotation",
+        "get_flat_models_from_field"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2024
+    },
+    {
+      "task": "fastapi_12942",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "field_annotation_is_complex"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "post",
+        "post",
+        "get",
+        "get",
+        "app",
+        "Discriminator",
+        "app",
+        "app",
+        "Tag"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2682
+    },
+    {
+      "task": "fastapi_13207",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_definitions",
+        "get_schema_from_model_field"
+      ],
+      "top_syms_v4": [
+        "get_definitions",
+        "get_definitions",
+        "get_schema_from_model_field",
+        "get_schema_from_model_field",
+        "get_schema_from_model_field",
+        "get_definitions",
+        "get_definitions",
+        "test_openapi_schema",
+        "test_create_item",
+        "openapi"
+      ],
+      "top_syms_v5": [
+        "is_pv1_scalar_field",
+        "with_info_plain_validator_function",
+        "get_model_definitions",
+        "is_pv1_scalar_sequence_field",
+        "_model_rebuild",
+        "_model_dump",
+        "_get_model_config",
+        "get_schema_from_model_field",
+        "get_definitions",
+        "is_scalar_field"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1479
+    },
+    {
+      "task": "fastapi_13537",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "process_fn"
+      ],
+      "top_syms_v4": [
+        "request_params_to_args",
+        "_extract_form_body",
+        "_get_multidict_value",
+        "default",
+        "default",
+        "request_body_to_args",
+        "default",
+        "FastAPI",
+        "File",
+        "Form"
+      ],
+      "top_syms_v5": [
+        "analyze_param",
+        "solve_dependencies",
+        "is_union_of_base_models",
+        "ensure_multipart_is_installed",
+        "get_parameterless_sub_dependant",
+        "get_flat_dependant",
+        "_get_flat_fields_from_params",
+        "get_flat_params",
+        "get_typed_signature",
+        "get_typed_annotation"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2332
+    },
+    {
+      "task": "fastapi_13713",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Item",
+        "get_openapi",
+        "swagger_ui_html"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "APIKeyQuery",
+        "OpenAPI",
+        "APIKeyHeader",
+        "APIKeyCookie",
+        "test_openapi_schema",
+        "__init__",
+        "get",
+        "trace",
+        "delete"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options",
+        "head"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2316
+    },
+    {
+      "task": "fastapi_13786",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "APIKeyCookie",
+        "APIKeyHeader",
+        "HTTPBasic",
+        "SecurityScopes",
+        "__call__",
+        "__init__",
+        "get_current_user"
+      ],
+      "top_syms_v4": [
+        "test_openapi_schema",
+        "_replace_refs",
+        "test_multiple_body_params_importance_too_small",
+        "test_multiple_body_params_importance_too_large",
+        "get_schema_from_model_field",
+        "test_cookie_tracking_id_too_short",
+        "test_openapi_schema",
+        "get_definitions",
+        "_remap_definitions_and_field_mappings",
+        "ModelField"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1105
+    },
+    {
+      "task": "fastapi_13920",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "top_syms_v4": [
+        "ModelField",
+        "field_annotation_is_complex",
+        "annotation_is_pydantic_v1",
+        "__post_init__",
+        "get_schema_from_model_field",
+        "is_bytes_sequence_field",
+        "is_bytes_field",
+        "_annotation_is_sequence",
+        "field_annotation_is_sequence",
+        "is_bytes_or_nonable_bytes_annotation"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "asdict",
+        "alias",
+        "validation_alias",
+        "serialization_alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2569
+    },
+    {
+      "task": "fastapi_14077",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_openapi_path",
+        "request_validation_exception_handler"
+      ],
+      "top_syms_v4": [
+        "request_validation_exception_handler",
+        "validation_exception_handler",
+        "test_get_invalid",
+        "test_openapi_schema",
+        "get_schema_from_model_field",
+        "get_openapi_path",
+        "_normalize_errors",
+        "_model_dump",
+        "_model_dump",
+        "copy_field_info"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "is_pv1_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.207
+    },
+    {
+      "task": "fastapi_14099",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Item",
+        "__init__",
+        "app"
+      ],
+      "top_syms_v4": [
+        "UploadFile",
+        "main",
+        "app",
+        "middleware",
+        "get_request_handler",
+        "app",
+        "solve_generator",
+        "get_websocket_app",
+        "main",
+        "__get_validators__"
+      ],
+      "top_syms_v5": [
+        "write",
+        "read",
+        "seek",
+        "close",
+        "__get_validators__",
+        "validate",
+        "_validate",
+        "__modify_schema__",
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2225
+    },
+    {
+      "task": "fastapi_14186",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_get_model_config",
+        "_is_error_wrapper",
+        "_is_model_class",
+        "_is_undefined",
+        "_model_dump",
+        "_normalize_errors",
+        "_validate_value_with_model_field",
+        "analyze_param",
+        "copy_field_info",
+        "create_body_model",
+        "create_cloned_field",
+        "create_model_field",
+        "decimal_encoder",
+        "get_annotation_from_field_info",
+        "get_compat_model_name_map",
+        "get_definitions",
+        "get_schema_from_model_field",
+        "is_bytes_sequence_field",
+        "is_scalar_field",
+        "is_scalar_sequence_field",
+        "is_sequence_field",
+        "is_uploadfile_sequence_annotation",
+        "jsonable_encoder",
+        "serialize_sequence_value",
+        "validate",
+        "value_is_sequence"
+      ],
+      "top_syms_v4": [
+        "test_is_bytes_sequence_annotation_union",
+        "test_is_uploadfile_sequence_annotation",
+        "get_schema_from_model_field",
+        "__post_init__",
+        "test_is_model_field",
+        "test_get_model_config",
+        "_model_dump",
+        "test_model_field_default_required",
+        "test_v1_plain_validator_function",
+        "ModelField"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.164
+    },
+    {
+      "task": "fastapi_14246",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_definitions"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "get_model_definitions",
+        "get_definitions",
+        "get_flat_models_from_fields",
+        "get_flat_models_from_model",
+        "get_definitions",
+        "get_schema_from_model_field",
+        "get_flat_models_from_annotation",
+        "get_flat_models_from_field",
+        "get_schema_from_model_field"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.0966
+    },
+    {
+      "task": "fastapi_14258",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "read_users"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "get_flat_models_from_annotation",
+        "get_flat_models_from_field",
+        "get_missing_field_error",
+        "serialize",
+        "validate",
+        "__post_init__",
+        "default",
+        "normalize_name",
+        "alias"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "asdict",
+        "alias",
+        "validation_alias",
+        "serialization_alias",
+        "default",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2292
+    },
+    {
+      "task": "fastapi_14262",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Depends",
+        "FastAPIError",
+        "Security",
+        "__init__",
+        "__post_init__",
+        "app",
+        "get_dependant",
+        "get_parameterless_sub_dependant",
+        "get_typed_return_annotation",
+        "is_coroutine_callable",
+        "is_gen_callable",
+        "solve_dependencies",
+        "solve_generator"
+      ],
+      "top_syms_v4": [
+        "Security",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "Depends",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "Security",
+        "lifespan"
+      ],
+      "top_syms_v5": [
+        "Body",
+        "Depends",
+        "Security",
+        "Path",
+        "Query",
+        "Header",
+        "Cookie",
+        "Form",
+        "File",
+        "request_response"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2381
+    },
+    {
+      "task": "fastapi_14266",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_dependant"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "GenerateJsonSchema",
+        "test_openapi_schema",
+        "test_complex",
+        "with_info_plain_validator_function",
+        "get_client",
+        "get_model_definitions",
+        "_replace_refs",
+        "get_schema_from_model_field",
+        "test_propagates_pydantic2_model_config"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1043
+    },
+    {
+      "task": "fastapi_14297",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "copy_field_info"
+      ],
+      "top_syms_v4": [
+        "serialize",
+        "FastAPI",
+        "post",
+        "post",
+        "get_schema_from_model_field",
+        "app",
+        "ModelField",
+        "serialize_sequence_value",
+        "get_client",
+        "File"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2176
+    },
+    {
+      "task": "fastapi_14301",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_parameterless_sub_dependant"
+      ],
+      "top_syms_v4": [
+        "get_parameterless_sub_dependant",
+        "APIRoute",
+        "get_dependant",
+        "Depends",
+        "Depends",
+        "get_user",
+        "test_broken_scope",
+        "test_broken_scope",
+        "get_stream_session",
+        "get_stream_session"
+      ],
+      "top_syms_v5": [
+        "analyze_param",
+        "solve_dependencies",
+        "is_union_of_base_models",
+        "ensure_multipart_is_installed",
+        "get_parameterless_sub_dependant",
+        "get_flat_dependant",
+        "_get_flat_fields_from_params",
+        "get_flat_params",
+        "get_typed_signature",
+        "get_typed_annotation"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2563
+    },
+    {
+      "task": "fastapi_14303",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "process_fn"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "post",
+        "post",
+        "get",
+        "get",
+        "Form",
+        "get_openapi_path",
+        "request_params_to_args",
+        "request_body_to_args",
+        "APIRouter"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.253
+    },
+    {
+      "task": "fastapi_14306",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "app",
+        "errors",
+        "merged_lifespan",
+        "serialize_response"
+      ],
+      "top_syms_v4": [
+        "create_item",
+        "FastAPI",
+        "websocket_endpoint",
+        "websocket_endpoint",
+        "websocket_endpoint",
+        "websocket_endpoint",
+        "websocket_endpoint",
+        "create_item",
+        "__init__",
+        "create_item"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2571
+    },
+    {
+      "task": "fastapi_14349",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_replace_refs"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "GenerateJsonSchema",
+        "get_schema_from_model_field",
+        "get_model_definitions",
+        "_replace_refs",
+        "_remap_definitions_and_field_mappings",
+        "with_info_plain_validator_function",
+        "test_openapi_schema",
+        "get_definitions",
+        "Foo"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1016
+    },
+    {
+      "task": "fastapi_14356",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "get",
+        "get",
+        "Query",
+        "Query",
+        "Query",
+        "app",
+        "Model",
+        "APIRouter",
+        "Model"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2458
+    },
+    {
+      "task": "fastapi_14360",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "top_syms_v4": [
+        "alias",
+        "alias",
+        "test_openapi_schema",
+        "compute",
+        "compute",
+        "test_post",
+        "test_post_invalid",
+        "request_params_to_args",
+        "Model",
+        "ModelNoAlias"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2648
+    },
+    {
+      "task": "fastapi_14361",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_remap_definitions_and_field_mappings"
+      ],
+      "top_syms_v4": [
+        "_replace_refs",
+        "GenerateJsonSchema",
+        "with_info_plain_validator_function",
+        "_remap_definitions_and_field_mappings",
+        "read_root",
+        "test_get",
+        "get_model_definitions",
+        "get_schema_from_model_field",
+        "NonPydanticModel",
+        "ModelWithRef"
+      ],
+      "top_syms_v5": [
+        "is_pv1_scalar_field",
+        "with_info_plain_validator_function",
+        "get_model_definitions",
+        "is_pv1_scalar_sequence_field",
+        "_model_rebuild",
+        "_model_dump",
+        "_get_model_config",
+        "get_schema_from_model_field",
+        "get_definitions",
+        "is_scalar_field"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1889
+    },
+    {
+      "task": "fastapi_14371",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "_get_openapi_operation_parameters",
+        "_validate_value_with_model_field",
+        "alias",
+        "get_body_field",
+        "get_schema_from_model_field",
+        "process_fn",
+        "request_body_to_args",
+        "request_params_to_args"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "test_openapi_schema",
+        "ModelField",
+        "ModelField",
+        "__post_init__",
+        "get_definitions",
+        "alias",
+        "alias",
+        "get_missing_field_error",
+        "get_missing_field_error"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "asdict",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1135
+    },
+    {
+      "task": "fastapi_14372",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "analyze_param"
+      ],
+      "top_syms_v4": [
+        "Security",
+        "Depends",
+        "Security",
+        "Depends",
+        "field_annotation_is_scalar",
+        "test_is_bytes_sequence_annotation_union",
+        "test_is_uploadfile_sequence_annotation",
+        "__hash__",
+        "__post_init__",
+        "get_schema_from_model_field"
+      ],
+      "top_syms_v5": [
+        "Body",
+        "Depends",
+        "Security",
+        "Path",
+        "Query",
+        "Header",
+        "Cookie",
+        "Form",
+        "File",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.1121
+    },
+    {
+      "task": "fastapi_14419",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Dependant",
+        "ensure_multipart_is_installed",
+        "get_dependant",
+        "solve_dependencies"
+      ],
+      "top_syms_v4": [
+        "SecurityScopes",
+        "get_cached_model_fields",
+        "get_schema_from_model_field",
+        "test_get_model_fields_cached",
+        "normalize_name",
+        "with_info_plain_validator_function",
+        "test_v1_plain_validator_function",
+        "_normalize_errors",
+        "field_annotation_is_scalar_sequence",
+        "is_bytes_sequence_annotation"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1018
+    },
+    {
+      "task": "fastapi_14430",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "copy_field_info"
+      ],
+      "top_syms_v4": [
+        "field_annotation_is_scalar_sequence",
+        "is_bytes_sequence_annotation",
+        "is_uploadfile_sequence_annotation",
+        "get_schema_from_model_field",
+        "serialize_sequence_value",
+        "annotation_is_pydantic_v1",
+        "_annotation_is_sequence",
+        "field_annotation_is_sequence",
+        "is_sequence_field",
+        "serialize_sequence_value"
+      ],
+      "top_syms_v5": [
+        "lenient_issubclass",
+        "_annotation_is_sequence",
+        "field_annotation_is_sequence",
+        "value_is_sequence",
+        "_annotation_is_complex",
+        "field_annotation_is_complex",
+        "field_annotation_is_scalar",
+        "field_annotation_is_scalar_sequence",
+        "is_bytes_or_nonable_bytes_annotation",
+        "is_uploadfile_or_nonable_uploadfile_annotation"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1533
+    },
+    {
+      "task": "fastapi_14448",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_solve_generator",
+        "_unwrapped_call"
+      ],
+      "top_syms_v4": [
+        "get_missing_field_error",
+        "_is_error_wrapper",
+        "ErrorWrapper",
+        "with_info_plain_validator_function",
+        "ErrorWrapper",
+        "_normalize_errors",
+        "test_v1_plain_validator_function",
+        "test_is_bytes_sequence_annotation_union",
+        "test_is_uploadfile_sequence_annotation",
+        "test_serialize_sequence_value_with_optional_list_pipe_union"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1535
+    },
+    {
+      "task": "fastapi_14455",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_openapi_security_definitions"
+      ],
+      "top_syms_v4": [
+        "get_schema_from_model_field",
+        "test_openapi_schema",
+        "test_openapi_schema",
+        "test_complex",
+        "test_form_data_valid",
+        "get_client",
+        "get_client",
+        "test_propagates_pydantic2_model_config",
+        "BaseConfig",
+        "ErrorWrapper"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1175
+    },
+    {
+      "task": "fastapi_14458",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "is_async_gen_callable",
+        "is_coroutine_callable",
+        "is_gen_callable"
+      ],
+      "top_syms_v4": [
+        "is_async_gen_callable",
+        "is_gen_callable",
+        "is_coroutine_callable",
+        "__call__",
+        "__call__",
+        "__call__",
+        "__call__",
+        "__call__",
+        "__call__",
+        "__call__"
+      ],
+      "top_syms_v5": [
+        "_unwrapped_call",
+        "_impartial",
+        "oauth_scopes",
+        "cache_key",
+        "_uses_scopes",
+        "_is_security_scheme",
+        "_security_scheme",
+        "_security_dependencies",
+        "is_gen_callable",
+        "is_async_gen_callable"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1789
+    },
+    {
+      "task": "fastapi_14459",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "SecurityRequirement",
+        "_impartial",
+        "cache_key",
+        "get_dependant",
+        "get_flat_dependant",
+        "get_openapi_security_definitions"
+      ],
+      "top_syms_v4": [
+        "__hash__",
+        "get_schema_from_model_field",
+        "field_annotation_is_scalar_sequence",
+        "is_bytes_sequence_annotation",
+        "is_uploadfile_sequence_annotation",
+        "get_cached_model_fields",
+        "test_get_model_fields_cached",
+        "test_openapi_schema",
+        "__post_init__",
+        "normalize_name"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1146
+    },
+    {
+      "task": "fastapi_14463",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_openapi_path"
+      ],
+      "top_syms_v4": [
+        "get_openapi_path",
+        "FastAPI",
+        "get_openapi",
+        "analyze_param",
+        "_get_openapi_operation_parameters",
+        "is_body_allowed_for_status_code",
+        "create_model_field",
+        "get_openapi_operation_request_body",
+        "get_openapi_operation_metadata",
+        "get_fields_from_routes"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2334
+    },
+    {
+      "task": "fastapi_14479",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "top_syms_v4": [
+        "get_dependant",
+        "analyze_param",
+        "solve_dependencies",
+        "get_parameterless_sub_dependant",
+        "get_openapi_path",
+        "create_model_field",
+        "get_body_field",
+        "_get_openapi_operation_parameters",
+        "request_params_to_args",
+        "ensure_multipart_is_installed"
+      ],
+      "top_syms_v5": [
+        "_get_signature",
+        "analyze_param",
+        "solve_dependencies",
+        "is_union_of_base_models",
+        "ensure_multipart_is_installed",
+        "get_parameterless_sub_dependant",
+        "get_flat_dependant",
+        "_get_flat_fields_from_params",
+        "get_flat_params",
+        "get_typed_signature"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2256
+    },
+    {
+      "task": "fastapi_14482",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "ModelField",
+        "__post_init__",
+        "get_model_fields"
+      ],
+      "top_syms_v4": [
+        "EmbeddedModel",
+        "Model",
+        "test_propagates_pydantic2_model_config",
+        "get_schema_from_model_field",
+        "get_definitions",
+        "value_is_sequence",
+        "_annotation_is_sequence",
+        "lenient_issubclass",
+        "get_default",
+        "serialize_sequence_value"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.112
+    },
+    {
+      "task": "fastapi_14485",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_flat_params",
+        "get_typed_return_annotation"
+      ],
+      "top_syms_v4": [
+        "type_",
+        "UndefinedType",
+        "type_",
+        "_model_rebuild",
+        "_model_rebuild",
+        "_get_model_config",
+        "get_schema_from_model_field",
+        "serialize_sequence_value",
+        "is_bytes_field",
+        "is_bytes_sequence_field"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1552
+    },
+    {
+      "task": "fastapi_14487",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "http_exception_handler"
+      ],
+      "top_syms_v4": [
+        "get_missing_field_error",
+        "test_get_validation_error",
+        "MyUuid",
+        "validation_exception_handler",
+        "validation_exception_handler",
+        "validate",
+        "__str__",
+        "create_item",
+        "test_post_validation_error",
+        "create_item"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.19
+    },
+    {
+      "task": "fastapi_14512",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "serialize"
+      ],
+      "top_syms_v4": [
+        "Body",
+        "Body",
+        "Body",
+        "create_item_embed",
+        "create_item",
+        "update_item",
+        "field_annotation_is_complex",
+        "get_schema_from_model_field",
+        "is_scalar_field",
+        "create_body_model"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "__post_init__",
+        "get_default",
+        "validate",
+        "serialize",
+        "__hash__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.1218
+    },
+    {
+      "task": "fastapi_14583",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "get_dependant"
+      ],
+      "top_syms_v4": [
+        "__init__",
+        "__init__",
+        "Param",
+        "Body",
+        "PydanticSchemaGenerationError",
+        "handle_item",
+        "handle_item",
+        "handle_item_list_to_list",
+        "__repr__",
+        "__repr__"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__repr__",
+        "__repr__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1062
+    },
+    {
+      "task": "fastapi_14605",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "generate_operation_id",
+        "generate_operation_id_for_path",
+        "get_dependant"
+      ],
+      "top_syms_v4": [
+        "test_warns_pydantic_v1_model_in_response_model",
+        "test_warns_pydantic_v1_model_in_endpoint_param",
+        "test_warns_pydantic_v1_model_in_return_type",
+        "test_warns_pydantic_v1_model_in_additional_responses_model",
+        "get_client",
+        "get_client",
+        "get_client",
+        "get_client",
+        "get_client",
+        "get_client"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__repr__",
+        "__repr__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2475
+    },
+    {
+      "task": "fastapi_14609",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Body",
+        "Cookie",
+        "File",
+        "Form",
+        "Header",
+        "Path",
+        "Query",
+        "__hash__",
+        "__init__",
+        "_extract_endpoint_context",
+        "_get_openapi_operation_parameters",
+        "_validate",
+        "analyze_param",
+        "app",
+        "create_body_model",
+        "create_model_field",
+        "decimal_encoder",
+        "get_dependant",
+        "get_fields_from_routes",
+        "get_flat_dependant",
+        "get_flat_models_from_field",
+        "get_model_fields",
+        "get_openapi_operation_metadata",
+        "get_openapi_security_definitions",
+        "is_union_of_base_models",
+        "is_uploadfile_sequence_annotation",
+        "jsonable_encoder",
+        "merged_lifespan",
+        "process_fn",
+        "request_body_to_args",
+        "request_params_to_args",
+        "serialize_response",
+        "solve_dependencies",
+        "validate",
+        "value_is_sequence"
+      ],
+      "top_syms_v4": [
+        "test_warns_pydantic_v1_model_in_response_model",
+        "test_warns_pydantic_v1_model_in_endpoint_param",
+        "test_warns_pydantic_v1_model_in_return_type",
+        "test_warns_pydantic_v1_model_in_additional_responses_model",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "Query",
+        "Cookie"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__repr__",
+        "__repr__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.0439
+    },
+    {
+      "task": "fastapi_14616",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_validate_value_with_model_field"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "UploadFile",
+        "post",
+        "get",
+        "post",
+        "get",
+        "Form",
+        "app",
+        "Form",
+        "APIRouter"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2544
+    },
+    {
+      "task": "fastapi_14786",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_authorization_scheme_param"
+      ],
+      "top_syms_v4": [
+        "HTTPBearer",
+        "read_current_user",
+        "read_current_user",
+        "HTTPAuthorizationCredentials",
+        "read_current_user",
+        "read_current_user",
+        "read_current_user",
+        "read_current_user",
+        "read_current_user",
+        "read_current_user"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "make_authenticate_headers",
+        "make_not_authenticated_error",
+        "__call__",
+        "__init__",
+        "make_authenticate_headers",
+        "__call__",
+        "__init__",
+        "__call__",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2674
+    },
+    {
+      "task": "fastapi_14794",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "analyze_param"
+      ],
+      "top_syms_v4": [
+        "Depends",
+        "endpoint",
+        "endpoint",
+        "endpoint",
+        "endpoint",
+        "endpoint",
+        "endpoint",
+        "endpoint",
+        "dependency",
+        "a"
+      ],
+      "top_syms_v5": [
+        "Query",
+        "Body",
+        "Depends",
+        "Security",
+        "Path",
+        "Header",
+        "Cookie",
+        "Form",
+        "File",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2693
+    },
+    {
+      "task": "fastapi_14851",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "add_api_route",
+        "decorator",
+        "merged_lifespan",
+        "serialize_response"
+      ],
+      "top_syms_v4": [
+        "on_event",
+        "on_event",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "test_router_events"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "get_websocket_app",
+        "app"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2045
+    },
+    {
+      "task": "fastapi_14873",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__"
+      ],
+      "top_syms_v4": [
+        "APIRouter",
+        "_DefaultLifespan",
+        "get",
+        "app",
+        "app",
+        "_startup",
+        "_shutdown",
+        "FastAPI",
+        "app",
+        "add_event_handler"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "get_websocket_app",
+        "app"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2216
+    },
+    {
+      "task": "fastapi_14953",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_validate"
+      ],
+      "top_syms_v4": [
+        "__init__",
+        "APIRouter",
+        "test_openapi_schema",
+        "test_openapi_schema",
+        "test_openapi_schema",
+        "get",
+        "trace",
+        "delete",
+        "app",
+        "post"
+      ],
+      "top_syms_v5": [
+        "write",
+        "read",
+        "seek",
+        "close",
+        "_validate",
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__",
+        "__init__",
+        "__bool__",
+        "__eq__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1833
+    },
+    {
+      "task": "fastapi_14962",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "app",
+        "serialize",
+        "serialize_response"
+      ],
+      "top_syms_v4": [
+        "ModelWithRef",
+        "test_pydanticv2",
+        "test_encode_custom_json_encoders_model_pydanticv2",
+        "test_valid_exclude_unset",
+        "test_coerce_exclude_unset",
+        "get_valid",
+        "get_coerce",
+        "get_client",
+        "NonPydanticModel",
+        "test_valid"
+      ],
+      "top_syms_v5": [
+        "__get_validators__",
+        "validate",
+        "_validate",
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__",
+        "lenient_issubclass",
+        "_annotation_is_sequence",
+        "field_annotation_is_sequence",
+        "value_is_sequence",
+        "_annotation_is_complex"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2045
+    },
+    {
+      "task": "fastapi_14978",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Item",
+        "__init__",
+        "add_api_route",
+        "api_route",
+        "app",
+        "get_request_handler",
+        "matches",
+        "read_users"
+      ],
+      "top_syms_v4": [
+        "test_strict_login_correct_grant_type",
+        "test_strict_login_correct_data",
+        "test_strict_login_no_data",
+        "test_strict_login_no_data",
+        "test_strict_login_None",
+        "test_strict_login_correct_correct_grant_type",
+        "test_strict_login_no_grant_type",
+        "test_strict_login_no_grant_type",
+        "test_strict_login_no_grant_type",
+        "test_strict_login_incorrect_grant_type"
+      ],
+      "top_syms_v5": [
+        "__get_validators__",
+        "validate",
+        "_validate",
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.1955
+    },
+    {
+      "task": "fastapi_14986",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_swagger_ui_html",
+        "openapi"
+      ],
+      "top_syms_v4": [
+        "openapi",
+        "setup",
+        "test_main",
+        "test_main",
+        "test_main",
+        "test_main",
+        "Security",
+        "swagger_ui_html",
+        "test_main",
+        "read_main"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2476
+    },
+    {
+      "task": "fastapi_15023",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "PNGStreamingResponse"
+      ],
+      "top_syms_v4": [
+        "generate_stream",
+        "generate_stream",
+        "stream_items",
+        "stream_items_no_async",
+        "stream_items_no_annotation",
+        "stream_items_no_async_no_annotation",
+        "stream_story_no_annotation",
+        "stream_story_no_async_no_annotation",
+        "stream_image_no_annotation",
+        "stream_image_no_async_no_annotation"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "_async_stream_jsonl",
+        "_async_stream_raw"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2366
+    },
+    {
+      "task": "fastapi_15030",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "__init__",
+        "_async_stream_raw",
+        "_serialize_item",
+        "app",
+        "get_openapi_path",
+        "get_request_handler"
+      ],
+      "top_syms_v4": [
+        "add_task",
+        "on_event",
+        "lifespan",
+        "lifespan",
+        "__init__",
+        "on_event",
+        "router_lifespan",
+        "HTTPException",
+        "sub_router_lifespan",
+        "lifespan"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2104
+    },
+    {
+      "task": "fastapi_15280",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "websocket_route"
+      ],
+      "top_syms_v4": [
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "build_middleware_stack",
+        "test_background_tasks_with_depends_annotated",
+        "add_event_handler",
+        "websocket"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "_async_stream_jsonl",
+        "_async_stream_raw"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.25
+    },
+    {
+      "task": "fastapi_15588",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "EventSourceResponse",
+        "ServerSentEvent"
+      ],
+      "top_syms_v4": [
+        "EventSourceResponse",
+        "PartialGitHubEvent",
+        "Depends",
+        "main",
+        "openapi",
+        "main",
+        "main",
+        "test_post_method_sse",
+        "main",
+        "patch"
+      ],
+      "top_syms_v5": [
+        "_check_id_no_null",
+        "_check_data_exclusive",
+        "format_sse_event",
+        "Query",
+        "Body",
+        "Depends",
+        "Security",
+        "EventSourceResponse",
+        "get_graphql_response",
+        "get_graphql_translation_discussions"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2648
+    },
+    {
+      "task": "fastapi_15589",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "request_params_to_args"
+      ],
+      "top_syms_v4": [
+        "read_items",
+        "read_items",
+        "read_items",
+        "read_items",
+        "request_params_to_args",
+        "Header",
+        "Header",
+        "__init__",
+        "make_pr",
+        "OpenIdConnect"
+      ],
+      "top_syms_v5": [
+        "_get_signature",
+        "analyze_param",
+        "solve_dependencies",
+        "is_union_of_base_models",
+        "ensure_multipart_is_installed",
+        "get_parameterless_sub_dependant",
+        "get_flat_dependant",
+        "_get_flat_fields_from_params",
+        "get_flat_params",
+        "get_typed_signature"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1791
+    },
+    {
+      "task": "fastapi_15745",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "Item",
+        "__init__",
+        "generate_operation_id",
+        "get",
+        "get_openapi",
+        "get_openapi_operation_metadata",
+        "get_openapi_operation_request_body",
+        "get_openapi_path",
+        "openapi",
+        "put",
+        "read_items"
+      ],
+      "top_syms_v4": [
+        "APIRouter",
+        "include_router",
+        "include_router",
+        "test_get_api_route_not_decorated",
+        "test_openapi_schema",
+        "get_items",
+        "test_get_api_route",
+        "test_head",
+        "test_options",
+        "get_not_decorated"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "_async_stream_jsonl",
+        "_async_stream_raw"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2893
+    },
+    {
+      "task": "fastapi_15763",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "read_users"
+      ],
+      "top_syms_v4": [
+        "GenerateJsonSchema",
+        "get_schema_from_model_field",
+        "test_model_field_default_required",
+        "test_is_uploadfile_sequence_annotation",
+        "test_fix",
+        "test_is_bytes_sequence_annotation_union",
+        "__hash__",
+        "_regenerate_error_with_loc",
+        "test_openapi_schema",
+        "copy_field_info"
+      ],
+      "top_syms_v5": [
+        "is_scalar_field",
+        "evaluate_forwardref",
+        "bytes_schema",
+        "asdict",
+        "alias",
+        "validation_alias",
+        "serialization_alias",
+        "default",
+        "__post_init__",
+        "get_default"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2505
+    },
+    {
+      "task": "fastapi_15785",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_fields_from_routes",
+        "get_openapi",
+        "get_openapi_path",
+        "read_users",
+        "url_path_for"
+      ],
+      "top_syms_v4": [
+        "_iter_routes_with_context",
+        "include_router",
+        "_get_routes_version",
+        "__init__",
+        "APIRouter",
+        "effective_candidates",
+        "_contains_router",
+        "_iter_included_route_candidates",
+        "effective_route_contexts",
+        "websocket"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "_async_stream_jsonl",
+        "_async_stream_raw"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2213
+    },
+    {
+      "task": "fastapi_15800",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_EffectiveRouteContext",
+        "__init__",
+        "_build_effective_context",
+        "add_api_route",
+        "decorator",
+        "effective_candidates",
+        "get",
+        "include_router",
+        "matches"
+      ],
+      "top_syms_v4": [
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "main",
+        "new_lang",
+        "PartialGitHubEvent",
+        "main"
+      ],
+      "top_syms_v5": [
+        "request_response",
+        "app",
+        "app",
+        "websocket_session",
+        "app",
+        "app",
+        "get_request_handler",
+        "app",
+        "_async_stream_jsonl",
+        "_async_stream_raw"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.3
+    },
+    {
+      "task": "fastapi_5077",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_flat_params",
+        "get_typed_annotation"
+      ],
+      "top_syms_v4": [
+        "get_typed_signature",
+        "get_typed_annotation",
+        "get_dependant",
+        "__init__",
+        "__init__",
+        "add_api_route",
+        "__init__",
+        "decorator",
+        "decorator",
+        "get_typed_return_annotation"
+      ],
+      "top_syms_v5": [
+        "analyze_param",
+        "solve_dependencies",
+        "is_union_of_base_models",
+        "ensure_multipart_is_installed",
+        "get_parameterless_sub_dependant",
+        "get_flat_dependant",
+        "_get_flat_fields_from_params",
+        "get_flat_params",
+        "get_typed_signature",
+        "get_typed_annotation"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2347
+    },
+    {
+      "task": "fastapi_5624",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_dependant"
+      ],
+      "top_syms_v4": [
+        "test_depends_hashable",
+        "Address",
+        "return_some_user",
+        "return_some_user",
+        "cache_key",
+        "get_scope_counter",
+        "test_security_cache",
+        "get_access_token",
+        "get_parameterless_sub_dependant",
+        "__init__"
+      ],
+      "top_syms_v5": [
+        "cache_key",
+        "is_gen_callable",
+        "is_async_gen_callable",
+        "is_coroutine_callable",
+        "computed_scope",
+        "make_not_authenticated_error",
+        "__init__",
+        "request_response",
+        "app",
+        "app"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2134
+    },
+    {
+      "task": "fastapi_9425",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "get_typed_annotation"
+      ],
+      "top_syms_v4": [
+        "Encoding",
+        "get_typed_return_annotation",
+        "read_root",
+        "ParameterBase",
+        "test_invalid_response_model_field",
+        "update_config",
+        "test_no_content_type_is_json",
+        "read_item",
+        "generate_docs_src_versions_for_file",
+        "read_item"
+      ],
+      "top_syms_v5": [
+        "__get_validators__",
+        "validate",
+        "_validate",
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__",
+        "get_websocket_app",
+        "app",
+        "__init__",
+        "websocket",
+        "include_router"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2436
+    },
+    {
+      "task": "fastapi_9555",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_uses_scopes"
+      ],
+      "top_syms_v4": [
+        "FastAPI",
+        "__init__",
+        "Depends",
+        "__init__",
+        "get",
+        "get",
+        "app",
+        "solve_dependencies",
+        "__init__",
+        "app"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "build_middleware_stack",
+        "openapi",
+        "websocket",
+        "include_router",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2524
+    },
+    {
+      "task": "fastapi_9753",
+      "repo": "fastapi/fastapi",
+      "gold_syms": [
+        "_uses_scopes"
+      ],
+      "top_syms_v4": [
+        "AsyncCallableDependency",
+        "get_callable_dependency",
+        "get_async_callable_dependency",
+        "get_callable_gen_dependency",
+        "get_async_callable_gen_dependency",
+        "CallableDependency",
+        "AsyncCallableGenDependency",
+        "CallableGenDependency",
+        "asynchronous",
+        "test_class_dependency"
+      ],
+      "top_syms_v5": [
+        "lenient_issubclass",
+        "_annotation_is_sequence",
+        "field_annotation_is_sequence",
+        "value_is_sequence",
+        "_annotation_is_complex",
+        "field_annotation_is_complex",
+        "field_annotation_is_scalar",
+        "field_annotation_is_scalar_sequence",
+        "is_bytes_or_nonable_bytes_annotation",
+        "is_uploadfile_or_nonable_uploadfile_annotation"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1442
+    },
+    {
+      "task": "httpx_3672",
+      "repo": "encode/httpx",
+      "gold_syms": [
+        "__exit__",
+        "__init__",
+        "_recv_head",
+        "_send_body",
+        "close",
+        "complete",
+        "handle_requests",
+        "recv_body",
+        "send",
+        "wait"
+      ],
+      "top_syms_v4": [
+        "HTTPParser",
+        "HTTPParser",
+        "complete",
+        "complete",
+        "HTTPConnection",
+        "HTTPConnection",
+        "Connection",
+        "Connection",
+        "test_server_connection_close",
+        "test_client_connection_close"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "send_method_line",
+        "send_status_line",
+        "send_headers",
+        "send_body",
+        "recv_method_line",
+        "recv_status_line",
+        "recv_headers",
+        "recv_body",
+        "complete"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1432
+    },
+    {
+      "task": "requests_6589",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "super_len"
+      ],
+      "top_syms_v4": [
+        "super_len",
+        "test_string",
+        "test_super_len_with__len__",
+        "test_tarfile_member",
+        "test_super_len_tell_ioerror",
+        "test_super_len_with_no__len__",
+        "test_super_len_with_tell",
+        "test_super_len_with_fileno",
+        "test_super_len_with_no_matches",
+        "prepare_content_length"
+      ],
+      "top_syms_v5": [
+        "super_len",
+        "get_netrc_auth",
+        "get_encodings_from_content",
+        "get_unicode_from_response",
+        "default_user_agent",
+        "default_headers",
+        "proxy_bypass_registry",
+        "proxy_bypass",
+        "dict_to_sequence",
+        "guess_filename"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1806
+    },
+    {
+      "task": "requests_6629",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "__init__"
+      ],
+      "top_syms_v4": [
+        "JSONDecodeError",
+        "__init__",
+        "test_json_decode_persists_doc_attr",
+        "test_json_decode_compatibility",
+        "json",
+        "TestRequests",
+        "test_session_pickling",
+        "Response",
+        "test_prepared_request_is_pickleable",
+        "test_json_decode_compatibility_for_alt_utf_encodings"
+      ],
+      "top_syms_v5": [
+        "prepare_url",
+        "__init__",
+        "iter_content",
+        "generate",
+        "json",
+        "path_url",
+        "_encode_params",
+        "_encode_files",
+        "register_hook",
+        "deregister_hook"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.159
+    },
+    {
+      "task": "requests_6644",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "request_url"
+      ],
+      "top_syms_v4": [
+        "get_connection",
+        "init_poolmanager",
+        "test_urllib3_pool_connection_closed",
+        "test_use_proxy_from_environment",
+        "send",
+        "test_server_closes",
+        "test_fragment_not_sent_with_request",
+        "test_entry_points",
+        "get_full_url",
+        "test_multiple_requests"
+      ],
+      "top_syms_v5": [
+        "init_poolmanager",
+        "proxy_manager_for",
+        "cert_verify",
+        "build_response",
+        "get_connection",
+        "request_url",
+        "add_headers",
+        "proxy_headers",
+        "send",
+        "SOCKSProxyManager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.192
+    },
+    {
+      "task": "requests_6757",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "super_len"
+      ],
+      "top_syms_v4": [
+        "rebuild_method",
+        "test_certificate_failure",
+        "test_can_access_urllib3_attribute",
+        "init_poolmanager",
+        "test_total_timeout_connect",
+        "test_read_timeout",
+        "test_connect_timeout",
+        "build_connection_pool_key_attributes",
+        "test_super_len_tell_ioerror",
+        "Timeout"
+      ],
+      "top_syms_v5": [
+        "_urllib3_request_context",
+        "init_poolmanager",
+        "proxy_manager_for",
+        "cert_verify",
+        "build_response",
+        "build_connection_pool_key_attributes",
+        "get_connection_with_tls_context",
+        "get_connection",
+        "request_url",
+        "add_headers"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1523
+    },
+    {
+      "task": "requests_7205",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "get_netrc_auth"
+      ],
+      "top_syms_v4": [
+        "get_netrc_auth",
+        "test_set_basicauth",
+        "get_auth_from_url",
+        "rebuild_proxies",
+        "prepare_url",
+        "_basic_auth_str",
+        "PreparedRequest",
+        "HTTPAdapter",
+        "SessionRedirectMixin",
+        "__call__"
+      ],
+      "top_syms_v5": [
+        "super_len",
+        "get_netrc_auth",
+        "get_encodings_from_content",
+        "get_unicode_from_response",
+        "default_user_agent",
+        "default_headers",
+        "proxy_bypass_registry",
+        "proxy_bypass",
+        "dict_to_sequence",
+        "guess_filename"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1665
+    },
+    {
+      "task": "requests_7309",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "get_encodings_from_content"
+      ],
+      "top_syms_v4": [
+        "_parse_content_type_header",
+        "get_encoding_from_headers",
+        "test__parse_content_type_header",
+        "u",
+        "_resolve_char_detection",
+        "handle_401",
+        "test_transfer_enc_removal_on_redirect",
+        "parse_dict_header",
+        "HTTPAdapter",
+        "resolve_redirects"
+      ],
+      "top_syms_v5": [
+        "super_len",
+        "get_netrc_auth",
+        "get_encodings_from_content",
+        "get_unicode_from_response",
+        "default_user_agent",
+        "default_headers",
+        "proxy_bypass_registry",
+        "proxy_bypass",
+        "dict_to_sequence",
+        "guess_filename"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1698
+    },
+    {
+      "task": "requests_7315",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "request_url"
+      ],
+      "top_syms_v4": [
+        "request_url",
+        "u",
+        "_resolve_char_detection",
+        "test_request_url_trims_leading_path_separators",
+        "TestRequests",
+        "test_session_get_adapter_prefix_with_trailing_slash",
+        "HTTPAdapter",
+        "test_json_encodes_as_bytes",
+        "test_session_get_adapter_prefix_without_trailing_slash",
+        "PreparedRequest"
+      ],
+      "top_syms_v5": [
+        "init_poolmanager",
+        "proxy_manager_for",
+        "cert_verify",
+        "build_response",
+        "build_connection_pool_key_attributes",
+        "get_connection_with_tls_context",
+        "get_connection",
+        "request_url",
+        "add_headers",
+        "proxy_headers"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1799
+    },
+    {
+      "task": "requests_7328",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "resolve_redirects"
+      ],
+      "top_syms_v4": [
+        "Session",
+        "send",
+        "send",
+        "send",
+        "send",
+        "test_HTTP_302_TOO_MANY_REDIRECTS_WITH_PARAMS",
+        "test_custom_redirect_mixin",
+        "merge_hooks",
+        "SessionRedirectMixin",
+        "test_fragment_update_on_redirect"
+      ],
+      "top_syms_v5": [
+        "merge_hooks",
+        "get_redirect_target",
+        "should_strip_auth",
+        "resolve_redirects",
+        "rebuild_proxies",
+        "__init__",
+        "prepare_request",
+        "get",
+        "options",
+        "head"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1859
+    },
+    {
+      "task": "requests_7427",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "get_proxy"
+      ],
+      "top_syms_v4": [
+        "no_proxy",
+        "merge_environment_settings",
+        "clean_proxy_environ",
+        "test_should_bypass_proxies_pass_only_hostname",
+        "get_environ_proxies",
+        "test_bypass_no_proxy_keyword",
+        "test_bypass",
+        "test_not_bypass",
+        "test_should_bypass_proxies_no_proxy",
+        "rebuild_proxies"
+      ],
+      "top_syms_v5": [
+        "merge_hooks",
+        "get_redirect_target",
+        "should_strip_auth",
+        "resolve_redirects",
+        "rebuild_proxies",
+        "__init__",
+        "prepare_request",
+        "request",
+        "get",
+        "options"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.232
+    },
+    {
+      "task": "requests_7433",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "prepare_body"
+      ],
+      "top_syms_v4": [
+        "prepare_body",
+        "__iter__",
+        "__iter__",
+        "__iter__",
+        "__getattr__",
+        "__iter__",
+        "__iter__",
+        "__iter__",
+        "__iter__",
+        "TestRequests"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "prepare",
+        "prepare_url",
+        "prepare_cookies",
+        "__init__",
+        "iter_content",
+        "generate",
+        "json",
+        "path_url",
+        "_encode_params"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1683
+    },
+    {
+      "task": "requests_7502",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "_encode_files"
+      ],
+      "top_syms_v4": [
+        "__getattr__",
+        "_encode_files",
+        "__getattr__",
+        "test_getattr_proxy_stream_follows_redirect",
+        "prepare_body",
+        "AttrProxy",
+        "PreparedRequest",
+        "TestRequests",
+        "test_unicode_multipart_post",
+        "RequestEncodingMixin"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "prepare",
+        "prepare_url",
+        "prepare_cookies",
+        "__init__",
+        "iter_content",
+        "generate",
+        "json",
+        "path_url",
+        "_encode_params"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1694
+    },
+    {
+      "task": "requests_7505",
+      "repo": "psf/requests",
+      "gold_syms": [
+        "SupportsRead",
+        "_encode_files",
+        "_encode_params",
+        "prepare_body"
+      ],
+      "top_syms_v4": [
+        "SupportsRead",
+        "read",
+        "read",
+        "_encode_params",
+        "_encode_files",
+        "prepare_body",
+        "_encode_params",
+        "RequestEncodingMixin",
+        "PreparedRequest",
+        "iter_content"
+      ],
+      "top_syms_v5": [
+        "read",
+        "items",
+        "is_prepared",
+        "__init__",
+        "prepare",
+        "prepare_url",
+        "prepare_cookies",
+        "__init__",
+        "iter_content",
+        "generate"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.1774
+    },
+    {
+      "task": "rich_2725",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_render"
+      ],
+      "top_syms_v4": [
+        "Box",
+        "print_table",
+        "__init__",
+        "_print_table",
+        "_render",
+        "TableSuite",
+        "make_test_card",
+        "Table",
+        "A",
+        "A"
+      ],
+      "top_syms_v5": [
+        "__init__",
+        "__repr__",
+        "__str__",
+        "substitute",
+        "get_plain_headed_box",
+        "get_top",
+        "get_row",
+        "get_bottom",
+        "grid",
+        "__rich_measure__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2077
+    },
+    {
+      "task": "rich_2943",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "clear_meta_and_links"
+      ],
+      "top_syms_v4": [
+        "test_clear_meta_and_links",
+        "test_guess_lexer_yaml_j2",
+        "test_inline_styles_with_justification",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "set_window_title",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_escape_backslash_end",
+        "test_wrap_cjk_mixed"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.3005
+    },
+    {
+      "task": "rich_3006",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "auto_rich_repr"
+      ],
+      "top_syms_v4": [
+        "__eq__",
+        "__eq__",
+        "set_window_title",
+        "test_eq",
+        "test_eq",
+        "auto_rich_repr",
+        "Text",
+        "_is_dataclass_repr",
+        "test_reset_height",
+        "test_measure_pretty"
+      ],
+      "top_syms_v5": [
+        "on",
+        "__rich_console__",
+        "__rich_measure__",
+        "split",
+        "divide",
+        "__repr__",
+        "__bool__",
+        "split",
+        "move",
+        "right_crop"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.3025
+    },
+    {
+      "task": "rich_3052",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "PromptBase",
+        "__init__",
+        "ask",
+        "on_validate_error",
+        "process_response"
+      ],
+      "top_syms_v4": [
+        "ask",
+        "Prompt",
+        "ask",
+        "ask",
+        "default",
+        "name",
+        "Confirm",
+        "test_prompt_str",
+        "PromptBase",
+        "test_prompt_str_default"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__init__",
+        "__init__",
+        "ask",
+        "ask",
+        "ask",
+        "render_default",
+        "make_prompt",
+        "get_input",
+        "check_choice"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2836
+    },
+    {
+      "task": "rich_3061",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "Text",
+        "__init__",
+        "append_text",
+        "append_tokens",
+        "assemble",
+        "copy_styles",
+        "from_ansi",
+        "highlight_regex",
+        "render",
+        "right_crop",
+        "split",
+        "truncate"
+      ],
+      "top_syms_v4": [
+        "Text",
+        "test_wrap_invalid_style",
+        "test_wrap_long_words_2",
+        "test_guess_lexer_yaml_j2",
+        "test_escape",
+        "test_measure_pretty",
+        "test_recording_no_stdout_and_no_stderr_files",
+        "test_traceback_console_theme_applies",
+        "test_reset_height",
+        "_check_buffer"
+      ],
+      "top_syms_v5": [
+        "on",
+        "__rich_console__",
+        "__rich_measure__",
+        "split",
+        "divide",
+        "__repr__",
+        "__bool__",
+        "split",
+        "move",
+        "right_crop"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2749
+    },
+    {
+      "task": "rich_3063",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "escape_backslashes",
+        "pop_style"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_measure_pretty",
+        "test_wrap_invalid_style",
+        "test_guess_lexer_yaml_j2",
+        "test_render_lines_height_minus_vertical_pad_is_negative",
+        "test_recording_no_stdout_and_no_stderr_files",
+        "test_reset_height",
+        "test_traceback_console_theme_applies",
+        "test_escape_escape"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.234
+    },
+    {
+      "task": "rich_3064",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_measure_pretty",
+        "test_wrap_invalid_style",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_render_lines_height_minus_vertical_pad_is_negative",
+        "test_recording_no_stdout_and_no_stderr_files",
+        "test_reset_height",
+        "test_traceback_console_theme_applies"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2569
+    },
+    {
+      "task": "rich_3067",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "ReprHighlighter"
+      ],
+      "top_syms_v4": [
+        "set_window_title",
+        "test_guess_lexer_yaml_j2",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_measure_pretty",
+        "test_wrap_invalid_style",
+        "test_escape_backslash_end",
+        "make_sponsor_message",
+        "_check_buffer",
+        "test_clear_meta_and_links"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2873
+    },
+    {
+      "task": "rich_3130",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "TableDataElement",
+        "create"
+      ],
+      "top_syms_v4": [
+        "TextElement",
+        "on_text",
+        "on_text",
+        "on_text",
+        "on_text",
+        "TableDataElement",
+        "MarkdownElement",
+        "MarkdownContext",
+        "BlockQuote",
+        "ListItem"
+      ],
+      "top_syms_v5": [
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.308
+    },
+    {
+      "task": "rich_3180",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "divide_line",
+        "set_cell_size"
+      ],
+      "top_syms_v4": [
+        "test_wrap_long_words_2",
+        "test_guess_lexer_yaml_j2",
+        "test_wrap_invalid_style",
+        "test_inline_styles_with_justification",
+        "test_escape",
+        "test_render_lines_height_minus_vertical_pad_is_negative",
+        "test_escape_backslash_end",
+        "test_wrap_cjk_width_mid_character",
+        "__init__",
+        "test_measure_pretty"
+      ],
+      "top_syms_v5": [
+        "__rich_repr__",
+        "__rich_console__",
+        "__rich_console__",
+        "cell_length",
+        "__bool__",
+        "is_control",
+        "_split_cells",
+        "split_cells",
+        "line",
+        "apply_style"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2873
+    },
+    {
+      "task": "rich_3296",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "top_syms_v4": [
+        "test_inline_styles_with_justification",
+        "test_guess_lexer_yaml_j2",
+        "test_wrap_invalid_style",
+        "test_escape",
+        "test_clear_meta_and_links_clears_hash",
+        "test_wrap_long_words_2",
+        "test_measure_pretty",
+        "test_escape_backslash_end",
+        "test_render_lines_height_minus_vertical_pad_is_negative",
+        "make_sponsor_message"
+      ],
+      "top_syms_v5": [
+        "__rich_repr__",
+        "__rich_console__",
+        "__rich_console__",
+        "cell_length",
+        "__bool__",
+        "is_control",
+        "_split_cells",
+        "split_cells",
+        "line",
+        "apply_style"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2659
+    },
+    {
+      "task": "rich_3454",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "ReprHighlighter"
+      ],
+      "top_syms_v4": [
+        "test_highlight_regex",
+        "test_highlight_iso8601_regex",
+        "ReprHighlighter",
+        "test_wrong_type",
+        "RegexHighlighter",
+        "NullHighlighter",
+        "_combine_regex",
+        "highlight",
+        "__call__",
+        "test_highlight_json_string_only"
+      ],
+      "top_syms_v5": [
+        "highlight",
+        "_combine_regex",
+        "__call__",
+        "highlight",
+        "highlight",
+        "highlight",
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.2443
+    },
+    {
+      "task": "rich_3468",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_check_buffer",
+        "render_lines",
+        "render_str"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_clear_meta_and_links_clears_hash",
+        "test_wrap_cjk_mixed",
+        "test_inline_styles_with_justification"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2512
+    },
+    {
+      "task": "rich_3469",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_inline_styles_with_justification",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_clear_meta_and_links_clears_hash",
+        "test_wrap_cjk_mixed"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2484
+    },
+    {
+      "task": "rich_3470",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_write_buffer"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_inline_styles_with_justification",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_wrap_cjk_mixed",
+        "test_background_color_override_includes_padding",
+        "test_recording_no_stdout_and_no_stderr_files"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2367
+    },
+    {
+      "task": "rich_3471",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "append_tokens"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_capture_and_record",
+        "test_clear_meta_and_links_clears_hash",
+        "test_render_lines_height_minus_vertical_pad_is_negative"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.3109
+    },
+    {
+      "task": "rich_3472",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "iter_attrs"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_cjk_mixed",
+        "test_inline_styles_with_justification",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.3674
+    },
+    {
+      "task": "rich_3480",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "append",
+        "append_text"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_inline_styles_with_justification",
+        "test_append_tokens",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_capture_and_record"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.3022
+    },
+    {
+      "task": "rich_3486",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "Frame",
+        "_SyntaxHighlightRange",
+        "_process_code",
+        "error",
+        "foo",
+        "get_locals",
+        "stylize_range",
+        "tokens_to_spans"
+      ],
+      "top_syms_v4": [
+        "bar",
+        "Trace",
+        "PathHighlighter",
+        "level2",
+        "bar",
+        "foo",
+        "foo",
+        "bar",
+        "level3",
+        "_SyntaxError"
+      ],
+      "top_syms_v5": [
+        "install",
+        "from_exception",
+        "extract",
+        "__rich_console__",
+        "foo",
+        "excepthook",
+        "ipy_excepthook_closure",
+        "ipy_show_traceback",
+        "ipy_display_traceback",
+        "__init__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2981
+    },
+    {
+      "task": "rich_3506",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "is_control"
+      ],
+      "top_syms_v4": [
+        "_split_cells",
+        "Segment",
+        "split_cells",
+        "test_table_with_empty_cells",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_cjk_mixed",
+        "test_inline_styles_with_justification",
+        "test_append_loop_regression",
+        "test_split_cells_emoji"
+      ],
+      "top_syms_v5": [
+        "__rich_repr__",
+        "__rich_console__",
+        "__rich_console__",
+        "cell_length",
+        "__bool__",
+        "is_control",
+        "_split_cells",
+        "split_cells",
+        "line",
+        "apply_style"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.2532
+    },
+    {
+      "task": "rich_3518",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "add_cell"
+      ],
+      "top_syms_v4": [
+        "highlight",
+        "highlight",
+        "highlight",
+        "highlight",
+        "add_row",
+        "Table",
+        "Column",
+        "highlight",
+        "highlight",
+        "NullHighlighter"
+      ],
+      "top_syms_v5": [
+        "highlight",
+        "_combine_regex",
+        "__call__",
+        "highlight",
+        "highlight",
+        "highlight",
+        "grid",
+        "__rich_measure__",
+        "__rich_console__",
+        "RegexHighlighter"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.1623
+    },
+    {
+      "task": "rich_3521",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_split_cells"
+      ],
+      "top_syms_v4": [
+        "test_split_cells_mixed",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_cjk_mixed",
+        "test_inline_styles_with_justification",
+        "test_append_loop_regression",
+        "test_table_with_empty_cells",
+        "test_wrap_invalid_style",
+        "test_render_lines_height_minus_vertical_pad_is_negative",
+        "test_measure_pretty"
+      ],
+      "top_syms_v5": [
+        "__rich_repr__",
+        "__rich_console__",
+        "__rich_console__",
+        "cell_length",
+        "__bool__",
+        "is_control",
+        "_split_cells",
+        "split_cells",
+        "line",
+        "apply_style"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.2446
+    },
+    {
+      "task": "rich_3535",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "split_cells"
+      ],
+      "top_syms_v4": [
+        "split_cells",
+        "test_chop_cells_mixed_width",
+        "PathHighlighter",
+        "_combine_regex",
+        "RequestHighlighter",
+        "test_split_cells_single",
+        "test_highlight_regex",
+        "test_highlight_iso8601_regex",
+        "make_filename_text",
+        "_numbers_column_width"
+      ],
+      "top_syms_v5": [
+        "__rich_repr__",
+        "__rich_console__",
+        "__rich_console__",
+        "cell_length",
+        "__bool__",
+        "is_control",
+        "_split_cells",
+        "split_cells",
+        "line",
+        "apply_style"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.3129
+    },
+    {
+      "task": "rich_3675",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__init__",
+        "group",
+        "is_terminal",
+        "report"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens",
+        "test_capture_and_record"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2753
+    },
+    {
+      "task": "rich_3676",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "Stack",
+        "_SyntaxError",
+        "__rich_console__",
+        "extract",
+        "safe_str"
+      ],
+      "top_syms_v4": [
+        "pager",
+        "NoEmoji",
+        "LayoutError",
+        "ConsoleError",
+        "StyleError",
+        "ColorParseError",
+        "CaptureError",
+        "PromptError",
+        "ReprError",
+        "test_exception_with_extra_lines"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2759
+    },
+    {
+      "task": "rich_3718",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__",
+        "align_text"
+      ],
+      "top_syms_v4": [
+        "Panel",
+        "test_inline_styles_with_justification",
+        "test_wrap_cjk_mixed",
+        "test_clear_meta_and_links_clears_hash",
+        "test_columns_highlight_added_by_add_row",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens",
+        "make_sponsor_message",
+        "test_append_loop_regression",
+        "test_traceback_console_theme_applies"
+      ],
+      "top_syms_v5": [
+        "__rich_console__",
+        "__rich_measure__",
+        "__init__",
+        "fit",
+        "_title",
+        "_subtitle",
+        "align_text",
+        "make_sponsor_message",
+        "__rich__",
+        "make_layout"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.251
+    },
+    {
+      "task": "rich_3772",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "extract",
+        "get_locals",
+        "safe_str"
+      ],
+      "top_syms_v4": [
+        "test_guess_lexer_yaml_j2",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_inline_styles_with_justification",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2425
+    },
+    {
+      "task": "rich_3777",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__init__",
+        "report"
+      ],
+      "top_syms_v4": [
+        "test_tty_compatible",
+        "report",
+        "test_force_color",
+        "is_terminal",
+        "Console",
+        "FakeTTY",
+        "run_steps",
+        "render_progress",
+        "stop",
+        "test_recording_no_stdout_and_no_stderr_files"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.252
+    },
+    {
+      "task": "rich_3782",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_SyntaxHighlightRange",
+        "__rich_measure__",
+        "_get_syntax",
+        "from_path",
+        "guess_lexer"
+      ],
+      "top_syms_v4": [
+        "test_background_color_override_includes_padding",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_append_tokens",
+        "test_capture_and_record"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2616
+    },
+    {
+      "task": "rich_3882",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "on_validate_error"
+      ],
+      "top_syms_v4": [
+        "FloatPrompt",
+        "Confirm",
+        "IntPrompt",
+        "__call__",
+        "on_validate_error",
+        "Prompt",
+        "set_window_title",
+        "PromptBase",
+        "PromptError",
+        "process_response"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__init__",
+        "__init__",
+        "ask",
+        "ask",
+        "ask",
+        "render_default",
+        "make_prompt",
+        "get_input",
+        "check_choice"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.249
+    },
+    {
+      "task": "rich_3894",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_get_signature"
+      ],
+      "top_syms_v4": [
+        "install",
+        "inspect",
+        "install",
+        "Traceback",
+        "extract",
+        "Segment",
+        "Progress",
+        "_guess_lexer",
+        "Console",
+        "ProgressBar"
+      ],
+      "top_syms_v5": [
+        "install",
+        "from_exception",
+        "extract",
+        "__rich_console__",
+        "foo",
+        "_iter_syntax_lines",
+        "excepthook",
+        "ipy_excepthook_closure",
+        "ipy_show_traceback",
+        "ipy_display_traceback"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2945
+    },
+    {
+      "task": "rich_3905",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "start"
+      ],
+      "top_syms_v4": [
+        "Progress",
+        "start",
+        "stop",
+        "stop",
+        "start",
+        "Task",
+        "stop",
+        "stop",
+        "add_task",
+        "start"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": true
+      },
+      "latency_s": 0.2593
+    },
+    {
+      "task": "rich_3930",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "cached_cell_len",
+        "chop_cells",
+        "iter_last"
+      ],
+      "top_syms_v4": [
+        "test_wrap_cjk_mixed",
+        "test_reset_height",
+        "test_escape",
+        "test_wrap_invalid_style",
+        "test_split_cells_mixed",
+        "out",
+        "test_append_tokens",
+        "test_wrap_long_words_2",
+        "test_dataclass_no_attribute",
+        "test"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2483
+    },
+    {
+      "task": "rich_3934",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__init__",
+        "stop"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_table_with_empty_cells",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.243
+    },
+    {
+      "task": "rich_3935",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__",
+        "_calculate_column_widths",
+        "_get_padding_width",
+        "_measure_column",
+        "_render"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_invalid_style",
+        "test_wrap_long_words_2",
+        "test_background_color_override_includes_padding",
+        "test_inline_styles_with_justification",
+        "test_append_loop_regression",
+        "test_padding_plus_wrap",
+        "test_append_tokens",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2596
+    },
+    {
+      "task": "rich_3938",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "print",
+        "split_lines"
+      ],
+      "top_syms_v4": [
+        "test_wrap_invalid_style",
+        "test_wrap_long_words_2",
+        "test_soft_wrap",
+        "test_escape",
+        "test_background_color_override_includes_padding",
+        "test_inline_styles_with_justification",
+        "test_append_loop_regression",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_escape_backslash_end"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.4155
+    },
+    {
+      "task": "rich_3942",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__rich_console__"
+      ],
+      "top_syms_v4": [
+        "current_style",
+        "update",
+        "strip_links",
+        "__init__",
+        "__rich_console__",
+        "update",
+        "test_inline_styles_with_justification",
+        "render_bullet",
+        "render_number",
+        "StyleError"
+      ],
+      "top_syms_v5": [
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__"
+      ],
+      "sym_hit": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2874
+    },
+    {
+      "task": "rich_3944",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "get_character_cell_size"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_inline_styles_with_justification",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding",
+        "test_append_tokens"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2388
+    },
+    {
+      "task": "rich_3953",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_cell_len",
+        "get_character_cell_size"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_inline_styles_with_justification",
+        "test_nerd_font",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2606
+    },
+    {
+      "task": "rich_4006",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "_cell_len",
+        "split_graphemes"
+      ],
+      "top_syms_v4": [
+        "test_recursive_exception",
+        "test_append_loop_regression",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_inline_styles_with_justification",
+        "test_nerd_font",
+        "test_escape_backslash_end"
+      ],
+      "top_syms_v5": [
+        "get_character_cell_size",
+        "cached_cell_len",
+        "cell_len",
+        "_cell_len",
+        "split_graphemes",
+        "_split_text",
+        "split_text",
+        "set_cell_size",
+        "chop_cells",
+        "set_spinner"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.254
+    },
+    {
+      "task": "rich_4070",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "NoEmoji",
+        "__init__",
+        "__rich_console__",
+        "_caller_frame_info",
+        "_collect_renderables",
+        "_svg_hash",
+        "auto_repr",
+        "check_text",
+        "emit",
+        "export_html",
+        "from_file",
+        "get_svg_style",
+        "input",
+        "log",
+        "render",
+        "render_message",
+        "rich_cast"
+      ],
+      "top_syms_v4": [
+        "Console",
+        "log",
+        "print",
+        "input",
+        "ConsoleRenderable",
+        "ConsoleOptions",
+        "_svg_hash",
+        "__init__",
+        "_collect_renderables",
+        "render"
+      ],
+      "top_syms_v5": [
+        "__rich__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_measure__",
+        "__rich_console__",
+        "file",
+        "push_theme",
+        "capture",
+        "pager"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true
+      },
+      "latency_s": 0.2452
+    },
+    {
+      "task": "rich_4075",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "export_text",
+        "print"
+      ],
+      "top_syms_v4": [
+        "test_escape_backslash_end",
+        "test_escape",
+        "test_live_empty",
+        "test_background_color_override_includes_padding",
+        "test_wrap_long_words_2",
+        "test_table_with_empty_cells",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2769
+    },
+    {
+      "task": "rich_4076",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "decode"
+      ],
+      "top_syms_v4": [
+        "test_table_with_empty_cells",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_nerd_font",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2552
+    },
+    {
+      "task": "rich_4077",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "flush"
+      ],
+      "top_syms_v4": [
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_decode_newlines",
+        "test_measure_pretty",
+        "test_guess_lexer_yaml_j2",
+        "test_nerd_font",
+        "test_escape_backslash_end",
+        "test_background_color_override_includes_padding"
+      ],
+      "top_syms_v5": [
+        "set_spinner",
+        "__rich__",
+        "__init__",
+        "run",
+        "__enter__",
+        "__exit__",
+        "track",
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2463
+    },
+    {
+      "task": "rich_4079",
+      "repo": "Textualize/rich",
+      "gold_syms": [
+        "__init__"
+      ],
+      "top_syms_v4": [
+        "test_guess_lexer_yaml_j2",
+        "test_escape",
+        "test_wrap_long_words_2",
+        "test_append_tokens",
+        "test_append_loop_regression",
+        "test_wrap_invalid_style",
+        "test_decode_newlines",
+        "test_measure_pretty",
+        "test_table_with_empty_cells",
+        "test_nerd_font"
+      ],
+      "top_syms_v5": [
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__",
+        "__rich_console__"
+      ],
+      "sym_hit": {
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
+      },
+      "latency_s": 0.2767
+    }
+  ]
+}
