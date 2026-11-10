@@ -97,6 +97,23 @@ Within retrieved files, base `v4` symbol recall is Symbol R@5 = 0.3060. Span-lev
 
 Gold-patch anatomy (129 tasks): median 1 file (mean 2.16), median 8 added lines (mean 138.6), 70.5% single-file, 29.5% multi-file, 8.5% add new files (FastAPI 14.9%).
 
+### Table 1 — Live Leaderboard Ablations (n = 58 tasks per run)
+
+| Ref | Exp | Model | Score | Tasks | Config delta vs baseline |
+|---|---|---|---|---:|---|
+| 56793672 | exp01 | 31B | 0.05 | 2.90 | Baseline v1: thinking on, 6 min / 60 calls |
+| 57037122 | exp03 | 31B | 0.17 | 9.86 | Public 0.17 replica; 6 tools (+3 graph) |
+| 57553805 | exp05 | 31B | **0.20** | 11.60 | Pre-submit patch integrity check (`git add -N -f`) |
+| 57654236 | exp10 | 31B | 0.17 | 9.86 | STATE header, 6 tools, max_output 6144 |
+| 57736284 | exp12 | 31B | 0.17 | 9.86 | Near-exact exp05 with 9-min timing buffer |
+| 57836949 | E0 | 31B | 0.17 | 9.86 | Control: byte-identical exp05 rebuild (0.20 -> 0.17) |
+| 57933618 | exp14 | 31B | 0.15 | — | 31B + swe-toolkit skill, 9 tools, lean prompt |
+| 57889741 | e4b-v4 | E4B | 0.05 | 2.90 | E4B + swe-toolkit v4; offload hypothesis falsified |
+| 57806053 | e4b-v2 | E4B | 0.05 | 2.90 | Temp 0.1, imperative prompt <=2500 chars |
+| 58183079 | exp15 | 31B | pending | — | Clone of exp05, 6 base tools, no SkillToolset, STATE header + plugin-tolerant gate |
+
+*Table 1 notes: Pooled 31B rate 79/464 = 0.1702 (SE 0.0174). Within-split SD 0.89 tasks; cross-split SE 0.0503 (~3.0 tasks). Any delta ≤ 2 tasks (≤ 0.034) is statistically unresolvable publicly. exp05's 0.20 was an upper-tail draw; E0 scored 0.17 on the byte-identical rebuild.*
+
 ## 5. Cross-Scale Analysis & Statistical Noise
 
 ### 5.1 Within-Split SD vs. Cross-Split SE
