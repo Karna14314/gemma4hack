@@ -77,3 +77,21 @@ for 2026-11-09. The fix is to resubmit, not to rebuild.
 `json.dumps(result)[:4000]`, which silently truncated the queue at the 5th entry and is why the
 `error` status went unnoticed for a day. Raised to `[:400000]`; the full queue is now visible
 (`research/public_intel/show_subs.py`).
+
+## exp15_zero_schema_hybrid (bundles/exp15_zero_schema_hybrid) — Gate 2+3 passed, unscored
+- Bundle: bundles/exp15_zero_schema_hybrid
+- Model: gemma-4-31b-it-qat-w4a16-ct
+- Clone of: kaggle_work/gemma-4-developer-agent/bundles/exp05_patch_integrity (single change: drop 3 graph tools get_code_neighbors/search_similar_code/get_code_subgraph -> strictly 6 base tools: run_command, read_file, edit_file, write_file, get_status, submit_patch)
+- Sampling: temperature 0.2, top_p 0.95, max_output_tokens 8192, thinking_budget 4096, include_thoughts true
+- Eval: max_time_minutes 8, max_tool_calls 28, max_turns 80, timeout_seconds 240
+- Prompt: exp05 core trimmed to 4792 chars (<= 4800); adds 1-line Loop-Breaker & Anti-Compaction rule (`STATE: <file>:<line>` before tool calls; never repeat identical run_command/read_file); upgraded pre-submit stdlib verification one-liner (ast.parse() all modified .py + git status --short + git add -N -f untracked .py; ignores missing inline_snapshot/dirty_equals)
+- Rationale: exp05 (6-tool-equivalent, no SkillToolset) scored 0.20/0.17 while exp14 (31B + swe-toolkit skill, 9 tools) scored 0.15 — SkillToolset injects 4 extra schemas per turn and burns 2-4 turns on skill invocation; schema tax + edit fidelity dominate.
+- File hashes:
+  - agent.yaml: 6ad913b0c0cb67d669116a4074d7b520b3a69c8d5aa960b6abe51f9850b45227
+  - configs/sampling.yaml: 571a934e89911734927533f1d36cbcc7b8d493592febe63b217e911cf7ed4926
+  - eval_config.yaml: 916cf6cb34a6cc3de39837fa72cac681599b9ac2a3ee0b893adadfd36474c531
+  - prompts/system.md: ea5670175035217906bbf73c91e58f5360d07d32c042f3cdf1d01bbc0621d7c5
+- Gate 2 (verify_bundle --bundle bundles/exp15_zero_schema_hybrid): ALL CHECKS PASSED
+- Gate 3 (build_notebook --bundle ... --out build/exp15_zero_schema_hybrid.ipynb + verify_notebook): ALL CHECKS PASSED
+- submission.zip sha256: 7219eb5c85446df4eae29fc0f5d4003691b43d82aba9450dc3fff8b66a8e153b (3,199 bytes)
+- Notebook: build/exp15_zero_schema_hybrid.ipynb

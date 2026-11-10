@@ -29,6 +29,12 @@ PROTECTED = {"conftest.py", "pyproject.toml", "pytest.ini", "setup.cfg", "tox.in
 #: the real harness; `HEAD` is the fallback for a plain checkout.
 BASELINES = ("_swegemma_baseline", "HEAD")
 STRAY_PATTERNS = (".adk_exec_", ".orig", ".rej")
+#: Sandbox test-dependency deficits (Discussion #746250 / paper-track discussion):
+#: the base sandbox omits `inline_snapshot` and `dirty_equals`, so FastAPI test
+#: patches that import them crash pytest collection with ModuleNotFoundError.
+#: These are pre-existing environment gaps, not patch regressions, and must never
+#: trigger a false-negative edit revert.
+MISSING_SANDBOX_PACKAGES = ("inline_snapshot", "dirty_equals")
 
 
 def _root(root=None):
@@ -229,6 +235,20 @@ def _run_pytest(test_expr, root):
     return summary, "\n".join(lines), ""
 
 
+def collection_environment_failure(block):
+    """Return True when pytest died collecting because a sandbox package is missing.
+
+    These are pre-existing environment gaps (missing `inline_snapshot` /
+    `dirty_equals` on 27/67 FastAPI tasks), not patch regressions, so they must
+    never trigger a false-negative edit revert.
+    """
+    text = block or ""
+    for pkg in MISSING_SANDBOX_PACKAGES:
+        if f"No module named '{pkg}'" in text or f'No module named "{pkg}"' in text:
+            return True
+    return False
+
+
 def verify(test_expr=None, root=None):
     root = _root(root)
     # Read-only by contract: never delete anything in the tree. A leftover
@@ -295,6 +315,11 @@ def verify(test_expr=None, root=None):
         lines.append(block)
         if test_hint:
             next_hint = next_hint or test_hint
+        elif collection_environment_failure(block):
+            # Missing sandbox package (inline_snapshot / dirty_equals): a
+            # pre-existing environment gap, not a patch regression. Do not
+            # count it as a test failure and do not revert the edit.
+            lines.append("COLLECTION: sandbox package missing (pre-existing); ignoring for patch verdict")
         elif "failures=0 errors=0" not in block:
             problems.append("test")
             next_hint = next_hint or "read FIRST FAILURE, fix the source once, rerun"
