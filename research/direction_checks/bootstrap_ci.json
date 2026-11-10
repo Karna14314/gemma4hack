@@ -1,0 +1,9 @@
+{
+  "n_tasks": 129,
+  "observed_R_at_5": 0.7441860465116279,
+  "bootstrap_mean": 0.7438682170542635,
+  "ci_95_lo": 0.6666666666666666,
+  "ci_95_hi": 0.813953488372093,
+  "n_boot": 5000,
+  "source": "/workspace/app/eval_results/instrument_b.json"
+}
