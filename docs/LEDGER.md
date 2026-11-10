@@ -95,3 +95,10 @@ for 2026-11-09. The fix is to resubmit, not to rebuild.
 - Gate 3 (build_notebook --bundle ... --out build/exp15_zero_schema_hybrid.ipynb + verify_notebook): ALL CHECKS PASSED
 - submission.zip sha256: 7219eb5c85446df4eae29fc0f5d4003691b43d82aba9450dc3fff8b66a8e153b (3,199 bytes)
 - Notebook: build/exp15_zero_schema_hybrid.ipynb
+
+## exp15_zero_schema_hybrid submission (ref 58183079) — 2026-11-10T02:34:38Z
+- Kernel: narisettichaitanya/gemma4-devagent-exp15-zero-schema-hybrid version 1
+- submission.zip sha256: 7219eb5c85446df4eae29fc0f5d4003691b43d82aba9450dc3fff8b66a8e153b (byte-identical to local Gate-3 build)
+- Status: PENDING (scoring in progress)
+- Pushed via tools/kaggle_rest.py (bearer auth; CLI 401s on KGAT token)
+- Gate 2 + Gate 3: ALL CHECKS PASSED before push; Gate 4 pulled hash == local build
