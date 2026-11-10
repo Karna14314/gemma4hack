@@ -47,3 +47,33 @@
 - Payload proof: `extra_body.thinking_token_budget=1024` reaches the outgoing vLLM request (`scripts/probe_thinking_budget.py`, artifacts `build/probe_payloads/`); enforcement verified in vLLM 0.19.1 (`ThinkingTokenBudgetLogitsProcessor`)
 - Hypothesis + pre-registered rule recorded in `kaggle_work/gemma-4-developer-agent/RESULTS.md` (2026-11-09 section): ≥13/58 real win, 9–12 null, ≤8 regression vs pooled 31B ≈ 0.166
 - Session summary: `docs/SESSION_FINAL.md`; phase audit: `docs/ENV_AUDIT.md`
+
+## exp_think1024 root cause — Kaggle-side ERROR, not a bundle defect (2026-11-10)
+
+Re-checked after the submission flipped from `pending` to **`error`**. The failure is **not** in the
+notebook, the bundle, `adk_submission`, or `thinking_budget: 1024`.
+
+| check | observed |
+|---|---|
+| submission `58149803` | `status=error`, `publicScore` empty, **`totalBytes=0`** |
+| error text | `A system error. Please try resubmitting to resolve the error and contact Kaggle Support if it persists.` |
+| kernel status (`kaggle_rest.py status`) | `complete`, `failureMessage` empty |
+| kernel log tail | `all independent checks passed` → `wrote /kaggle/working/submission.zip (3,403 bytes)` → `submission.zip is written and verified` → **`DONE_OK`** |
+| tracebacks in log | **0** (scanned all 65 log entries for `Traceback`/`Error`) |
+| pulled `submission.zip` sha256 | `5d80bac751b9ae2218e5bffa32bc7078f8c9a3dd9abc4b21edf44d2b50ad7082` |
+| local Gate-3 build sha256 | `5d80bac751b9ae2218e5bffa32bc7078f8c9a3dd9abc4b21edf44d2b50ad7082` — **byte-identical** |
+| `adk_submission` involvement | **none at kernel time** — the notebook only writes the zip; the harness compiles it later |
+
+**Conclusion.** The artifact the organizers received is byte-for-byte the one Gate 3 validated. The
+scorer's own ingestion/scoring pipeline failed (`totalBytes=0` means it never registered the file).
+There is no bug in the notebook to fix and nothing to change in the bundle before resubmitting the
+same configuration. The `thinking_budget: 1024` hypothesis is **untested**, not falsified.
+
+**Operational consequence.** An `error` submission is not `pending`, so it does not consume the
+`maxPendingSubmissionsPerTeam: 1` slot. The daily quota (`maxDailySubmissions: 1`) is still spent
+for 2026-11-09. The fix is to resubmit, not to rebuild.
+
+**Process bug found while diagnosing.** `tools/kaggle_rest.py cmd_submissions` printed
+`json.dumps(result)[:4000]`, which silently truncated the queue at the 5th entry and is why the
+`error` status went unnoticed for a day. Raised to `[:400000]`; the full queue is now visible
+(`research/public_intel/show_subs.py`).

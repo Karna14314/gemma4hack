@@ -1,8 +1,9 @@
 {
   "kernel": "leoprovorov__single-agent-anytime-patch",
-  "method": "static",
+  "title": "\u266b Single Agent Anytime Patch ",
+  "ref": "leoprovorov/\u266b Single Agent Anytime Patch ",
   "payload_var": "FILES",
-  "bundle_hash": "b8905aeba117",
+  "digest": null,
   "members": [
     "agent.yaml",
     "configs/sampling.yaml",
@@ -10,6 +11,7 @@
     "prompts/system.md"
   ],
   "member_count": 4,
-  "total_bytes": 6603,
-  "prompt_chars": 6145
+  "total_bytes": 3462,
+  "zip_cell": 1,
+  "prompt_chars": 2994
 }

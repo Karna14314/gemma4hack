@@ -9,10 +9,20 @@ from notebook_lib import validator  # noqa: E402
 
 
 def collect(bundle: Path) -> dict:
+    """Collect bundle members, skipping interpreter caches.
+
+    A benchmark or verifier that imports the bundle's engine writes
+    ``__pycache__/*.pyc`` into it. ``.pyc`` is not an allowed submission extension,
+    so those files must never reach the archive.
+    """
     files = {}
     for p in sorted(bundle.rglob("*")):
-        if p.is_file():
-            files[p.relative_to(bundle).as_posix()] = p.read_text(encoding="utf-8")
+        if not p.is_file():
+            continue
+        rel = p.relative_to(bundle).as_posix()
+        if "__pycache__" in rel.split("/") or p.suffix == ".pyc":
+            continue
+        files[rel] = p.read_text(encoding="utf-8")
     return files
 
 

@@ -1,8 +1,9 @@
 {
   "kernel": "honghanhhh__gemma-4-baseline-lb-0-24",
-  "method": "static",
+  "title": "Gemma 4 Baseline | LB 0.24",
+  "ref": "honghanhhh/Gemma 4 Baseline | LB 0.24",
   "payload_var": "FILES",
-  "bundle_hash": "4a65b9a74a0b",
+  "digest": null,
   "members": [
     "agent.yaml",
     "configs/sampling.yaml",
@@ -11,5 +12,6 @@
   ],
   "member_count": 4,
   "total_bytes": 7512,
+  "zip_cell": 1,
   "prompt_chars": 6985
 }

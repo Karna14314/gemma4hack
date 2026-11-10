@@ -1,8 +1,9 @@
 {
   "kernel": "hitarthjain0__gemma-4-agent-what-took-lb-0-12-0-24",
-  "method": "static",
+  "title": "Gemma 4 Agent \ud83e\udde0 What Took LB 0.12 \u2192 0.24",
+  "ref": "hitarthjain0/Gemma 4 Agent \ud83e\udde0 What Took LB 0.12 \u2192 0.24",
   "payload_var": "FILES",
-  "bundle_hash": "3f1a07abea5b",
+  "digest": null,
   "members": [
     "agent.yaml",
     "configs/sampling.yaml",
@@ -11,5 +12,6 @@
   ],
   "member_count": 4,
   "total_bytes": 1464,
+  "zip_cell": 17,
   "prompt_chars": 1006
 }

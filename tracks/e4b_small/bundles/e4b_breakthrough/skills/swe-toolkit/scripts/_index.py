@@ -176,6 +176,21 @@ def extract_symbols(text, filepath):
     return syms
 
 
+def call_sites(query):
+    """Extract call-site / attribute-access method names from an issue."""
+    names = set()
+    for m in re.finditer(r"\b([A-Za-z_]\w*)\s*\(", query):
+        names.add(m.group(1))
+    for m in re.finditer(r"\.([A-Za-z_]\w*)", query):
+        names.add(m.group(1))
+    for s in re.findall(r"`([^`]+)`", query) + re.findall(r'"([^"]+)"', query):
+        for m in re.finditer(r"[A-Za-z_]\w*", s):
+            names.add(m.group(0))
+    for m in re.finditer(r", in ([A-Za-z_]\w*)", query):
+        names.add(m.group(1))
+    return {n for n in names if len(n) >= 3}
+
+
 def parse_query(query):
     trace_files = []
     trace_funcs = []
@@ -220,6 +235,7 @@ def parse_query(query):
         "general": general,
         "backticks": backticks,
         "error_strings": error_strings,
+        "callsites": call_sites(query),
     }
 
 
@@ -285,6 +301,19 @@ def score_candidate(sym, q, idf, N, avgdl, doc_tokens):
             score += 4.0
     if sym["qualname"] in q["exact_syms"]:
         score += 80.0
+    # call-site / attribute-access boost (v6 lever C)
+    csites = q.get("callsites", set())
+    if sym["qualname"] in csites:
+        score += 60.0
+    body_low = (sym.get("body") or "").lower()
+    for cn in csites:
+        cl = cn.lower()
+        if cl in body_low and (cl + "(" in body_low or "." + cl in body_low):
+            score += 10.0
+            break
+    # small member-over-container base bias (v5/v6)
+    if not (sym.get("signature") or "").startswith("class"):
+        score += 3.0
     # BM25 over general tokens
     tf_counts = {}
     for t in doc_tokens:
@@ -361,6 +390,24 @@ def locate(root, query, top_n=5, deadline=None, stats=None):
         s["_doc"] = dt
     for s in allsyms:
         s["_score"] = score_candidate(s, q, idf, N, avgdl, s["_doc"])
+
+    # member-over-container boost (v6 lever B): when a class and its method both
+    # match, prefer the method's span over the enclosing class.
+    class_spans = [(i, s) for i, s in enumerate(allsyms)
+                   if (s.get("signature") or "").startswith("class")]
+    for i, s in enumerate(allsyms):
+        sig = s.get("signature") or ""
+        if sig.startswith("class"):
+            continue
+        sl, el = s.get("start_line"), s.get("end_line")
+        if not sl or not el:
+            continue
+        for ci, c in class_spans:
+            csl, cel = c.get("start_line"), c.get("end_line")
+            if csl and cel and csl <= sl and el <= cel:
+                if allsyms[ci].get("_score", 0) > 0 and s.get("_score", 0) > 0:
+                    s["_score"] = s.get("_score", 0) + 20.0
+                break
 
     # file-level aggregation
     file_scores = {}

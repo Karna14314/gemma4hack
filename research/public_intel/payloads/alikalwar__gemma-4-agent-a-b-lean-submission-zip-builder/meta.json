@@ -1,14 +1,12 @@
 {
   "kernel": "alikalwar__gemma-4-agent-a-b-lean-submission-zip-builder",
-  "method": "sandbox_exec",
-  "error": null,
-  "members": [
-    "agent.yaml",
-    "configs/sampling.yaml",
-    "eval_config.yaml",
-    "prompts/system.md"
-  ],
-  "member_count": 4,
-  "total_bytes": 4572,
-  "temp_root": "C:\\Users\\chait\\AppData\\Local\\Temp\\nbexec_3qsjla4d"
+  "title": "Gemma 4 Agent A/B: Lean submission.zip Builder",
+  "ref": "alikalwar/Gemma 4 Agent A/B: Lean submission.zip Builder",
+  "payload_var": null,
+  "digest": null,
+  "members": [],
+  "member_count": 0,
+  "total_bytes": 0,
+  "zip_cell": 3,
+  "prompt_chars": null
 }

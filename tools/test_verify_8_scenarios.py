@@ -9,7 +9,11 @@ import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BUNDLE_SCRIPTS = REPO_ROOT / "bundles" / "exp13_swe_toolkit" / "skills" / "swe-toolkit" / "scripts"
+BUNDLE_SCRIPTS = Path(os.environ.get("SWE_TEST_SCRIPTS") or (REPO_ROOT / "bundles" / "exp13_swe_toolkit" / "skills" / "swe-toolkit" / "scripts"))
+
+# Importing a bundle's _verify writes __pycache__/*.pyc into the bundle. A .pyc is not an
+# allowed submission extension, so the torture suite must not poison the artifact.
+sys.dont_write_bytecode = True
 
 sys.path.insert(0, str(BUNDLE_SCRIPTS))
 import _verify

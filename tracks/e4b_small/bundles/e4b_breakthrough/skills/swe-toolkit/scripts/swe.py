@@ -136,6 +136,21 @@ def _search_term(query):
 def do_locate(args):
     root = args.root or _default_root()
     query = args.query or getattr(args, "issue", None) or ""
+    # Idempotent compaction resume: if a prior locate/verify left state on disk,
+    # prepend a 2-line summary so an amnesiac (post-compaction) model recovers
+    # its working context without any prompt rule.
+    resume_lines = []
+    try:
+        import json as _j
+        st_path = "/tmp/swe_session_state.json"
+        if os.path.isfile(st_path):
+            st = _j.load(open(st_path))
+            diff = st.get("modified", "")
+            ver = st.get("verify", "")
+            resume_lines.append("[SESSION STATE] Modified files on disk: {}".format(diff or "(none)"))
+            resume_lines.append("[SESSION STATE] Last verify: {}".format(ver or "(none)"))
+    except Exception:
+        resume_lines = []
     top_n = int(getattr(args, "top", None) or 5)
     budget = float(getattr(args, "budget", None) or _index.LOCATE_BUDGET_SECONDS)
     stats = {}
@@ -164,9 +179,34 @@ def do_locate(args):
         stats.get("files_found", 0),
         stats.get("seconds", 0.0),
     )
-    lines = [header, "TOP FILES:"]
+    lines = []
+    if resume_lines:
+        lines.extend(resume_lines)
+        lines.append("")
+    lines.append(header)
+    lines.append("TOP FILES:")
     for i, fp in enumerate(files, 1):
         lines.append("  {}. {}".format(i, fp))
+
+    # Confidence signal: on symptom-only queries (no .py path, no backtick/quote
+    # identifiers, no traceback) locate is unreliable. Tell the model to fall
+    # back to git grep instead of reading all 5 files.
+    try:
+        q = _index.parse_query(query)
+        has_path = bool(q.get("paths")) or bool(q.get("modules"))
+        has_ident = bool(q.get("exact_syms")) or bool(q.get("trace_funcs")) or bool(q.get("trace_files"))
+        has_error_str = bool(q.get("error_strings"))
+        top_score = (ranked[0].get("_score", 0) if ranked else 0) or 0
+        second_score = (ranked[1].get("_score", 0) if len(ranked) > 1 else 0) or 0
+        low = (not has_path and not has_ident and not has_error_str) or (second_score > 0 and top_score < 1.5 * second_score)
+        if low:
+            term = _search_term(query)
+            if term:
+                lines.append("CONFIDENCE: LOW (symptom-only or weak separation) -> do not read all 5 files; run: git grep -n \"{}\" -- '*.py' | head -20".format(term))
+            else:
+                lines.append("CONFIDENCE: LOW (symptom-only or weak separation) -> do not read all 5 files; run git grep with the most specific identifier from the issue")
+    except Exception:
+        pass
 
     top_symbol = None
     for sym in ranked:
@@ -203,6 +243,21 @@ def do_locate(args):
         lines.append(
             _slice(_read_lines(root, fp), start, SNIPPET_LINES, SNIPPET_CHARS, lead=0)
         )
+    # Persist a tiny state file so a post-compaction re-run of locate (or verify)
+    # can resume without any prompt rule (idempotent compaction resume).
+    try:
+        import json as _j, subprocess as _sp
+        diff_names = ""
+        try:
+            r = _sp.run(["git", "diff", "--name-only"], cwd=root, capture_output=True, text=True)
+            if r.returncode == 0:
+                diff_names = " ".join(r.stdout.split()) or "(none)"
+        except Exception:
+            diff_names = "(none)"
+        _j.dump({"modified": diff_names, "verify": "n/a", "top": files[:3]},
+                open("/tmp/swe_session_state.json", "w"))
+    except Exception:
+        pass
     return cap("\n".join(lines))
 
 
@@ -259,6 +314,23 @@ def do_verify(args):
             "STATUS: PARTIAL\nverify exceeded its 180s budget: {}\n"
             "NEXT: rerun with a narrower -k filter, or `python -c` the assertion"
         ).format(err)
+    # Persist verify status for idempotent compaction resume.
+    try:
+        import json as _j
+        st_path = "/tmp/swe_session_state.json"
+        st = {}
+        if os.path.isfile(st_path):
+            st = _j.load(open(st_path))
+        # extract STATUS line
+        status_line = "unknown"
+        for ln in str(value).splitlines():
+            if ln.startswith("STATUS:"):
+                status_line = ln.strip()
+                break
+        st["verify"] = status_line
+        _j.dump(st, open(st_path, "w"))
+    except Exception:
+        pass
     # `_verify.verify` already prints its own STATUS/NEXT contract.
     return cap(value)
 
@@ -274,8 +346,22 @@ def main():
     ap.add_argument("--budget", type=float, default=None)
     args, unknown = ap.parse_known_args()
     cmd = args.cmd
+    # Guard against ADK's dict-style args (args={"issue": "..."}), which arrive as
+    # "--issue ..." flags without a leading positional subcommand. ADK 1.36.1's
+    # schema permits args as an object, so the model may emit one; without this
+    # guard swe.py prints "usage" and silently does nothing.
+    if cmd is None:
+        if args.query is not None or "--issue" in unknown or "--query" in unknown:
+            cmd = "locate"
+        elif "--verify" in unknown or args.test is not None:
+            cmd = "verify"
+        elif "--symbol" in unknown:
+            cmd = "inspect"
     if not args.query and unknown:
-        args.query = " ".join(unknown)
+        # strip any leading flags that were already consumed conceptually
+        toks = [u for u in unknown if u not in ("--issue", "--query", "--verify", "--symbol")]
+        if toks:
+            args.query = " ".join(toks)
     if args.query:
         args.query = args.query.strip("'\"` \t\r\n")
     if cmd == "locate":

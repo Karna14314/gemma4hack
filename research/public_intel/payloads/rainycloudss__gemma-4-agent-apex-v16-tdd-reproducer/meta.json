@@ -1,0 +1,17 @@
+{
+  "kernel": "rainycloudss__gemma-4-agent-apex-v16-tdd-reproducer",
+  "title": "Gemma 4 Agent Apex V16 TDD Reproducer",
+  "ref": "rainycloudss/Gemma 4 Agent Apex V16 TDD Reproducer",
+  "payload_var": "FILES",
+  "digest": null,
+  "members": [
+    "agent.yaml",
+    "configs/sampling.yaml",
+    "eval_config.yaml",
+    "prompts/system.md"
+  ],
+  "member_count": 4,
+  "total_bytes": 2812,
+  "zip_cell": 3,
+  "prompt_chars": 2166
+}

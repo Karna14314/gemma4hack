@@ -25,6 +25,11 @@ TASKS_PATH = (
 )
 SNAPX_DIR = Path(os.environ.get("SWE_BENCH_SNAPX") or r"C:\Users\chait\AppData\Local\Temp\opencode\snapx")
 
+# Importing a bundle's engine writes __pycache__/*.pyc INTO the bundle directory.
+# A .pyc is not an allowed submission extension, so a benchmark run would poison the
+# very artifact it is measuring. Never write bytecode.
+sys.dont_write_bytecode = True
+
 sys.path.insert(0, str(BUNDLE_SCRIPTS))
 import _index
 

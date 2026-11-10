@@ -1,0 +1,17 @@
+{
+  "kernel": "prvsiyan__anatomy-of-a-gemma-4-coding-agent-submission",
+  "title": "Anatomy of a Gemma 4 Coding Agent Submission",
+  "ref": "prvsiyan/Anatomy of a Gemma 4 Coding Agent Submission",
+  "payload_var": "row",
+  "digest": null,
+  "members": [
+    "kind",
+    "label",
+    "license",
+    "link"
+  ],
+  "member_count": 4,
+  "total_bytes": 143,
+  "zip_cell": 1,
+  "prompt_chars": null
+}

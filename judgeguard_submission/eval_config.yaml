@@ -1,0 +1,7 @@
+# JudgeGuard Evaluation Budget Configuration for SWE-bench Inference
+# Optimized per-task execution budgets calibrated to 12-hour global scoring limit
+evaluation:
+  timeout_seconds: 240
+  max_tool_calls: 28
+  max_time_minutes: 8
+  max_turns: 80

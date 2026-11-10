@@ -1,0 +1,21 @@
+{
+  "id": "prvsiyan/anatomy-of-a-gemma-4-coding-agent-submission",
+  "id_no": 141030743,
+  "title": "Anatomy of a Gemma 4 Coding Agent Submission",
+  "code_file": "anatomy-of-a-gemma-4-coding-agent-submission.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": [],
+  "kernel_sources": [],
+  "competition_sources": [
+    "gemma-4-developer-agent"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:17b2fc7f27c25c6c2fd4230ec8e66097ab2b89fc88e1e4d6f338b72e1ee0bc3e",
+  "machine_shape": "None"
+}

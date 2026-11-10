@@ -1,0 +1,36 @@
+============================== CELL 0 [markdown] len=49
+# Gemma 4 Apex V16: Test-Driven Reproducer Agent
+
+============================== CELL 1 [code] len=221
+from pathlib import Path
+import hashlib, os, zipfile, yaml
+
+OUTPUT_DIR = Path(os.environ.get('GEMMA_OUTPUT_ROOT', '/kaggle/working'))
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+ZIP_PATH = OUTPUT_DIR / 'submission.zip'
+
+============================== CELL 2 [code] len=3103
+AGENT_YAML = 'name: swe_agent_apex_v16\nagent_class: LlmAgent\nmodel: gemma-4-31b-it-qat-w4a16-ct\ndescription: Test-driven reproducer autonomous engineer with calibrated 5.2m horizon.\ninstruction: !include prompts/system.md\ngenerate_content_config: !include configs/sampling.yaml\ntools:\n  - run_command\n  - read_file\n  - edit_file\n  - write_file\n  - get_status\n  - submit_patch\n  - search_similar_code\n  - get_code_neighbors\n  - get_code_subgraph\n'
+SAMPLING_YAML = 'temperature: 0.2\ntop_p: 0.95\nmax_output_tokens: 8192\nthinking_config:\n  thinking_budget: 4096\n  include_thoughts: true\n'
+EVAL_YAML = 'evaluation:\n  timeout_seconds: 120\n  max_tool_calls: 75\n  max_time_minutes: 5.2\n  max_turns: 90\n'
+SYSTEM_PROMPT = 'You are an autonomous software engineer fixing one issue in a Python repository at /workspace.\nHidden tests evaluate your patch; the task counts as solved only if all hidden tests pass.\n\n## Budget & Operational Invariants\n- Time budget: 5.2 minutes, 75 tool calls. Make your first concrete edit before half time.\n- Call get_status periodically. When < 60s or < 5 calls remain, verify and submit immediately.\n- Scratch scripts go exclusively under /tmp (never in /workspace, or they pollute git diff).\n- Offline environment: never call pip install. Never run bare pytest or full test suites.\n\n## Common Module Locations\n- FastAPI: routing in fastapi/routing.py, dependencies in fastapi/dependencies/utils.py, examples in docs_src/\n- Rich: rich/console.py, rich/table.py, rich/text.py, rich/syntax.py, rich/panel.py\n- Requests: requests/models.py, requests/sessions.py, requests/adapters.py\n\n## Mandatory TDD Reproducer Workflow\n1. LOCATE & REPRODUCE (TDD Step 1):\n   Compound search: grep -rn "identifier" --include="*.py" . | grep -v "/tests/" | head -n 20\n   Write minimal reproducing script to /tmp/repro.py based on the issue description.\n   Run python3 /tmp/repro.py and confirm failure (exit code != 0). If it passes, fix /tmp/repro.py.\n2. CONTEXT INSPECTION:\n   Read the target region with read_file (use start_line and end_line). Do not read whole files.\n   Find how the function is invoked: git grep -n "function_name" tests/ | head -n 15\n3. SURGICAL EDIT:\n   Modify code with edit_file. Copy old_string exactly with 2-4 surrounding lines for uniqueness.\n   Preserve backward compatibility, existing signatures, and default parameter values.\n   For FastAPI doc examples mentioned in issues, update the matching file under docs_src/ as well.\n4. VERIFY RESOLUTION (TDD Step 2):\n   Run python3 /tmp/repro.py to confirm it now passes with exit code 0.\n   Run targeted existing test: python3 -m pytest tests/test_target.py -x -q -k keyword\n   Confirm syntax integrity: python3 -m py_compile path/to/file.py\n5. AUDIT & SUBMIT:\n   Run git diff --stat to confirm only intended files changed (no /tmp or junk in workspace).\n   Call submit_patch as your final action.\n'
+
+FILES = {
+    'agent.yaml': AGENT_YAML,
+    'configs/sampling.yaml': SAMPLING_YAML,
+    'eval_config.yaml': EVAL_YAML,
+    'prompts/system.md': SYSTEM_PROMPT,
+}
+
+============================== CELL 3 [code] len=550
+with zipfile.ZipFile(ZIP_PATH, 'w') as archive:
+    for relative, content in sorted(FILES.items()):
+        entry = zipfile.ZipInfo(relative, date_time=(1980, 1, 1, 0, 0, 0))
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        entry.external_attr = 0o100644 << 16
+        archive.writestr(entry, content.encode('utf-8'))
+
+with zipfile.ZipFile(ZIP_PATH) as archive:
+    assert archive.testzip() is None
+    assert set(archive.namelist()) == set(FILES)
+print('Built submission.zip:', ZIP_PATH, hashlib.sha256(ZIP_PATH.read_bytes()).hexdigest())

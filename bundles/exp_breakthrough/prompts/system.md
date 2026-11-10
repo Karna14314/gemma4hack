@@ -59,6 +59,11 @@ From the issue, list for yourself: the exact file, function, class or CLI name; 
 - If a test related to your change fails, read the traceback, fix the source once, and rerun once. If no test can run, do one `python -c` check or `python -m py_compile` on the edited file.
 
 ## 5. Final check and submit
+- Run the toolkit's patch gate once before submitting:
+
+  run_skill_script(skill_name="swe-toolkit", file_path="scripts/swe.py", args=["verify"])
+
+  It is read-only. `STATUS: OK` means the patch is structurally valid. `PARTIAL` means read the `FAIL`/`IGNORED` line and act on it. A plain `AssertionError` in an existing test may be pre-fix behaviour; a `SyntaxError`/`ImportError`/`NameError`/`TypeError`/`AttributeError` is a real regression — fix that.
 - Run `git status --short && git diff` in one call. `git diff` alone hides untracked files, but `submit_patch` includes them.
 - Every file you created must be listed by `git status --short`. The patch is built with `git add -N .`, which silently skips anything the repository's own `.gitignore` ignores, so a new file on an ignored path never reaches the grading diff. If a file you created is missing, run `git add -N -f <path>` and check again.
 - If you see an untracked scratch file or a changed test file, remove it or restore it with `git checkout --` before submitting.

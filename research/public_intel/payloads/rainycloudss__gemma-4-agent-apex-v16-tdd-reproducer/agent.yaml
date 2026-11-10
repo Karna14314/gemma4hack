@@ -1,0 +1,16 @@
+name: swe_agent_apex_v16
+agent_class: LlmAgent
+model: gemma-4-31b-it-qat-w4a16-ct
+description: Test-driven reproducer autonomous engineer with calibrated 5.2m horizon.
+instruction: !include prompts/system.md
+generate_content_config: !include configs/sampling.yaml
+tools:
+  - run_command
+  - read_file
+  - edit_file
+  - write_file
+  - get_status
+  - submit_patch
+  - search_similar_code
+  - get_code_neighbors
+  - get_code_subgraph

@@ -353,7 +353,10 @@ def cmd_submissions(competition: str) -> int:
     result = call_json(
         "GET", f"/api/v1/competitions/submissions/list/{competition}?page=1"
     )
-    print(json.dumps(result, indent=2)[:4000])
+    # The list is longer than it looks: every entry carries ~15 nullable mirror
+    # fields. Truncating the print silently hid the newest entries, which is how a
+    # failed submission went unnoticed. Print the whole page.
+    print(json.dumps(result, indent=2)[:400000])
     return 0
 
 
