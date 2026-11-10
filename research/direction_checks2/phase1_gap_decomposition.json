@@ -1,0 +1,36 @@
+{
+  "source": "/workspace/app/eval_results/instrument_b.json",
+  "n_tasks": 129,
+  "committed_table2a_m4_r5": 0.435,
+  "committed_table2c_v4_r5": 0.744,
+  "committed_gap_pp": 30.9,
+  "levels": {
+    "top1": {
+      "instrument_b_any_gold": 0.4186,
+      "instrument_b_mean_fraction": 0.3167,
+      "recall_definition_effect_pp": 10.19
+    },
+    "top3": {
+      "instrument_b_any_gold": 0.6512,
+      "instrument_b_mean_fraction": 0.5276,
+      "recall_definition_effect_pp": 12.36
+    },
+    "top5": {
+      "instrument_b_any_gold": 0.7442,
+      "instrument_b_mean_fraction": 0.6184,
+      "recall_definition_effect_pp": 12.58
+    },
+    "top10": {
+      "instrument_b_any_gold": 0.8295,
+      "instrument_b_mean_fraction": 0.717,
+      "recall_definition_effect_pp": 11.25
+    }
+  },
+  "decomposition_top5_pp": {
+    "total_gap_pp": 30.9,
+    "i_recall_definition": 12.58,
+    "ii_candidate_set_index_input": 18.32,
+    "ii_pure_isolatable": false,
+    "reason_ii_not_isolatable": "Instrument A per-task graph-node ranks are not committed (no graph JSON artifacts on this branch). Cannot recompute Instrument A mean-fraction per-task, so the pure candidate-set effect cannot be fully separated from the recall-definition effect at the per-task level; the split above uses Instrument A's committed aggregate mean-fraction (0.4350)."
+  }
+}
