@@ -110,58 +110,80 @@ def ci_at(block: dict, k: int, metric: str) -> tuple[float, float, float]:
 # fig0 -- card thumbnail
 # =========================================================================== #
 def fig0(D):
-    ab, mf, lb = D["ablation"], D["multifile"], D["leaderboard"]
-    b3 = ab["results"]["B3"]["all"]
-    any5 = g(b3, "/@5/any_gold/value")
-    mfrac5 = g(b3, "/@5/mean_fraction/value")
+    ab, mf, lb, hz = D["ablation"], D["multifile"], D["leaderboard"], D["hazards"]
     multi = mf["buckets"]["all_multi"]
-    m_any = g(multi, "/control/k5/any_gold@5/value")
-    m_all = g(multi, "/control/k5/all_gold@5/value")
-    sd = lb["estimand_rows"][1]["sd_tasks"]
-    se = lb["estimand_rows"][2]["se_split_tasks"]
+    n_multi = multi["N"]
+    any_hits = multi["control"]["k5"]["any_gold@5"]["hits"]
+    all_hits = multi["control"]["k5"]["all_gold@5"]["hits"]
+    partial = any_hits - all_hits
+    n_sites = len([k for k in hz["sites"] if k.startswith("site") and len(k) == 5])
 
     fig = plt.figure(figsize=(12.0, 6.3), dpi=100)
     fig.patch.set_facecolor("#0b132b")
+
     fig.text(0.5, 0.925, "Finding a File Is Not Finding the Patch",
-             ha="center", va="center", color="#ffffff", fontsize=25, weight="bold")
+             ha="center", va="center", color="#ffffff", fontsize=27, weight="bold")
     fig.text(0.5, 0.845,
-             "Retrieval, runtime hazards & leaderboard noise on Gemma 4 "
-             f"({ab['N']} tasks, {lb['split_size']}-task split)",
+             f"Gemma 4  \u00b7  {ab['N']} public tasks  \u00b7  retrieval, runtime hazards, leaderboard noise",
              ha="center", va="center", color="#94a3b8", fontsize=11.5)
 
-    panels = [
-        ("Retrieval ladder", C_BLUE, [
-            ("B3 any-gold @5", f"{any5:.4f}"),
-            ("B3 mean-fraction @5", f"{mfrac5:.4f}"),
-            ("tasks", f"{ab['N']}"),
-        ]),
-        ("Multi-file collapse", C_ORANGE, [
-            ("any-gold @5", f"{m_any:.4f}"),
-            ("all-gold @5", f"{m_all:.4f}"),
-            ("tasks", f"{multi['N']}"),
-        ]),
-        ("Noise floor", C_GREEN, [
-            ("mean solved", f"{lb['estimand_rows'][1]['mean_tasks']:.1f}"
-                            f"/{lb['split_size']}"),
-            ("SD (tasks)", f"{sd:.3f}"),
-            ("SE_split (tasks)", f"{se:.2f}"),
-        ]),
+    # ---- left: one file found out of the three the patch needs ------------- #
+    ax = fig.add_axes([0.045, 0.12, 0.40, 0.62])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+    ax.text(0.0, 0.98, "WHAT RETRIEVAL RETURNS", ha="left", va="top",
+            color="#94a3b8", fontsize=9.5, weight="bold")
+
+    card_x, card_w, card_h = 0.02, 0.56, 0.155
+    rows = [(0.70, True), (0.48, False), (0.26, False)]
+    for i, (y, found) in enumerate(rows):
+        face = "#12395c" if found else "#151e38"
+        edge = "#4c9be8" if found else "#3b4a6b"
+        ax.add_patch(patches.FancyBboxPatch(
+            (card_x, y), card_w, card_h, boxstyle="round,pad=0.012",
+            facecolor=face, edgecolor=edge, linewidth=2.2 if found else 1.2))
+        ax.text(card_x + 0.045, y + card_h / 2, f"file {i + 1}",
+                ha="left", va="center", color="#e2e8f0" if found else "#7c8aa8",
+                fontsize=10.5, weight="bold" if found else "normal")
+        if found:
+            ax.plot([card_x + 0.42, card_x + 0.47, card_x + 0.53],
+                    [y + 0.075, y + 0.045, y + 0.115],
+                    color="#7cc4ff", lw=3.0, solid_capstyle="round")
+
+    ax.plot([0.66, 0.66], [rows[-1][0], rows[0][0] + card_h], color="#64748b", lw=1.6)
+    for yy in (rows[-1][0], rows[0][0] + card_h):
+        ax.plot([0.66, 0.695], [yy, yy], color="#64748b", lw=1.6)
+    ax.text(0.715, 0.56, "the patch\ntouches 3 files", ha="left", va="center",
+            color="#cbd5e1", fontsize=10.2)
+    ax.text(0.02, 0.10, "the entry point", ha="left", va="center",
+            color="#7cc4ff", fontsize=10.0, weight="bold")
+
+    # ---- right: entry point vs all patch files ----------------------------- #
+    ax = fig.add_axes([0.525, 0.12, 0.435, 0.62])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+    ax.text(0.0, 0.98, "WHAT THE PATCH NEEDS", ha="left", va="top",
+            color="#94a3b8", fontsize=9.5, weight="bold")
+
+    rows = [
+        (0.72, any_hits / n_multi, any_hits, "#4c9be8", "found at least one file"),
+        (0.28, all_hits / n_multi, all_hits, "#ff9f43", "found all patch files"),
     ]
-    for i, (title, colour, items) in enumerate(panels):
-        ax = fig.add_axes([0.045 + i * 0.31, 0.10, 0.28, 0.62])
-        ax.set_facecolor("#1c2541")
-        ax.set_xticks([]); ax.set_yticks([])
-        for sp in ax.spines.values():
-            sp.set_color(colour); sp.set_linewidth(1.6)
-        ax.text(0.5, 0.90, title.upper(), ha="center", va="center",
-                color=colour, fontsize=11, weight="bold", transform=ax.transAxes)
-        ax.axhline(0.80, color="#334155", lw=1.0)
-        for j, (label, value) in enumerate(items):
-            y = 0.63 - j * 0.24
-            ax.text(0.5, y, value, ha="center", va="center", color="#ffffff",
-                    fontsize=21, weight="bold", transform=ax.transAxes)
-            ax.text(0.5, y - 0.085, label, ha="center", va="center",
-                    color="#cbd5e1", fontsize=9, transform=ax.transAxes)
+    for y, frac, hits, colour, label in rows:
+        ax.add_patch(patches.Rectangle((0.0, y), 1.0, 0.15, facecolor="#1c2541",
+                                       edgecolor="none"))
+        ax.add_patch(patches.Rectangle((0.0, y), max(frac, 0.006), 0.15,
+                                       facecolor=colour, edgecolor="none"))
+        ax.text(1.0, y + 0.075, f"{hits}/{n_multi}", ha="right", va="center",
+                color="#ffffff", fontsize=17, weight="bold")
+        ax.text(0.0, y - 0.055, label, ha="left", va="center",
+                color="#cbd5e1", fontsize=9.8)
+
+    ax.text(0.0, 0.505, f"{partial} of {n_multi} tasks: some files, not the patch",
+            ha="left", va="center", color="#94a3b8", fontsize=9.8)
+
+    fig.text(0.5, 0.045,
+             f"{ab['N']} tasks  \u00b7  {n_sites} runtime sites  \u00b7  "
+             f"{lb['ledger_summary']['n_runs']} logged submissions",
+             ha="center", va="center", color="#64748b", fontsize=8.8)
     save(fig, "fig0_card_thumbnail.png", face="#0b132b")
 
 
