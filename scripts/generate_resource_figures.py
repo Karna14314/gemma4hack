@@ -32,75 +32,76 @@ BORDER_GRAY = "#CED4DA"
 def generate_res_fig0_banner():
     """Figure 0: 1200x630 Card Thumbnail / Banner for Slot #2."""
     fig = plt.figure(figsize=(12, 6.3), dpi=100)
+    fig.patch.set_facecolor("#0F172A")
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_facecolor("#0F172A")  # Deep navy/slate
     ax.set_xlim(0, 1200)
     ax.set_ylim(0, 630)
     ax.axis("off")
 
-    # Header Badges
+    # Header Badges (strictly non-overlapping with explicit margins)
     badge_rect = patches.FancyBboxPatch(
-        (60, 540), 320, 42, boxstyle="round,pad=0.2",
-        facecolor=BLUISH_GREEN, edgecolor="none", alpha=0.9
+        (60, 542), 310, 42, boxstyle="round,pad=0",
+        facecolor=BLUISH_GREEN, edgecolor="none", alpha=0.95
     )
     ax.add_patch(badge_rect)
-    ax.text(220, 561, "KAGGLE PAPER TRACK: SLOT #2", color="white",
-            fontsize=13, fontweight="bold", ha="center", va="center", family="sans-serif")
+    ax.text(215, 563, "KAGGLE PAPER TRACK: SLOT #2", color="white",
+            fontsize=12, fontweight="bold", ha="center", va="center", family="sans-serif")
 
     badge_rect2 = patches.FancyBboxPatch(
-        (400, 540), 280, 42, boxstyle="round,pad=0.2",
-        facecolor=BLUE, edgecolor="none", alpha=0.9
+        (390, 542), 320, 42, boxstyle="round,pad=0",
+        facecolor=BLUE, edgecolor="none", alpha=0.95
     )
     ax.add_patch(badge_rect2)
-    ax.text(540, 561, "BEST NEW RESOURCE ($10,000)", color="white",
-            fontsize=13, fontweight="bold", ha="center", va="center", family="sans-serif")
+    ax.text(550, 563, "BEST NEW RESOURCE ($10,000)", color="white",
+            fontsize=12, fontweight="bold", ha="center", va="center", family="sans-serif")
 
     # Main Title & Subtitle
-    ax.text(60, 470, "swe-toolkit", color="#38BDF8", fontsize=44, fontweight="heavy",
+    ax.text(60, 475, "swe-toolkit", color="#38BDF8", fontsize=44, fontweight="heavy",
             family="monospace")
-    ax.text(60, 415, "Zero-Dependency AST Inspection, 10 Domain Bug Playbooks",
-            color="white", fontsize=24, fontweight="bold", family="sans-serif")
-    ax.text(60, 375, "& 9/9 Adversarial Patch Verification for Offline Coding Agents",
-            color="#94A3B8", fontsize=20, family="sans-serif")
+    ax.text(60, 420, "Zero-Dependency AST Inspection, 10 Domain Bug Playbooks",
+            color="white", fontsize=23, fontweight="bold", family="sans-serif")
+    ax.text(60, 380, "& 9/9 Adversarial Patch Verification for Offline Coding Agents",
+            color="#94A3B8", fontsize=19, family="sans-serif")
 
-    # Three Core Metric Panels
+    # Three Core Metric Panels (balanced 340px width with 30px gap)
     # Panel 1: Python Stdlib Engine
-    p1 = patches.FancyBboxPatch((60, 110), 330, 220, boxstyle="round,pad=0.4",
+    p1 = patches.FancyBboxPatch((60, 110), 340, 225, boxstyle="round,pad=0",
                                 facecolor="#1E293B", edgecolor="#334155", linewidth=2)
     ax.add_patch(p1)
-    ax.text(80, 290, "1. TOOLKIT ARCHITECTURE", color=SKY_BLUE, fontsize=14, fontweight="bold")
-    ax.text(80, 255, "• 100% Python Standard Library", color="white", fontsize=13)
-    ax.text(80, 225, "• Zero PyPI / wheel dependencies", color="#CBD5E1", fontsize=12)
-    ax.text(80, 195, "• AST Sync/Async twin detection", color="#CBD5E1", fontsize=12)
-    ax.text(80, 165, "• Strict 3,500-char middle cap", color="#CBD5E1", fontsize=12)
-    ax.text(80, 135, "• State isolation in /tmp", color="#CBD5E1", fontsize=12)
+    ax.text(80, 295, "1. TOOLKIT ARCHITECTURE", color=SKY_BLUE, fontsize=13.5, fontweight="bold")
+    ax.text(80, 260, "• 100% Python Standard Library", color="white", fontsize=12.5)
+    ax.text(80, 230, "• Zero PyPI / wheel dependencies", color="#CBD5E1", fontsize=11.5)
+    ax.text(80, 200, "• AST Sync/Async twin detection", color="#CBD5E1", fontsize=11.5)
+    ax.text(80, 170, "• Strict 3,500-char middle cap", color="#CBD5E1", fontsize=11.5)
+    ax.text(80, 140, "• State isolation in /tmp", color="#CBD5E1", fontsize=11.5)
 
     # Panel 2: 10 Domain Playbooks
-    p2 = patches.FancyBboxPatch((435, 110), 330, 220, boxstyle="round,pad=0.4",
+    p2 = patches.FancyBboxPatch((430, 110), 340, 225, boxstyle="round,pad=0",
                                 facecolor="#1E293B", edgecolor="#334155", linewidth=2)
     ax.add_patch(p2)
-    ax.text(455, 290, "2. 10 AST BUG PLAYBOOKS", color=ORANGE, fontsize=14, fontweight="bold")
-    ax.text(455, 255, "• 258 Triggers across 129 Tasks", color="white", fontsize=13)
-    ax.text(455, 225, "• 84 Gold-Patch Exact Matches", color="#CBD5E1", fontsize=12)
-    ax.text(455, 195, "• 32.6% Empirical Precision", color="#CBD5E1", fontsize=12)
-    ax.text(455, 165, "• Rich Rendering: 79.4% Precision", color="#CBD5E1", fontsize=12)
-    ax.text(455, 135, "• Injected hints <= 120 tokens", color="#CBD5E1", fontsize=12)
+    ax.text(450, 295, "2. 10 AST BUG PLAYBOOKS", color=ORANGE, fontsize=13.5, fontweight="bold")
+    ax.text(450, 260, "• 258 Triggers across 129 Tasks", color="white", fontsize=12.5)
+    ax.text(450, 230, "• 84 Gold-Patch Exact Matches", color="#CBD5E1", fontsize=11.5)
+    ax.text(450, 200, "• 32.6% Empirical Precision", color="#CBD5E1", fontsize=11.5)
+    ax.text(450, 170, "• Rich Rendering: 79.4% Precision", color="#CBD5E1", fontsize=11.5)
+    ax.text(450, 140, "• Injected hints <= 120 tokens", color="#CBD5E1", fontsize=11.5)
 
     # Panel 3: Adversarial Torture Suite
-    p3 = patches.FancyBboxPatch((810, 110), 330, 220, boxstyle="round,pad=0.4",
+    p3 = patches.FancyBboxPatch((800, 110), 340, 225, boxstyle="round,pad=0",
                                 facecolor="#1E293B", edgecolor="#334155", linewidth=2)
     ax.add_patch(p3)
-    ax.text(830, 290, "3. 9/9 ADVERSARIAL GATE", color=BLUISH_GREEN, fontsize=14, fontweight="bold")
-    ax.text(830, 255, "• 9/9 Torture Scenarios Passed", color="white", fontsize=13)
-    ax.text(830, 225, "• 100% SyntaxError & empty trap catch", color="#CBD5E1", fontsize=12)
-    ax.text(830, 195, "• .gitignore new file unmasking", color="#CBD5E1", fontsize=12)
-    ax.text(830, 165, "• Stray /workspace/skills auto-wipe", color="#CBD5E1", fontsize=12)
-    ax.text(830, 135, "• Sub-50ms execution latency", color="#CBD5E1", fontsize=12)
+    ax.text(820, 295, "3. 9/9 ADVERSARIAL GATE", color=BLUISH_GREEN, fontsize=13.5, fontweight="bold")
+    ax.text(820, 260, "• 9/9 Torture Scenarios Passed", color="white", fontsize=12.5)
+    ax.text(820, 230, "• Catches 100% SyntaxErrors & empty traps", color="#CBD5E1", fontsize=11.5)
+    ax.text(820, 200, "• .gitignore new file unmasking", color="#CBD5E1", fontsize=11.5)
+    ax.text(820, 170, "• Stray /workspace/skills auto-wipe", color="#CBD5E1", fontsize=11.5)
+    ax.text(820, 140, "• Sub-50ms execution latency", color="#CBD5E1", fontsize=11.5)
 
     # Footer note
-    ax.text(60, 45, "Open Source Tooling | Pure Python stdlib | Verified on 129 Tasks (fastapi, rich, requests, httpx)",
-            color="#64748B", fontsize=12, family="sans-serif")
-    ax.text(1140, 45, "Antigravity Team", color="#64748B", fontsize=12, ha="right", family="sans-serif")
+    ax.text(60, 48, "Open Source Tooling | Pure Python stdlib | Verified on 129 Tasks (fastapi, rich, requests, httpx)",
+            color="#64748B", fontsize=11.5, family="sans-serif")
+    ax.text(1140, 48, "Antigravity Team", color="#64748B", fontsize=11.5, ha="right", family="sans-serif")
 
     out_path = OUT_DIR / "res_fig0_banner.png"
     plt.savefig(out_path, dpi=100, facecolor=fig.get_facecolor())
@@ -145,16 +146,16 @@ def generate_res_fig1_toolkit_pipeline():
     ma = patches.Rectangle((37, 68), 30, 12, facecolor="#F0F9FF", edgecolor=SKY_BLUE, linewidth=1.5)
     ax.add_patch(ma)
     ax.text(39, 76, "swe.py (CLI Router & Output Capper)", fontsize=10.5, fontweight="bold", color="#0369A1")
-    ax.text(39, 72.5, "• OUT_CAP = 3,500 chars (avoids ADK 14k compaction)", fontsize=9)
-    ax.text(39, 69.5, "• Middle-cut: preserves STATUS head & NEXT/TEST tail", fontsize=9)
+    ax.text(39, 72.5, "• OUT_CAP = 3,500 chars (avoids 14k compaction)", fontsize=9)
+    ax.text(39, 69.5, "• Middle-cut: preserves STATUS & TEST tail", fontsize=9)
 
     # Module B: _index.py
     mb = patches.Rectangle((37, 49), 30, 16, facecolor="#F0FDF4", edgecolor=BLUISH_GREEN, linewidth=1.5)
     ax.add_patch(mb)
     ax.text(39, 61, "_index.py (AST Engine & Twins)", fontsize=10.5, fontweight="bold", color="#15803D")
     ax.text(39, 57.5, "• Fast lexical + AST BM25 file index", fontsize=9)
-    ax.text(39, 54.5, "• Sync/Async twin detection: send() vs asend()", fontsize=9)
-    ax.text(39, 51.5, "• Callers, subclasses, overrides, string constants", fontsize=9)
+    ax.text(39, 54.5, "• Sync/Async twins: send() vs asend()", fontsize=9)
+    ax.text(39, 51.5, "• Callers, subclasses, overrides, constants", fontsize=9)
 
     # Module C: _knowledge.py
     mc = patches.Rectangle((37, 32), 30, 14, facecolor="#FFFBEB", edgecolor=ORANGE, linewidth=1.5)
@@ -162,7 +163,7 @@ def generate_res_fig1_toolkit_pipeline():
     ax.text(39, 42, "_knowledge.py (10 AST Playbooks)", fontsize=10.5, fontweight="bold", color="#B45309")
     ax.text(39, 38.5, "• 10 regex/AST bug patterns (258 triggers)", fontsize=9)
     ax.text(39, 35.5, "• Selective hint injector (<= 120 tokens)", fontsize=9)
-    ax.text(39, 32.5, "• High-precision triggers (Rich 79.4%, FastAPI 50%)", fontsize=9)
+    ax.text(39, 32.5, "• High-precision triggers (Rich 79%, FastAPI 50%)", fontsize=9)
 
     # Module D: _verify.py
     md = patches.Rectangle((37, 15), 30, 14, facecolor="#FEF2F2", edgecolor=VERMILLION, linewidth=1.5)

@@ -307,13 +307,11 @@ def render_fig1_harness_architecture():
         ax.text(x + 0.16, y + h - 0.70, sub, fontsize=8.4, weight="semibold", color="#475569")
         ax.text(x + 0.16, y + 0.32, desc, fontsize=8.4, color="#1e293b", linespacing=1.28)
 
-    # Subtle connectors from top pipeline to row 1
-    ax.plot([1.8, 1.8, 2.37], [6.60, 6.40, 6.30], color=C_BLUE, lw=1.2, ls=":")
-    ax.plot([8.2, 8.2, 6.57], [6.60, 6.40, 6.30], color=C_PURPLE, lw=1.2, ls=":")
-    ax.plot([8.2, 8.2, 10.77], [6.60, 6.40, 6.30], color=C_PURPLE, lw=1.2, ls=":")
-    ax.plot([11.4, 11.4, 2.37], [6.60, 6.40, 3.40], color=C_GREEN, lw=1.0, ls=":")
-    ax.plot([1.8, 1.8, 6.57], [6.60, 6.40, 3.40], color=C_BLUE, lw=1.0, ls=":")
-    ax.plot([11.4, 11.4, 10.77], [6.60, 6.40, 3.40], color=C_GREEN, lw=1.0, ls=":")
+    # Clean orthogonal connectors from top pipeline to row 1 cards
+    ax.plot([1.8, 1.8], [6.60, 6.30], color=C_BLUE, lw=1.5, ls=":")
+    ax.plot([5.0, 5.0, 6.57], [6.60, 6.45, 6.30], color="#0284c7", lw=1.2, ls=":")
+    ax.plot([8.2, 8.2, 10.77], [6.60, 6.45, 6.30], color=C_PURPLE, lw=1.2, ls=":")
+    ax.plot([11.4, 11.4], [6.60, 6.30], color=C_GREEN, lw=1.5, ls=":")
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     out_p = ASSETS_DIR / "fig1_harness_architecture.png"
@@ -355,17 +353,17 @@ def render_fig2_retrieval_2x2_decomposition():
     ax1.set_title("(A) Regime A: Static Graph Retrieval (125 In-Graph Tasks)")
     ax1.set_xticks(x)
     ax1.set_xticklabels(ranks, weight="semibold")
-    ax1.set_ylim(0, 0.72)
+    ax1.set_ylim(0, 0.95)
     ax1.grid(axis="y", alpha=0.5)
     despine(ax1)
     ax1.legend(loc="upper left", bbox_to_anchor=(0.01, 0.99), frameon=True, framealpha=0.95, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.6)
 
-    # Inset callout box: 80.9% (313/387) cap exceedance
-    inset_box = patches.FancyBboxPatch((0.44, 0.60), 0.53, 0.34, boxstyle="round,pad=0.03",
+    # Inset callout box: 80.9% (313/387) cap exceedance (cleanly above bars)
+    inset_box = patches.FancyBboxPatch((0.46, 0.68), 0.51, 0.29, boxstyle="round,pad=0.03",
                                        facecolor="#fef2f2", edgecolor=C_RED, linewidth=1.2, transform=ax1.transAxes)
     ax1.add_patch(inset_box)
-    ax1.text(0.70, 0.86, "M3 Context Exceedance Trap", color=C_RED, fontsize=9.2, weight="bold", ha="center", transform=ax1.transAxes)
-    ax1.text(0.70, 0.67, "80.9% (313 / 387)\nof raw 1-hop AST neighborhoods\nexceed the 5,000-char tool cap!\nUnpruned hubs explode token limits.",
+    ax1.text(0.71, 0.90, "M3 Context Exceedance Trap", color=C_RED, fontsize=9.2, weight="bold", ha="center", transform=ax1.transAxes)
+    ax1.text(0.71, 0.74, "80.9% (313 / 387)\nof raw 1-hop AST neighborhoods\nexceed the 5,000-char tool cap!\nUnpruned hubs explode token limits.",
              ha="center", color="#1e293b", fontsize=8.0, linespacing=1.2, transform=ax1.transAxes)
 
     # -------------------------------------------------------------
@@ -385,7 +383,7 @@ def render_fig2_retrieval_2x2_decomposition():
     heights = [0.4350, 0.1832, 0.6182, 0.1258, 0.7440]
     colors = [C_BLUE, C_GREEN, "#38bdf8", C_ORANGE, "#10b981"]
 
-    bars_wf = ax2.bar(x_wf, heights, bottom=bottoms, color=colors, edgecolor="#333333", width=0.55, lw=0.8)
+    bars_wf = ax2.bar(x_wf, heights, bottom=bottoms, color=colors, edgecolor="#333333", width=0.72, lw=0.8)
 
     # Dotted connector lines
     ax2.plot([0, 1], [0.4350, 0.4350], color="#64748b", ls="--", lw=1.0)
@@ -393,17 +391,21 @@ def render_fig2_retrieval_2x2_decomposition():
     ax2.plot([2, 3], [0.6182, 0.6182], color="#64748b", ls="--", lw=1.0)
     ax2.plot([3, 4], [0.7440, 0.7440], color="#64748b", ls="--", lw=1.0)
 
-    # Value text labels on bars (Full N=129 and Shared N=125 in parentheses)
-    ax2.text(0, 0.4350 / 2, "0.4350\n[N=125: 0.4489\n(56.11/125)]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.2)
-    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(p < 0.001)\n[N=125: +17.62 pp]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.8)
-    ax2.text(2, 0.6182 / 2, "0.6182\n[N=125: 0.6251\n(78.14/125)]", ha="center", va="center", color="#0f172a", weight="bold", fontsize=8.2)
-    ax2.text(3, 0.6182 + 0.1258 / 2, "+12.58 pp\n[N=125: +13.49 pp]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.0)
-    ax2.text(4, 0.7440 / 2, "0.7440\n(96/129)\n[N=125: 0.7600\n(95/125)]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.2)
+    # Value text labels on bars (vertically stacked, fully inside bar boundaries)
+    ax2.text(0, 0.4350 / 2, "0.4350\n[N=125: 0.449]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.8)
+
+    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(p < 0.001)\n[N=125: +17.6]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.2)
+
+    ax2.text(2, 0.6182 / 2, "0.6182\n[N=125: 0.625]", ha="center", va="center", color="#0f172a", weight="bold", fontsize=7.8)
+
+    ax2.text(3, 0.6182 + 0.1258 / 2, "+12.58 pp\n[N=125: +13.5]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.2)
+
+    ax2.text(4, 0.7440 / 2, "0.7440\n(96/129)\nN=125: 0.760\n(95/125)", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.6)
 
     # Overall Lift Bracket
-    ax2.annotate("", xy=(4.40, 0.7440), xytext=(4.40, 0.4350),
+    ax2.annotate("", xy=(4.52, 0.7440), xytext=(4.52, 0.4350),
                  arrowprops=dict(arrowstyle="<->", color=C_RED, lw=1.8))
-    ax2.text(4.48, (0.7440 + 0.4350) / 2,
+    ax2.text(4.60, (0.7440 + 0.4350) / 2,
              "Total Transition Leap\n"
              "All N=129: +30.90 pp (+71.0% rel)\n"
              "Shared N=125: +31.11 pp (+69.3% rel)\n"
@@ -500,19 +502,19 @@ def render_fig3_symbol_and_multifile_paradox():
         h = r.get_height()
         ax2.text(r.get_x() + r.get_width()/2, h + 0.02, f"{h:.3f}\n({int(round(h*38))}/38)", ha="center", va="bottom", fontsize=8.5, weight="bold", color=C_RED)
 
-    # Explanatory Paradox Callout
-    callout = patches.FancyBboxPatch((0.08, 0.65), 0.84, 0.28, boxstyle="round,pad=0.03",
+    # Explanatory Paradox Callout (positioned cleanly above bars)
+    callout = patches.FancyBboxPatch((0.08, 0.72), 0.84, 0.25, boxstyle="round,pad=0.03",
                                      facecolor="#fff7ed", edgecolor=C_ORANGE, linewidth=1.2, transform=ax2.transAxes)
     ax2.add_patch(callout)
     ax2.text(0.5, 0.85, "THE MULTI-FILE RETRIEVAL PARADOX", ha="center", color=C_ORANGE, fontsize=9.8, weight="bold", transform=ax2.transAxes)
-    ax2.text(0.5, 0.70, "Single-pass retrieval captures >=1 gold file in 81.6% of tasks,\nbut captures all gold files in only 7.9%!\nMulti-file tasks structurally mandate multi-turn interaction.",
+    ax2.text(0.5, 0.74, "Single-pass retrieval captures >=1 gold file in 81.6% of tasks,\nbut captures all gold files in only 7.9%!\nMulti-file tasks structurally mandate multi-turn interaction.",
              ha="center", color="#1e293b", fontsize=8.2, linespacing=1.25, transform=ax2.transAxes)
 
     ax2.set_ylabel("Retrieval Recall on Multi-File Tasks")
     ax2.set_title("(B) Multi-File Retrieval Paradox (38 Multi-File Tasks, 29.5%)")
     ax2.set_xticks(x)
     ax2.set_xticklabels(k_labels, weight="semibold")
-    ax2.set_ylim(0, 1.12)
+    ax2.set_ylim(0, 1.45)
     ax2.grid(axis="y", alpha=0.5)
     despine(ax2)
     ax2.legend(loc="upper left", frameon=True, framealpha=0.9, facecolor="#ffffff", edgecolor="#cccccc", fontsize=8.8)
@@ -602,7 +604,7 @@ def render_fig4_leaderboard_statistical_power():
     # -------------------------------------------------------------
     scores_top20 = [0.22, 0.24, 0.29]
     counts_top20 = [8, 11, 1]
-    y_pos = np.arange(len(scores_top20))
+    y_pos = np.array([2.1, 3.0, 3.9])
 
     rects_t20 = ax2.barh(y_pos, counts_top20, color=["#38bdf8", C_BLUE, C_GREEN], edgecolor="#333333", height=0.55)
 
@@ -614,16 +616,17 @@ def render_fig4_leaderboard_statistical_power():
     ax2.set_yticklabels([f"0.22 (13 tasks)", f"0.24 (14 tasks)", f"0.29 (17 tasks)"], weight="semibold", fontsize=8.8)
     ax2.set_xlabel("Number of Teams")
     ax2.set_title("(B) Public Top-20 Distribution")
-    ax2.set_xlim(0, 14.5)
+    ax2.set_xlim(0, 15.0)
+    ax2.set_ylim(0.0, 4.8)
     ax2.grid(axis="x", alpha=0.5)
     despine(ax2)
 
-    # Box explaining 4-task span
-    box_t20 = patches.FancyBboxPatch((0.08, 0.08), 0.84, 0.38, boxstyle="round,pad=0.03",
+    # Box explaining 4-task span (cleanly placed below the bars)
+    box_t20 = patches.FancyBboxPatch((0.06, 0.04), 0.88, 0.28, boxstyle="round,pad=0.03",
                                      facecolor="#f8fafc", edgecolor="#94a3b8", linewidth=1.0, transform=ax2.transAxes)
     ax2.add_patch(box_t20)
-    ax2.text(0.5, 0.36, "TOP-20 4-TASK BAND", ha="center", color="#334155", fontsize=9.2, weight="bold", transform=ax2.transAxes)
-    ax2.text(0.5, 0.22, "Entire Top-20 cluster spans\nonly 4 tasks (13 to 17).\nDeltas <= 2 tasks are within\nbinomial run-to-run noise.",
+    ax2.text(0.5, 0.22, "TOP-20 4-TASK BAND", ha="center", color="#334155", fontsize=9.2, weight="bold", transform=ax2.transAxes)
+    ax2.text(0.5, 0.11, "Entire Top-20 cluster spans only 4 tasks (13 to 17).\nDeltas <= 2 tasks are within binomial run-to-run noise.",
              ha="center", color="#475569", fontsize=8.0, linespacing=1.2, transform=ax2.transAxes)
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])
@@ -656,14 +659,10 @@ def render_fig5_patch_anatomy_and_playbooks():
     sizes = [70.5, 29.5]
     colors_donut = [C_BLUE, C_ORANGE]
 
-    wedges, texts, autotexts = ax1.pie(sizes, labels=categories, autopct="%1.1f%%",
-                                       startangle=140, colors=colors_donut,
-                                       wedgeprops=dict(width=0.42, edgecolor="#ffffff", linewidth=2.0),
-                                       textprops=dict(fontsize=8.8, weight="semibold"))
-    for at in autotexts:
-        at.set_color("#ffffff")
-        at.set_fontsize(9.5)
-        at.set_weight("bold")
+    wedges, texts = ax1.pie(sizes, labels=categories,
+                            startangle=140, colors=colors_donut,
+                            wedgeprops=dict(width=0.42, edgecolor="#ffffff", linewidth=2.0),
+                            textprops=dict(fontsize=8.8, weight="semibold"))
 
     ax1.set_title("(A) Gold Patch Anatomy (129 Dev Tasks)")
 
