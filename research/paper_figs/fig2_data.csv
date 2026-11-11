@@ -1,9 +1,8 @@
-panel,method,R@1,R@3,R@5,R@10,recall_definition
-A,M1,0.0504,0.1819,0.2284,0.3036,mean per-task fraction (graph candidates)
-A,M2,0.0583,0.1772,0.2163,0.381,mean per-task fraction (graph candidates)
-A,M3,0.0504,0.1819,0.2265,0.2846,mean per-task fraction (graph candidates)
-A,M4,0.2661,0.3798,0.435,0.4587,mean per-task fraction (graph candidates)
-A,M5,0.2466,0.3742,0.4745,0.5701,mean per-task fraction (graph candidates)
-B,v4,0.4186,0.6512,0.7442,0.8295,any-gold binary (all files on disk)
-B,base,,,,,not committed
-B,v3,,,,,not committed
+regime,method,candidate_set,metric_definition,R@1,R@3,R@5,R@10
+Regime A,M1 Lexical,Graph Candidates (N=125),Mean Fraction,0.052,0.1878,0.2358,0.3133
+Regime A,M2 Dense,Graph Candidates (N=125),Mean Fraction,0.0602,0.1828,0.2233,0.3932
+Regime A,M3 Graph,Graph Candidates (N=125),Mean Fraction,0.052,0.1878,0.2338,0.2938
+Regime A,M4 swe_toolkit,Graph Candidates (N=125),Mean Fraction,0.2746,0.3919,0.4489,0.4734
+Regime A,M5 Hybrid RRF,Graph Candidates (N=125),Mean Fraction,0.2545,0.3862,0.4897,0.5883
+Regime B,Shipped Engine v4,All Files on Disk (N=125),Mean Fraction,0.3163,0.5322,0.6251,0.7261
+Regime B,Shipped Engine v4,All Files on Disk (N=125),Any-Gold,0.4206,0.6587,0.754,0.8413

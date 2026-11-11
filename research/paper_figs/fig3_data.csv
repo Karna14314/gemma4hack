@@ -1,4 +1,7 @@
-variant,R@1,R@3,R@5,R@10,source,re_rank_latency_s
-v4,0.1488,0.2479,0.314,0.3554,recommitted-eval,
-v5,0.19,0.322,0.388,0.488,draft-only,0.235
-v6,0.215,0.331,0.405,0.463,draft-only,1.31
+mechanism,package_version,file_line,verification_type,affected_tasks_impact,mitigation
+Missing Sandbox Test Plugins,pytest in evaluation container,tests/test_*.py (collection phase),Observed in container run,"28 / 67 (41.8%) FastAPI tasks crash on test import before assertions (missing inline-snapshot, dirty-equals)",AST-isolated syntax verification (_verify.py) without bare pytest
+Sandbox .gitignore Staging Trap,git in /workspace sandbox,swegemma harness (git add -N .),Inferred from code & reproduced in devset,11 / 129 (8.5%) gold patches add brand-new files; git add -N . silently omits them if matching .gitignore,Enforce git add -N -f for all new modules in patch gate
+SkillToolset Injected Preamble Overhead,google-adk 1.36.1,google/adk/tools/ skill_toolset.py:689,Observed in request payload,+875 tokens injected on 100% of tasks using skills; mandates load_skill and contradicts cold-calling,"Zero-schema hybrid: 6 base tools, no skill metadata overhead"
+ADK History Compaction Cliff,google-adk 1.36.1,google/adk/apps/ _configs.py:61-70,Inferred from code & HARNESS_README §7.2,"token_threshold = 14,336 drops non-model tool frames, wiping execution history on long trajectories",Retain concise plain-text state cards in agent system context
+vLLM Chat Template Token Mismatch,vllm 0.19.1,vllm/entrypoints/openai/ chat_utils.py:1512,Inferred from code & payload probe,include_thoughts: false strips thoughts from context while thinking_budget > 0 still consumes raw generation,Synchronize sampling configuration and thought tracking flags
+Thinking Budget Logits Truncation,vllm 0.19.1,vllm/model_executor/layers/ logits_processor/builtin.py:294,Inferred from code & payload probe,ThinkingTokenBudgetLogitsProcessor forces </thought> mid-sentence when thought budget is exhausted,Maintain budget >= 4096 or disable thinking budget completely

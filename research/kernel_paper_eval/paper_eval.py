@@ -818,7 +818,7 @@ def main():
         ("exp05", "exp05 patch integrity", "31B", 0.20, "2ba7f9b1…", "BASELINE: patch integrity check (`git add -N -f`)"),
         ("exp08", "exp08 tool contract prompt", "31B", 0.17, "—", "+554 char tool prose (regression)"),
         ("exp10", "exp10 consolidated", "31B", 0.17, "—", "STATE header + 6 tools, max_output 6144"),
-        ("57697341", "57697341 31B-fallback", "31B", 0.13, "—", "E4B alias rejected -> 31B fallback package"),
+        ("exp11_fb", "exp11_fb (ref 57697341)", "31B", 0.13, "—", "E4B alias rejected -> 31B fallback package (8/58 tasks)"),
         ("exp12", "exp12 timing buffer", "31B", 0.17, "203fe180…", "near-exact exp05 with 9-min buffer, 6 tools"),
         ("57836949", "E0 control: byte-identical exp05", "31B", 0.17, "2ba7f9b1…", "reproduction check: exp05 0.20 did not reproduce (0.17)"),
         ("exp_sampling", "exp_sampling temp 1.0 (ref 58096981)", "31B", 0.13, "—", "temp 1.0 / top_p 0.95 / top_k 64 off exp05"),
@@ -829,6 +829,7 @@ def main():
         ("e4b-v3", "e4b-v3 swe-toolkit", "E4B", None, "97c25136…", "E4B + swe-toolkit (kernel verified, unsubmitted)"),
         ("e4b-v4", "e4b_v4_swe_toolkit (ref 57889741)", "E4B", 0.05, "8a179b8a…", "E4B + swe-toolkit v4 engine; offload prediction falsified"),
         ("exp14", "exp14 lean toolkit (ref 57933618)", "31B", 0.15, "—", "31B + swe-toolkit skill, 9 tools, lean prompt"),
+        ("exp15", "exp15 reasoning budget 8192 (ref 58000494)", "31B", 0.13, "—", "thinking budget 4096->8192 off exp05 (~9h runtime, 8/58 tasks)"),
     ]
     exp4_rows = []
     for ref, name, scale, score, sha, delta in ablations:
@@ -846,12 +847,12 @@ def main():
     result_json["experiment4"] = exp4_rows
 
     # Statistical Noise Floor & Binomial Power Calculation
-    converged_31b_tasks = [12, 10, 10, 10, 10, 10, 9, 8]  # exp05, exp03, exp08, exp10, exp12, E0, exp14, exp_sampling
-    pooled_tasks = sum(converged_31b_tasks) # 79
-    pooled_denom = len(converged_31b_tasks) * 58 # 464
-    pooled_rate = pooled_tasks / pooled_denom # 0.1702
-    pooled_se = math.sqrt(pooled_rate * (1 - pooled_rate) / pooled_denom) # 0.0174
-    exp05_fam_sd = statistics.stdev([12, 10, 10, 10, 10]) # 0.894 tasks
+    anchor_31b_tasks = [12, 10, 10, 10, 10]  # exp05, exp03, exp08, exp10, exp12/E0
+    anchor_tasks = sum(anchor_31b_tasks) # 52
+    anchor_denom = len(anchor_31b_tasks) * 58 # 290
+    anchor_rate = anchor_tasks / anchor_denom # 0.1793
+    anchor_se = math.sqrt(anchor_rate * (1 - anchor_rate) / anchor_denom) # 0.0225
+    exp05_fam_sd = statistics.stdev(anchor_31b_tasks) # 0.894 tasks
     cross_split_se = math.sqrt(0.179 * (1 - 0.179) / 58) # 0.0503 (~2.92 tasks)
 
     # In-kernel sandbox test dependency audit over tasks.jsonl
@@ -898,7 +899,7 @@ def main():
         lines.append(f"| {r['ref']} | {r['name']} | {r['scale']} | {score_s} | {r['sha256']} | {resolved_s} | {se_s} | {r['config_delta']} |")
     lines.append("")
     lines.append("### Statistical Noise Floor & Leaderboard Resolution Analysis")
-    lines.append("- **Converged 31B Pooled Rate:** " + str(pooled_tasks) + " / " + str(pooled_denom) + " = **" + f"{pooled_rate:.4f}" + "** (" + f"{pooled_rate*100:.1f}" + "%), Pooled SE = **" + f"{pooled_se:.4f}" + "** (n = 8 runs).")
+    lines.append("- **exp05-Family Anchor Rate:** " + str(anchor_tasks) + " / " + str(anchor_denom) + " = **" + f"{anchor_rate:.4f}" + "** (" + f"{anchor_rate*100:.1f}" + "%), Pooled SE = **" + f"{anchor_se:.4f}" + "** (n = 5 runs: exp05, exp03, exp08, exp10, exp12/E0).")
     lines.append("- **Within-Split Run-to-Run SD:** exp05-family sample SD = **" + f"{exp05_fam_sd:.2f}" + " tasks** (~0.015 score); theoretical binomial SD on fixed items: $\\sigma = \\sqrt{\\sum p_i(1-p_i)} \\approx 0.89\\text{--}1.5$ tasks.")
     lines.append("- **Cross-Split Public-to-Private SE:** $\\text{SE} = \\sqrt{p(1-p)/58} \\approx$ **" + f"{cross_split_se:.4f}" + "** (~**" + f"{cross_split_se*58:.1f}" + " tasks** at p=0.179).")
     lines.append("- **E0 Reproduction Control:** Byte-identical exp05 resubmission (sha256 `2ba7f9b1...`) scored 0.17 (10 tasks), proving exp05's 0.20 was a high draw within noise.")
