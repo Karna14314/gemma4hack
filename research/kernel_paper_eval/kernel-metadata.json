@@ -1,7 +1,7 @@
 {
   "id": "narisettichaitanya/g4-paper-graph-benchmark",
   "title": "g4 Paper Graph Benchmark",
-  "code_file": "paper_eval.py",
+  "code_file": "paper_eval.ipynb",
   "language": "python",
   "kernel_type": "script",
   "is_private": "false",
