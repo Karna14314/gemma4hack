@@ -278,68 +278,103 @@ def generate_res_fig2_playbook_heatmap():
 
 
 def generate_res_fig3_torture_suite_and_deps():
-    """Figure 3: 9/9 Adversarial Torture Suite & Sandbox Dependency Diagnostic."""
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7), dpi=300, gridspec_kw={"width_ratios": [1.1, 1]})
+    """Figure 3: adversarial gate verdicts (left) and measured sandbox exposure (right).
+
+    The right panel reads research/verified_json/runtime_hazards_verified.json.
+    Every count carries its own denominator, so nothing is pooled across
+    67 fastapi tasks, 129 development tasks, and 49 newly created files.
+    """
+    import json
+
+    hz = json.loads(Path("research/verified_json/runtime_hazards_verified.json")
+                    .read_text(encoding="utf-8"))
+    s6, s4 = hz["site6_bare_pytest"], hz["site4_gitignore"]
+    fastapi_n = s6["fastapi_tasks"]
+    def_a = s6["def_a_plus_anyio"]["count"]
+    def_b = s6["def_b_touched_test_files"]["count"]
+    new_tasks = s4["tasks"]
+    new_files = s4["files"]
+    ignored_files = len(s4["ignored"])
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7.4), dpi=300,
+                                   gridspec_kw={"width_ratios": [1.15, 1.0]})
     fig.patch.set_facecolor("white")
 
-    # Panel 1: 9/9 Adversarial Torture Suite
-    ax1.set_facecolor(LIGHT_GRAY)
+    # ---------------- left: nine scenarios, nine verdicts -------------------- #
+    ax1.set_xlim(0, 1)
+    ax1.set_ylim(0, 1)
+    ax1.axis("off")
+    ax1.set_facecolor("white")
+    ax1.set_title("Nine adversarial scenarios, nine correct verdicts",
+                  fontsize=13, fontweight="bold", pad=14, loc="left")
+
     scenarios = [
-        "1. No changes (empty patch)",
-        "2. Valid source edit",
-        "3. New untracked .py file",
-        "4. New .gitignore ignored file",
-        "5. Injected SyntaxError",
-        "6. Filename with spaces",
-        "7. Non-Python edit (docs/README)",
-        "8. Protected files touched",
-        "9. Stray skills/ leak injected"
+        ("Clean tree, no edits", "FAIL", VERMILLION),
+        ("One valid source edit", "OK", BLUISH_GREEN),
+        ("New untracked .py file", "OK", BLUISH_GREEN),
+        ("New file on an ignored path", "IGNORED", ORANGE),
+        ("Injected SyntaxError", "FAIL", VERMILLION),
+        ("Filename containing spaces", "OK", BLUISH_GREEN),
+        ("Non-Python edit only", "OK", BLUISH_GREEN),
+        ("Protected test file touched", "FAIL", VERMILLION),
+        ("Stray skill leak in workspace", "FAIL", VERMILLION),
     ]
-    expected_status = ["FAIL", "OK", "OK", "IGNORED", "FAIL", "OK", "OK", "FAIL", "FAIL"]
-    latencies_ms = [4.2, 8.5, 9.1, 8.7, 7.8, 8.9, 5.1, 7.4, 11.2]
-    y_pos = np.arange(len(scenarios))[::-1]
+    top, step = 0.905, 0.0935
+    for i, (name, verdict, colour) in enumerate(scenarios):
+        y = top - i * step
+        if i % 2 == 0:
+            ax1.add_patch(patches.Rectangle((0, y - step * 0.42), 1, step * 0.84,
+                                            facecolor="#F6F8FA", edgecolor="none"))
+        ax1.text(0.02, y, f"{i + 1}.", color="#8A94A6", fontsize=11,
+                 family="monospace", va="center")
+        ax1.text(0.075, y, name, color=CHARCOAL, fontsize=11.5,
+                 family="sans-serif", va="center")
+        ax1.text(0.975, y, verdict, color=colour, fontsize=10.5, family="monospace",
+                 fontweight="bold", va="center", ha="right")
 
-    bars = ax1.barh(y_pos, latencies_ms, height=0.55, color=SKY_BLUE, edgecolor=BLUE)
-    ax1.set_yticks(y_pos)
-    ax1.set_yticklabels(scenarios, fontsize=10, family="sans-serif")
-    ax1.set_xlabel("Execution Latency (ms)", fontsize=11, fontweight="bold")
-    ax1.set_title("9/9 Adversarial Torture Suite (tools/test_verify_8_scenarios.py)", fontsize=12, fontweight="bold")
-    ax1.set_xlim(0, 18)
-    ax1.grid(axis="x", linestyle="--", alpha=0.5)
+    ax1.text(0.02, 0.045,
+             "The gate is expected to reject five of the nine states. 9 of 9 matched.",
+             color="#5A6472", fontsize=10, family="sans-serif", va="center")
 
-    for i, (lat, stat) in enumerate(zip(latencies_ms, expected_status)):
-        y = y_pos[i]
-        badge_color = BLUISH_GREEN if stat == "OK" else (ORANGE if stat == "IGNORED" else VERMILLION)
-        ax1.text(lat + 0.5, y, f"[{stat}] {lat:.1f}ms", va="center", fontsize=9, fontweight="bold", color=badge_color)
+    # ---------------- right: measured exposure ------------------------------ #
+    ax2.set_xlim(0, 1)
+    ax2.set_ylim(0, 1)
+    ax2.axis("off")
+    ax2.set_facecolor("white")
+    ax2.set_title("What the 129-task audit measured",
+                  fontsize=13, fontweight="bold", pad=14, loc="left")
 
-    # Panel 2: Sandbox Test-Plugin Environment & Patch Structure
-    ax2.set_facecolor(LIGHT_GRAY)
-    categories = [
-        "FastAPI Direct Missing Plugins\n(inline_snapshot/dirty_equals)",
-        "FastAPI Test Collection Crashes\n(Total Unpassable: 28/67)",
-        "Overall Missing Plugin Exposure\n(28 / 129 Tasks)",
-        "Brand-New Files in Gold Patch\n(Requires git add -N -f: 11/129)",
-        "Single-File Patch Dominance\n(91 / 129 Tasks)"
+    rows = [
+        (f"{def_a}/{fastapi_n}", "gold test_patch imports an offline-only plugin",
+         def_a / fastapi_n, VERMILLION),
+        (f"{def_b}/{fastapi_n}", "test files the patch touches import one",
+         def_b / fastapi_n, VERMILLION),
+        (f"{new_tasks}/{129}", f"tasks that create new files ({new_files} files)",
+         new_tasks / 129, ORANGE),
+        (f"{ignored_files}/{new_files}", "of those files hidden by .gitignore",
+         0.0, BLUISH_GREEN),
     ]
-    percentages = [32.8, 41.8, 21.7, 8.5, 70.5]
-    colors = [VERMILLION, VERMILLION, ORANGE, BLUE, BLUISH_GREEN]
-    y_pos2 = np.arange(len(categories))[::-1]
+    top2, step2 = 0.855, 0.205
+    for i, (count, label, frac, colour) in enumerate(rows):
+        y = top2 - i * step2
+        ax2.text(0.0, y + 0.055, count, color=colour, fontsize=17, family="monospace",
+                 fontweight="bold", va="center")
+        ax2.text(0.0, y - 0.005, label, color="#3C4756", fontsize=10.5,
+                 family="sans-serif", va="center")
+        ax2.add_patch(patches.Rectangle((0.0, y - 0.075), 1.0, 0.032,
+                                        facecolor="#E9ECEF", edgecolor="none"))
+        if frac > 0:
+            ax2.add_patch(patches.Rectangle((0.0, y - 0.075), frac, 0.032,
+                                            facecolor=colour, edgecolor="none"))
 
-    ax2.barh(y_pos2, percentages, height=0.55, color=colors)
-    ax2.set_yticks(y_pos2)
-    ax2.set_yticklabels(categories, fontsize=9.5)
-    ax2.set_xlabel("Task Prevalence (%)", fontsize=11, fontweight="bold")
-    ax2.set_title("Sandbox Test Environment & Patch Diagnostic", fontsize=12, fontweight="bold")
-    ax2.set_xlim(0, 100)
-    ax2.grid(axis="x", linestyle="--", alpha=0.5)
-
-    for i, p in enumerate(percentages):
-        y = y_pos2[i]
-        ax2.text(p + 2, y, f"{p:.1f}%", va="center", fontsize=9.5, fontweight="bold", color=CHARCOAL)
+    ax2.text(0.0, 0.055,
+             "Each count keeps its own denominator: 67 fastapi tasks, 129 tasks, 49 files.\n"
+             "Plugin exposure is an exposure count, not a grader failure.",
+             color="#5A6472", fontsize=9.5, family="sans-serif", va="center")
 
     plt.tight_layout()
     out_path = OUT_DIR / "res_fig3_torture_suite_and_deps.png"
-    plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path, dpi=300, facecolor="white")
     plt.close()
     print(f"Saved: {out_path} ({os.path.getsize(out_path)/1024:.1f} KB)")
 

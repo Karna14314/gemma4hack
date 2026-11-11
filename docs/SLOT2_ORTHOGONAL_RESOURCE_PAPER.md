@@ -215,7 +215,7 @@ python swe.py verify --test "pytest tests/test_redirect.py -q -x"
   - `assets/resource_figures/res_fig0_banner.png`: Card thumbnail (1200×630) showing the 3,500-character middle-truncation protocol: head kept, middle dropped, `STATUS` verdict preserved.
   - `assets/resource_figures/res_fig1_toolkit_pipeline.png`: Pipeline architecture, middle-truncation protocol, and `/tmp` state isolation.
   - `assets/resource_figures/res_fig2_playbook_heatmap.png`: Empirical trigger frequency and gold-patch precision for the 10 AST playbooks.
-  - `assets/resource_figures/res_fig3_torture_suite_and_deps.png`: 9/9 Adversarial torture suite pass matrix and 129-task sandbox test environment diagnostic.
+  - `assets/resource_figures/res_fig3_torture_suite_and_deps.png`: The gate's verdict on nine adversarial states (9 of 9 correct) beside measured exposure: 22/67 and 17/67 plugin imports, 11 tasks creating 49 new files, 0 hidden by `.gitignore`.
 - [x] **Zero Table or Figure Overlap**: Contains zero shared tables, figures, or leaderboard statistics from Writeup #1.
 - [x] **License**: Released under the permissive MIT Open-Source License.
 
