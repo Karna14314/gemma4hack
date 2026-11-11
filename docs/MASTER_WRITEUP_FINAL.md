@@ -11,11 +11,11 @@
 
 An offline SWE agent fails in three separable places: it retrieves the wrong file, it is defeated by the serving stack, or it is measured too imprecisely to know whether anything changed. We study all three on Gemma 4 across 129 public development tasks.
 
-For retrieval we ladder four rankers that differ by one mechanism each: filename matching (B0), file-level BM25 (B1), AST symbol indexing (B2), and AST indexing with test-path demotion (B3). B3 reaches Any-Gold file R@5 = 0.7442 and Mean-Fraction R@5 = 0.6184. The two numbers differ by construction, not by evidence: a task scores 1 under Any-Gold exactly when its mean fraction is positive, so the 12.58 pp gap at k=5 is definitional and carries no p-value. Across regimes, the static competition graph (M4) records Mean-Fraction R@5 = 0.4350 against B3's 0.6184; we report this as an observed difference across two harnesses and two index bundles, not as a causal effect.
+For retrieval we ladder four rankers that differ by one mechanism each: filename matching (B0), file-level BM25 (B1), AST symbol indexing (B2), and AST indexing with test-path demotion (B3). B3 reaches Any-Gold file R@5 = 0.7442 and Mean-Fraction R@5 = 0.6184. The two numbers differ by construction, not by evidence: a task scores 1 under Any-Gold exactly when its mean fraction is positive, so the 12.58 pp gap at k=5 is definitional and carries no p-value. Across regimes, the static competition graph (M4) records 0.4350 on that metric against B3's 0.6184; we report this as an observed difference across two harnesses and two index bundles, not as a causal effect.
 
 The multi-file picture is sharper than a single recall number suggests. Of 38 multi-file tasks, single-pass retrieval finds at least one gold file in 31/38 and all gold files in 3/38 at k=5. Ten of the 38 touch more than five gold files, for which strict all-gold at k=5 is arithmetically impossible. A budget-matched two-hop expansion trades the entry point for multi-file coverage without adding net recall: at k=5 it gains strict all-gold in 3 tasks while losing any-gold in 2, and neither shift is resolvable (exact paired p = 0.500 and p = 0.250).
 
-Six runtime sites are audited against installed wheels. Compaction first fires at turns 8–9; the `SkillToolset` preamble costs 333 tokens and adds 417 tokens at turn 1; all 49 new files created by gold patches are staged, with 0 hidden by `.gitignore`; and bare agent-side `pytest` meets an uninstallable plugin in 22 of 67 `fastapi` tasks by gold-test import, or 17 when restricted to the test files each patch touches.
+Six runtime sites are audited, four against installed wheels and two inherited from upstream. Compaction first fires at turns 8–9; the `SkillToolset` preamble costs 333 tokens and adds 417 tokens at turn 1; all 49 new files created by gold patches are staged, with 0 hidden by `.gitignore`; and bare agent-side `pytest` meets an uninstallable plugin in 22 of 67 `fastapi` tasks by gold-test import, or 17 when restricted to the test files each patch touches.
 
 Finally, 16 logged submissions define the noise floor. Five near-baseline 31B bundles score 12, 10, 10, 10, 10 of 58, mean 10.4, sample SD 0.894 tasks (95% CI [0.54, 2.57]). A byte-identical resubmission moved 2 tasks. The binomial standard error of a single 58-task split is 2.92 tasks. Differences below roughly 2.92 tasks are not evidence of a mechanism change.
 
@@ -29,7 +29,7 @@ We make four contributions, each reproducible by one script:
 
 1. **A one-mechanism retrieval ladder** (B0–B3) on identical snapshots, under three metric definitions with task-bootstrap intervals.
 2. **A multi-file audit** separating "the patch touches several files" from "the retriever can return them all", plus a budget-matched two-hop test.
-3. **Six runtime sites** quoted from installed wheels, each labelled by evidence class (source, replay, mitigated, inherited, or exposure count).
+3. **Six runtime sites**, each labelled by evidence class: source-quoted, replay-verified, mitigated, inherited, or counted exposure.
 4. **Leaderboard estimand rows**: repeat-pair shift, between-bundle dispersion, and split sampling error.
 
 We quarantined legacy non-reproducible artifacts (intra-file symbol re-ranking, synthetic p-values, and non-canonical subsets) under `research/quarantined_legacy_audits/`. Every number here is emitted by `scripts/run_verified_experiments.py`; `scripts/reproduce_all.py` fails the build if any disagrees.
@@ -88,7 +88,7 @@ Each step changes one mechanism: B0→B1 adds term weighting and length normalis
 
 The metric gap is the point most easily misread. Within B3, Any-Gold @5 = 0.7442 while Mean-Fraction @5 = 0.6184, a gap of 12.58 pp. That gap is definitional: Any-Gold is 1 exactly when Mean-Fraction is greater than 0, so the two differ only on tasks where some but not all gold files were found. There are 28 such tasks at k=5. No hypothesis test is applicable, and an earlier draft's p-value for this comparison was an artefact of treating the two definitions as independent measurements.
 
-The cross-regime comparison is the one we are least willing to over-read. M4 records Mean-Fraction R@5 = 0.4350; B3 records 0.6184 on the same metric and task count. The +18.34 pp difference is consistent with the index change, but the two runs differ in retrieval library, harness, and snapshot preparation. We report it as an observed difference across regimes and stop there.
+The cross-regime comparison is the one we are least willing to over-read. M4 records 0.4350; B3 records 0.6184 on the same metric and task count. The +18.34 pp difference is consistent with the index change, but the two runs differ in retrieval library, harness, and snapshot preparation. We report it as an observed difference across regimes and stop there.
 
 ---
 

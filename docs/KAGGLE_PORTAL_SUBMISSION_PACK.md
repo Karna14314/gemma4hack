@@ -69,9 +69,9 @@ deliberately does not duplicate it, so there is no second copy to drift.
 
 Current state of that file:
 
-- 2,657 whitespace words (target 2,650; hard gate 2,750).
+- 2,656 whitespace words (target 2,650; hard gate 2,750).
 - 124 claims bound to `research/verified_json/*.json` by JSON Pointer.
-- 364 visible numeric tokens, all bound or declared structural.
+- 362 visible numeric tokens, all bound or declared structural.
 - No placeholder, no withdrawn artifact, no legacy calibrated string.
 
 Re-verify before pasting:
@@ -84,7 +84,7 @@ Expected tail:
 
 ```
 [PASS] every number in the paper resolves to research/verified_json/*.json
-[PASS] no forbidden legacy string; 2657 <= 2750 words
+[PASS] no forbidden legacy string; 2656 <= 2750 words
 ```
 
 The same run rewrites `docs/number_audit.csv`, which lists every claim, its JSON
