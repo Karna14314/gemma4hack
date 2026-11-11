@@ -212,7 +212,7 @@ python swe.py verify --test "pytest tests/test_redirect.py -q -x"
 
 - [x] **Public Demonstration Notebook**: The companion notebook [`g4-swe-toolkit-resource-demo`](https://www.kaggle.com/code/narisettichaitanya/g4-swe-toolkit-resource-demo) executes live on Kaggle CPU runtimes, runs the 9/9 torture suite in sub-10ms, and prints all tables in this paper in $< 60$ seconds.
 - [x] **Four Dedicated Resource Figures**:
-  - `assets/resource_figures/res_fig0_banner.png`: Overview card banner (1200×630).
+  - `assets/resource_figures/res_fig0_banner.png`: Card thumbnail (1200×630) showing the 3,500-character middle-truncation protocol: head kept, middle dropped, `STATUS` verdict preserved.
   - `assets/resource_figures/res_fig1_toolkit_pipeline.png`: Pipeline architecture, middle-truncation protocol, and `/tmp` state isolation.
   - `assets/resource_figures/res_fig2_playbook_heatmap.png`: Empirical trigger frequency and gold-patch precision for the 10 AST playbooks.
   - `assets/resource_figures/res_fig3_torture_suite_and_deps.png`: 9/9 Adversarial torture suite pass matrix and 129-task sandbox test environment diagnostic.

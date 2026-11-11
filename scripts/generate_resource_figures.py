@@ -30,78 +30,72 @@ BORDER_GRAY = "#CED4DA"
 
 
 def generate_res_fig0_banner():
-    """Figure 0: 1200x630 Card Thumbnail / Banner for Slot #2."""
+    """Figure 0: 1200x630 card thumbnail for Slot #2.
+
+    One idea, not a table: the toolkit caps tool output at 3,500 chars by
+    dropping the middle, so the contract lines at the tail survive.
+    """
+    W, H = 1200, 630
+    BG = "#0B132B"
+    INK = "#E7EEF8"
+    MUTED = "#8FA3BF"
+    ACCENT = "#38BDF8"
+    PANEL = "#14304D"
+    EDGE = "#2B3A5B"
+
     fig = plt.figure(figsize=(12, 6.3), dpi=100)
-    fig.patch.set_facecolor("#0F172A")
+    fig.patch.set_facecolor(BG)
     ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_facecolor("#0F172A")  # Deep navy/slate
-    ax.set_xlim(0, 1200)
-    ax.set_ylim(0, 630)
+    ax.set_facecolor(BG)
+    ax.set_xlim(0, W)
+    ax.set_ylim(0, H)
     ax.axis("off")
 
-    # Header Badges (strictly non-overlapping with explicit margins)
-    badge_rect = patches.FancyBboxPatch(
-        (60, 542), 310, 42, boxstyle="round,pad=0",
-        facecolor=BLUISH_GREEN, edgecolor="none", alpha=0.95
-    )
-    ax.add_patch(badge_rect)
-    ax.text(215, 563, "KAGGLE PAPER TRACK: SLOT #2", color="white",
-            fontsize=12, fontweight="bold", ha="center", va="center", family="sans-serif")
+    # ---- masthead ---------------------------------------------------------- #
+    ax.text(60, 588, "PYTHON STANDARD LIBRARY  /  ZERO DEPENDENCIES  /  MIT",
+            color=MUTED, fontsize=10.5, family="sans-serif", va="center")
+    ax.text(58, 520, "swe-toolkit", color=ACCENT, fontsize=46,
+            fontweight="bold", family="monospace", va="center")
+    ax.text(60, 466, "Locate, inspect and gate a patch without installing anything.",
+            color=INK, fontsize=16.5, family="sans-serif", va="center")
+    ax.text(60, 423, "swe locate    /    swe inspect    /    swe verify",
+            color="#CBD5E1", fontsize=14.5, family="monospace", va="center")
 
-    badge_rect2 = patches.FancyBboxPatch(
-        (390, 542), 320, 42, boxstyle="round,pad=0",
-        facecolor=BLUE, edgecolor="none", alpha=0.95
-    )
-    ax.add_patch(badge_rect2)
-    ax.text(550, 563, "BEST NEW RESOURCE ($10,000)", color="white",
-            fontsize=12, fontweight="bold", ha="center", va="center", family="sans-serif")
+    # ---- the capped output bar --------------------------------------------- #
+    ax.text(60, 372, "TOOL OUTPUT FROM ONE COMMAND", color=MUTED, fontsize=9.5,
+            family="sans-serif", va="center")
+    ax.text(1140, 372, "CAP: 3,500 CHARACTERS", color=MUTED, fontsize=9.5,
+            family="sans-serif", va="center", ha="right")
 
-    # Main Title & Subtitle
-    ax.text(60, 475, "swe-toolkit", color="#38BDF8", fontsize=44, fontweight="heavy",
-            family="monospace")
-    ax.text(60, 420, "Zero-Dependency AST Inspection, 10 Domain Bug Playbooks",
-            color="white", fontsize=23, fontweight="bold", family="sans-serif")
-    ax.text(60, 380, "& 9/9 Adversarial Patch Verification for Offline Coding Agents",
-            color="#94A3B8", fontsize=19, family="sans-serif")
+    y0, y1 = 272, 346
+    head_x1, tail_x0 = 452, 596
+    for xa, xb, edge in ((60, head_x1, EDGE), (tail_x0, 1140, ACCENT)):
+        ax.add_patch(patches.FancyBboxPatch(
+            (xa, y0), xb - xa, y1 - y0, boxstyle="round,pad=0,rounding_size=6",
+            facecolor=PANEL, edgecolor=edge, linewidth=1.8))
+    for xc in (head_x1 + 8, tail_x0 - 8):
+        ax.plot([xc, xc], [y0 - 7, y1 + 7], color="#2B3A5B", lw=1.4, ls=(0, (4, 4)))
+    ax.text((head_x1 + tail_x0) / 2, (y0 + y1) / 2, "...", color=MUTED,
+            fontsize=17, ha="center", va="center", family="monospace")
 
-    # Three Core Metric Panels (balanced 340px width with 30px gap)
-    # Panel 1: Python Stdlib Engine
-    p1 = patches.FancyBboxPatch((60, 110), 340, 225, boxstyle="round,pad=0",
-                                facecolor="#1E293B", edgecolor="#334155", linewidth=2)
-    ax.add_patch(p1)
-    ax.text(80, 295, "1. TOOLKIT ARCHITECTURE", color=SKY_BLUE, fontsize=13.5, fontweight="bold")
-    ax.text(80, 260, "• 100% Python Standard Library", color="white", fontsize=12.5)
-    ax.text(80, 230, "• Zero PyPI / wheel dependencies", color="#CBD5E1", fontsize=11.5)
-    ax.text(80, 200, "• AST Sync/Async twin detection", color="#CBD5E1", fontsize=11.5)
-    ax.text(80, 170, "• Strict 3,500-char middle cap", color="#CBD5E1", fontsize=11.5)
-    ax.text(80, 140, "• State isolation in /tmp", color="#CBD5E1", fontsize=11.5)
+    ax.text((60 + head_x1) / 2, (y0 + y1) / 2, "1,400 chars kept",
+            color="#93A6C0", fontsize=12.5, ha="center", va="center", family="monospace")
+    ax.text((tail_x0 + 1140) / 2, (y0 + y1) / 2, "STATUS: OK",
+            color=ACCENT, fontsize=16, ha="center", va="center",
+            family="monospace", fontweight="bold")
+    ax.text((head_x1 + tail_x0) / 2, y0 - 26, "middle dropped", color=MUTED,
+            fontsize=10.5, ha="center", va="center", family="sans-serif")
 
-    # Panel 2: 10 Domain Playbooks
-    p2 = patches.FancyBboxPatch((430, 110), 340, 225, boxstyle="round,pad=0",
-                                facecolor="#1E293B", edgecolor="#334155", linewidth=2)
-    ax.add_patch(p2)
-    ax.text(450, 295, "2. 10 AST BUG PLAYBOOKS", color=ORANGE, fontsize=13.5, fontweight="bold")
-    ax.text(450, 260, "• 258 Triggers across 129 Tasks", color="white", fontsize=12.5)
-    ax.text(450, 230, "• 84 Gold-Patch Exact Matches", color="#CBD5E1", fontsize=11.5)
-    ax.text(450, 200, "• 32.6% Empirical Precision", color="#CBD5E1", fontsize=11.5)
-    ax.text(450, 170, "• Rich Rendering: 79.4% Precision", color="#CBD5E1", fontsize=11.5)
-    ax.text(450, 140, "• Injected hints <= 120 tokens", color="#CBD5E1", fontsize=11.5)
+    # ---- payoff ------------------------------------------------------------ #
+    ax.text(60, 186, "Cutting the tail deletes the verdict. Cutting the middle keeps it.",
+            color="#A8B8CE", fontsize=12.5, family="sans-serif", va="center")
 
-    # Panel 3: Adversarial Torture Suite
-    p3 = patches.FancyBboxPatch((800, 110), 340, 225, boxstyle="round,pad=0",
-                                facecolor="#1E293B", edgecolor="#334155", linewidth=2)
-    ax.add_patch(p3)
-    ax.text(820, 295, "3. 9/9 ADVERSARIAL GATE", color=BLUISH_GREEN, fontsize=13.5, fontweight="bold")
-    ax.text(820, 260, "• 9/9 Torture Scenarios Passed", color="white", fontsize=12.5)
-    ax.text(820, 230, "• Catches 100% SyntaxErrors & empty traps", color="#CBD5E1", fontsize=11.5)
-    ax.text(820, 200, "• .gitignore new file unmasking", color="#CBD5E1", fontsize=11.5)
-    ax.text(820, 170, "• Stray /workspace/skills auto-wipe", color="#CBD5E1", fontsize=11.5)
-    ax.text(820, 140, "• Sub-50ms execution latency", color="#CBD5E1", fontsize=11.5)
-
-    # Footer note
-    ax.text(60, 48, "Open Source Tooling | Pure Python stdlib | Verified on 129 Tasks (fastapi, rich, requests, httpx)",
-            color="#64748B", fontsize=11.5, family="sans-serif")
-    ax.text(1140, 48, "Antigravity Team", color="#64748B", fontsize=11.5, ha="right", family="sans-serif")
+    # ---- footer ------------------------------------------------------------ #
+    ax.plot([60, 1140], [96, 96], color="#22304D", lw=1.2)
+    ax.text(60, 62, "Three commands, one index, no wheel to install",
+            color="#64748B", fontsize=11, family="sans-serif", va="center")
+    ax.text(1140, 62, "evaluated on 129 offline tasks", color="#64748B",
+            fontsize=11, family="sans-serif", va="center", ha="right")
 
     out_path = OUT_DIR / "res_fig0_banner.png"
     plt.savefig(out_path, dpi=100, facecolor=fig.get_facecolor())
