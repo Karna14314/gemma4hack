@@ -1,110 +1,80 @@
-# SESSION FINAL — exp_think1024 submission (Kilo Code single-change bundle)
+# SESSION_FINAL — paper/notebooks (g4 paper reproducibility)
 
-Date: 2026-11-09 (UTC)
-Branch: `main` (working repo) — bundle source: branch `kilo/steep-blossom-hio`, commit `54c63bf`
-Base: the 0.20-anchor artifact `ckpt/exp05/submission.zip` lineage; anchor bundle
-`kaggle_work/gemma-4-developer-agent/bundles/exp05_patch_integrity` (E0 control proved the
-0.20 was a draw, pooled 31B ≈ 0.166).
+Branch: `paper/notebooks` (created from `kilo/gallant-hatch-va4`, never `main`)
+Date: 2026-11-11
+Commit: 19c5583 "paper/notebooks: Task 1 fresh paper kernel + Task 2 noise/MDE notebook"
+Push: `origin paper/notebooks` (new branch)
+PR draft URL: https://github.com/Karna14314/gemma4hack/pull/new/paper/notebooks
+(PR not auto-created: `GH_TOKEN` invalid; `gh` auth fails. Create manually from the URL above and paste this file into the PR body.)
 
-## What was submitted
+Kaggle auth: bearer token via `tools/kaggle_rest.py` (KAGGLE_KEY=KGAT_…). The `kaggle` CLI (1.7.4.5) 401s (legacy Basic auth); bearer works.
 
-**exp_think1024 — closing the thinking-budget question.**
-Bundle `kaggle_work/gemma-4-developer-agent/bundles/exp_think1024` (root mirror
-`bundles/exp_think1024`), single change vs exp05: `configs/sampling.yaml`
-`thinking_budget: 4096 → 1024`. Authored by Kilo Code; local verification + submission
-by OpenCode.
+No submissions. No GPU. All notebooks CPU-only, zero internet.
 
-| item | value |
-|---|---|
-| Submission ref | **58149803** |
-| Submitted at | 2026-11-09T03:27:31Z |
-| Status | pending (scoring turnaround historically 1–2 days) |
-| Kernel | `narisettichaitanya/gemma4-devagent-exp-think1024` v1 (scriptVersionId 367147645) |
-| Artifact | `submission.zip`, 3,403 B, sha256 `5d80bac751b9ae2218e5bffa32bc7078f8c9a3dd9abc4b21edf44d2b50ad7082` |
-| Compiled | root `swe_agent`, model 31B, tools 9, `max_output_tokens` 8192, thinking budget 1024 |
-| Quota state after | 1/day used; pending row blocks the next submission until scored |
+================================================================================
+TASK 1 — narisettichaitanya/g4-paper-graph-benchmark (DONE)
+================================================================================
+- Already public (`isPrivate: false`), CPU-only, no internet, competition source `gemma-4-developer-agent`.
+- Pushed a fresh version 23 (`research/kernel_paper_eval/paper_eval.ipynb`, converted from `paper_eval.py`).
+- Public URL: https://www.kaggle.com/narisettichaitanya/g4-paper-graph-benchmark
+- Kaggle status: COMPLETE, no error, no traceback.
+- Runtime: ~246 s (~4.1 min) — matches the paper's "~4 minutes".
+- Outputs match the paper:
+  - Pooled converged 31B rate: 79/464 = 0.1703 (17.0%), pooled SE = 0.0174.
+  - Table 2A M4 file R@5 = 0.435 (R@10 = 0.4587).
+  - Table 2C v4 file R@5 = 0.744, R@10 = 0.829.
+  - Table 3 playbook overall precision = 32.6% (84/258).
+  - 129 tasks evaluated; in-graph 125.
+- Authoritative local log: `research/paper_eval_outputs/g4-paper-graph-benchmark.log` (same code as v23).
 
-The user pre-authorized a **conditional** submission: payload proof positive + Gates 2–3
-pass. All conditions were verified at call time (no pending rows, nothing submitted
-2026-11-09 UTC, gates passed, Gate-4 pulled artifact byte-identical).
+================================================================================
+TASK 2 — noise figure + MDE notebook (DONE)
+================================================================================
+- Small CPU notebook reading embedded `ledger.csv` data + anonymized leaderboard
+  counts (score -> number of teams; no names). Regenerates the noise figure and
+  MDE numbers from paper §5.1 / Table 1 notes / fig4.
+- New kernel: `narisettichaitanya/g4-paper-noise-mde` v1.
+- Public URL: https://www.kaggle.com/code/narisettichaitanya/g4-paper-noise-mde
+- Kaggle status: COMPLETE, no error.
+- Output: `noise_figure.png` saved to `/kaggle/working`; binomial SE bands and MDE
+  printed to the log.
+- Regenerated numbers (match paper):
+  - Per-run binomial SE = sqrt(p(1-p)/58) for all 14 scored ledger rows.
+  - Pooled converged 31B rate = 79/464 = 0.1703, pooled SE = 0.0174.
+  - Cross-split SE (n=58, p=0.179) = 0.0503 (~2.9 tasks).
+  - Within-split SD (exp05 family [12,10,10,10,10]) = 0.89 tasks.
+  - MDE at 80% power (2.802 x SE): cross-split = 0.141 (~8.2 tasks); pooled =
+    0.049 (~2.8 tasks).
+  - Anonymized top-20: 0.22 (8 teams), 0.24 (11 teams), 0.29 (1 team) ->
+    ~13 to ~17 tasks (4-task band); deltas <= 2 tasks (<=0.034) within noise.
+  - E0 control: byte-identical exp05 scored 0.20 vs rebuild 0.17 -> 0.20 was a
+    high-draw, not a permanent gain.
 
-## Mechanism (why this change has teeth)
+================================================================================
+TASK 3 — public URLs + failures
+================================================================================
+- URL 1 (Task 1): https://www.kaggle.com/narisettichaitanya/g4-paper-graph-benchmark
+- URL 2 (Task 2): https://www.kaggle.com/code/narisettichaitanya/g4-paper-noise-mde
+- Failed steps: NONE. Both kernels ran COMPLETE with no error/traceback.
+  Notes: kaggle CLI 401s (legacy Basic auth) — worked around with bearer auth via
+  tools/kaggle_rest.py. Kaggle output JSON has encoding quirks (raw control chars)
+  that break naive json.loads; used control-char stripping to parse.
 
-The thinking budget is **engine-enforced, not prompt text**: the bundle's
-`generate_content_config` crosses into the served engine as top-level vLLM
-`thinking_token_budget` (litellm `extra_body`; `protocol.py:183`, forwarded into
-`SamplingParams` at `protocol.py:519`), and vLLM 0.19.1 enforces it independently of
-`max_tokens` via `ThinkingTokenBudgetLogitsProcessor`
-(`v1/sample/logits_processor/builtin.py:294`, forced end-of-think at `builtin.py:524-552`),
-under the scorer's `reasoning_parser='gemma4'`. Payload proof captured at the exact
-`model.llm_client.acompletion` call site (`google/adk/models/lite_llm.py:2467`) via
-`scripts/probe_thinking_budget.py`; payloads for exp05 vs exp_think1024 differ only in
-`thinking_token_budget` (4096 vs 1024). STOP GATE (budget-dropped/no-op path) did **not** trigger.
+================================================================================
+Process compliance
+================================================================================
+- Branch `paper/notebooks` from default (`kilo/gallant-hatch-va4`), never `main`.
+- Committed at phase end (19c5583). Pushed to origin.
+- Verification gate before commit: all touched JSON files (kernel-metadata.json +
+  notebooks) validated with json.load; notebook math cross-checked locally against
+  paper figures (identical).
+- Progress file: docs/PAPER_NOTEBOOKS_PROGRESS.md (maintained, with resume commands).
+- No submissions, no GPU.
 
-## Per-phase status
-
-- Phase 0/1 wheel+env audit: PASS — `docs/ENV_AUDIT.md` (google-adk 1.36.1,
-  google_genai 2.11.0, litellm 1.106.6, adk_submission 0.2.13, swegemma 0.2.11,
-  adk-eval-core 0.1.0; vLLM not local — verified from upstream tag `v0.19.1`;
-  offline runner: `swegemma eval --sandbox subprocess`; `scripts/repro_harness_traps.py` 5/5 PASS).
-  Gate 1 `check_resources.py` exit 0, docs hashes unchanged.
-- Phase 2 payload proof: PASS (above; artifacts `build/probe_payloads/*.json`,
-  sha256 `7BEAE700…` / `060503DF…`).
-- Gate 2: `verify_bundle.py --bundle bundles\exp_think1024` → ALL CHECKS PASSED
-  (deterministic pack digest `5d80bac751b9ae22`).
-- Gate 3: `build/exp_think1024.ipynb` (17 cells) → `verify_notebook.py` ALL CHECKS PASSED.
-- Gate 4: kernel COMPLETE, log ends `DONE_OK`, no traceback; pulled output
-  (`kaggle_work/gemma-4-developer-agent/runs/exp_think1024/`) matches local build byte-for-byte.
-- Phase 3 submission: DONE (ref 58149803). CLI trap note: `kaggle competitions submit`
-  returned HTTP 400 (the JSON-vs-multipart trap, `tools/kaggle_rest.py` docstring);
-  submitted via `tools/kaggle_rest.py submit`.
-- Phase 4 finalize: this file; ledger rows in `kaggle_work/gemma-4-developer-agent/RESULTS.md`
-  (incl. the 2026-10-31→11-07 score catch-up) and `docs/LEDGER.md`; paper updated
-  `docs/PAPER_TRACK_DRAFT.md` (engine-enforcement finding, E0-control statistics,
-  falsified E4B offload prediction — 2,997 words, under the 3,000 limit).
-
-## Pre-registered interpretation (record before the score)
-
-Public LB ≈ 58 tasks; 1 task ≈ 0.017; SE ≈ 0.05; pooled converged-config 31B ≈ 0.166
-(8 scored runs: 0.20, 0.17×5, 0.15, 0.13; E0 control proved exp05's 0.20 non-reproducible).
-
-- ≥13/58 (≈0.22+): real win over the anchor — follow up with a budget sweep (2048?) and
-  keep as a final-selection candidate.
-- 9–12/58 (0.155–0.207): null — budget reduction is score-neutral; treat 0.17-cluster as
-  the 31B plateau, close the question.
-- ≤8/58 (≤0.138): regression — thinking depth matters at 31B; revert and never reduce
-  budget below 4096 again without a planned-parallel sweep.
-
-## Files changed this session (to commit)
-
-- `bundles/exp_think1024/`, `kaggle_work/gemma-4-developer-agent/bundles/exp_think1024/` — the bundle (synced from `kilo/steep-blossom-hio`)
-- `kaggle_work/gemma-4-developer-agent/experiments/exp_think1024/` — kernel dir (`kernel-metadata.json` + `submission_notebook.ipynb`)
-- `scripts/probe_thinking_budget.py` — payload-proof script (works standalone with `.venv-harness`)
-- `docs/ENV_AUDIT.md` — wheel/env audit + payload proof (new)
-- `docs/LEDGER.md` — exp_think1024 submission row
-- `kaggle_work/gemma-4-developer-agent/RESULTS.md` — score catch-up + experiment section
-- `docs/PAPER_TRACK_DRAFT.md` — finding + statistics updates (deadline 2026-11-12)
-- `docs/SESSION_FINAL.md` — this file
-
-`build/`, `kaggle_work/*/runs/`, `*.zip` are gitignored (payload JSON evidence under
-`build/probe_payloads/` referenced by hash in `docs/ENV_AUDIT.md`).
-
-## NOT-verified / open items
-
-- Score pending — apply the pre-registered rule above when `publicScore` appears; record
-  in `RESULTS.md` + `docs/LEDGER.md`.
-- Paper track (2026-11-12): draft content is current, but the final PDF/form has not been
-  cut in this session; if exp_think1024's score arrives before then, fold it into §2.2/Table 1.
-- Next single-change candidates off the 0.166 pooled anchor (mechanism-first, one variable):
-  thinking budget sweep (2048) only if exp_think1024 scores ≥13; `max_time_minutes` 8→9
-  with the timing-buffer pattern; `include_thoughts` toggle (compaction pressure).
-- Daily slot free again only after 58149803 completes.
-
-## Resume instructions
-
-```powershell
-# check score
-.venv-harness\Scripts\python.exe tools\kaggle_rest.py submissions gemma-4-developer-agent
-# or: kaggle competitions submissions -c gemma-4-developer-agent
-# on score: append to kaggle_work/gemma-4-developer-agent/RESULTS.md + docs/LEDGER.md, commit, push
-```
+================================================================================
+Resume commands
+================================================================================
+cd /workspace/app
+git checkout paper/notebooks
+python3 tools/kaggle_rest.py status narisettichaitanya/g4-paper-graph-benchmark
+python3 tools/kaggle_rest.py status narisettichaitanya/g4-paper-noise-mde
