@@ -360,7 +360,7 @@ def fig3(D):
     counts = [ab["results"]["B3"][r]["N"] for r in repos]
     ax.set_xticks(x)
     ax.set_xticklabels([f"{r}\n(n={n})" for r, n in zip(repos, counts)], fontsize=9)
-    ax.set_ylabel("Any-Gold @5"); ax.set_ylim(0, 1.0)
+    ax.set_ylabel("Any-Gold @5"); ax.set_ylim(0, 1.07)
     ax.set_title("(A) Baseline ladder by repository")
     ax.grid(axis="y", alpha=0.55); ax.set_axisbelow(True); despine(ax)
     ax.legend(frameon=False, ncol=4, fontsize=8.5, loc="upper center")
