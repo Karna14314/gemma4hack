@@ -99,7 +99,7 @@ def render_fig0_card_thumbnail():
     rect2 = patches.FancyBboxPatch((0.06, 0.28), 0.88, 0.20, boxstyle="round,pad=0.03", facecolor="#2d1f15", edgecolor="#f97316", transform=ax_a.transAxes)
     ax_a.add_patch(rect2)
     ax_a.text(0.10, 0.41, "vLLM Thought Drop", color="#fdba74", fontsize=10.5, weight="bold", transform=ax_a.transAxes)
-    ax_a.text(0.10, 0.32, "include_thoughts=False keeps\nbudget while stripping tokens", color="#e2e8f0", fontsize=8.5, transform=ax_a.transAxes)
+    ax_a.text(0.10, 0.32, "ADK reasoning_content dropped\nby vLLM reasoning template check", color="#e2e8f0", fontsize=8.5, transform=ax_a.transAxes)
 
     # Bullet 3: .gitignore Drop
     rect3 = patches.FancyBboxPatch((0.06, 0.05), 0.88, 0.20, boxstyle="round,pad=0.03", facecolor="#2d1519", edgecolor="#ef4444", transform=ax_a.transAxes)
@@ -250,11 +250,11 @@ def render_fig1_harness_architecture():
         (col_xs[1], row1_y, card_w, card_h,
          "Site 2: vLLM Chat Template Mismatch",
          "chat_utils.py:1512  (vLLM 0.19.1 Entrypoint)",
-         "Mechanism: include_thoughts: false strips thought tokens\n"
-         "from context while thinking_budget > 0 still consumes raw\n"
-         "generation budget.\n"
-         "Impact: Token count discrepancies trigger 400 Bad Request\n"
-         "errors unless sampling configurations match.",
+         "Mechanism: ADK serializes thoughts as reasoning_content;\n"
+         "line 1512 reads message.get('reasoning') without fallback,\n"
+         "silently dropping previous-turn thoughts.\n"
+         "Impact: Model loses chain-of-thought context across turns\n"
+         "despite thinking_budget > 0 in sampling.yaml.",
          C_ORANGE, "#fffbeb"),
 
         # Row 1, Col 3: Site 3 (Logits Budget Processor)
@@ -280,11 +280,12 @@ def render_fig1_harness_architecture():
         # Row 2, Col 2: Site 5 (SkillToolset Injection)
         (col_xs[1], row2_y, card_w, card_h,
          "Site 5: SkillToolset Protocol Conflict",
-         "skill_toolset.py:689  (_DEFAULT_SKILL_SYSTEM_INSTRUCTION)",
-         "Mechanism: Injects +875-token hidden prompt mandating\n"
-         "load_skill before any tool execution.\n"
-         "Impact: Clashes with cold-calling protocol in exp14/e4b_v4,\n"
-         "causing unnecessary Turn 1 overhead and loop regressions.",
+         "skill_toolset.py:61  (_DEFAULT_SKILL_SYSTEM_INSTRUCTION)",
+         "Mechanism: Line 61 injects +875-token prompt forcing\n"
+         "load_skill; lines 686–691 dump untruncated stdout,\n"
+         "bypassing tool output limits.\n"
+         "Impact: Clashes with direct execution in exp14/e4b_v4,\n"
+         "causing cyclic reload loops and context flooding.",
          C_PURPLE, "#faf5ff"),
 
         # Row 2, Col 3: Site 6 (Sandbox Plugin Dependency Gap)
@@ -393,11 +394,11 @@ def render_fig2_retrieval_2x2_decomposition():
     ax2.plot([3, 4], [0.7440, 0.7440], color="#64748b", ls="--", lw=1.0)
 
     # Value text labels on bars (Full N=129 and Shared N=125 in parentheses)
-    ax2.text(0, 0.4350 / 2, "0.4350\n[N=125: 0.4489]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.6)
-    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(p < 0.001)\n[N=125: +17.62]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.2)
-    ax2.text(2, 0.6182 / 2, "0.6182\n[N=125: 0.6251]", ha="center", va="center", color="#0f172a", weight="bold", fontsize=8.6)
-    ax2.text(3, 0.6182 + 0.1258 / 2, "+12.58 pp\n[N=125: +12.89]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.4)
-    ax2.text(4, 0.7440 / 2, "0.7440\n(96/129)\n[N=125: 0.7540]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.6)
+    ax2.text(0, 0.4350 / 2, "0.4350\n[N=125: 0.4489\n(56.11/125)]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.2)
+    ax2.text(1, 0.4350 + 0.1832 / 2, "+18.32 pp\n(p < 0.001)\n[N=125: +17.62 pp]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=7.8)
+    ax2.text(2, 0.6182 / 2, "0.6182\n[N=125: 0.6251\n(78.14/125)]", ha="center", va="center", color="#0f172a", weight="bold", fontsize=8.2)
+    ax2.text(3, 0.6182 + 0.1258 / 2, "+12.58 pp\n[N=125: +13.49 pp]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.0)
+    ax2.text(4, 0.7440 / 2, "0.7440\n(96/129)\n[N=125: 0.7600\n(95/125)]", ha="center", va="center", color="#ffffff", weight="bold", fontsize=8.2)
 
     # Overall Lift Bracket
     ax2.annotate("", xy=(4.40, 0.7440), xytext=(4.40, 0.4350),
@@ -405,9 +406,10 @@ def render_fig2_retrieval_2x2_decomposition():
     ax2.text(4.48, (0.7440 + 0.4350) / 2,
              "Total Transition Leap\n"
              "All N=129: +30.90 pp (+71.0% rel)\n"
-             "Shared N=125: +30.51 pp (+68.0% rel)\n"
+             "Shared N=125: +31.11 pp (+69.3% rel)\n"
+             "70/125 -> 95/125 Any-Gold\n"
              "Paired Wilcoxon: p = 9.08e-10 ***",
-             ha="left", va="center", color=C_RED, weight="bold", fontsize=8.5, linespacing=1.25)
+             ha="left", va="center", color=C_RED, weight="bold", fontsize=8.2, linespacing=1.25)
 
     ax2.set_ylabel("File Recall @ 5")
     ax2.set_title("(B) 2x2 Decomposition of 0.435 -> 0.744 R@5 Leap (All 129 vs Shared 125)")
@@ -555,7 +557,7 @@ def render_fig4_leaderboard_statistical_power():
     scores = [s[2] for s in subs]
     scales = [s[3] for s in subs]
 
-    p_pool = 0.1703
+    p_pool = 52 / 290.0  # 0.1793 anchor baseline
     sigma_within = 0.89 / 58.0
     se_split = 0.0503
 
@@ -563,9 +565,9 @@ def render_fig4_leaderboard_statistical_power():
                 color="#f1f5f9", alpha=0.9, zorder=0, label=r"Cross-Split Sampling Error: $\pm 1.96\,\mathrm{SE}_{\mathrm{split}}$ (2.9 tasks)")
 
     ax1.axhspan(p_pool - 1.96 * sigma_within, p_pool + 1.96 * sigma_within,
-                color="#bae6fd", alpha=0.6, zorder=1, label=r"Within-Split Run Noise: $\pm 1.96\,\sigma_{\mathrm{within}}$ (0.89 tasks)")
+                color="#bae6fd", alpha=0.6, zorder=1, label=r"Run-to-run noise on the same 58-task split: $\pm 1.96\,\sigma_{\mathrm{within}}$ (0.89 tasks)")
 
-    ax1.axhline(p_pool, color=C_BLUE, ls="--", lw=1.5, zorder=2, label=f"31B Converged Mean ({p_pool:.3f} = 79/464)")
+    ax1.axhline(p_pool, color=C_BLUE, ls="--", lw=1.5, zorder=2, label=f"31B exp05 Anchor Mean ({p_pool:.3f} = 52/290)")
 
     colors_pts = [C_BLUE if sc == "31B" else C_ORANGE for sc in scales]
     ax1.scatter(x_idx, scores, s=85, c=colors_pts, edgecolor="#1e293b", lw=1.2, zorder=5)
