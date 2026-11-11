@@ -98,9 +98,7 @@ for 2026-11-09. The fix is to resubmit, not to rebuild.
 - Gate 4: pulled `submission.zip` sha256 == local Gate-3 build sha256 — **byte-identical**
 - Diff vs exp05 (`git diff --no-index`): only `configs/eval_config.yaml` (2 lines) and the verification block in `prompts/system.md`; `system.md` 5766 <= 5800 chars
 - Pre-registered decision rule: >= 13/58 (~0.22+) = genuine improvement over the 10.4/58 anchor; 10–12/58 = within noise; <= 8/58 = regression
-- Submit message: `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate`
-- Submit script: `scripts/submit_exp16.sh` (copy-paste; run from local terminal after explicit yes)
-- Kernel dir: `build/kernel_exp16_grader_aligned/` (gitignored: `build/`)
-- Artifact: `runs/exp16/submission.zip` (gitignored: `*.zip`)
-
-Session summary: `docs/SESSION_FINAL_EXP16.md`
+- **SUBMITTED**: ref **58237714**, 2026-11-11 via `tools/kaggle_rest.py submit` (CLI path returns HTTP 400 multipart trap), kernel `narisettichaitanya/gemma4-devagent-exp16-grader-aligned-36-calls` v1, message `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate`. Queued for scoring; apply pre-registered rule when `publicScore` appears; record in `RESULTS.md` + `docs/LEDGER.md`.
+- Submit script: `scripts/submit_exp16.sh` (copy-paste; used for this submission via `kaggle_rest.py` bearer auth)
+- Kernel dir: `build/kernel_exp16_grader_aligned/` (gitignored: `build/`); artifact `runs/exp16/submission.zip` (gitignored: `*.zip`)
+- Session summary: `docs/SESSION_FINAL_EXP16.md`

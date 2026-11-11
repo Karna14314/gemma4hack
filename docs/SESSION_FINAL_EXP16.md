@@ -5,7 +5,7 @@ Branch: `kilo/exp16-grader-aligned-36calls` (feature branch; NOT main)
 Bundle source: `bundles/exp16_grader_aligned_36calls`, cloned byte-for-byte from `ckpt/bundles/exp05_patch_integrity`
 Base anchor: exp05 patch integrity (public 0.20 on 2026-10-23, ref 57553805); E0 control (byte-identical exp05 resubmission, 2026-10-31, ref 57836949, live 0.17 — proved the 0.20 was a high draw, pooled 31B ≈ 0.179 / 52/290). exp15_zero_schema_hybrid (ref 58183079, 2026-11-10, 0.13).
 
-## What was staged (NOT yet submitted — awaiting explicit user yes)
+## What was submitted
 
 **exp16_grader_aligned_36calls — unlock the ~3 h unused wall-clock buffer + grader-aligned verification.** Two targeted changes vs exp05 only:
 
@@ -16,15 +16,12 @@ Base anchor: exp05 patch integrity (public 0.20 on 2026-10-23, ref 57553805); E0
 
 | item | value |
 |---|---|
-| Bundle root config | `agent.yaml` (single root, model gemma-4-31b-it-qat-w4a16-ct) |
-| Kernel ref | `narisettichaitanya/gemma4-devagent-exp16-grader-aligned-36-calls` v1 |
-| Kernel status | COMPLETE, log ends `DONE_OK`, 0 tracebacks |
-| submission.zip | 3,550 B, sha256 `6981b5c06f8ccc650e7cccb0c3d4421812f2bde08b6cce619ae9ecdd3228ae52` |
-| Gate 2 | `verify_bundle.py --bundle bundles/exp16_grader_aligned_36calls` → ALL CHECKS PASSED |
-| Gate 3 | `verify_notebook.py` on `build/exp16_grader_aligned_36calls.ipynb` → ALL CHECKS PASSED |
-| Gate 4 | pulled artifact sha256 == local Gate-3 build sha256 — byte-identical |
-| Credentials | KGAT bearer token via `KAGGLE_API_TOKEN`; old `kaggle.json` (username/key) returns HTTP 401 — not used |
-| Quota check | `kaggle competitions submissions`: no PENDING rows; last submission 2026-11-10 (not today 2026-11-11 UTC); `numAllowedNow > 0` |
+| Submission ref | **58237714** |
+| Submitted at | 2026-11-11 via `tools/kaggle_rest.py submit` (CLI path returns HTTP 400 multipart trap) |
+| Kernel | `narisettichaitanya/gemma4-devagent-exp16-grader-aligned-36-calls` v1 (CPU-only, COMPLETE, DONE_OK, 0 tracebacks) |
+| Artifact | `submission.zip`, 3,550 B, sha256 `6981b5c06f8ccc650e7cccb0c3d4421812f2bde08b6cce619ae9ecdd3228ae52` |
+| Message | `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate` |
+| Quota state after | 1/day used for 2026-11-11 UTC; submission queued for scoring |
 
 ## Per-phase status
 
@@ -33,7 +30,8 @@ Base anchor: exp05 patch integrity (public 0.20 on 2026-10-23, ref 57553805); E0
 - Gate 2 bundle: ALL CHECKS PASSED (real-harness layer skipped — no `adk_submission` wheel locally; static + negative checks pass).
 - Gate 3 notebook: built `build/exp16_grader_aligned_36calls.ipynb` (17 cells, 9 code); `verify_notebook.py` ALL CHECKS PASSED; root `agent.yaml`, zero `__pycache__`/`.pyc`, deterministic repack.
 - Gate 4 kernel output: kernel COMPLETE; pulled `submission.zip` matches local build byte-for-byte.
-- Phase 3 submission: **NOT executed** — rule 1 requires explicit user "yes" before `kaggle competitions submit`. Submit message pre-written: `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate`. Copy-paste script: `scripts/submit_exp16.sh`.
+- Phase 3 submission: **SUBMITTED** ref 58237714 via `tools/kaggle_rest.py submit` (CLI path returns HTTP 400 multipart trap). Quota free at submit time (no PENDING, nothing 2026-11-11 UTC). Queued for scoring.
+- Submit message pre-written and used: `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate`. Copy-paste script: `scripts/submit_exp16.sh`.
 
 ## Mechanism (why this change has teeth)
 
@@ -66,7 +64,7 @@ Public LB ≈ 58 scored tasks; 1 task ≈ 0.017; SE ≈ 0.05 at n ≈ 58; treat 
 # check exp16 score when it appears
 kaggle competitions submissions -c gemma-4-developer-agent   # needs KAGGLE_API_TOKEN=$KAGGLE_KEY bearer token; old kaggle.json -> 401
 # on score: append to docs/LEDGER.md + kaggle_work/gemma-4-developer-agent/RESULTS.md, commit, push
-# submit (ONLY after explicit user yes, quota free, no PENDING):
+# submit (ref 58237714 already recorded; re-run only if a resubmission is authorized)
 bash scripts/submit_exp16.sh
 ```
 
