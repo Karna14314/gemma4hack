@@ -77,3 +77,30 @@ for 2026-11-09. The fix is to resubmit, not to rebuild.
 `json.dumps(result)[:4000]`, which silently truncated the queue at the 5th entry and is why the
 `error` status went unnoticed for a day. Raised to `[:400000]`; the full queue is now visible
 (`research/public_intel/show_subs.py`).
+
+## exp16_grader_aligned_36calls submission — staged 2026-11-11 (NOT yet submitted — awaiting explicit user yes)
+
+- Branch: `kilo/exp16-grader-aligned-36calls`
+- Bundle: `bundles/exp16_grader_aligned_36calls` — clone of `ckpt/bundles/exp05_patch_integrity` (the 0.20 anchor), two targeted changes only:
+  1. `configs/eval_config.yaml`: `max_tool_calls 28 -> 36`, `max_time_minutes 8 -> 9` (unlock the ~3 h unused wall-clock buffer; exp15 showed 28 calls/8 min finishes ~120 tasks in ~9.0 h of 12.0 h).
+  2. `prompts/system.md`: added grader-aligned verification rules (pytest `-p no:anyio`; `ModuleNotFoundError` collection guard -> `python3 -c "..."`; signature/return/sync-async coupled caller check via `git grep`; pre-submit `git status --short && python3 -m py_compile` + `git add -N -f <new .py>`). 5766 chars (<= 5,800). No `STATE:`/`ANCHOR:`/`SkillToolset` pollution.
+- `configs/sampling.yaml` and `agent.yaml` byte-identical to exp05 (31B, 9 tools, temp 0.2, top_p 0.95, max_output_tokens 8192, thinking_budget 4096, zero skills).
+- Bundle file hashes:
+  - agent.yaml: 680799291cc7d156d06fb7bfb5577f683ccc0d555b00e8ddb662d577f9bfa5e4
+  - configs/sampling.yaml: 571a934e89911734927533f1d36cbcc7b8d493592febe63b217e911cf7ed4926
+  - eval_config.yaml: 53cddf69985bd0f7b2f97cdb406a9d60e854fbadb349d26892ec55b7cc147b99
+  - prompts/system.md: 25fd4a3fbbb1d034150f5c0a7b3b245b21bee08b7ebd5ed5a9a151e46a2da099
+- Kernel: `narisettichaitanya/gemma4-devagent-exp16-grader-aligned-36-calls` v1, CPU-only, status COMPLETE, log ends DONE_OK, 0 tracebacks
+- submission.zip sha256: `6981b5c06f8ccc650e7cccb0c3d4421812f2bde08b6cce619ae9ecdd3228ae52` (3,550 B)
+- Gate 1 `check_resources.py`: n/a (cloud sandbox, no venv-harness); creds = KGAT bearer token via `KAGGLE_API_TOKEN` (old kaggle.json username/key returns 401 — not used)
+- Gate 2 `verify_bundle.py --bundle bundles/exp16_grader_aligned_36calls`: ALL CHECKS PASSED (deterministic pack digest `6981b5c0…`)
+- Gate 3 `verify_notebook.py` on `build/exp16_grader_aligned_36calls.ipynb`: ALL CHECKS PASSED; `agent.yaml` at root, 0 `__pycache__`/`.pyc`, 4 members, deterministic repack byte-identical
+- Gate 4: pulled `submission.zip` sha256 == local Gate-3 build sha256 — **byte-identical**
+- Diff vs exp05 (`git diff --no-index`): only `configs/eval_config.yaml` (2 lines) and the verification block in `prompts/system.md`; `system.md` 5766 <= 5800 chars
+- Pre-registered decision rule: >= 13/58 (~0.22+) = genuine improvement over the 10.4/58 anchor; 10–12/58 = within noise; <= 8/58 = regression
+- Submit message: `exp16: exp05 + 36 calls/9m + pytest -p no:anyio + py_compile gate`
+- Submit script: `scripts/submit_exp16.sh` (copy-paste; run from local terminal after explicit yes)
+- Kernel dir: `build/kernel_exp16_grader_aligned/` (gitignored: `build/`)
+- Artifact: `runs/exp16/submission.zip` (gitignored: `*.zip`)
+
+Session summary: `docs/SESSION_FINAL_EXP16.md`
