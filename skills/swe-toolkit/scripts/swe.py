@@ -12,9 +12,10 @@ import _index
 import _verify
 
 def _cleanup():
-    # Guarantee zero leak of materialized skill files into git diff
-    if os.path.isdir("/workspace/skills"):
-        shutil.rmtree("/workspace/skills", ignore_errors=True)
+    # Safe cleanup: only remove temporary swe-toolkit caches/ephemeral files, never arbitrary user directories
+    swe_tmp = Path("/workspace/.swe_tmp")
+    if swe_tmp.is_dir():
+        shutil.rmtree(swe_tmp, ignore_errors=True)
 
 atexit.register(_cleanup)
 

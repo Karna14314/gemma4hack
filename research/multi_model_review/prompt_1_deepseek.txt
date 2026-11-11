@@ -1,0 +1,39 @@
+CRITICAL SAFETY DIRECTIVE:
+You are in STRICT READ-ONLY MODE.
+DO NOT edit, create, or delete any files in this repository.
+Print your complete, in-depth technical analysis directly to stdout.
+
+ROLE: Principal Technical, Mathematical & Wheel-Proof Auditor.
+TASK: Conduct an exhaustive verification and red-team audit of our Kaggle Paper Track submission.
+
+FILES TO INSPECT (READ-ONLY):
+1. docs/MASTER_WRITEUP_FINAL.md
+2. research/novelty_audits/statistical_rigor_results.json
+3. research/paper_eval_outputs/symbol_ranking/symrank_v6_results.json
+
+YOUR VERIFICATION MANDATE:
+1. MATHEMATICAL & ARITHMETIC VERIFICATION:
+   - Check every fraction and denominator:
+     * 80.9% (313/387) AST neighborhood budget overflow
+     * Candidate bundle gain: +18.34 pp (Mean-Fraction) and +19.38 pp (Any-Gold) on N=129
+     * Shared N=125 in-graph matrix: 56.11/125 (0.4489) -> 78.14/125 (0.6251) (+17.62 pp), 70/125 (0.5600) -> 95/125 (0.7600) (+20.00 pp)
+     * Total leap: +30.92 pp (N=129) and +31.11 pp (N=125)
+     * Bootstrap 95% CIs: [+10.40, +24.80 pp] and [+12.80, +27.20 pp]
+     * Symbol ranking: 37/121 (0.3058) -> 49/121 (0.4050) (+9.92 pp, Wilcoxon W=72.0, p=0.0447)
+     * Multi-file collapse: 81.6% (31/38) Any-Gold vs 7.9% (3/38) All-Gold (-73.7 pp)
+     * Minimum Detectable Effect: MDE_same-split = 3.53 tasks (Delta >= 0.0609) vs MDE_cross-split = 8.18 tasks (Delta >= 0.1410)
+   - Confirm whether all formulas and numbers are internally consistent and mathematically sound.
+
+2. WHEEL SOURCE CITATION AUDIT:
+   - Check the 6 runtime failure sites in Table 1:
+     * Site 1: google/adk/apps/_configs.py:70 (token_threshold=14336, compaction_interval=15)
+     * Site 2: vllm/entrypoints/chat_utils.py:1512 (reads reasoning; ignores reasoning_content)
+     * Site 3: vllm/v1/sample/logits_processor/builtin.py:294 / line 548 (ThinkingTokenBudgetLogitsProcessor sets logits[i, end_token]=1e9)
+     * Site 4: swegemma/harness/agent_runner.py:1057 (git add -N .)
+     * Site 5: google/adk/tools/skill_toolset.py:61 / lines 686-691 (SkillToolset injection + untruncated output)
+     * Site 6: swegemma/harness/verification.py:628 (missing inline_snapshot, dirty_equals, anyio)
+   - Verify whether each citation and described mechanism is accurate.
+
+3. RED-TEAM VULNERABILITY ANALYSIS:
+   - Identify any subtle contradiction, overclaim, or potential reviewer objection.
+   - For any flagged vulnerability, propose exact 1-line surgical wording improvements.

@@ -1,0 +1,35 @@
+CRITICAL SAFETY DIRECTIVE:
+You are in STRICT READ-ONLY MODE.
+DO NOT edit, create, or delete any files in this repository.
+Print your complete, in-depth evaluation directly to stdout.
+
+ROLE: Senior Kaggle Paper Track Rubric Judge & Dual-Submission Strategist.
+TASK: Evaluate our writeup against the official 5-part Kaggle Paper Track rubric, and assess the feasibility of submitting an orthogonal Slot #2 entry.
+
+FILES TO INSPECT (READ-ONLY):
+1. docs/MASTER_WRITEUP_FINAL.md (Writeup #1: Slot #1 - Overall Best Paper)
+2. docs/SLOT2_ORTHOGONAL_RESOURCE_PAPER.md (Writeup #2: Slot #2 - Best New Resource / Application)
+3. skills/swe-toolkit/SKILL.md
+
+YOUR EVALUATION MANDATE:
+1. OFFICIAL RUBRIC GRADING (0 to 5 SCALE):
+   Grade Writeup #1 across the 5 official Kaggle criteria:
+   - Novelty (0-5): Does the paper introduce genuinely new empirical methods, benchmarks, or insights rather than standard fine-tuning?
+   - Quality & Generalizability (0-5): Are claims supported by rigorous statistics (p-values, bootstrap CIs, MDE bounds, LORO cross-validation)?
+   - Relevance (0-5): Does it directly address real challenges in the Gemma 4 competition testbed?
+   - Verifiability (0-5): Are code artifacts, reproducible notebooks, wheel file:line citations, and exact task lists provided?
+   - Clarity (0-5): Is the presentation crisp, publication-standard, and well-structured?
+   Provide specific justification for each score and calculate the composite score.
+
+2. DUAL-SUBMISSION DECISION ANALYSIS (SLOT #1 vs. SLOT #2):
+   Evaluate the two strategic options available to our team:
+   - OPTION A: Submit ONLY Writeup #1 as our single unified flagship paper.
+   - OPTION B: Submit BOTH Writeup #1 for Slot #1 (Best Paper) AND Writeup #2 (SLOT2_ORTHOGONAL_RESOURCE_PAPER.md) for Slot #2 (Best New Resource, $10,000 / Best Application, $10,000).
+
+3. ORTHOGONALITY & RISK AUDIT FOR OPTION B:
+   - Conduct a line-by-line redundancy check between Writeup #1 and Writeup #2:
+     * Do they share any tables? (Verify Table 1-7 vs Table 1-4)
+     * Do they share any figures? (Verify fig0-fig5 vs res_fig0-res_fig3)
+     * Does Writeup #2 avoid repeating Writeup #1's leaderboard analysis, MDE formulas, or 2x2 retrieval decomposition?
+   - What are the exact conditions required so that judges view Writeup #2 as a valuable, standalone software and benchmark resource rather than duplicate padding?
+   - Give your definitive GO / NO-GO recommendation on Option B.

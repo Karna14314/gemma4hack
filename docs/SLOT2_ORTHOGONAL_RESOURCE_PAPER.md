@@ -14,7 +14,7 @@ Autonomous software engineering (SWE) agents evaluating in hermetic, network-iso
 `swe-toolkit` introduces three concrete contributions:
 1. **Four-Module Pure-Python Engine (`swe.py`, `_index.py`, `_knowledge.py`, `_verify.py`)**: A sub-50ms CLI providing AST symbol inspection, caller/callee blast-radius mapping, AST-based sync/async twin detection (e.g., `send` vs `asend`), and a deterministic 3,500-character middle-truncation protocol preserving actionable `STATUS:`, `NEXT:`, and `TEST:` contract lines.
 2. **10 AST Domain Bug Playbooks**: An empirical taxonomy of 10 bug patterns evaluated across 129 SWE-bench tasks (`258` triggers, `84` gold-patch hits, $32.6\%$ overall precision), delivering token-bounded ($\le 120$ tokens) repair hints achieving $79.4\%$ precision in visual rendering (`Textualize/rich`) and $50.0\%$ in schema validation (`fastapi`).
-3. **9/9 Adversarial Verification Gate & Environment Diagnostic**: A pre-submission patch validation suite passing 9/9 adversarial stress scenarios (empty diffs, syntax corruption, `.gitignore` traps, stray skill leaks) with sub-10ms latency, accompanied by a 129-task sandbox audit uncovering that 28 of 67 FastAPI tasks ($41.8\%$) suffer collection crashes from missing offline plugins (`inline_snapshot`, `dirty_equals`, `anyio`).
+3. **9/9 Adversarial Verification Gate & Environment Diagnostic**: A pre-submission patch validation suite passing 9/9 adversarial stress scenarios (empty diffs, syntax corruption, `.gitignore` traps, stray skill leaks) with sub-10ms latency, accompanied by a 129-task sandbox audit (cross-citing our companion measurement paper *Finding the File Is Not Fixing the Bug*) uncovering that when agents execute in-loop bare `pytest` inside the workspace, 27 of 67 FastAPI tasks ($40.3\%$) suffer collection crashes from missing offline plugins (`inline_snapshot`, `dirty_equals`), while a 28th task (`fastapi_15800`) requires `-p no:anyio`.
 
 The toolkit is open-sourced under the MIT license, requires zero external packages, and runs on Python 3.9+.
 
@@ -27,7 +27,7 @@ Autonomous coding agents evaluating in offline competition environments—such a
 In this environment, general-purpose LLMs fail frequently not from algorithmic inability, but from **environment-level hazards**:
 - **Output Flooding**: Unconstrained tool dumps flood the context window, triggering compaction cliffs that drop reasoning scratchpads.
 - **Syntactic Flaws**: Raw file edits introduce syntax errors and indentation defects that invalidate patches.
-- **The `.gitignore` Trap**: In $8.5\%$ of fixes, resolving bugs requires creating new files; standard git commands silently omit them if matching `.gitignore` patterns.
+- **The `.gitignore` Trap**: In $8.5\%$ of fixes (11 of 129 benchmark tasks, as audited in our companion measurement paper *Finding the File Is Not Fixing the Bug*), resolving bugs requires creating new files; standard git commands silently omit them if matching `.gitignore` patterns unless staged via `git add -N -f`.
 - **Sync/Async Twin Drift**: Web frameworks (`fastapi`, `httpx`) maintain dual sync and async method twins (e.g., `send` and `asend`); editing one while neglecting the other causes hidden test regressions.
 
 `swe-toolkit` addresses these failure modes through drop-in command-line interfaces (`swe locate`, `swe inspect`, `swe verify`) enforcing deterministic schemas, state safety, and zero external dependencies.
@@ -73,12 +73,12 @@ Asynchronous Python frameworks (`httpx`, `fastapi`, `starlette`) maintain paired
 
 ### Algorithmic Twin Detection in `_index.py`
 
-`_index.py` extracts symbols using `ast.parse` and maps normalized variants (`a_`, `async_`, `sync_`, `_async`, `_sync`). When invoking `swe inspect --symbol <name>`, `twins()` extracts symbol relations across six categories:
+`_index.py` performs AST structural Sync/Async Twin inspection (`send`/`asend`) on inspected classes, extracting symbols using `ast.parse` and mapping normalized variants (`a_`, `async_`, `sync_`, `_async`, `_sync`). When invoking `swe inspect --symbol <name>`, `twins()` extracts structural symbol relations across six categories:
 1. **`def`**: Primary target AST definition, parameter signature, and line bounds.
 2. **`caller`**: AST functions referencing `target.qualname`.
 3. **`override`**: Sibling declarations sharing the same `qualname`.
 4. **`subclass`**: Classes listing target class in their AST `bases`.
-5. **`async_twin` / `sync_twin`**: Methods sharing normalized names with opposing `is_async` flags.
+5. **`async_twin` / `sync_twin`**: Methods sharing normalized names with opposing `is_async` flags (e.g., `Client.send` vs `AsyncClient.send`).
 6. **`twin_string`**: Functions sharing unique internal string constants.
 
 Surfacing twin coroutines in the initial tool response alerts agents to dual-method obligations before edits are staged.
@@ -87,7 +87,9 @@ Surfacing twin coroutines in the initial tool response alerts agents to dual-met
 
 ## 4. The 10 AST Domain Bug Playbooks Evaluated Across 129 Repositories
 
-Autonomous agents often make erratic edits because they lack domain-specific idioms for individual libraries. We codified repository repair expertise into **10 AST Domain Bug Playbooks** (`_knowledge.py`). Each playbook consists of keyword/AST trigger predicates and an actionable instruction block strictly capped at $\le 120$ tokens.
+Autonomous agents often make erratic edits because they lack domain-specific idioms for individual libraries. We codified repository repair expertise into **10 AST Domain Bug Playbooks** (`_knowledge.py`).
+
+Crucially, while `_index.py` performs deterministic AST structural Sync/Async Twin inspection on inspected classes, the issue-text keyword playbooks in `_knowledge.py` are opt-in heuristics. When evaluated across all 129 tasks, only `RICH_RENDERING` ($79.4\%$) and `FASTAPI_PYDANTIC` ($50.0\%$) achieve high precision; the three zero-hit architectural playbooks (`DECORATOR_WRAP`, `REGISTRATION_SIBLING`, `ASYNC_SYNC_TWIN`) are removed from the default active configuration to prevent context distraction. Each playbook consists of keyword/AST trigger predicates and an actionable instruction block strictly capped at $\le 120$ tokens.
 
 ### Table 2: 10-Playbook Taxonomy, Empirical Triggers & Precision
 
@@ -152,18 +154,21 @@ To evaluate the broader applicability of `swe-toolkit`, we conducted an exhausti
 
 | Repository Ecosystem | Benchmark Tasks ($N=129$) | Single-File Edits (%) | Multi-File Edits (%) | New Files Created (%) | Direct Missing Plugin Imports | Total Test Collection Crashes | Unpassable Task Rate (%) | Missing Environment Packages |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| **`fastapi/fastapi`** | 67 | 64.2% (43) | 35.8% (24) | 14.9% (10) | 22 tasks | 28 tasks | **41.8%** (28/67) | `inline_snapshot`, `dirty_equals`, `anyio` |
+| **`fastapi/fastapi`** | 67 | 64.2% (43) | 35.8% (24) | 14.9% (10) | 22 tasks | 27 tasks | **40.3%** (27/67) | `inline_snapshot` (22), `dirty_equals` (5) |
 | **`Textualize/rich`** | 48 | 77.1% (37) | 22.9% (11) | 2.1% (1) | 0 tasks | 0 tasks | **0.0%** (0/48) | *None (Fully self-contained)* |
 | **`psf/requests`** | 13 | 84.6% (11) | 15.4% (2) | 0.0% (0) | 0 tasks | 0 tasks | **0.0%** (0/13) | *None (Fully self-contained)* |
 | **`encode/httpx`** | 1 | 0.0% (0) | 100.0% (1) | 0.0% (0) | 0 tasks | 0 tasks | **0.0%** (0/1) | *None (Fully self-contained)* |
-| **Combined Benchmark** | **129** | **70.5% (91)** | **29.5% (38)** | **8.5% (11)** | **22 tasks** | **28 tasks** | **21.7% (28/129)** | `inline_snapshot` (18), `dirty_equals` (5), `anyio` (1) |
+| **Combined Benchmark** | **129** | **70.5% (91)** | **29.5% (38)** | **8.5% (11)** | **22 tasks** | **27 tasks** | **20.9% (27/129)** | `inline_snapshot` (22), `dirty_equals` (5) |
+
+*Note: As audited in our companion measurement paper ("Finding the File Is Not Fixing the Bug: Retrieval & Noise in Offline SWE Agents"), an additional 28th task (`fastapi_15800`) imports `anyio`, which is installed in the testbed, but requires `-p no:anyio` to disable conflicting plugins.*
 
 ### The Offline Test Environment Void in `fastapi`
 
-A striking discovery from our audit is that **28 out of 67 FastAPI tasks ($41.8\%$) cannot pass their own test suites inside the competition sandbox**.
-- In 22 tasks, `test_patch` directly imports `inline_snapshot` or `dirty_equals`.
-- In 6 additional tasks, test files imported by `pytest` require these packages transitively during module collection.
-- Because the competition environment runs strictly offline without internet access or pre-installed wheelhouse caches for these packages, running `pytest` results in immediate `ModuleNotFoundError` collection aborts (exit code 2 or 4).
+A striking discovery from our audit—cross-citing the rigorous runtime analysis in our companion measurement paper *Finding the File Is Not Fixing the Bug*—is that **27 out of 67 FastAPI tasks ($40.3\%$) cannot pass in-loop bare `pytest` inside the agent workspace**:
+- In 22 tasks, `test_patch` directly imports `inline_snapshot`.
+- In 5 additional tasks, test files import `dirty_equals`.
+- A 28th task (`fastapi_15800`) requires disabling the anyio plugin (`-p no:anyio`).
+- While the official grader harness (`swegemma/harness/verification.py:387`) installs wheels and test dependencies prior to final evaluation, when the agent itself executes bare `pytest` inside `/workspace` during its problem-solving loop, it faces immediate `ModuleNotFoundError` collection aborts (exit code 2 or 4).
 
 ### How `_verify.py` Handles Environment Incompatibilities
 

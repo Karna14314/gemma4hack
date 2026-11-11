@@ -1,9 +1,9 @@
-import os, subprocess, tempfile, pathlib, time
+import os, subprocess, tempfile, pathlib, time, sys
 
 SWE="skills/swe-toolkit/scripts/swe.py"
 
 def run(root, *args):
-    cmd=["python3", SWE, *args, "--root", str(root)]
+    cmd=[sys.executable, SWE, *args, "--root", str(root)]
     return subprocess.run(cmd, capture_output=True, text=True, timeout=200)
 
 def test_empty_repo():
@@ -73,7 +73,31 @@ def test_hanging_pytest():
     assert r.returncode==0
     print("hanging pytest OK")
 
+def test_stray_skills_leak():
+    d=tempfile.mkdtemp()
+    subprocess.run(["git","init"],cwd=d,capture_output=True)
+    (pathlib.Path(d)/"a.py").write_text("def f(): return 1\n")
+    subprocess.run(["git","add","-A"],cwd=d,capture_output=True)
+    subprocess.run(["git","commit","-m","base"],cwd=d,capture_output=True)
+    skill_dir = pathlib.Path(d)/"skills"/"custom_tool"
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    (skill_dir/"x.py").write_text("def tool(): pass\n")
+    r=run(d,"verify")
+    assert r.returncode==0
+    assert "STRAY: FAIL" in r.stdout or "skills/" in r.stdout
+    print("stray skills leak OK")
+
+def test_cleanup_safety():
+    d=tempfile.mkdtemp()
+    user_skills = pathlib.Path(d)/"skills"/"my_module.py"
+    user_skills.parent.mkdir(parents=True, exist_ok=True)
+    user_skills.write_text("# precious user skills module\n")
+    r=run(d,"locate","--query","skills")
+    assert r.returncode==0
+    assert user_skills.is_file(), "Cleanup deleted user-owned skills directory!"
+    print("cleanup safety OK")
+
 if __name__=="__main__":
-    for fn in [test_empty_repo,test_missing_baseline,test_non_utf8,test_syntax_error,test_symlink_loop,test_large_file,test_gitignore_ignored,test_hanging_pytest]:
+    for fn in [test_empty_repo,test_missing_baseline,test_non_utf8,test_syntax_error,test_symlink_loop,test_large_file,test_gitignore_ignored,test_hanging_pytest,test_stray_skills_leak,test_cleanup_safety]:
         fn()
-    print("ALL ADVERSARIAL TESTS PASSED")
+    print("ALL ADVERSARIAL TESTS PASSED (9/9 SCENARIOS + CLEANUP SAFETY)")

@@ -1,0 +1,31 @@
+CRITICAL SAFETY DIRECTIVE:
+You are in STRICT READ-ONLY MODE.
+DO NOT edit, create, or delete any files in this repository.
+Print your complete, in-depth strategic analysis directly to stdout.
+
+ROLE: Principal Kaggle Discussions, Public Notebooks & Competitive Strategy Auditor.
+TASK: Analyze our 16 competition submissions against public leaderboard intelligence, community insights, and post-deadline architectural roadmaps.
+
+FILES TO INSPECT (READ-ONLY):
+1. docs/LEDGER.md
+2. docs/ENV_AUDIT.md
+3. docs/PUBLIC_022_024_AUDIT.md
+4. docs/PUBLIC_ARCHITECTURE_AUDIT.md
+5. docs/MASTER_WRITEUP_FINAL.md
+
+YOUR STRATEGIC MANDATE:
+1. LEADERBOARD TRAJECTORY & COMPETITIVE BENCHMARKING:
+   - Analyze our 16 leaderboard runs: exp01 to exp15 (0.13 to 0.20 score), E0 control (0.17 replication of exp05), and genuine E4B small-model runs (0.05 to 0.06).
+   - Compare our pooled 31B anchor (52/290 = 0.179, sigma_within = 0.89 tasks) against the public Top-20 cluster (0.22 to 0.29, spanning 13 to 17 tasks).
+   - In light of our MDE bounds (same-split MDE = 3.53 tasks, cross-split MDE = 8.18 tasks), explain how our findings re-interpret leaderboard deltas that others consider "improvements".
+
+2. COMMUNITY DISCUSSIONS & PUBLIC NOTEBOOK INSIGHTS:
+   - What specific high-value insights from top public notebooks (e.g. verracodeguacas, honghanhhh, yiyu0716, romanrozen, Ayush Thakur, Jason Wold) should be highlighted or cited to demonstrate complete awareness of community state-of-the-art?
+   - Identify any community assumptions about code graphs or multi-agent workflows that our empirical findings confirm or falsify.
+
+3. POST-DEADLINE HIGH-ROI ROADMAP (Nov 13 – Dec 2):
+   - What are the top 2 architectural changes that can genuinely move our 31B and E4B scores before the Dec 2 final submission deadline?
+   - Evaluate specific techniques:
+     * In-process zero-schema tools (e.g. bash run_command with tight timeouts vs ADK tool serialization overhead)
+     * Model fine-tuning (LoRA / SFT adapters vs base 31B / E4B weights)
+     * Test execution strategy (handling the 28/67 FastAPI missing-plugin collection crash barrier)

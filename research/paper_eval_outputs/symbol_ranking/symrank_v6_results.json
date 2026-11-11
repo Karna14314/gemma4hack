@@ -1,90 +1,126 @@
 {
-  "benchmark": "Intra-File Symbol Recall Ablation (Table 2D)",
+  "benchmark": "Intra-File Symbol Recall Ablation (Table 2D) \u2014 Genuine Uncalibrated Execution",
   "denominator": 121,
   "ablation_summary": {
     "v4_baseline": {
       "name": "v4 (Shipped Baseline)",
-      "recall": {
-        "@1": 0.157,
-        "@3": 0.231,
-        "@5": 0.306,
-        "@10": 0.364
-      },
       "hits": {
-        "@1": 19,
-        "@3": 28,
-        "@5": 37,
-        "@10": 44
+        "@1": 18,
+        "@3": 30,
+        "@5": 38,
+        "@10": 43
+      },
+      "recall": {
+        "@1": 0.1488,
+        "@3": 0.2479,
+        "@5": 0.314,
+        "@10": 0.3554
       },
       "median_latency_s": null,
       "scope": "top-5 files, shipped ranking"
     },
     "v5": {
-      "name": "v5 (Top-8 Scope)",
-      "recall": {
-        "@1": 0.19,
-        "@3": 0.322,
-        "@5": 0.388,
-        "@10": 0.488
-      },
+      "name": "v5 (top-8 files, span overlap + 1/rank prior)",
       "hits": {
-        "@1": 23,
-        "@3": 39,
-        "@5": 47,
-        "@10": 59
+        "@1": 16,
+        "@3": 35,
+        "@5": 41,
+        "@10": 53
       },
-      "median_latency_s": 0.235,
+      "recall": {
+        "@1": 0.1322,
+        "@3": 0.2893,
+        "@5": 0.3388,
+        "@10": 0.438
+      },
+      "median_latency_s": 0.0051,
+      "vs_v4_mcnemar_r5": {
+        "hits_new_only": 10,
+        "hits_v4_only": 7,
+        "p_value": 0.62763
+      },
+      "vs_v4_wilcoxon_r5": {
+        "w_stat": 63.0,
+        "p_value": 0.52278
+      },
       "scope": "top-8 files, span overlap + 1/rank prior"
     },
     "v5A": {
-      "name": "v5A (Top-12 Scope)",
-      "recall": {
-        "@1": 0.19,
-        "@3": 0.322,
-        "@5": 0.397,
-        "@10": 0.488
-      },
+      "name": "v5A (top-12 files candidate pool)",
       "hits": {
-        "@1": 23,
-        "@3": 39,
-        "@5": 48,
-        "@10": 59
+        "@1": 16,
+        "@3": 34,
+        "@5": 39,
+        "@10": 52
       },
-      "median_latency_s": 0.235,
+      "recall": {
+        "@1": 0.1322,
+        "@3": 0.281,
+        "@5": 0.3223,
+        "@10": 0.4298
+      },
+      "median_latency_s": 0.006,
+      "vs_v4_mcnemar_r5": {
+        "hits_new_only": 10,
+        "hits_v4_only": 9,
+        "p_value": 1.0
+      },
+      "vs_v4_wilcoxon_r5": {
+        "w_stat": 90.0,
+        "p_value": 0.84053
+      },
       "scope": "top-12 files candidate pool"
     },
     "v5AB": {
-      "name": "v5AB (+Member Boost)",
-      "recall": {
-        "@1": 0.215,
-        "@3": 0.322,
-        "@5": 0.388,
-        "@10": 0.455
-      },
+      "name": "v5AB (top-12 files + member boost)",
       "hits": {
-        "@1": 26,
-        "@3": 39,
-        "@5": 47,
-        "@10": 55
+        "@1": 16,
+        "@3": 34,
+        "@5": 44,
+        "@10": 53
       },
-      "median_latency_s": 1.31,
-      "scope": "methods prioritized over classes"
+      "recall": {
+        "@1": 0.1322,
+        "@3": 0.281,
+        "@5": 0.3636,
+        "@10": 0.438
+      },
+      "median_latency_s": 0.0079,
+      "vs_v4_mcnemar_r5": {
+        "hits_new_only": 15,
+        "hits_v4_only": 9,
+        "p_value": 0.30743
+      },
+      "vs_v4_wilcoxon_r5": {
+        "w_stat": 112.5,
+        "p_value": 0.28398
+      },
+      "scope": "top-12 files + member boost"
     },
     "v6": {
-      "name": "v6 (+Call-Site Scoring)",
-      "recall": {
-        "@1": 0.215,
-        "@3": 0.331,
-        "@5": 0.405,
-        "@10": 0.463
-      },
+      "name": "v6 (deep AST span re-ranking (top-12 + member + callsite))",
       "hits": {
-        "@1": 26,
-        "@3": 40,
-        "@5": 49,
-        "@10": 56
+        "@1": 18,
+        "@3": 35,
+        "@5": 44,
+        "@10": 53
       },
-      "median_latency_s": 1.31,
+      "recall": {
+        "@1": 0.1488,
+        "@3": 0.2893,
+        "@5": 0.3636,
+        "@10": 0.438
+      },
+      "median_latency_s": 0.0096,
+      "vs_v4_mcnemar_r5": {
+        "hits_new_only": 15,
+        "hits_v4_only": 9,
+        "p_value": 0.30743
+      },
+      "vs_v4_wilcoxon_r5": {
+        "w_stat": 112.5,
+        "p_value": 0.28398
+      },
       "scope": "deep AST span re-ranking (top-12 + member + callsite)"
     }
   },
@@ -108,16 +144,16 @@
         "main"
       ],
       "top_syms_v6": [
+        "File",
+        "Form",
+        "File",
+        "Form",
+        "Body",
+        "Security",
+        "Depends",
         "__init__",
         "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__repr__",
-        "__repr__"
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -125,7 +161,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1609
+      "latency_s": 0.01
     },
     {
       "task": "fastapi_11355",
@@ -147,16 +183,16 @@
         "get_flat_models_from_field"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
+        "__post_init__",
+        "validate",
+        "alias",
+        "get_default",
+        "serialize",
+        "__hash__",
         "get",
         "put",
         "post",
-        "delete",
-        "options"
+        "delete"
       ],
       "sym_hit": {
         "1": false,
@@ -164,7 +200,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1409
+      "latency_s": 0.0062
     },
     {
       "task": "fastapi_12942",
@@ -185,16 +221,16 @@
         "Tag"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
-        "put",
         "post",
+        "FastAPI",
+        "put",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace",
+        "get"
       ],
       "sym_hit": {
         "1": false,
@@ -202,7 +238,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1973
+      "latency_s": 0.0146
     },
     {
       "task": "fastapi_13207",
@@ -224,24 +260,24 @@
         "openapi"
       ],
       "top_syms_v6": [
+        "openapi",
+        "get_definitions",
+        "get_schema_from_model_field",
+        "openapi",
+        "validate",
+        "serialize",
         "__init__",
         "build_middleware_stack",
-        "openapi",
-        "websocket",
         "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "get"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1478
+      "latency_s": 0.0048
     },
     {
       "task": "fastapi_13537",
@@ -262,16 +298,16 @@
         "Form"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "request_params_to_args",
+        "_extract_form_body",
+        "_get_multidict_value",
+        "_should_embed_body_fields",
+        "request_body_to_args",
+        "get_body_field",
+        "analyze_param",
+        "solve_dependencies",
+        "get_dependant",
+        "default"
       ],
       "sym_hit": {
         "1": false,
@@ -279,7 +315,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1562
+      "latency_s": 0.0071
     },
     {
       "task": "fastapi_13713",
@@ -304,14 +340,14 @@
       "top_syms_v6": [
         "__init__",
         "openapi",
-        "websocket",
-        "include_router",
+        "FastAPI",
+        "openapi",
+        "__init__",
+        "__init__",
+        "__init__",
         "get",
         "put",
-        "post",
-        "delete",
-        "options",
-        "head"
+        "post"
       ],
       "sym_hit": {
         "1": false,
@@ -319,7 +355,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1593
+      "latency_s": 0.0059
     },
     {
       "task": "fastapi_13786",
@@ -346,24 +382,24 @@
         "ModelField"
       ],
       "top_syms_v6": [
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "__init__"
+        "required",
+        "default",
+        "get_definitions",
+        "ModelField",
+        "_remap_definitions_and_field_mappings",
+        "_replace_refs",
+        "get_schema_from_model_field",
+        "__post_init__",
+        "serialize",
+        "validate"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.0705
+      "latency_s": 0.0073
     },
     {
       "task": "fastapi_13920",
@@ -384,16 +420,16 @@
         "is_bytes_or_nonable_bytes_annotation"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "__post_init__",
+        "serialize",
+        "alias",
+        "__hash__",
+        "ModelField",
+        "validate",
+        "validation_alias",
+        "serialization_alias",
+        "required",
+        "type_"
       ],
       "sym_hit": {
         "1": false,
@@ -401,7 +437,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1759
+      "latency_s": 0.0064
     },
     {
       "task": "fastapi_14077",
@@ -423,24 +459,24 @@
         "copy_field_info"
       ],
       "top_syms_v6": [
+        "validate",
+        "serialize",
+        "__hash__",
         "__init__",
-        "openapi",
-        "websocket",
-        "include_router",
+        "FastAPI",
+        "exception_handler",
+        "alias",
         "get",
         "put",
-        "post",
-        "delete",
-        "options",
-        "head"
+        "post"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1391
+      "latency_s": 0.0051
     },
     {
       "task": "fastapi_14099",
@@ -463,24 +499,24 @@
         "__get_validators__"
       ],
       "top_syms_v6": [
+        "UploadFile",
+        "close",
+        "seek",
+        "__get_validators__",
+        "middleware",
         "write",
         "read",
-        "seek",
-        "close",
-        "__get_validators__",
         "validate",
         "_validate",
-        "__modify_schema__",
-        "__get_pydantic_json_schema__",
-        "__get_pydantic_core_schema__"
+        "__init__"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
+        "1": false,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.1273
+      "latency_s": 0.0054
     },
     {
       "task": "fastapi_14186",
@@ -526,24 +562,24 @@
         "ModelField"
       ],
       "top_syms_v6": [
-        "__init__",
+        "__post_init__",
+        "validate",
+        "ModelField",
+        "serialize",
+        "__hash__",
+        "get_schema_from_model_field",
+        "alias",
+        "get_default",
         "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "get"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1153
+      "latency_s": 0.0064
     },
     {
       "task": "fastapi_14246",
@@ -564,24 +600,24 @@
         "get_schema_from_model_field"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "__post_init__",
+        "validate",
+        "serialize",
+        "__hash__",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default",
+        "__init__"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1576
+      "latency_s": 0.0068
     },
     {
       "task": "fastapi_14258",
@@ -602,16 +638,16 @@
         "alias"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "__post_init__",
         "get",
         "put",
         "post",
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace",
+        "validate"
       ],
       "sym_hit": {
         "1": false,
@@ -619,7 +655,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1523
+      "latency_s": 0.0067
     },
     {
       "task": "fastapi_14262",
@@ -652,16 +688,16 @@
         "lifespan"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "Security",
+        "Depends",
+        "Form",
+        "Path",
+        "app",
+        "app",
+        "app",
+        "app",
+        "Security",
+        "app"
       ],
       "sym_hit": {
         "1": true,
@@ -669,7 +705,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1349
+      "latency_s": 0.0098
     },
     {
       "task": "fastapi_14266",
@@ -690,16 +726,16 @@
         "test_propagates_pydantic2_model_config"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
         "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "openapi",
+        "__post_init__",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default",
+        "validate",
+        "serialize"
       ],
       "sym_hit": {
         "1": false,
@@ -707,7 +743,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.114
+      "latency_s": 0.0055
     },
     {
       "task": "fastapi_14297",
@@ -728,14 +764,14 @@
         "File"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
+        "post",
+        "serialize",
+        "ModelField",
+        "FastAPI",
+        "post",
+        "__post_init__",
         "get",
         "put",
-        "post",
         "delete",
         "options"
       ],
@@ -745,7 +781,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1516
+      "latency_s": 0.0123
     },
     {
       "task": "fastapi_14301",
@@ -766,24 +802,24 @@
         "get_stream_session"
       ],
       "top_syms_v6": [
+        "get_dependant",
+        "get_parameterless_sub_dependant",
+        "APIRoute",
+        "route",
+        "Depends",
         "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "solve_dependencies",
+        "__init__",
+        "add_api_route",
+        "api_route"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1597
+      "latency_s": 0.0076
     },
     {
       "task": "fastapi_14303",
@@ -804,16 +840,16 @@
         "APIRouter"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
         "post",
+        "get",
+        "FastAPI",
+        "build_middleware_stack",
+        "put",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace"
       ],
       "sym_hit": {
         "1": false,
@@ -821,7 +857,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1741
+      "latency_s": 0.0132
     },
     {
       "task": "fastapi_14306",
@@ -846,24 +882,24 @@
         "create_item"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
-        "put",
         "post",
+        "FastAPI",
+        "build_middleware_stack",
+        "put",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.2103
+      "latency_s": 0.0088
     },
     {
       "task": "fastapi_14349",
@@ -884,24 +920,24 @@
         "Foo"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "__hash__",
+        "__post_init__",
+        "validate",
+        "serialize",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default",
+        "get"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.151
+      "latency_s": 0.0087
     },
     {
       "task": "fastapi_14356",
@@ -922,16 +958,16 @@
         "Model"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
+        "FastAPI",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace",
+        "get"
       ],
       "sym_hit": {
         "1": false,
@@ -939,7 +975,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1857
+      "latency_s": 0.0154
     },
     {
       "task": "fastapi_14360",
@@ -960,24 +996,24 @@
         "ModelNoAlias"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
+        "alias",
+        "validate",
+        "validate",
+        "alias",
+        "ModelField",
+        "__post_init__",
+        "get_schema_from_model_field",
+        "get_definitions",
         "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "put"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1807
+      "latency_s": 0.0076
     },
     {
       "task": "fastapi_14361",
@@ -998,24 +1034,24 @@
         "ModelWithRef"
       ],
       "top_syms_v6": [
-        "is_pv1_scalar_field",
-        "with_info_plain_validator_function",
-        "get_model_definitions",
-        "is_pv1_scalar_sequence_field",
-        "_model_rebuild",
-        "_model_dump",
-        "_get_model_config",
-        "get_schema_from_model_field",
-        "get_definitions",
-        "is_scalar_field"
+        "__post_init__",
+        "__hash__",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default",
+        "validate",
+        "serialize",
+        "__get_pydantic_json_schema__"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.0905
+      "latency_s": 0.0073
     },
     {
       "task": "fastapi_14371",
@@ -1044,24 +1080,24 @@
         "get_missing_field_error"
       ],
       "top_syms_v6": [
+        "__post_init__",
+        "serialize",
+        "alias",
+        "validate",
+        "ModelField",
         "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
+        "get_schema_from_model_field",
         "__init__",
         "__init__",
         "__init__"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1306
+      "latency_s": 0.005
     },
     {
       "task": "fastapi_14372",
@@ -1083,24 +1119,24 @@
         "get_schema_from_model_field"
       ],
       "top_syms_v6": [
+        "Security",
+        "Depends",
+        "Security",
+        "Depends",
+        "Body",
         "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__repr__",
-        "__repr__"
+        "Query",
+        "Header",
+        "Cookie",
+        "Form"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
+        "1": false,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.0991
+      "latency_s": 0.0052
     },
     {
       "task": "fastapi_14419",
@@ -1124,16 +1160,16 @@
         "is_bytes_sequence_annotation"
       ],
       "top_syms_v6": [
+        "__post_init__",
+        "serialize",
+        "__hash__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "alias",
+        "validate",
         "make_not_authenticated_error",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "is_scalar_field",
-        "alias"
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -1141,7 +1177,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.0985
+      "latency_s": 0.0063
     },
     {
       "task": "fastapi_14430",
@@ -1162,16 +1198,16 @@
         "serialize_sequence_value"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
+        "__post_init__",
+        "validate",
+        "serialize",
+        "__hash__",
         "get",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head"
       ],
       "sym_hit": {
         "1": false,
@@ -1179,7 +1215,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1536
+      "latency_s": 0.0048
     },
     {
       "task": "fastapi_14448",
@@ -1201,16 +1237,16 @@
         "test_serialize_sequence_value_with_optional_list_pipe_union"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "__post_init__",
+        "alias",
+        "serialize",
+        "__hash__",
         "get",
         "put",
         "post",
         "delete",
         "options",
-        "head",
-        "patch"
+        "head"
       ],
       "sym_hit": {
         "1": false,
@@ -1218,7 +1254,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1527
+      "latency_s": 0.0068
     },
     {
       "task": "fastapi_14455",
@@ -1239,16 +1275,16 @@
         "ErrorWrapper"
       ],
       "top_syms_v6": [
-        "make_not_authenticated_error",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "make_authenticate_headers"
+        "__post_init__",
+        "validate",
+        "serialize",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default",
+        "__hash__",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -1256,7 +1292,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.079
+      "latency_s": 0.0052
     },
     {
       "task": "fastapi_14458",
@@ -1279,16 +1315,16 @@
         "__call__"
       ],
       "top_syms_v6": [
-        "__init__",
-        "make_authenticate_headers",
+        "is_coroutine_callable",
+        "is_async_gen_callable",
+        "is_gen_callable",
         "__call__",
-        "__init__",
         "__call__",
-        "__init__",
         "__call__",
-        "make_not_authenticated_error",
-        "__init__",
-        "__init__"
+        "__call__",
+        "computed_scope",
+        "__call__",
+        "__call__"
       ],
       "sym_hit": {
         "1": true,
@@ -1296,7 +1332,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1111
+      "latency_s": 0.0052
     },
     {
       "task": "fastapi_14459",
@@ -1322,16 +1358,16 @@
         "normalize_name"
       ],
       "top_syms_v6": [
+        "__post_init__",
+        "validate",
+        "serialize",
+        "__hash__",
+        "__init__",
         "make_not_authenticated_error",
         "__init__",
         "__init__",
-        "__init__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "is_scalar_field",
-        "alias"
+        "alias",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -1339,7 +1375,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.0892
+      "latency_s": 0.0074
     },
     {
       "task": "fastapi_14463",
@@ -1360,24 +1396,24 @@
         "get_fields_from_routes"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
+        "FastAPI",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace",
+        "openapi"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1672
+      "latency_s": 0.0118
     },
     {
       "task": "fastapi_14479",
@@ -1398,16 +1434,16 @@
         "ensure_multipart_is_installed"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "get_dependant",
+        "analyze_param",
+        "get_body_field",
+        "request_params_to_args",
+        "solve_dependencies",
+        "request_body_to_args",
+        "_extract_form_body",
+        "_should_embed_body_fields",
+        "get_flat_dependant",
+        "is_union_of_base_models"
       ],
       "sym_hit": {
         "1": false,
@@ -1415,7 +1451,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1967
+      "latency_s": 0.0097
     },
     {
       "task": "fastapi_14482",
@@ -1438,24 +1474,24 @@
         "serialize_sequence_value"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "get_default",
+        "validate",
+        "serialize",
+        "__post_init__",
+        "__hash__",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "serialize"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": false,
-        "10": false
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.1773
+      "latency_s": 0.005
     },
     {
       "task": "fastapi_14485",
@@ -1477,16 +1513,16 @@
         "is_bytes_sequence_field"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "__post_init__",
+        "alias",
+        "get_default",
+        "__hash__",
+        "required",
+        "default",
+        "type_",
+        "validate",
+        "serialize",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -1494,7 +1530,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2161
+      "latency_s": 0.0051
     },
     {
       "task": "fastapi_14487",
@@ -1515,11 +1551,11 @@
         "create_item"
       ],
       "top_syms_v6": [
-        "__init__",
-        "__init__",
-        "__init__",
-        "websocket",
-        "include_router",
+        "errors",
+        "validate",
+        "__post_init__",
+        "alias",
+        "__hash__",
         "get",
         "put",
         "post",
@@ -1532,7 +1568,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1194
+      "latency_s": 0.006
     },
     {
       "task": "fastapi_14512",
@@ -1553,24 +1589,24 @@
         "create_body_model"
       ],
       "top_syms_v6": [
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__init__"
+        "__post_init__",
+        "validate",
+        "__hash__",
+        "Body",
+        "serialize",
+        "alias",
+        "required",
+        "default",
+        "type_",
+        "get_default"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": false,
-        "10": false
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.0936
+      "latency_s": 0.0045
     },
     {
       "task": "fastapi_14583",
@@ -1609,7 +1645,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.0416
+      "latency_s": 0.0017
     },
     {
       "task": "fastapi_14605",
@@ -1641,8 +1677,8 @@
         "__init__",
         "__init__",
         "__init__",
-        "__repr__",
-        "__repr__"
+        "__init__",
+        "__init__"
       ],
       "sym_hit": {
         "1": true,
@@ -1650,7 +1686,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.2051
+      "latency_s": 0.0053
     },
     {
       "task": "fastapi_14609",
@@ -1713,7 +1749,7 @@
         "__init__",
         "__init__",
         "__init__",
-        "__repr__",
+        "Path",
         "__repr__"
       ],
       "sym_hit": {
@@ -1722,7 +1758,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.0283
+      "latency_s": 0.002
     },
     {
       "task": "fastapi_14616",
@@ -1743,16 +1779,16 @@
         "APIRouter"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
-        "put",
         "post",
+        "FastAPI",
+        "put",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace",
+        "get"
       ],
       "sym_hit": {
         "1": false,
@@ -1760,7 +1796,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1806
+      "latency_s": 0.0099
     },
     {
       "task": "fastapi_14786",
@@ -1781,16 +1817,16 @@
         "read_current_user"
       ],
       "top_syms_v6": [
+        "HTTPBearer",
+        "HTTPDigest",
+        "HTTPBasic",
+        "HTTPAuthorizationCredentials",
+        "get",
+        "FastAPI",
         "__init__",
-        "make_authenticate_headers",
-        "__call__",
         "__init__",
-        "__call__",
-        "__init__",
-        "__call__",
-        "__init__",
-        "build_middleware_stack",
-        "openapi"
+        "get",
+        "__call__"
       ],
       "sym_hit": {
         "1": false,
@@ -1798,7 +1834,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1858
+      "latency_s": 0.0115
     },
     {
       "task": "fastapi_14794",
@@ -1819,16 +1855,16 @@
         "a"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "Depends",
+        "Security",
+        "Body",
+        "Form",
+        "File",
+        "Query",
+        "Path",
+        "Header",
+        "Cookie",
+        "build_middleware_stack"
       ],
       "sym_hit": {
         "1": false,
@@ -1836,7 +1872,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2103
+      "latency_s": 0.0089
     },
     {
       "task": "fastapi_14851",
@@ -1860,9 +1896,9 @@
         "test_router_events"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "on_event",
+        "on_event",
+        "FastAPI",
         "get",
         "put",
         "post",
@@ -1877,7 +1913,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1448
+      "latency_s": 0.0047
     },
     {
       "task": "fastapi_14873",
@@ -1898,24 +1934,24 @@
         "add_event_handler"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
         "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "APIRouter",
+        "__init__",
+        "app",
+        "app",
+        "app",
+        "__init__",
+        "app",
+        "get",
+        "__init__"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1586
+      "latency_s": 0.0078
     },
     {
       "task": "fastapi_14953",
@@ -1936,24 +1972,24 @@
         "post"
       ],
       "top_syms_v6": [
-        "write",
-        "read",
-        "seek",
-        "close",
-        "_validate",
-        "__get_pydantic_json_schema__",
-        "__get_pydantic_core_schema__",
-        "__init__",
-        "websocket",
-        "include_router"
+        "UploadFile",
+        "get",
+        "put",
+        "post",
+        "delete",
+        "options",
+        "head",
+        "patch",
+        "trace",
+        "__get_pydantic_json_schema__"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": true,
-        "10": true
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1239
+      "latency_s": 0.0072
     },
     {
       "task": "fastapi_14962",
@@ -1976,24 +2012,24 @@
         "test_valid"
       ],
       "top_syms_v6": [
-        "write",
-        "read",
-        "seek",
-        "close",
-        "_validate",
+        "Response",
+        "serialize",
         "__get_pydantic_json_schema__",
         "__get_pydantic_core_schema__",
-        "__init__",
-        "render",
-        "render"
+        "__post_init__",
+        "validate",
+        "_validate",
+        "bytes_schema",
+        "__hash__",
+        "__get_validators__"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.1305
+      "latency_s": 0.0064
     },
     {
       "task": "fastapi_14978",
@@ -2021,24 +2057,24 @@
         "test_strict_login_incorrect_grant_type"
       ],
       "top_syms_v6": [
+        "__get_pydantic_json_schema__",
+        "__get_pydantic_core_schema__",
         "__init__",
         "__init__",
         "__init__",
+        "exception_handler",
         "__init__",
         "__init__",
         "__init__",
-        "__init__",
-        "__init__",
-        "__init__",
-        "build_middleware_stack"
+        "__init__"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.2182
+      "latency_s": 0.0081
     },
     {
       "task": "fastapi_14986",
@@ -2060,24 +2096,24 @@
         "read_main"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
         "openapi",
-        "websocket",
-        "include_router",
+        "openapi",
         "get",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace"
       ],
       "sym_hit": {
-        "1": false,
+        "1": true,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.2053
+      "latency_s": 0.0076
     },
     {
       "task": "fastapi_15023",
@@ -2099,7 +2135,6 @@
       ],
       "top_syms_v6": [
         "__init__",
-        "websocket",
         "include_router",
         "get",
         "put",
@@ -2107,7 +2142,8 @@
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace"
       ],
       "sym_hit": {
         "1": false,
@@ -2115,7 +2151,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1826
+      "latency_s": 0.0071
     },
     {
       "task": "fastapi_15030",
@@ -2141,24 +2177,24 @@
         "lifespan"
       ],
       "top_syms_v6": [
-        "__init__",
+        "FastAPI",
         "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
-        "10": true
+        "1": false,
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.171
+      "latency_s": 0.0057
     },
     {
       "task": "fastapi_15280",
@@ -2179,16 +2215,16 @@
         "websocket"
       ],
       "top_syms_v6": [
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
         "__init__",
         "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "__call__",
+        "add_event_handler"
       ],
       "sym_hit": {
         "1": false,
@@ -2196,7 +2232,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1809
+      "latency_s": 0.0056
     },
     {
       "task": "fastapi_15588",
@@ -2218,16 +2254,16 @@
         "patch"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
+        "main",
+        "_check_data_exclusive",
+        "ServerSentEvent",
+        "EventSourceResponse",
         "get",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head"
       ],
       "sym_hit": {
         "1": false,
@@ -2235,7 +2271,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.199
+      "latency_s": 0.0094
     },
     {
       "task": "fastapi_15589",
@@ -2256,24 +2292,24 @@
         "OpenIdConnect"
       ],
       "top_syms_v6": [
+        "request_params_to_args",
+        "Header",
+        "_should_embed_body_fields",
+        "__init__",
+        "get_body_field",
+        "get_dependant",
         "__init__",
         "__init__",
-        "make_not_authenticated_error",
-        "__init__",
-        "__init__",
-        "__init__",
-        "__call__",
-        "__call__",
         "__init__",
         "__init__"
       ],
       "sym_hit": {
-        "1": false,
+        "1": true,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1559
+      "latency_s": 0.0072
     },
     {
       "task": "fastapi_15745",
@@ -2304,24 +2340,24 @@
         "get_not_decorated"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
         "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "matches",
+        "matches",
+        "APIRouter",
+        "APIRoute",
+        "include_router",
+        "app",
+        "app",
+        "app",
+        "get"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
+        "1": false,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.2182
+      "latency_s": 0.0103
     },
     {
       "task": "fastapi_15763",
@@ -2342,16 +2378,16 @@
         "copy_field_info"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "__post_init__",
+        "serialize_json",
         "get",
         "put",
         "post",
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace"
       ],
       "sym_hit": {
         "1": false,
@@ -2359,7 +2395,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2048
+      "latency_s": 0.0099
     },
     {
       "task": "fastapi_15785",
@@ -2385,7 +2421,6 @@
       ],
       "top_syms_v6": [
         "__init__",
-        "websocket",
         "include_router",
         "get",
         "put",
@@ -2393,7 +2428,8 @@
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace"
       ],
       "sym_hit": {
         "1": false,
@@ -2401,7 +2437,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1544
+      "latency_s": 0.0053
     },
     {
       "task": "fastapi_15800",
@@ -2430,24 +2466,24 @@
         "main"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
+        "app",
         "get",
         "put",
         "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "delete"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
+        "1": false,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.2449
+      "latency_s": 0.0098
     },
     {
       "task": "fastapi_5077",
@@ -2469,16 +2505,16 @@
         "get_typed_return_annotation"
       ],
       "top_syms_v6": [
+        "get_dependant",
+        "get_typed_signature",
+        "get_typed_annotation",
+        "add_api_route",
         "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options",
-        "head",
-        "patch"
+        "analyze_param",
+        "__init__",
+        "get_body_field",
+        "__init__",
+        "solve_dependencies"
       ],
       "sym_hit": {
         "1": false,
@@ -2486,7 +2522,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1769
+      "latency_s": 0.01
     },
     {
       "task": "fastapi_5624",
@@ -2507,16 +2543,16 @@
         "__init__"
       ],
       "top_syms_v6": [
-        "make_not_authenticated_error",
+        "cache_key",
+        "computed_scope",
+        "is_gen_callable",
+        "is_async_gen_callable",
+        "is_coroutine_callable",
         "__init__",
         "__init__",
-        "websocket",
-        "include_router",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "options"
+        "__init__",
+        "__init__",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -2524,7 +2560,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1702
+      "latency_s": 0.0057
     },
     {
       "task": "fastapi_9425",
@@ -2545,16 +2581,16 @@
         "read_item"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
+        "route",
         "get",
         "put",
         "post",
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -2562,7 +2598,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.198
+      "latency_s": 0.01
     },
     {
       "task": "fastapi_9555",
@@ -2583,16 +2619,16 @@
         "app"
       ],
       "top_syms_v6": [
-        "__init__",
-        "build_middleware_stack",
-        "openapi",
-        "websocket",
-        "include_router",
         "get",
+        "__init__",
+        "FastAPI",
         "put",
         "post",
         "delete",
-        "options"
+        "options",
+        "head",
+        "patch",
+        "trace"
       ],
       "sym_hit": {
         "1": false,
@@ -2600,7 +2636,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1844
+      "latency_s": 0.0164
     },
     {
       "task": "fastapi_9753",
@@ -2621,16 +2657,16 @@
         "test_class_dependency"
       ],
       "top_syms_v6": [
-        "__init__",
-        "websocket",
-        "include_router",
         "get",
         "put",
         "post",
         "delete",
         "options",
         "head",
-        "patch"
+        "patch",
+        "trace",
+        "__init__",
+        "include_router"
       ],
       "sym_hit": {
         "1": false,
@@ -2638,7 +2674,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1204
+      "latency_s": 0.0058
     },
     {
       "task": "httpx_3672",
@@ -2668,24 +2704,24 @@
         "test_client_connection_close"
       ],
       "top_syms_v6": [
-        "__init__",
-        "host",
-        "port",
-        "path",
-        "query",
-        "copy_with",
-        "join",
-        "keys",
-        "values",
-        "items"
+        "HTTPParser",
+        "complete",
+        "read",
+        "close",
+        "complete",
+        "HTTPParser",
+        "read",
+        "close",
+        "recv_headers",
+        "close"
       ],
       "sym_hit": {
-        "1": true,
+        "1": false,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.0976
+      "latency_s": 0.0098
     },
     {
       "task": "requests_6589",
@@ -2706,24 +2742,24 @@
         "prepare_content_length"
       ],
       "top_syms_v6": [
+        "super_len",
+        "prepare_content_length",
+        "prepare_body",
+        "_encode_files",
+        "json",
+        "text",
         "prepare_url",
         "__init__",
-        "iter_content",
-        "generate",
-        "json",
-        "__init__",
-        "__repr__",
-        "prepare",
-        "__init__",
-        "prepare"
+        "prepare_auth",
+        "__init__"
       ],
       "sym_hit": {
-        "1": false,
+        "1": true,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1237
+      "latency_s": 0.0068
     },
     {
       "task": "requests_6629",
@@ -2744,24 +2780,24 @@
         "test_json_decode_compatibility_for_alt_utf_encodings"
       ],
       "top_syms_v6": [
-        "prepare_url",
-        "__init__",
-        "iter_content",
-        "generate",
         "json",
+        "prepare_url",
+        "iter_content",
+        "prepare_body",
         "__init__",
-        "__repr__",
-        "prepare",
-        "__init__",
-        "prepare"
+        "JSONDecodeError",
+        "_encode_files",
+        "text",
+        "raise_for_status",
+        "iter_lines"
       ],
       "sym_hit": {
         "1": false,
-        "3": true,
+        "3": false,
         "5": true,
         "10": true
       },
-      "latency_s": 0.0952
+      "latency_s": 0.0079
     },
     {
       "task": "requests_6644",
@@ -2782,16 +2818,16 @@
         "test_multiple_requests"
       ],
       "top_syms_v6": [
-        "init_poolmanager",
-        "proxy_manager_for",
-        "cert_verify",
-        "build_response",
-        "get_connection",
-        "request_url",
-        "add_headers",
-        "proxy_headers",
+        "host",
         "send",
-        "__init__"
+        "cert_verify",
+        "get_connection",
+        "proxy_headers",
+        "init_poolmanager",
+        "build_response",
+        "request",
+        "proxy_manager_for",
+        "request_url"
       ],
       "sym_hit": {
         "1": false,
@@ -2799,7 +2835,7 @@
         "5": false,
         "10": true
       },
-      "latency_s": 0.085
+      "latency_s": 0.0058
     },
     {
       "task": "requests_6757",
@@ -2820,16 +2856,16 @@
         "Timeout"
       ],
       "top_syms_v6": [
-        "init_poolmanager",
-        "proxy_manager_for",
-        "cert_verify",
-        "build_response",
         "build_connection_pool_key_attributes",
+        "cert_verify",
         "get_connection_with_tls_context",
         "get_connection",
+        "proxy_headers",
+        "init_poolmanager",
         "request_url",
         "add_headers",
-        "proxy_headers"
+        "send",
+        "proxy_manager_for"
       ],
       "sym_hit": {
         "1": false,
@@ -2837,7 +2873,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1076
+      "latency_s": 0.0081
     },
     {
       "task": "requests_7205",
@@ -2858,24 +2894,24 @@
         "__call__"
       ],
       "top_syms_v6": [
-        "get_redirect_target",
-        "should_strip_auth",
-        "resolve_redirects",
-        "rebuild_proxies",
-        "__init__",
-        "prepare_request",
         "request",
-        "get",
-        "options",
-        "head"
+        "get_netrc_auth",
+        "super_len",
+        "prepend_scheme_if_needed",
+        "should_bypass_proxies",
+        "rebuild_proxies",
+        "resolve_redirects",
+        "prepare_request",
+        "send",
+        "rebuild_auth"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
+        "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.0993
+      "latency_s": 0.0068
     },
     {
       "task": "requests_7309",
@@ -2896,16 +2932,16 @@
         "resolve_redirects"
       ],
       "top_syms_v6": [
+        "_parse_content_type_header",
+        "content",
+        "get_encoding_from_headers",
+        "parse_dict_header",
         "prepare_url",
         "__init__",
+        "parse_list_header",
         "iter_content",
-        "generate",
-        "json",
-        "init_poolmanager",
-        "proxy_manager_for",
-        "cert_verify",
-        "build_response",
-        "build_connection_pool_key_attributes"
+        "super_len",
+        "text"
       ],
       "sym_hit": {
         "1": false,
@@ -2913,7 +2949,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1052
+      "latency_s": 0.0085
     },
     {
       "task": "requests_7315",
@@ -2934,24 +2970,24 @@
         "PreparedRequest"
       ],
       "top_syms_v6": [
-        "init_poolmanager",
-        "proxy_manager_for",
-        "cert_verify",
-        "build_response",
-        "build_connection_pool_key_attributes",
-        "get_connection_with_tls_context",
-        "get_connection",
         "request_url",
-        "add_headers",
-        "proxy_headers"
+        "get_connection",
+        "send",
+        "cert_verify",
+        "get_connection_with_tls_context",
+        "build_connection_pool_key_attributes",
+        "proxy_headers",
+        "path_url",
+        "get",
+        "build_response"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
+        "1": true,
+        "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1064
+      "latency_s": 0.0078
     },
     {
       "task": "requests_7328",
@@ -2972,24 +3008,24 @@
         "test_fragment_update_on_redirect"
       ],
       "top_syms_v6": [
-        "get_redirect_target",
-        "should_strip_auth",
-        "resolve_redirects",
-        "rebuild_proxies",
-        "__init__",
-        "prepare_request",
+        "send",
+        "send",
+        "send",
+        "Session",
+        "session",
         "request",
-        "get",
-        "options",
-        "head"
+        "__init__",
+        "resolve_redirects",
+        "get_redirect_target",
+        "rebuild_method"
       ],
       "sym_hit": {
         "1": false,
-        "3": true,
-        "5": true,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.0958
+      "latency_s": 0.0089
     },
     {
       "task": "requests_7427",
@@ -3010,16 +3046,16 @@
         "rebuild_proxies"
       ],
       "top_syms_v6": [
-        "get_redirect_target",
-        "should_strip_auth",
-        "resolve_redirects",
+        "merge_environment_settings",
         "rebuild_proxies",
         "__init__",
-        "prepare_request",
         "request",
-        "get",
-        "options",
-        "head"
+        "rebuild_method",
+        "should_strip_auth",
+        "get_redirect_target",
+        "resolve_redirects",
+        "rebuild_auth",
+        "prepare_request"
       ],
       "sym_hit": {
         "1": false,
@@ -3027,7 +3063,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1122
+      "latency_s": 0.0069
     },
     {
       "task": "requests_7433",
@@ -3048,24 +3084,24 @@
         "TestRequests"
       ],
       "top_syms_v6": [
-        "__init__",
-        "prepare",
+        "prepare_body",
         "prepare_url",
-        "prepare_cookies",
-        "__init__",
         "iter_content",
-        "generate",
-        "json",
-        "__repr__",
-        "prepare"
+        "__iter__",
+        "_encode_files",
+        "_encode_params",
+        "RequestEncodingMixin",
+        "__init__",
+        "register_hook",
+        "prepare_auth"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
+        "1": true,
+        "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1129
+      "latency_s": 0.0126
     },
     {
       "task": "requests_7502",
@@ -3086,24 +3122,24 @@
         "RequestEncodingMixin"
       ],
       "top_syms_v6": [
+        "_encode_files",
+        "__getattr__",
+        "prepare_body",
+        "_encode_params",
         "__init__",
         "prepare",
-        "prepare_url",
-        "prepare_cookies",
-        "__init__",
-        "iter_content",
-        "generate",
-        "json",
-        "__repr__",
-        "prepare"
+        "__getstate__",
+        "_encode_params",
+        "_encode_params",
+        "_encode_params"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
+        "1": true,
+        "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1055
+      "latency_s": 0.0062
     },
     {
       "task": "requests_7505",
@@ -3127,24 +3163,24 @@
         "iter_content"
       ],
       "top_syms_v6": [
-        "__init__",
-        "prepare",
-        "prepare_url",
-        "prepare_cookies",
-        "__init__",
+        "read",
+        "SupportsRead",
+        "_encode_files",
+        "_encode_params",
         "iter_content",
-        "generate",
-        "json",
-        "init_poolmanager",
-        "proxy_manager_for"
+        "prepare_body",
+        "put",
+        "prepare_url",
+        "content",
+        "generate"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
+        "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1079
+      "latency_s": 0.0113
     },
     {
       "task": "rich_2725",
@@ -3165,16 +3201,16 @@
         "A"
       ],
       "top_syms_v6": [
-        "grid",
-        "__rich_measure__",
-        "__rich_console__",
+        "Box",
         "__init__",
-        "expand",
-        "expand",
-        "_extra_width",
-        "row_count",
-        "get_row_style",
-        "padding"
+        "get_row",
+        "Table",
+        "_render",
+        "_print_table",
+        "get_top",
+        "get_bottom",
+        "TableSuite",
+        "substitute"
       ],
       "sym_hit": {
         "1": false,
@@ -3182,7 +3218,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1814
+      "latency_s": 0.0136
     },
     {
       "task": "rich_2943",
@@ -3203,16 +3239,16 @@
         "test_wrap_cjk_mixed"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "clear",
+        "run",
+        "on",
+        "meta",
+        "set_window_title",
+        "_check_buffer",
+        "export_svg",
+        "save_svg",
+        "render",
+        "render_lines"
       ],
       "sym_hit": {
         "1": false,
@@ -3220,7 +3256,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2308
+      "latency_s": 0.0141
     },
     {
       "task": "rich_3006",
@@ -3241,24 +3277,24 @@
         "test_measure_pretty"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "ascii_only",
-        "copy"
+        "__eq__",
+        "on",
+        "__eq__",
+        "on",
+        "test",
+        "render",
+        "split",
+        "wrap",
+        "with_indent_guides",
+        "assemble"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": true,
-        "10": true
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.268
+      "latency_s": 0.0155
     },
     {
       "task": "rich_3052",
@@ -3283,24 +3319,24 @@
         "test_prompt_str_default"
       ],
       "top_syms_v6": [
-        "__rich__",
+        "ask",
+        "ask",
+        "ask",
+        "Prompt",
+        "PromptBase",
+        "default",
         "__init__",
-        "__rich__",
-        "__rich_repr__",
-        "system",
-        "is_system_defined",
-        "is_default",
-        "get_truecolor",
-        "from_ansi",
-        "from_triplet"
+        "Confirm",
+        "process_response",
+        "render_default"
       ],
       "sym_hit": {
-        "1": false,
+        "1": true,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.2224
+      "latency_s": 0.0146
     },
     {
       "task": "rich_3061",
@@ -3332,24 +3368,24 @@
         "_check_buffer"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "on",
+        "Text",
+        "spans",
+        "spans",
+        "width",
+        "width",
+        "divide",
+        "join",
+        "get_style_at_offset",
+        "expand_tabs"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2081
+      "latency_s": 0.0132
     },
     {
       "task": "rich_3063",
@@ -3371,15 +3407,15 @@
         "test_escape_escape"
       ],
       "top_syms_v6": [
+        "render",
         "set_spinner",
         "__init__",
         "render",
+        "__init__",
         "__rich__",
         "__rich__",
         "__rich_console__",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
         "__rich_console__"
       ],
       "sym_hit": {
@@ -3388,7 +3424,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1931
+      "latency_s": 0.0093
     },
     {
       "task": "rich_3064",
@@ -3409,24 +3445,24 @@
         "test_traceback_console_theme_applies"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "Markdown",
         "render",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__"
+        "get_renderables",
+        "make_tasks_table",
+        "__init__",
+        "get_table_column",
+        "__call__",
+        "__init__",
+        "__init__",
+        "set_spinner"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": true,
-        "10": true
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.1977
+      "latency_s": 0.0125
     },
     {
       "task": "rich_3067",
@@ -3447,16 +3483,16 @@
         "test_clear_meta_and_links"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "run",
+        "set_window_title",
+        "_check_buffer",
+        "save_svg",
+        "render",
+        "log",
+        "export_svg",
+        "print_json",
+        "is_terminal",
+        "render_lines"
       ],
       "sym_hit": {
         "1": false,
@@ -3464,7 +3500,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2475
+      "latency_s": 0.014
     },
     {
       "task": "rich_3130",
@@ -3486,24 +3522,24 @@
         "ListItem"
       ],
       "top_syms_v6": [
+        "on_text",
+        "on_text",
+        "on_text",
+        "on_text",
+        "TextElement",
+        "Markdown",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "create"
+        "on_child_close",
+        "MarkdownElement",
+        "run"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
         "5": false,
-        "10": true
+        "10": false
       },
-      "latency_s": 0.2571
+      "latency_s": 0.0207
     },
     {
       "task": "rich_3180",
@@ -3525,16 +3561,16 @@
         "test_measure_pretty"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
-        "cell_length",
-        "__bool__",
-        "is_control",
-        "_split_cells",
-        "split_cells",
         "line",
-        "apply_style"
+        "on",
+        "move",
+        "update",
+        "Text",
+        "update",
+        "line",
+        "width",
+        "width",
+        "adjust_line_length"
       ],
       "sym_hit": {
         "1": false,
@@ -3542,7 +3578,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.24
+      "latency_s": 0.0173
     },
     {
       "task": "rich_3296",
@@ -3563,24 +3599,24 @@
         "make_sponsor_message"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
-        "cell_length",
-        "__bool__",
-        "is_control",
-        "_split_cells",
-        "split_cells",
-        "line",
-        "apply_style"
+        "run",
+        "split_and_crop_lines",
+        "align_middle",
+        "apply_style",
+        "adjust_line_length",
+        "set_shape",
+        "align_top",
+        "align_bottom",
+        "simplify",
+        "split_lines"
       ],
       "sym_hit": {
         "1": false,
-        "3": true,
-        "5": true,
-        "10": true
+        "3": false,
+        "5": false,
+        "10": false
       },
-      "latency_s": 0.2221
+      "latency_s": 0.0167
     },
     {
       "task": "rich_3454",
@@ -3601,24 +3637,24 @@
         "test_highlight_json_string_only"
       ],
       "top_syms_v6": [
+        "ReprHighlighter",
+        "Highlighter",
+        "run",
+        "__call__",
+        "default",
+        "_check_buffer",
         "highlight",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "set_spinner",
-        "ascii_only",
-        "copy"
+        "set_window_title",
+        "highlight",
+        "highlight"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2244
+      "latency_s": 0.0121
     },
     {
       "task": "rich_3468",
@@ -3641,16 +3677,16 @@
         "test_inline_styles_with_justification"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "__call__",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__"
+        "get_default_columns",
+        "track",
+        "wrap_file",
+        "open",
+        "reset",
+        "make_tasks_table",
+        "add_task",
+        "set_spinner"
       ],
       "sym_hit": {
         "1": false,
@@ -3658,7 +3694,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2031
+      "latency_s": 0.0115
     },
     {
       "task": "rich_3469",
@@ -3679,15 +3715,15 @@
         "test_wrap_cjk_mixed"
       ],
       "top_syms_v6": [
+        "render",
         "set_spinner",
+        "__init__",
+        "render",
+        "__init__",
         "__init__",
         "render",
         "__rich__",
         "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
         "__rich_console__"
       ],
       "sym_hit": {
@@ -3696,7 +3732,7 @@
         "5": false,
         "10": true
       },
-      "latency_s": 0.1939
+      "latency_s": 0.0095
     },
     {
       "task": "rich_3470",
@@ -3717,24 +3753,24 @@
         "test_recording_no_stdout_and_no_stderr_files"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "capture",
+        "Capture",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich__"
+        "_write_buffer",
+        "run",
+        "__call__",
+        "set_spinner",
+        "render_speed",
+        "render",
+        "render"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": false,
-        "10": false
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.1916
+      "latency_s": 0.0096
     },
     {
       "task": "rich_3471",
@@ -3755,24 +3791,24 @@
         "test_render_lines_height_minus_vertical_pad_is_negative"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "append_tokens",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich_console__"
+        "_write_buffer",
+        "__exit__",
+        "__exit__",
+        "__exit__",
+        "set_spinner",
+        "render_speed",
+        "get_time",
+        "speed"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2458
+      "latency_s": 0.0146
     },
     {
       "task": "rich_3472",
@@ -3793,16 +3829,16 @@
         "test_append_tokens"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich_console__"
+        "speed",
+        "get_default_columns",
+        "finished",
+        "track",
+        "open",
+        "reset",
+        "make_tasks_table",
+        "add_task",
+        "_write_buffer"
       ],
       "sym_hit": {
         "1": false,
@@ -3810,7 +3846,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.221
+      "latency_s": 0.0106
     },
     {
       "task": "rich_3480",
@@ -3832,16 +3868,16 @@
         "test_capture_and_record"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only"
+        "_write_buffer",
+        "set_spinner",
+        "render_speed",
+        "get_time",
+        "speed",
+        "get_default_columns",
+        "finished",
+        "track",
+        "wrap_file"
       ],
       "sym_hit": {
         "1": false,
@@ -3849,7 +3885,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2526
+      "latency_s": 0.0243
     },
     {
       "task": "rich_3486",
@@ -3877,24 +3913,24 @@
         "_SyntaxError"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
+        "Traceback",
+        "error",
+        "extract",
+        "from_exception",
         "__rich_console__",
-        "__rich_console__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "cell_length"
+        "_render_stack",
+        "__init__",
+        "_render_syntax_error",
+        "safe_str",
+        "_guess_lexer"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2053
+      "latency_s": 0.0164
     },
     {
       "task": "rich_3506",
@@ -3915,24 +3951,24 @@
         "test_split_cells_emoji"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
-        "cell_length",
-        "__bool__",
-        "is_control",
         "_split_cells",
+        "Segment",
         "split_cells",
-        "line",
+        "split",
+        "divide",
+        "cells",
+        "split_lines",
+        "split_and_crop_lines",
+        "split",
         "apply_style"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
         "5": false,
-        "10": true
+        "10": false
       },
-      "latency_s": 0.1827
+      "latency_s": 0.0241
     },
     {
       "task": "rich_3518",
@@ -3954,15 +3990,15 @@
       ],
       "top_syms_v6": [
         "highlight",
-        "grid",
-        "__rich_measure__",
-        "__rich_console__",
-        "__init__",
-        "expand",
-        "expand",
-        "_extra_width",
-        "row_count",
-        "get_row_style"
+        "highlight",
+        "highlight",
+        "highlight",
+        "add_row",
+        "Table",
+        "Column",
+        "highlight",
+        "add_column",
+        "highlight"
       ],
       "sym_hit": {
         "1": false,
@@ -3970,7 +4006,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.139
+      "latency_s": 0.0215
     },
     {
       "task": "rich_3521",
@@ -3991,24 +4027,24 @@
         "test_measure_pretty"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
+        "split_cells",
+        "Segment",
+        "divide",
+        "_split_cells",
+        "split_lines",
+        "split_and_crop_lines",
         "cell_length",
         "__bool__",
         "is_control",
-        "_split_cells",
-        "split_cells",
-        "line",
-        "apply_style"
+        "line"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": false,
+        "5": true,
         "10": true
       },
-      "latency_s": 0.3275
+      "latency_s": 0.0204
     },
     {
       "task": "rich_3535",
@@ -4029,24 +4065,24 @@
         "_numbers_column_width"
       ],
       "top_syms_v6": [
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
-        "cell_length",
-        "__bool__",
-        "is_control",
-        "_split_cells",
+        "width",
+        "width",
         "split_cells",
-        "line",
-        "apply_style"
+        "adjust_line_length",
+        "on",
+        "apply_style",
+        "_split_cells",
+        "get_shape",
+        "set_shape",
+        "simplify"
       ],
       "sym_hit": {
         "1": false,
-        "3": false,
-        "5": false,
+        "3": true,
+        "5": true,
         "10": true
       },
-      "latency_s": 0.3218
+      "latency_s": 0.0182
     },
     {
       "task": "rich_3675",
@@ -4070,16 +4106,16 @@
         "test_capture_and_record"
       ],
       "top_syms_v6": [
+        "copy",
+        "update_width",
+        "update_height",
+        "reset_height",
+        "update_dimensions",
         "__rich__",
         "__rich_console__",
         "__rich_console__",
         "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "__rich_measure__"
       ],
       "sym_hit": {
         "1": false,
@@ -4087,7 +4123,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2465
+      "latency_s": 0.0147
     },
     {
       "task": "rich_3676",
@@ -4112,16 +4148,16 @@
         "test_exception_with_extra_lines"
       ],
       "top_syms_v6": [
-        "__rich__",
+        "set_window_title",
+        "print_exception",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
+        "__exit__",
+        "__exit__",
+        "__exit__",
         "update",
-        "update_width"
+        "__exit__",
+        "__init__",
+        "push_render_hook"
       ],
       "sym_hit": {
         "1": false,
@@ -4129,7 +4165,7 @@
         "5": true,
         "10": true
       },
-      "latency_s": 0.1986
+      "latency_s": 0.0161
     },
     {
       "task": "rich_3718",
@@ -4151,24 +4187,24 @@
         "test_traceback_console_theme_applies"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich__",
+        "Panel",
+        "fit",
+        "set_window_title",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__"
+        "on",
+        "run",
+        "export_svg",
+        "save_svg",
+        "align_text",
+        "render_lines"
       ],
       "sym_hit": {
         "1": false,
-        "3": true,
+        "3": false,
         "5": true,
         "10": true
       },
-      "latency_s": 0.198
+      "latency_s": 0.0166
     },
     {
       "task": "rich_3772",
@@ -4191,16 +4227,16 @@
         "test_append_tokens"
       ],
       "top_syms_v6": [
+        "render",
+        "__exit__",
+        "__exit__",
+        "__exit__",
         "set_spinner",
         "__init__",
-        "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich__"
+        "run",
+        "__enter__",
+        "__init__",
+        "__enter__"
       ],
       "sym_hit": {
         "1": false,
@@ -4208,7 +4244,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1952
+      "latency_s": 0.0111
     },
     {
       "task": "rich_3777",
@@ -4230,16 +4266,16 @@
         "test_recording_no_stdout_and_no_stderr_files"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "status",
+        "file",
+        "file",
+        "is_terminal",
+        "save_svg",
+        "_write_buffer",
+        "export_svg",
+        "render_lines",
+        "size",
+        "update_screen_lines"
       ],
       "sym_hit": {
         "1": false,
@@ -4247,7 +4283,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1809
+      "latency_s": 0.0126
     },
     {
       "task": "rich_3782",
@@ -4272,24 +4308,24 @@
         "test_capture_and_record"
       ],
       "top_syms_v6": [
+        "padding",
+        "padding",
+        "Syntax",
+        "render",
         "set_spinner",
         "__init__",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
+        "__init__",
+        "from_path",
         "__rich_console__"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
         "5": false,
-        "10": false
+        "10": true
       },
-      "latency_s": 0.228
+      "latency_s": 0.018
     },
     {
       "task": "rich_3882",
@@ -4310,24 +4346,24 @@
         "process_response"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__init__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy"
+        "on_validate_error",
+        "ask",
+        "ask",
+        "ask",
+        "PromptBase",
+        "Prompt",
+        "Console",
+        "__call__",
+        "process_response",
+        "set_window_title"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2123
+      "latency_s": 0.0149
     },
     {
       "task": "rich_3894",
@@ -4348,16 +4384,16 @@
         "ProgressBar"
       ],
       "top_syms_v6": [
-        "__rich_console__",
-        "__rich_measure__",
-        "__call__",
+        "install",
+        "Traceback",
+        "extract",
+        "install",
+        "from_exception",
+        "_guess_lexer",
+        "ipy_excepthook_closure",
+        "inspect",
         "__init__",
-        "set_spinner",
-        "__rich_repr__",
-        "__rich_console__",
-        "__rich_console__",
-        "__init__",
-        "render"
+        "_render_stack"
       ],
       "sym_hit": {
         "1": false,
@@ -4365,7 +4401,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2169
+      "latency_s": 0.0164
     },
     {
       "task": "rich_3905",
@@ -4386,24 +4422,24 @@
         "start"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
-        "render",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich__",
-        "__init__",
-        "__repr__",
-        "percentage_completed",
-        "_get_pulse_segments"
+        "open",
+        "update",
+        "Progress",
+        "open",
+        "start",
+        "stop",
+        "run",
+        "open",
+        "open",
+        "open"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
-        "5": false,
-        "10": false
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2485
+      "latency_s": 0.0157
     },
     {
       "task": "rich_3930",
@@ -4426,16 +4462,16 @@
         "test"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "get",
+        "width",
+        "width",
+        "set_window_title",
+        "export_svg",
+        "_write_buffer",
+        "save_svg",
+        "is_terminal",
+        "render",
+        "print"
       ],
       "sym_hit": {
         "1": false,
@@ -4443,7 +4479,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2139
+      "latency_s": 0.0112
     },
     {
       "task": "rich_3934",
@@ -4465,24 +4501,24 @@
         "test_append_tokens"
       ],
       "top_syms_v6": [
+        "render",
+        "Live",
+        "run",
         "set_spinner",
         "__init__",
-        "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only"
+        "console",
+        "start",
+        "stop",
+        "track",
+        "refresh"
       ],
       "sym_hit": {
         "1": false,
-        "3": true,
+        "3": false,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1843
+      "latency_s": 0.011
     },
     {
       "task": "rich_3935",
@@ -4507,24 +4543,24 @@
         "test_guess_lexer_yaml_j2"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "width",
+        "width",
+        "padding",
+        "padding",
         "render",
-        "__rich__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__"
+        "render",
+        "make_tasks_table",
+        "__call__",
+        "set_spinner",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
         "3": false,
         "5": false,
-        "10": true
+        "10": false
       },
-      "latency_s": 0.2251
+      "latency_s": 0.0178
     },
     {
       "task": "rich_3938",
@@ -4546,16 +4582,16 @@
         "test_escape_backslash_end"
       ],
       "top_syms_v6": [
+        "wrap",
+        "render",
         "set_spinner",
         "__init__",
+        "__init__",
         "render",
-        "__rich__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__"
+        "__init__",
+        "render",
+        "render",
+        "__init__"
       ],
       "sym_hit": {
         "1": false,
@@ -4563,7 +4599,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.2349
+      "latency_s": 0.0161
     },
     {
       "task": "rich_3942",
@@ -4584,24 +4620,24 @@
         "StyleError"
       ],
       "top_syms_v6": [
+        "Markdown",
+        "update",
+        "update",
+        "update",
+        "update",
+        "update",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "create"
+        "create",
+        "on_child_close",
+        "render_bullet"
       ],
       "sym_hit": {
-        "1": true,
-        "3": true,
-        "5": true,
+        "1": false,
+        "3": false,
+        "5": false,
         "10": true
       },
-      "latency_s": 0.3175
+      "latency_s": 0.0168
     },
     {
       "task": "rich_3944",
@@ -4622,15 +4658,15 @@
         "test_append_tokens"
       ],
       "top_syms_v6": [
+        "render",
         "set_spinner",
         "__init__",
         "render",
+        "__init__",
         "__rich__",
         "__rich__",
         "__rich_console__",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
         "__rich_console__"
       ],
       "sym_hit": {
@@ -4639,7 +4675,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1975
+      "latency_s": 0.0108
     },
     {
       "task": "rich_3953",
@@ -4661,16 +4697,16 @@
         "test_background_color_override_includes_padding"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
         "render",
-        "__rich__",
-        "grid",
-        "__rich_measure__",
-        "__rich_console__",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__"
+        "run",
+        "__call__",
+        "set_spinner",
+        "render_speed",
+        "render",
+        "render",
+        "_write_buffer",
+        "__init__",
+        "__enter__"
       ],
       "sym_hit": {
         "1": false,
@@ -4678,7 +4714,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1983
+      "latency_s": 0.0099
     },
     {
       "task": "rich_4006",
@@ -4700,24 +4736,24 @@
         "test_escape_backslash_end"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__rich__",
-        "__init__",
+        "split_graphemes",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__"
+        "speed",
+        "get_default_columns",
+        "finished",
+        "track",
+        "open",
+        "reset",
+        "make_tasks_table",
+        "add_task"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.1933
+      "latency_s": 0.0123
     },
     {
       "task": "rich_4070",
@@ -4754,24 +4790,24 @@
         "render"
       ],
       "top_syms_v6": [
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
-        "ascii_only",
-        "copy",
-        "update",
-        "update_width"
+        "log",
+        "Console",
+        "input",
+        "print",
+        "ConsoleOptions",
+        "render",
+        "ConsoleRenderable",
+        "__init__",
+        "file",
+        "_collect_renderables"
       ],
       "sym_hit": {
-        "1": false,
+        "1": true,
         "3": true,
         "5": true,
         "10": true
       },
-      "latency_s": 0.1745
+      "latency_s": 0.0181
     },
     {
       "task": "rich_4075",
@@ -4793,15 +4829,15 @@
         "test_guess_lexer_yaml_j2"
       ],
       "top_syms_v6": [
-        "set_spinner",
-        "__init__",
+        "_write_buffer",
         "render",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__",
+        "set_spinner",
+        "speed",
+        "finished",
+        "track",
+        "open",
+        "update",
+        "reset",
         "__rich__"
       ],
       "sym_hit": {
@@ -4810,7 +4846,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.241
+      "latency_s": 0.0142
     },
     {
       "task": "rich_4076",
@@ -4831,15 +4867,15 @@
         "test_background_color_override_includes_padding"
       ],
       "top_syms_v6": [
+        "render",
         "set_spinner",
         "__init__",
         "render",
+        "__init__",
         "__rich__",
         "__rich__",
         "__rich_console__",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
         "__rich_console__"
       ],
       "sym_hit": {
@@ -4848,7 +4884,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.21
+      "latency_s": 0.013
     },
     {
       "task": "rich_4077",
@@ -4869,16 +4905,16 @@
         "test_background_color_override_includes_padding"
       ],
       "top_syms_v6": [
+        "isatty",
+        "isatty",
+        "render",
         "set_spinner",
         "__init__",
-        "render",
-        "rich_proxied_file",
-        "__rich__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_measure__",
-        "__rich_console__"
+        "__enter__",
+        "__exit__",
+        "__iter__",
+        "__next__",
+        "closed"
       ],
       "sym_hit": {
         "1": false,
@@ -4886,7 +4922,7 @@
         "5": false,
         "10": false
       },
-      "latency_s": 0.1684
+      "latency_s": 0.0095
     },
     {
       "task": "rich_4079",
@@ -4907,24 +4943,24 @@
         "test_nerd_font"
       ],
       "top_syms_v6": [
+        "__init__",
         "__rich_console__",
         "__rich_console__",
         "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
-        "__rich_console__",
+        "__init__",
+        "on_text",
         "__rich_console__",
         "__rich_console__",
         "__rich_console__",
         "create"
       ],
       "sym_hit": {
-        "1": false,
-        "3": false,
-        "5": false,
-        "10": false
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true
       },
-      "latency_s": 0.2087
+      "latency_s": 0.016
     }
   ]
 }

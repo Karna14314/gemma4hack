@@ -306,11 +306,11 @@ def verify(test_expr=None, root=None):
     else:
         status = "OK"
 
-    # Auto-clean: remove materialized skill directories so they never leak
-    # into the grading diff via `git add -N .`
-    shutil.rmtree(os.path.join(root, "skills"), ignore_errors=True)
-    if os.path.isdir("/workspace/skills"):
-        shutil.rmtree("/workspace/skills", ignore_errors=True)
+    # Read-only contract: Never delete arbitrary user directories.
+    # Stray files (including leftover skill directories) are reported in STRAY: FAIL so the agent can inspect.
+    swe_tmp = os.path.join(root, ".swe_tmp")
+    if os.path.isdir(swe_tmp):
+        shutil.rmtree(swe_tmp, ignore_errors=True)
 
     if not next_hint:
         next_hint = "git diff, then submit_patch"

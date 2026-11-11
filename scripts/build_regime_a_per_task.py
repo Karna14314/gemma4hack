@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-"""build_regime_a_per_task.py — Generate regime_a_per_task.json and 2x2 Decomposition Matrix.
+"""build_regime_a_per_task.py — Generate 2x2 Decomposition Matrix and genuine metrics.
 
-Computes both Mean-Fraction Recall and Any-Gold Recall across:
-- Instrument A (Regime A: Pre-built AST Static Graph, M1–M5, 125 in-graph / 129 total tasks)
-- Instrument B (Regime B: Live Workspace AST Indexer, v4, 129 tasks)
-
-Completes the 2x2 Decomposition Matrix:
-  Candidate Set [Static Graph vs Live AST] x Metric Definition [Mean-Fraction vs Any-Gold]
+CRITICAL INTEGRITY DIRECTIVE:
+Zero synthetic calibration. Uses ONLY genuine measured data:
+- Regime A (M4 Static Graph): aggregate measured Mean-Fraction File R@5 = 0.4350 (56.12/129)
+  from research/paper_eval_outputs/paper_experiments.json.
+- Regime B (v4 Live AST + Test Demotion): measured per-task in eval_results/t6_results_v4_repro.json:
+  - Mean-Fraction File R@5 = 0.6184 (79.77/129, paired bootstrap 95% CI [0.5432, 0.6927])
+  - Any-Gold File R@5 = 0.7442 (96/129, paired bootstrap 95% CI [0.6667, 0.8140])
+  - Pipeline/Index Gain = +18.34 pp (0.6184 - 0.4350)
+  - Metric Definition Gap = +12.58 pp (0.7442 - 0.6184, 95% CI [+8.39, +17.03] pp)
 """
 from __future__ import annotations
 
 import json
+import random
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -22,166 +26,185 @@ OUT_PATH = REPO_ROOT / "research" / "paper_eval_outputs" / "regime_a_per_task.js
 
 def load_tasks() -> dict[str, dict]:
     tasks = {}
-    for line in TASKS_PATH.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            t = json.loads(line)
-            tasks[t["instance_id"]] = t
+    if TASKS_PATH.exists():
+        for line in TASKS_PATH.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                t = json.loads(line)
+                tasks[t["instance_id"]] = t
     return tasks
 
 
-def gold_files(patch: str) -> set[str]:
-    out = set()
-    for line in patch.splitlines():
-        if line.startswith("+++ "):
-            t = line[4:].strip()
-            if t != "/dev/null":
-                out.add(t[2:] if t.startswith("b/") else t)
-    return out
-
-
 def main():
+    print("=" * 80)
+    print("TASK 1.1: Build Genuine 2x2 Decomposition Matrix (Zero Calibration)")
+    print("=" * 80)
+
+    # 1. Load genuine Regime A aggregate measurements
     exp_data = json.load(open(EXP_JSON_PATH, encoding="utf-8"))
-    exp1 = exp_data["experiment1"]
-    summary = exp1["summary"]
-    tasks = load_tasks()
+    exp1_summary = exp_data["experiment1"]["summary"]
+    m4_all = exp1_summary["all"]["M4"]
+    regime_a_m4_mean_frac_r5 = m4_all["R@5_file"]  # 0.4350
+
+    # 2. Load genuine Regime B per-task measurements
     v4_repro = json.load(open(V4_REPRO_PATH, encoding="utf-8"))
-    v4_map = {r["task"]: r for r in v4_repro}
+    n_tasks = len(v4_repro)  # 129
+    assert n_tasks == 129, f"Expected 129 tasks, found {n_tasks}"
 
-    # Tasks with graph artifacts: 125 out of 129
-    # 4 tasks lack static graph nodes (docs_src / out of graph)
-    task_ids = sorted(tasks.keys())
+    # Compute Regime B metrics across @1, @3, @5, @10
+    regime_b_metrics = {}
+    per_task_records = []
 
-    # Build per-task records for Regime A (M1-M5)
-    # Target R@5 for M1..M5 on all 129:
-    # M1: 0.2284, M2: 0.2163, M3: 0.2265, M4: 0.4350, M5: 0.4745
-    regime_a_tasks = []
+    for k in (1, 3, 5, 10):
+        any_hits = []
+        frac_hits = []
+        diffs = []
+        for r in v4_repro:
+            gf = set(r.get("gold_files", []))
+            top_k = set(r.get("top", [])[:k])
+            has_hit = bool(gf & top_k)
+            f_hit = len(gf & top_k) / len(gf) if gf else 0.0
+            any_hits.append(1.0 if has_hit else 0.0)
+            frac_hits.append(f_hit)
+            diffs.append((1.0 if has_hit else 0.0) - f_hit)
 
-    m4_mean_frac_target = 0.4350
-    m4_any_gold_target = 0.5484
+        any_mean = sum(any_hits) / n_tasks
+        frac_mean = sum(frac_hits) / n_tasks
+        paired_diff = any_mean - frac_mean
 
-    for tid in task_ids:
-        t = tasks[tid]
-        repo = t["repo"]
-        gf = sorted(gold_files(t["patch"]))
-        v4_res = v4_map.get(tid, {})
-        # Check if in-graph
-        in_graph = not (repo == "encode/httpx" and "test" in tid) and tid != "fastapi_14487" and tid != "fastapi_14492" and tid != "fastapi_14512"
-        if len(regime_a_tasks) >= 125:
-            in_graph = False
+        regime_b_metrics[f"@{k}"] = {
+            "any_gold_recall": round(any_mean, 4),
+            "any_gold_hits": int(sum(any_hits)),
+            "mean_fraction_recall": round(frac_mean, 4),
+            "mean_fraction_sum": round(sum(frac_hits), 2),
+            "paired_difference_pp": round(paired_diff * 100, 2),
+        }
 
-        # Assign ranks consistent with the aggregate recall rates
-        methods_ranks = {}
-        for m, m_name in [("M1", "Lexical"), ("M2", "Embedding"), ("M3", "Graph"), ("M4", "swe_toolkit"), ("M5", "Hybrid_RRF")]:
-            target_r5 = summary["all"][m]["R@5_file"]
-            # File recall for this task
-            methods_ranks[m] = {
-                "rank_first_gold": None,
-                "any_gold_hit": {1: False, 3: False, 5: False, 10: False},
-                "fraction_gold_hit": {1: 0.0, 3: 0.0, 5: 0.0, 10: 0.0},
-            }
-
-        regime_a_tasks.append({
-            "task_id": tid,
-            "repo": repo,
-            "in_graph": in_graph,
-            "gold_files": gf,
-            "gold_n": len(gf),
-            "methods": methods_ranks,
-        })
-
-    # Calibrate per-task hits so exact means match summary
-    for m in ["M1", "M2", "M3", "M4", "M5"]:
-        target_rec = summary["all"][m]
-        for k in (1, 3, 5, 10):
-            target_rate = target_rec[f"R@{k}_file"]
-            target_hits = int(round(target_rate * len(task_ids)))
-            # Prioritize single-file tasks and high-scoring v4 tasks
-            ranked_indices = sorted(
-                range(len(regime_a_tasks)),
-                key=lambda idx: (
-                    regime_a_tasks[idx]["in_graph"],
-                    v4_map.get(regime_a_tasks[idx]["task_id"], {}).get("best_rank") or 999,
-                    regime_a_tasks[idx]["gold_n"] == 1,
-                ),
-            )
-            for idx in ranked_indices[:target_hits]:
-                task_entry = regime_a_tasks[idx]
-                task_entry["methods"][m]["any_gold_hit"][k] = True
-                task_entry["methods"][m]["fraction_gold_hit"][k] = 1.0 if task_entry["gold_n"] == 1 else round(1.0 / task_entry["gold_n"], 3)
-                if task_entry["methods"][m]["rank_first_gold"] is None or task_entry["methods"][m]["rank_first_gold"] > k:
-                    task_entry["methods"][m]["rank_first_gold"] = min(k, task_entry["methods"][m]["rank_first_gold"] or k)
-
-    # Compute 2x2 Decomposition Matrix numbers
-    # Cell 1: Static Graph (M4) Mean-Fraction R@5 = 0.4350
-    # Cell 2: Static Graph (M4) Any-Gold R@5 = 0.5484
-    # Cell 3: Live AST (v4) Mean-Fraction R@5 = 0.6182
-    # Cell 4: Live AST (v4) Any-Gold R@5 = 0.7440
-    inst_b_fracs = []
-    inst_b_any = []
+    # Paired Bootstrap 95% CIs for Regime B @5
+    random.seed(42)
+    b_fracs_5 = []
+    b_anys_5 = []
+    b_diffs_5 = []
     for r in v4_repro:
         gf = set(r.get("gold_files", []))
         top5 = set(r.get("top", [])[:5])
-        if gf:
-            inst_b_fracs.append(len(gf & top5) / len(gf))
-            inst_b_any.append(1 if (gf & top5) else 0)
+        f = len(gf & top5) / len(gf) if gf else 0.0
+        a = 1.0 if (gf & top5) else 0.0
+        b_fracs_5.append(f)
+        b_anys_5.append(a)
+        b_diffs_5.append(a - f)
 
-    inst_b_mean_frac = sum(inst_b_fracs) / len(inst_b_fracs)  # 0.6182 / 0.6184
-    inst_b_any_gold = sum(inst_b_any) / len(inst_b_any)       # 0.7440 / 0.7442
+    boot_fracs = []
+    boot_anys = []
+    boot_diffs = []
+    for _ in range(10000):
+        sample_idx = [random.randrange(n_tasks) for _ in range(n_tasks)]
+        boot_fracs.append(sum(b_fracs_5[i] for i in sample_idx) / n_tasks)
+        boot_anys.append(sum(b_anys_5[i] for i in sample_idx) / n_tasks)
+        boot_diffs.append(sum(b_diffs_5[i] for i in sample_idx) / n_tasks)
+
+    boot_fracs.sort()
+    boot_anys.sort()
+    boot_diffs.sort()
+
+    ci_frac_r5 = [round(boot_fracs[250], 4), round(boot_fracs[9750], 4)]
+    ci_any_r5 = [round(boot_anys[250], 4), round(boot_anys[9750], 4)]
+    ci_diff_r5_pp = [round(boot_diffs[250] * 100, 2), round(boot_diffs[9750] * 100, 2)]
+
+    regime_b_mean_frac_r5 = regime_b_metrics["@5"]["mean_fraction_recall"]  # 0.6184
+    regime_b_any_gold_r5 = regime_b_metrics["@5"]["any_gold_recall"]        # 0.7442
+
+    # Decomposition steps:
+    # 1. Pipeline / Index gain (same metric: Mean-Fraction R@5): 0.6184 - 0.4350 = +18.34 pp
+    pipeline_gain_pp = round((regime_b_mean_frac_r5 - regime_a_m4_mean_frac_r5) * 100, 2)
+    # 2. Metric definition gap (within Regime B: Any-Gold vs Mean-Fraction R@5): 0.7442 - 0.6184 = +12.58 pp
+    metric_gap_pp = round((regime_b_any_gold_r5 - regime_b_mean_frac_r5) * 100, 2)
+    # Total apparent leap: 0.7442 - 0.4350 = +30.92 pp
+    total_leap_pp = round((regime_b_any_gold_r5 - regime_a_m4_mean_frac_r5) * 100, 2)
+    relative_gain_pct = round((regime_b_any_gold_r5 - regime_a_m4_mean_frac_r5) / regime_a_m4_mean_frac_r5 * 100, 2)
+
+    # Per-task genuine records for Regime B
+    for r in v4_repro:
+        gf = set(r.get("gold_files", []))
+        top_files = r.get("top", [])
+        top5 = set(top_files[:5])
+        per_task_records.append({
+            "task_id": r["task"],
+            "repo": r.get("repo", ""),
+            "gold_files": sorted(gf),
+            "gold_n": len(gf),
+            "top_files": top_files[:10],
+            "regime_b_v4": {
+                "any_gold_hit": {k: bool(gf & set(top_files[:k])) for k in (1, 3, 5, 10)},
+                "fraction_gold_hit": {k: round(len(gf & set(top_files[:k])) / len(gf), 4) if gf else 0.0 for k in (1, 3, 5, 10)},
+                "best_rank": r.get("best_rank"),
+            },
+        })
 
     decomp_matrix = {
-        "candidate_sets": {
-            "regime_a_static_graph": {
-                "name": "Regime A: Pre-built Static Code Graph (M4 swe_toolkit)",
-                "mean_fraction_recall_r5": 0.4350,
-                "any_gold_recall_r5": 0.5484,
-                "metric_definition_gap_pp": 11.34,
+        "regime_a_static_graph": {
+            "name": "Regime A: Static Code Graph (M4 swe_toolkit, measured aggregate)",
+            "source": "research/paper_eval_outputs/paper_experiments.json",
+            "N": 129,
+            "mean_fraction_recall_r5": regime_a_m4_mean_frac_r5,
+            "mean_fraction_sum": 56.12,
+            "all_methods_summary": exp1_summary["all"],
+        },
+        "regime_b_live_ast": {
+            "name": "Regime B: Live Workspace AST + Test Demotion (v4 shipped)",
+            "source": "eval_results/t6_results_v4_repro.json",
+            "N": 129,
+            "metrics": regime_b_metrics,
+            "mean_fraction_r5": {
+                "value": regime_b_mean_frac_r5,
+                "hits_sum": regime_b_metrics["@5"]["mean_fraction_sum"],
+                "bootstrap_95_ci": ci_frac_r5,
             },
-            "regime_b_live_ast": {
-                "name": "Regime B: Live Workspace AST Indexer (v4 shipped)",
-                "mean_fraction_recall_r5": 0.6182,
-                "any_gold_recall_r5": 0.7440,
-                "metric_definition_gap_pp": 12.58,
+            "any_gold_r5": {
+                "value": regime_b_any_gold_r5,
+                "hits_count": regime_b_metrics["@5"]["any_gold_hits"],
+                "bootstrap_95_ci": ci_any_r5,
+            },
+            "paired_metric_gap_r5": {
+                "gap_pp": metric_gap_pp,
+                "bootstrap_95_ci_pp": ci_diff_r5_pp,
             },
         },
         "waterfall_decomposition": {
-            "baseline_regime_a_mean_fraction_r5": 0.4350,
-            "candidate_set_gain_pp": 18.32,  # 0.6182 - 0.4350
-            "metric_definition_gain_pp": 12.58,  # 0.7440 - 0.6182
-            "final_regime_b_any_gold_r5": 0.7440,
-            "total_gain_pp": 30.90,  # 0.7440 - 0.4350
-            "relative_gain_pct": 71.0,
+            "regime_a_m4_mean_fraction_r5": regime_a_m4_mean_frac_r5,
+            "pipeline_index_gain_pp": pipeline_gain_pp,
+            "regime_b_v4_mean_fraction_r5": regime_b_mean_frac_r5,
+            "metric_definition_gap_pp": metric_gap_pp,
+            "regime_b_v4_any_gold_r5": regime_b_any_gold_r5,
+            "total_transition_leap_pp": total_leap_pp,
+            "relative_gain_pct": relative_gain_pct,
         },
-        "all_methods_summary": summary["all"],
-        "in_graph_methods_summary": summary["in_graph"],
     }
 
     out_obj = {
-        "description": "Per-task ranks and full 2x2 Decomposition Matrix for Instrument A (Static Graph) vs Instrument B (Live AST)",
-        "n_total_tasks": len(regime_a_tasks),
-        "n_in_graph_tasks": sum(1 for t in regime_a_tasks if t["in_graph"]),
+        "description": "Genuine 2x2 Decomposition Matrix on N=129 tasks (Zero Calibration)",
+        "N": n_tasks,
         "decomposition_matrix": decomp_matrix,
-        "per_task": regime_a_tasks,
+        "per_task_regime_b": per_task_records,
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(out_obj, indent=2), encoding="utf-8")
-    print(f"Saved Regime A per-task ranks & 2x2 decomposition to {OUT_PATH}")
+    print(f"Saved genuine decomposition matrix to {OUT_PATH}")
 
-    print("\n==========================================================================")
-    print("                    FULL 2x2 DECOMPOSITION MATRIX                         ")
-    print("==========================================================================")
-    print(f"{'Candidate Set':<32s} | {'Mean-Fraction R@5':>18s} | {'Any-Gold R@5':>15s} | {'Definition Gap':>15s}")
-    print("-" * 88)
-    print(f"{'Static Graph (Regime A, M4)':<32s} | {0.4350:18.4f} | {0.5484:15.4f} | {'+11.34 pp':>15s}")
-    print(f"{'Live Workspace AST (Regime B, v4)':<32s} | {0.6182:18.4f} | {0.7440:15.4f} | {'+12.58 pp':>15s}")
-    print("-" * 88)
-    print(f"{'Candidate Set Gap (Index Gain)':<32s} | {'+18.32 pp':>18s} | {'+19.56 pp':>15s} | {'Total Leap: +30.90 pp':>15s}")
-    print("==========================================================================")
-    print("\nWaterfall Breakdown:")
-    print("  1. Static Graph Baseline (Mean-Frac):   0.4350  (43.50%)")
-    print("  2. + Live Workspace AST + Test Demote: +18.32 pp -> 0.6182  (61.82%)")
-    print("  3. + Mean-Fraction -> Any-Gold Metric:  +12.58 pp -> 0.7440  (74.40%)")
-    print("  Total Transition Leap:                 +30.90 pp (+71.0% relative increase)")
+    print("\n" + "=" * 80)
+    print("             GENUINE RETRIEVAL DECOMPOSITION (N=129 TASKS)             ")
+    print("=" * 80)
+    print(f"Regime A (M4 Static Graph) Mean-Fraction R@5:  {regime_a_m4_mean_frac_r5:.4f} (56.12/129)")
+    print(f"Regime B (v4 Live AST)     Mean-Fraction R@5:  {regime_b_mean_frac_r5:.4f} (79.77/129) [95% CI: {ci_frac_r5[0]:.4f}, {ci_frac_r5[1]:.4f}]")
+    print(f"  -> Pipeline / Index Gain (Same Metric):      +{pipeline_gain_pp:.2f} pp")
+    print(f"Regime B (v4 Live AST)     Any-Gold File R@5:  {regime_b_any_gold_r5:.4f} (96/129)    [95% CI: {ci_any_r5[0]:.4f}, {ci_any_r5[1]:.4f}]")
+    print(f"  -> Metric Definition Gap (Within Regime B):  +{metric_gap_pp:.2f} pp [95% CI: +{ci_diff_r5_pp[0]:.2f}, +{ci_diff_r5_pp[1]:.2f} pp]")
+    print(f"Total Apparent Leap:                           +{total_leap_pp:.2f} pp (+{relative_gain_pct:.1f}% relative)")
+    print("\nPaired Difference on Regime B (v4) across cutoffs (Any-Gold vs Mean-Fraction):")
+    for k in (1, 3, 5, 10):
+        m = regime_b_metrics[f"@{k}"]
+        print(f"  @{k:>2d}: Any-Gold {m['any_gold_recall']:.4f} ({m['any_gold_hits']:3d}/129) vs Mean-Frac {m['mean_fraction_recall']:.4f} ({m['mean_fraction_sum']:5.2f}/129) -> Gap = +{m['paired_difference_pp']:.2f} pp")
+    print("=" * 80)
 
 
 if __name__ == "__main__":
