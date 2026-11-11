@@ -14,7 +14,7 @@ Autonomous software engineering (SWE) agents evaluating in hermetic, network-iso
 `swe-toolkit` introduces three concrete contributions:
 1. **Four-Module Pure-Python Engine (`swe.py`, `_index.py`, `_knowledge.py`, `_verify.py`)**: A sub-50ms CLI providing AST symbol inspection, caller/callee blast-radius mapping, AST-based sync/async twin detection (e.g., `send` vs `asend`), and a deterministic 3,500-character middle-truncation protocol preserving actionable `STATUS:`, `NEXT:`, and `TEST:` contract lines.
 2. **10 AST Domain Bug Playbooks**: An empirical taxonomy of 10 bug patterns evaluated across 129 SWE-bench tasks (`258` triggers, `84` gold-patch hits, $32.6\%$ overall precision), delivering token-bounded ($\le 120$ tokens) repair hints achieving $79.4\%$ precision in visual rendering (`Textualize/rich`) and $50.0\%$ in schema validation (`fastapi`).
-3. **9/9 Adversarial Verification Gate & Environment Diagnostic**: A pre-submission patch validation suite passing 9/9 adversarial stress scenarios (empty diffs, syntax corruption, `.gitignore` traps, stray skill leaks) with sub-10ms latency, accompanied by a 129-task sandbox audit (cross-citing our companion measurement paper *Finding the File Is Not Fixing the Bug*) uncovering that when agents execute in-loop bare `pytest` inside the workspace, 27 of 67 FastAPI tasks ($40.3\%$) suffer collection crashes from missing offline plugins (`inline_snapshot`, `dirty_equals`), while a 28th task (`fastapi_15800`) requires `-p no:anyio`.
+3. **9/9 Adversarial Verification Gate & Environment Diagnostic**: A pre-submission patch validation suite passing 9/9 adversarial stress scenarios (empty diffs, syntax corruption, `.gitignore` traps, stray skill leaks) with sub-10ms latency, accompanied by a 129-task sandbox audit (cross-citing our companion measurement paper *Finding a File Is Not Finding the Patch*) uncovering that when agents execute in-loop bare `pytest` inside the workspace, 22 of 67 FastAPI tasks ($32.8\%$) suffer collection crashes from missing offline plugins (18 import `inline_snapshot`, 5 import `dirty_equals`, 2 import both, and one further task imports `anyio` and needs `-p no:anyio`).
 
 The toolkit is open-sourced under the MIT license, requires zero external packages, and runs on Python 3.9+.
 
@@ -27,7 +27,7 @@ Autonomous coding agents evaluating in offline competition environments—such a
 In this environment, general-purpose LLMs fail frequently not from algorithmic inability, but from **environment-level hazards**:
 - **Output Flooding**: Unconstrained tool dumps flood the context window, triggering compaction cliffs that drop reasoning scratchpads.
 - **Syntactic Flaws**: Raw file edits introduce syntax errors and indentation defects that invalidate patches.
-- **The `.gitignore` Trap**: In $8.5\%$ of fixes (11 of 129 benchmark tasks, as audited in our companion measurement paper *Finding the File Is Not Fixing the Bug*), resolving bugs requires creating new files; standard git commands silently omit them if matching `.gitignore` patterns unless staged via `git add -N -f`.
+- **The `.gitignore` Trap**: In 11 of 129 benchmark tasks, resolving the bug requires creating new files (49 files in total); standard git commands omit them if matching `.gitignore` patterns unless staged via `git add -N -f`. No created file matched a repository `.gitignore` in the audited snapshots, so the trap is latent rather than active, but `.pytest_cache` is ignored in every one of those 11 snapshots — the scratch artifacts agents actually generate.
 - **Sync/Async Twin Drift**: Web frameworks (`fastapi`, `httpx`) maintain dual sync and async method twins (e.g., `send` and `asend`); editing one while neglecting the other causes hidden test regressions.
 
 `swe-toolkit` addresses these failure modes through drop-in command-line interfaces (`swe locate`, `swe inspect`, `swe verify`) enforcing deterministic schemas, state safety, and zero external dependencies.
@@ -154,20 +154,20 @@ To evaluate the broader applicability of `swe-toolkit`, we conducted an exhausti
 
 | Repository Ecosystem | Benchmark Tasks ($N=129$) | Single-File Edits (%) | Multi-File Edits (%) | New Files Created (%) | Direct Missing Plugin Imports | Total Test Collection Crashes | Unpassable Task Rate (%) | Missing Environment Packages |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| **`fastapi/fastapi`** | 67 | 64.2% (43) | 35.8% (24) | 14.9% (10) | 22 tasks | 27 tasks | **40.3%** (27/67) | `inline_snapshot` (22), `dirty_equals` (5) |
+| **`fastapi/fastapi`** | 67 | 64.2% (43) | 35.8% (24) | 14.9% (10) | 22 tasks | 22 tasks | **32.8%** (22/67) | `inline_snapshot` (18), `dirty_equals` (5), `anyio` (1); 2 overlap |
 | **`Textualize/rich`** | 48 | 77.1% (37) | 22.9% (11) | 2.1% (1) | 0 tasks | 0 tasks | **0.0%** (0/48) | *None (Fully self-contained)* |
 | **`psf/requests`** | 13 | 84.6% (11) | 15.4% (2) | 0.0% (0) | 0 tasks | 0 tasks | **0.0%** (0/13) | *None (Fully self-contained)* |
 | **`encode/httpx`** | 1 | 0.0% (0) | 100.0% (1) | 0.0% (0) | 0 tasks | 0 tasks | **0.0%** (0/1) | *None (Fully self-contained)* |
-| **Combined Benchmark** | **129** | **70.5% (91)** | **29.5% (38)** | **8.5% (11)** | **22 tasks** | **27 tasks** | **20.9% (27/129)** | `inline_snapshot` (22), `dirty_equals` (5) |
+| **Combined Benchmark** | **129** | **70.5% (91)** | **29.5% (38)** | **8.5% (11)** | **22 tasks** | **22 tasks** | **17.1% (22/129)** | `inline_snapshot` (18), `dirty_equals` (5), `anyio` (1); 2 overlap |
 
-*Note: As audited in our companion measurement paper ("Finding the File Is Not Fixing the Bug: Retrieval & Noise in Offline SWE Agents"), an additional 28th task (`fastapi_15800`) imports `anyio`, which is installed in the testbed, but requires `-p no:anyio` to disable conflicting plugins.*
+*Note: The earlier draft of this table reported 27 tasks and 40.3% by adding the five `dirty_equals` tasks to a total that already contained them. The three plugin counts are not disjoint: 18 + 5 + 1 = 24 tasks import at least one plugin, and 2 of those import both `inline_snapshot` and `dirty_equals`, so the union is 22. Each count is an exposure count under a stated definition, not a failure attribution; the official grader installs wheels and passes `-p no:anyio`.*
 
 ### The Offline Test Environment Void in `fastapi`
 
-A striking discovery from our audit—cross-citing the rigorous runtime analysis in our companion measurement paper *Finding the File Is Not Fixing the Bug*—is that **27 out of 67 FastAPI tasks ($40.3\%$) cannot pass in-loop bare `pytest` inside the agent workspace**:
-- In 22 tasks, `test_patch` directly imports `inline_snapshot`.
-- In 5 additional tasks, test files import `dirty_equals`.
-- A 28th task (`fastapi_15800`) requires disabling the anyio plugin (`-p no:anyio`).
+A striking discovery from our audit—cross-citing the rigorous runtime analysis in our companion measurement paper *Finding a File Is Not Finding the Patch*—is that **22 out of 67 FastAPI tasks ($32.8\%$) cannot pass in-loop bare `pytest` inside the agent workspace**:
+- In 18 tasks, `test_patch` directly imports `inline_snapshot`.
+- In 5 tasks, test files import `dirty_equals`; 2 of these also import `inline_snapshot`, so the plugin union is 21.
+- One further task (`fastapi_15800`) imports `anyio` and requires disabling the anyio plugin (`-p no:anyio`), bringing the total to 22.
 - While the official grader harness (`swegemma/harness/verification.py:387`) installs wheels and test dependencies prior to final evaluation, when the agent itself executes bare `pytest` inside `/workspace` during its problem-solving loop, it faces immediate `ModuleNotFoundError` collection aborts (exit code 2 or 4).
 
 ### How `_verify.py` Handles Environment Incompatibilities

@@ -1,0 +1,3124 @@
+{
+  "generator": "scripts/run_verified_experiments.py",
+  "group": "multifile_audit_and_budget_matched_2hop",
+  "definition": {
+    "control": "single-pass locate(), top-k",
+    "hop": "k=5: top-3 locate + 2 coupled files from f1; k=10: top-6 locate + 4 coupled files from f1,f2",
+    "coupled": "in-repo .py files imported by the seed file, then files importing the seed file, ranked by lexical overlap with the issue",
+    "source_only": "multi-file task whose gold set contains no docs/, docs_src/, examples/, scripts/, tests/ path"
+  },
+  "gold_set_structure_all_129": {
+    "1": {
+      "N": 91,
+      "any5": 65,
+      "all5": 65,
+      "p_all_given_any": 1.0
+    },
+    ">5": {
+      "N": 10,
+      "any5": 9,
+      "all5": 0,
+      "p_all_given_any": 0.0
+    },
+    "3-5": {
+      "N": 9,
+      "any5": 8,
+      "all5": 0,
+      "p_all_given_any": 0.0
+    },
+    "2": {
+      "N": 19,
+      "any5": 14,
+      "all5": 3,
+      "p_all_given_any": 0.214
+    }
+  },
+  "buckets": {
+    "all_multi": {
+      "N": 38,
+      "pct_of_129": 29.5,
+      "gold_n_gt_5_infeasible_at_k5": 10,
+      "control": {
+        "k5": {
+          "N": 38,
+          "any_gold@5": {
+            "hits": 31,
+            "value": 0.8158,
+            "wilson": [
+              0.6658,
+              0.9078
+            ]
+          },
+          "all_gold@5": {
+            "hits": 3,
+            "value": 0.0789,
+            "wilson": [
+              0.0272,
+              0.208
+            ]
+          },
+          "mean_fraction@5": 0.3886
+        },
+        "k10": {
+          "N": 38,
+          "any_gold@10": {
+            "hits": 34,
+            "value": 0.8947,
+            "wilson": [
+              0.7587,
+              0.9583
+            ]
+          },
+          "all_gold@10": {
+            "hits": 6,
+            "value": 0.1579,
+            "wilson": [
+              0.0744,
+              0.3042
+            ]
+          },
+          "mean_fraction@10": 0.513
+        }
+      },
+      "hop": {
+        "k5": {
+          "N": 38,
+          "any_gold@5": {
+            "hits": 29,
+            "value": 0.7632,
+            "wilson": [
+              0.6079,
+              0.8701
+            ]
+          },
+          "all_gold@5": {
+            "hits": 6,
+            "value": 0.1579,
+            "wilson": [
+              0.0744,
+              0.3042
+            ]
+          },
+          "mean_fraction@5": 0.3965
+        },
+        "k10": {
+          "N": 38,
+          "any_gold@10": {
+            "hits": 32,
+            "value": 0.8421,
+            "wilson": [
+              0.6958,
+              0.9256
+            ]
+          },
+          "all_gold@10": {
+            "hits": 7,
+            "value": 0.1842,
+            "wilson": [
+              0.0922,
+              0.3342
+            ]
+          },
+          "mean_fraction@10": 0.4794
+        }
+      },
+      "paired": {
+        "k5": {
+          "any": {
+            "discordant_a_gt_b": 0,
+            "discordant_b_gt_a": 2,
+            "p_exact": 0.5
+          },
+          "all": {
+            "discordant_a_gt_b": 3,
+            "discordant_b_gt_a": 0,
+            "p_exact": 0.25
+          }
+        },
+        "k10": {
+          "any": {
+            "discordant_a_gt_b": 1,
+            "discordant_b_gt_a": 3,
+            "p_exact": 0.625
+          },
+          "all": {
+            "discordant_a_gt_b": 3,
+            "discordant_b_gt_a": 2,
+            "p_exact": 1.0
+          }
+        }
+      },
+      "transitions": {
+        "k5": {
+          "fail->success": 3,
+          "success->fail": 0,
+          "none": 35
+        },
+        "k10": {
+          "fail->success": 3,
+          "success->fail": 2,
+          "none": 33
+        }
+      }
+    },
+    "source_only_multi": {
+      "N": 26,
+      "pct_of_129": 20.2,
+      "gold_n_gt_5_infeasible_at_k5": 5,
+      "control": {
+        "k5": {
+          "N": 26,
+          "any_gold@5": {
+            "hits": 20,
+            "value": 0.7692,
+            "wilson": [
+              0.5795,
+              0.8897
+            ]
+          },
+          "all_gold@5": {
+            "hits": 3,
+            "value": 0.1154,
+            "wilson": [
+              0.04,
+              0.2898
+            ]
+          },
+          "mean_fraction@5": 0.4221
+        },
+        "k10": {
+          "N": 26,
+          "any_gold@10": {
+            "hits": 22,
+            "value": 0.8462,
+            "wilson": [
+              0.6647,
+              0.9385
+            ]
+          },
+          "all_gold@10": {
+            "hits": 6,
+            "value": 0.2308,
+            "wilson": [
+              0.1103,
+              0.4205
+            ]
+          },
+          "mean_fraction@10": 0.5503
+        }
+      },
+      "hop": {
+        "k5": {
+          "N": 26,
+          "any_gold@5": {
+            "hits": 18,
+            "value": 0.6923,
+            "wilson": [
+              0.5001,
+              0.835
+            ]
+          },
+          "all_gold@5": {
+            "hits": 6,
+            "value": 0.2308,
+            "wilson": [
+              0.1103,
+              0.4205
+            ]
+          },
+          "mean_fraction@5": 0.4298
+        },
+        "k10": {
+          "N": 26,
+          "any_gold@10": {
+            "hits": 21,
+            "value": 0.8077,
+            "wilson": [
+              0.6212,
+              0.9149
+            ]
+          },
+          "all_gold@10": {
+            "hits": 7,
+            "value": 0.2692,
+            "wilson": [
+              0.137,
+              0.4608
+            ]
+          },
+          "mean_fraction@10": 0.5412
+        }
+      }
+    }
+  },
+  "median_seconds": {
+    "control_locate": 4.195,
+    "graph_build_once": 4.48,
+    "hop_expansion": 0.0,
+    "hop_total": 4.484999999999999,
+    "control_plus_graph": 8.68
+  },
+  "per_task": [
+    {
+      "task": "fastapi_15030",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/server_sent_events/tutorial001_py310.py",
+        "docs_src/server_sent_events/tutorial002_py310.py",
+        "docs_src/server_sent_events/tutorial003_py310.py",
+        "docs_src/server_sent_events/tutorial004_py310.py",
+        "docs_src/server_sent_events/tutorial005_py310.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/responses.py",
+        "fastapi/routing.py",
+        "fastapi/sse.py"
+      ],
+      "gold_n": 9,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.1111,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/background.py",
+            "fastapi/security/api_key.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.1111,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/__init__.py",
+            "fastapi/datastructures.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.1111,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/background.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "scripts/translate.py",
+            "fastapi/security/http.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/param_functions.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.1111,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/background.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py",
+            "fastapi/datastructures.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/logger.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14962",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/custom_response/tutorial010_py310.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 3,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/datastructures.py",
+            "fastapi/responses.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/datastructures.py",
+            "fastapi/responses.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/params.py",
+            "fastapi/utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/datastructures.py",
+            "fastapi/responses.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/types.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/logger.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_15280",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/vibe/tutorial001_py310.py",
+        "fastapi/applications.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "scripts/docs.py",
+            "fastapi/param_functions.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "scripts/docs.py",
+            "fastapi/param_functions.py",
+            "fastapi/middleware/asyncexitstack.py",
+            "fastapi/background.py",
+            "scripts/notify_translations.py",
+            "fastapi/security/api_key.py",
+            "fastapi/security/http.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "scripts/docs.py",
+            "fastapi/param_functions.py",
+            "fastapi/middleware/asyncexitstack.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/datastructures.py",
+            "fastapi/dependencies/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14986",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/applications.py",
+        "fastapi/openapi/docs.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/param_functions.py",
+            "fastapi/openapi/models.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/routing.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/param_functions.py",
+            "fastapi/openapi/models.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/docs.py"
+          ]
+        },
+        "transition": "fail->success"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/param_functions.py",
+            "fastapi/openapi/models.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/security/http.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/dependencies/utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/param_functions.py",
+            "fastapi/openapi/models.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/docs.py",
+            "fastapi/openapi/utils.py"
+          ]
+        },
+        "transition": "fail->success"
+      }
+    },
+    {
+      "task": "fastapi_14978",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/strict_content_type/tutorial001_py310.py",
+        "fastapi/applications.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 3,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/params.py",
+            "fastapi/applications.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/_compat/v2.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/params.py",
+            "fastapi/applications.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/params.py",
+            "fastapi/applications.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/param_functions.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/datastructures.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/routing.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/openapi/models.py",
+            "fastapi/params.py",
+            "fastapi/applications.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/param_functions.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/exceptions.py",
+            "fastapi/logger.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "requests_7505",
+      "repo": "requests",
+      "gold_files": [
+        "src/requests/_types.py",
+        "src/requests/models.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/_types.py",
+            "src/requests/models.py",
+            "src/requests/adapters.py",
+            "src/requests/api.py",
+            "src/requests/sessions.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/_types.py",
+            "src/requests/models.py",
+            "src/requests/adapters.py",
+            "src/requests/auth.py",
+            "src/requests/cookies.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/_types.py",
+            "src/requests/models.py",
+            "src/requests/adapters.py",
+            "src/requests/api.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/exceptions.py",
+            "src/requests/cookies.py",
+            "src/requests/auth.py",
+            "src/requests/structures.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/_types.py",
+            "src/requests/models.py",
+            "src/requests/adapters.py",
+            "src/requests/api.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/__init__.py",
+            "src/requests/_internal_utils.py",
+            "src/requests/auth.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_4070",
+      "repo": "rich",
+      "gold_files": [
+        "rich/_emoji_replace.py",
+        "rich/console.py",
+        "rich/emoji.py",
+        "rich/logging.py",
+        "rich/protocol.py",
+        "rich/repr.py",
+        "rich/segment.py",
+        "rich/syntax.py",
+        "rich/theme.py"
+      ],
+      "gold_n": 9,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/syntax.py",
+            "rich/traceback.py",
+            "rich/repr.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/syntax.py",
+            "rich/_export_format.py",
+            "rich/_emoji_replace.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5556,
+          "files": [
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/syntax.py",
+            "rich/traceback.py",
+            "rich/repr.py",
+            "rich/markdown.py",
+            "rich/segment.py",
+            "rich/__init__.py",
+            "rich/logging.py",
+            "rich/_log_render.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4444,
+          "files": [
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/syntax.py",
+            "rich/traceback.py",
+            "rich/repr.py",
+            "rich/markdown.py",
+            "rich/_export_format.py",
+            "rich/_emoji_replace.py",
+            "rich/_fileno.py",
+            "rich/_log_render.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14099",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/dependencies/tutorial013_an_py310.py",
+        "docs_src/dependencies/tutorial014_an_py310.py",
+        "fastapi/applications.py",
+        "fastapi/middleware/asyncexitstack.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 5,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/applications.py",
+            "fastapi/_compat.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.2,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/applications.py",
+            "fastapi/_compat.py",
+            "fastapi/background.py",
+            "fastapi/concurrency.py",
+            "fastapi/exceptions.py",
+            "docs_src/custom_response/tutorial008.py",
+            "fastapi/responses.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/applications.py",
+            "fastapi/_compat.py",
+            "fastapi/background.py",
+            "fastapi/dependencies/__init__.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/encoders.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14609",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+        "docs_src/request_form_models/tutorial002_pv1_py39.py",
+        "fastapi/_compat/__init__.py",
+        "fastapi/_compat/main.py",
+        "fastapi/_compat/may_v1.py",
+        "fastapi/_compat/model_field.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/_compat/v1.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/datastructures.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/encoders.py",
+        "fastapi/exceptions.py",
+        "fastapi/openapi/models.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_n": 20,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.15,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.2,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+            "docs_src/schema_extra_example/tutorial001_pv1_py310.py",
+            "docs_src/schema_extra_example/tutorial001_pv1_py39.py",
+            "docs_src/pydantic_v1_in_v2/tutorial002_an_py310.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_py39.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14372",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/params.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/security/http.py",
+            "fastapi/security/oauth2.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/models.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14306",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/exceptions.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/param_functions.py",
+            "fastapi/params.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/exception_handlers.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/openapi/utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/exceptions.py",
+            "fastapi/routing.py",
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/types.py",
+            "fastapi/__init__.py",
+            "fastapi/datastructures.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14459",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_n": 3,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/main.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/constants.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/openapi/models.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/param_functions.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/constants.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14448",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/routing.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/param_functions.py",
+            "fastapi/applications.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14419",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/param_functions.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "success->fail"
+      }
+    },
+    {
+      "task": "fastapi_14262",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/dependencies/tutorial008e.py",
+        "docs_src/dependencies/tutorial008e_an.py",
+        "docs_src/dependencies/tutorial008e_an_py39.py",
+        "fastapi/dependencies/models.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/exceptions.py",
+        "fastapi/param_functions.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/types.py"
+      ],
+      "gold_n": 10,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/routing.py",
+            "fastapi/params.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/applications.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/routing.py",
+            "fastapi/params.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/routing.py",
+            "fastapi/params.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/applications.py",
+            "fastapi/background.py",
+            "docs_src/app_testing/tutorial004.py",
+            "fastapi/dependencies/utils.py",
+            "docs_src/events/tutorial003.py",
+            "scripts/playwright/request_form_models/image01.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/param_functions.py",
+            "fastapi/routing.py",
+            "fastapi/params.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/applications.py",
+            "fastapi/background.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/dependencies/__init__.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/encoders.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14186",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/_compat/__init__.py",
+        "fastapi/_compat/main.py",
+        "fastapi/_compat/may_v1.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/_compat/v1.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/encoders.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_n": 10,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/shared.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/utils.py",
+            "fastapi/openapi/models.py",
+            "fastapi/applications.py",
+            "scripts/translate.py",
+            "scripts/contributors.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/utils.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_13713",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/applications.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "fastapi/routing.py",
+            "fastapi/security/http.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/docs.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "fastapi/routing.py",
+            "fastapi/security/http.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/param_functions.py",
+            "fastapi/exceptions.py",
+            "fastapi/params.py",
+            "fastapi/openapi/utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/applications.py",
+            "fastapi/security/api_key.py",
+            "fastapi/openapi/models.py",
+            "fastapi/routing.py",
+            "fastapi/security/http.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/docs.py",
+            "fastapi/__init__.py"
+          ]
+        },
+        "transition": "success->fail"
+      }
+    },
+    {
+      "task": "fastapi_14077",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/handling_errors/tutorial005.py",
+        "fastapi/exception_handlers.py",
+        "fastapi/openapi/utils.py"
+      ],
+      "gold_n": 3,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/_compat.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/applications.py",
+            "fastapi/routing.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/_compat.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/__init__.py",
+            "fastapi/exceptions.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/_compat.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/applications.py",
+            "fastapi/routing.py",
+            "fastapi/utils.py",
+            "fastapi/responses.py",
+            "fastapi/security/http.py",
+            "fastapi/security/oauth2.py",
+            "scripts/sponsors.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "fastapi/_compat.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/applications.py",
+            "fastapi/routing.py",
+            "fastapi/utils.py",
+            "fastapi/__init__.py",
+            "fastapi/encoders.py",
+            "fastapi/exceptions.py",
+            "fastapi/openapi/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3934",
+      "repo": "rich",
+      "gold_files": [
+        "rich/live.py",
+        "rich/live_render.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/progress.py",
+            "rich/console.py",
+            "rich/live.py",
+            "rich/status.py",
+            "examples/fullscreen.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/progress.py",
+            "rich/console.py",
+            "rich/live.py",
+            "rich/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/progress.py",
+            "rich/console.py",
+            "rich/live.py",
+            "rich/status.py",
+            "examples/fullscreen.py",
+            "rich/live_render.py",
+            "rich/_win32_console.py",
+            "rich/errors.py",
+            "rich/highlighter.py",
+            "rich/pretty.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/progress.py",
+            "rich/console.py",
+            "rich/live.py",
+            "rich/status.py",
+            "examples/fullscreen.py",
+            "rich/live_render.py",
+            "rich/__init__.py",
+            "rich/_emoji_replace.py",
+            "rich/_export_format.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3942",
+      "repo": "rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/markdown.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/markdown.py",
+            "rich/spinner.py",
+            "rich/theme.py",
+            "rich/progress.py",
+            "rich/segment.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/markdown.py",
+            "rich/spinner.py",
+            "rich/theme.py",
+            "rich/__init__.py",
+            "rich/_loop.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/markdown.py",
+            "rich/spinner.py",
+            "rich/theme.py",
+            "rich/progress.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/style.py",
+            "rich/text.py",
+            "rich/table.py",
+            "rich/layout.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/markdown.py",
+            "rich/spinner.py",
+            "rich/theme.py",
+            "rich/progress.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/__init__.py",
+            "rich/_loop.py",
+            "rich/_spinners.py",
+            "rich/_stack.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3938",
+      "repo": "rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/segment.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/progress.py",
+            "examples/fullscreen.py",
+            "rich/syntax.py",
+            "rich/style.py",
+            "rich/console.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/progress.py",
+            "examples/fullscreen.py",
+            "rich/syntax.py",
+            "rich/style.py",
+            "rich/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/progress.py",
+            "examples/fullscreen.py",
+            "rich/syntax.py",
+            "rich/style.py",
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/text.py",
+            "rich/pretty.py",
+            "rich/highlighter.py",
+            "benchmarks/benchmarks.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/progress.py",
+            "examples/fullscreen.py",
+            "rich/syntax.py",
+            "rich/style.py",
+            "rich/console.py",
+            "rich/_win32_console.py",
+            "rich/__init__.py",
+            "rich/align.py",
+            "rich/box.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3930",
+      "repo": "rich",
+      "gold_files": [
+        "rich/__main__.py",
+        "rich/_cell_widths.py",
+        "rich/_unicode_data/__init__.py",
+        "rich/_unicode_data/_versions.py",
+        "rich/_unicode_data/unicode10-0-0.py",
+        "rich/_unicode_data/unicode11-0-0.py",
+        "rich/_unicode_data/unicode12-0-0.py",
+        "rich/_unicode_data/unicode12-1-0.py",
+        "rich/_unicode_data/unicode13-0-0.py",
+        "rich/_unicode_data/unicode14-0-0.py",
+        "rich/_unicode_data/unicode15-0-0.py",
+        "rich/_unicode_data/unicode15-1-0.py",
+        "rich/_unicode_data/unicode16-0-0.py",
+        "rich/_unicode_data/unicode17-0-0.py",
+        "rich/_unicode_data/unicode4-1-0.py",
+        "rich/_unicode_data/unicode5-0-0.py",
+        "rich/_unicode_data/unicode5-1-0.py",
+        "rich/_unicode_data/unicode5-2-0.py",
+        "rich/_unicode_data/unicode6-0-0.py",
+        "rich/_unicode_data/unicode6-1-0.py",
+        "rich/_unicode_data/unicode6-2-0.py",
+        "rich/_unicode_data/unicode6-3-0.py",
+        "rich/_unicode_data/unicode7-0-0.py",
+        "rich/_unicode_data/unicode8-0-0.py",
+        "rich/_unicode_data/unicode9-0-0.py",
+        "rich/cells.py"
+      ],
+      "gold_n": 26,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.0385,
+          "files": [
+            "rich/console.py",
+            "tools/make_terminal_widths.py",
+            "benchmarks/benchmarks.py",
+            "rich/cells.py",
+            "rich/progress.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/console.py",
+            "tools/make_terminal_widths.py",
+            "benchmarks/benchmarks.py",
+            "rich/_emoji_replace.py",
+            "rich/emoji.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.0385,
+          "files": [
+            "rich/console.py",
+            "tools/make_terminal_widths.py",
+            "benchmarks/benchmarks.py",
+            "rich/cells.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "rich/segment.py",
+            "rich/syntax.py",
+            "rich/logging.py",
+            "rich/highlighter.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.0385,
+          "files": [
+            "rich/console.py",
+            "tools/make_terminal_widths.py",
+            "benchmarks/benchmarks.py",
+            "rich/cells.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "rich/_emoji_replace.py",
+            "rich/emoji.py",
+            "rich/terminal_theme.py",
+            "rich/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "httpx_3672",
+      "repo": "httpx",
+      "gold_files": [
+        "src/ahttpx/_parsers.py",
+        "src/ahttpx/_pool.py",
+        "src/ahttpx/_server.py",
+        "src/httpx/_network.py",
+        "src/httpx/_parsers.py",
+        "src/httpx/_pool.py",
+        "src/httpx/_server.py"
+      ],
+      "gold_n": 7,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.7143,
+          "files": [
+            "src/httpx/_parsers.py",
+            "src/ahttpx/_parsers.py",
+            "src/httpx/_server.py",
+            "src/ahttpx/_server.py",
+            "src/httpx/_pool.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4286,
+          "files": [
+            "src/httpx/_parsers.py",
+            "src/ahttpx/_parsers.py",
+            "src/httpx/_server.py",
+            "src/httpx/_streams.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.8571,
+          "files": [
+            "src/httpx/_parsers.py",
+            "src/ahttpx/_parsers.py",
+            "src/httpx/_server.py",
+            "src/ahttpx/_server.py",
+            "src/httpx/_pool.py",
+            "src/ahttpx/_pool.py",
+            "src/httpx/_streams.py",
+            "src/ahttpx/_streams.py",
+            "src/httpx/_urls.py",
+            "src/ahttpx/_urls.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.8571,
+          "files": [
+            "src/httpx/_parsers.py",
+            "src/ahttpx/_parsers.py",
+            "src/httpx/_server.py",
+            "src/ahttpx/_server.py",
+            "src/httpx/_pool.py",
+            "src/ahttpx/_pool.py",
+            "src/ahttpx/_streams.py",
+            "src/httpx/_streams.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_15800",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/frontend/tutorial001_py310.py",
+        "docs_src/frontend/tutorial002_py310.py",
+        "docs_src/frontend/tutorial003_py310.py",
+        "docs_src/frontend/tutorial004_py310.py",
+        "docs_src/frontend/tutorial005_py310.py",
+        "docs_src/frontend/tutorial006_py310.py",
+        "fastapi/applications.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 8,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/applications.py",
+            "scripts/notify_translations.py",
+            "scripts/people.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/applications.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/encoders.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/applications.py",
+            "scripts/notify_translations.py",
+            "scripts/people.py",
+            "scripts/contributors.py",
+            "scripts/translate.py",
+            "scripts/sponsors.py",
+            "fastapi/param_functions.py",
+            "scripts/doc_parsing_utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/docs.py",
+            "fastapi/applications.py",
+            "scripts/notify_translations.py",
+            "scripts/people.py",
+            "scripts/contributors.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/encoders.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_15785",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/openapi/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/_compat/v2.py",
+            "scripts/playwright/cookie_param_models/image01.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/encoders.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/_compat/v2.py",
+            "scripts/playwright/cookie_param_models/image01.py",
+            "scripts/playwright/separate_openapi_schemas/image01.py",
+            "scripts/playwright/request_form_models/image01.py",
+            "scripts/playwright/sql_databases/image01.py",
+            "scripts/playwright/sql_databases/image02.py",
+            "scripts/playwright/header_param_models/image01.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/_compat/v2.py",
+            "scripts/playwright/cookie_param_models/image01.py",
+            "scripts/playwright/separate_openapi_schemas/image01.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/encoders.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14371",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/_compat/v2.py",
+        "fastapi/dependencies/utils.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/params.py"
+      ],
+      "gold_n": 4,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/main.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/param_functions.py",
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/applications.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14605",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/exceptions.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/params.py",
+        "fastapi/routing.py",
+        "fastapi/temp_pydantic_v1_params.py",
+        "fastapi/utils.py"
+      ],
+      "gold_n": 7,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5714,
+          "files": [
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/openapi/utils.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.4286,
+          "files": [
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/routing.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.8571,
+          "files": [
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/utils.py",
+            "fastapi/security/http.py",
+            "fastapi/param_functions.py",
+            "fastapi/security/oauth2.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.7143,
+          "files": [
+            "fastapi/params.py",
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/openapi/models.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14583",
+      "repo": "fastapi",
+      "gold_files": [
+        "fastapi/dependencies/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_py39.py",
+            "docs_src/schema_extra_example/tutorial001_pv1_py310.py",
+            "docs_src/schema_extra_example/tutorial001_pv1_py39.py",
+            "docs_src/pydantic_v1_in_v2/tutorial002_an_py310.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/temp_pydantic_v1_params.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/may_v1.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py310.py",
+            "docs_src/pydantic_v1_in_v2/tutorial003_an_py39.py",
+            "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/_compat/shared.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_15745",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/path_operation_advanced_configuration/tutorial002_py310.py",
+        "fastapi/applications.py",
+        "fastapi/openapi/utils.py",
+        "fastapi/routing.py"
+      ],
+      "gold_n": 4,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/param_functions.py",
+            "fastapi/security/oauth2.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/datastructures.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.75,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/param_functions.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/_compat/shared.py",
+            "scripts/docs.py",
+            "fastapi/openapi/utils.py",
+            "fastapi/dependencies/utils.py",
+            "fastapi/exceptions.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/routing.py",
+            "fastapi/applications.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/param_functions.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/exception_handlers.py",
+            "fastapi/dependencies/models.py",
+            "fastapi/openapi/docs.py",
+            "fastapi/datastructures.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_14953",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/json_base64_bytes/tutorial001_py310.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/datastructures.py",
+        "scripts/playwright/json_base64_bytes/image01.py"
+      ],
+      "gold_n": 4,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/openapi/models.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/openapi/models.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/openapi/utils.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/openapi/models.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/param_functions.py",
+            "fastapi/responses.py",
+            "fastapi/params.py",
+            "fastapi/exceptions.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.25,
+          "files": [
+            "fastapi/datastructures.py",
+            "fastapi/routing.py",
+            "fastapi/openapi/models.py",
+            "scripts/doc_parsing_utils.py",
+            "fastapi/background.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/exceptions.py",
+            "fastapi/types.py",
+            "fastapi/__init__.py",
+            "fastapi/_compat/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "fastapi_13786",
+      "repo": "fastapi",
+      "gold_files": [
+        "docs_src/authentication_error_status_code/tutorial001_an.py",
+        "docs_src/authentication_error_status_code/tutorial001_an_py39.py",
+        "docs_src/security/tutorial003.py",
+        "docs_src/security/tutorial003_an.py",
+        "docs_src/security/tutorial003_an_py310.py",
+        "docs_src/security/tutorial003_an_py39.py",
+        "docs_src/security/tutorial003_py310.py",
+        "fastapi/security/api_key.py",
+        "fastapi/security/http.py",
+        "fastapi/security/oauth2.py",
+        "fastapi/security/open_id_connect_url.py"
+      ],
+      "gold_n": 11,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/constants.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.2727,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/security/oauth2.py",
+            "fastapi/security/http.py",
+            "fastapi/security/open_id_connect_url.py",
+            "fastapi/openapi/models.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/v1.py",
+            "fastapi/_compat/main.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/_compat/may_v1.py",
+            "fastapi/_compat/model_field.py",
+            "fastapi/openapi/__init__.py",
+            "fastapi/openapi/constants.py",
+            "fastapi/params.py",
+            "fastapi/types.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "requests_6757",
+      "repo": "requests",
+      "gold_files": [
+        "src/requests/compat.py",
+        "src/requests/utils.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "src/requests/adapters.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/exceptions.py",
+            "src/requests/models.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/adapters.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/auth.py",
+            "src/requests/compat.py"
+          ]
+        },
+        "transition": "fail->success"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "src/requests/adapters.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/exceptions.py",
+            "src/requests/models.py",
+            "src/requests/auth.py",
+            "src/requests/cookies.py",
+            "src/requests/help.py",
+            "src/requests/__init__.py",
+            "docs/_themes/flask_theme_support.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "src/requests/adapters.py",
+            "src/requests/sessions.py",
+            "src/requests/utils.py",
+            "src/requests/exceptions.py",
+            "src/requests/models.py",
+            "src/requests/auth.py",
+            "src/requests/_internal_utils.py",
+            "src/requests/compat.py",
+            "src/requests/cookies.py"
+          ]
+        },
+        "transition": "fail->success"
+      }
+    },
+    {
+      "task": "rich_3180",
+      "repo": "rich",
+      "gold_files": [
+        "rich/_wrap.py",
+        "rich/cells.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/segment.py",
+            "rich/text.py",
+            "rich/console.py",
+            "benchmarks/benchmarks.py",
+            "rich/syntax.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/segment.py",
+            "rich/text.py",
+            "rich/console.py",
+            "rich/__init__.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/segment.py",
+            "rich/text.py",
+            "rich/console.py",
+            "benchmarks/benchmarks.py",
+            "rich/syntax.py",
+            "rich/table.py",
+            "rich/prompt.py",
+            "rich/progress.py",
+            "rich/traceback.py",
+            "rich/containers.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/segment.py",
+            "rich/text.py",
+            "rich/console.py",
+            "benchmarks/benchmarks.py",
+            "rich/syntax.py",
+            "rich/table.py",
+            "rich/__init__.py",
+            "rich/_loop.py",
+            "rich/_pick.py",
+            "rich/_wrap.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3486",
+      "repo": "rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/syntax.py",
+        "rich/traceback.py"
+      ],
+      "gold_n": 3,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "rich/traceback.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/syntax.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.3333,
+          "files": [
+            "rich/traceback.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/__init__.py",
+            "rich/_loop.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "rich/traceback.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/syntax.py",
+            "rich/filesize.py",
+            "rich/status.py",
+            "rich/_null_file.py",
+            "rich/diagnose.py",
+            "rich/live.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.6667,
+          "files": [
+            "rich/traceback.py",
+            "rich/segment.py",
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/syntax.py",
+            "rich/filesize.py",
+            "rich/__init__.py",
+            "rich/_loop.py",
+            "rich/cells.py",
+            "rich/columns.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3777",
+      "repo": "rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/diagnose.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/console.py",
+            "rich/diagnose.py",
+            "rich/progress.py",
+            "rich/live.py",
+            "examples/dynamic_progress.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/console.py",
+            "rich/diagnose.py",
+            "rich/progress.py",
+            "rich/_fileno.py",
+            "rich/_null_file.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/console.py",
+            "rich/diagnose.py",
+            "rich/progress.py",
+            "rich/live.py",
+            "examples/dynamic_progress.py",
+            "rich/segment.py",
+            "rich/progress_bar.py",
+            "rich/traceback.py",
+            "rich/status.py",
+            "rich/theme.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/console.py",
+            "rich/diagnose.py",
+            "rich/progress.py",
+            "rich/live.py",
+            "examples/dynamic_progress.py",
+            "rich/segment.py",
+            "rich/_fileno.py",
+            "rich/_null_file.py",
+            "rich/status.py",
+            "rich/__init__.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3675",
+      "repo": "rich",
+      "gold_files": [
+        "rich/console.py",
+        "rich/diagnose.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "examples/fullscreen.py",
+            "rich/_win32_console.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "rich/__init__.py",
+            "rich/_emoji_replace.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "examples/fullscreen.py",
+            "rich/_win32_console.py",
+            "rich/text.py",
+            "rich/segment.py",
+            "rich/highlighter.py",
+            "rich/style.py",
+            "rich/markdown.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/console.py",
+            "rich/progress.py",
+            "rich/box.py",
+            "examples/fullscreen.py",
+            "rich/_win32_console.py",
+            "rich/text.py",
+            "rich/__init__.py",
+            "rich/_emoji_replace.py",
+            "rich/_export_format.py",
+            "rich/_fileno.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3676",
+      "repo": "rich",
+      "gold_files": [
+        "rich/default_styles.py",
+        "rich/traceback.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/console.py",
+            "rich/layout.py",
+            "rich/prompt.py",
+            "rich/progress.py",
+            "rich/text.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/console.py",
+            "rich/layout.py",
+            "rich/prompt.py",
+            "rich/__init__.py",
+            "rich/_emoji_replace.py"
+          ]
+        },
+        "transition": "none"
+      },
+      "k10": {
+        "control": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/console.py",
+            "rich/layout.py",
+            "rich/prompt.py",
+            "rich/progress.py",
+            "rich/text.py",
+            "rich/repr.py",
+            "rich/table.py",
+            "rich/live.py",
+            "rich/errors.py",
+            "benchmarks/benchmarks.py"
+          ]
+        },
+        "hop": {
+          "any": 0,
+          "all": 0,
+          "mf": 0.0,
+          "files": [
+            "rich/console.py",
+            "rich/layout.py",
+            "rich/prompt.py",
+            "rich/progress.py",
+            "rich/text.py",
+            "rich/repr.py",
+            "rich/__init__.py",
+            "rich/_emoji_replace.py",
+            "rich/_export_format.py",
+            "rich/_fileno.py"
+          ]
+        },
+        "transition": "none"
+      }
+    },
+    {
+      "task": "rich_3535",
+      "repo": "rich",
+      "gold_files": [
+        "rich/cells.py",
+        "rich/segment.py"
+      ],
+      "gold_n": 2,
+      "k5": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/segment.py",
+            "rich/highlighter.py",
+            "rich/traceback.py",
+            "rich/syntax.py",
+            "rich/console.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/segment.py",
+            "rich/highlighter.py",
+            "rich/traceback.py",
+            "rich/__init__.py",
+            "rich/cells.py"
+          ]
+        },
+        "transition": "fail->success"
+      },
+      "k10": {
+        "control": {
+          "any": 1,
+          "all": 0,
+          "mf": 0.5,
+          "files": [
+            "rich/segment.py",
+            "rich/highlighter.py",
+            "rich/traceback.py",
+            "rich/syntax.py",
+            "rich/console.py",
+            "rich/text.py",
+            "examples/log.py",
+            "rich/progress.py",
+            "rich/rule.py",
+            "rich/style.py"
+          ]
+        },
+        "hop": {
+          "any": 1,
+          "all": 1,
+          "mf": 1.0,
+          "files": [
+            "rich/segment.py",
+            "rich/highlighter.py",
+            "rich/traceback.py",
+            "rich/syntax.py",
+            "rich/console.py",
+            "rich/text.py",
+            "rich/__init__.py",
+            "rich/cells.py",
+            "rich/repr.py"
+          ]
+        },
+        "transition": "fail->success"
+      }
+    }
+  ],
+  "wall_seconds": 472.5
+}

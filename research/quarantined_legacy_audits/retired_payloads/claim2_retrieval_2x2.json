@@ -1,0 +1,50 @@
+{
+  "n_tasks": 129,
+  "matrix": {
+    "regime_a_m4_static_graph": {
+      "mean_fraction_r5": 0.435,
+      "mean_fraction_tasks": 56.12
+    },
+    "regime_b_v4_live_ast": {
+      "mean_fraction_r5": 0.6184,
+      "any_gold_r5": 0.7442
+    }
+  },
+  "decomposition": {
+    "candidate_indexing_gain_pp": 18.34,
+    "metric_definition_gap_pp": 12.58,
+    "total_transition_leap_pp": 30.92,
+    "relative_gain_pct": 71.1
+  },
+  "paired_gaps_across_cutoffs": {
+    "@1": {
+      "any": 0.4186,
+      "frac": 0.3167,
+      "gap_pp": 10.19
+    },
+    "@3": {
+      "any": 0.6512,
+      "frac": 0.5276,
+      "gap_pp": 12.36
+    },
+    "@5": {
+      "any": 0.7442,
+      "frac": 0.6184,
+      "gap_pp": 12.58
+    },
+    "@10": {
+      "any": 0.8295,
+      "frac": 0.717,
+      "gap_pp": 11.25
+    }
+  },
+  "m3_neighborhood_cap_exceedance": {
+    "neighborhoods_evaluated": 387,
+    "neighborhoods_exceeding_5000_chars": 313,
+    "exceedance_pct": 80.9,
+    "task_clustered_95_ci": [
+      74.1,
+      87.6
+    ]
+  }
+}

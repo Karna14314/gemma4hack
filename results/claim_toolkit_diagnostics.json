@@ -1,0 +1,44 @@
+{
+  "total_dev_tasks": 129,
+  "single_file_tasks": 91,
+  "multi_file_tasks": 38,
+  "new_file_tasks": 11,
+  "new_files_pct": 8.5,
+  "fastapi_plugin_crashes": 28,
+  "fastapi_crash_pct": 41.8,
+  "missing_plugins": [
+    "inline_snapshot",
+    "dirty_equals",
+    "anyio"
+  ],
+  "repository_breakdown": {
+    "fastapi": {
+      "n": 67,
+      "single_file": 43,
+      "multi_file": 24,
+      "new_files": 10,
+      "plugin_crashes": 28
+    },
+    "rich": {
+      "n": 48,
+      "single_file": 37,
+      "multi_file": 11,
+      "new_files": 1,
+      "plugin_crashes": 0
+    },
+    "requests": {
+      "n": 13,
+      "single_file": 11,
+      "multi_file": 2,
+      "new_files": 0,
+      "plugin_crashes": 0
+    },
+    "httpx": {
+      "n": 1,
+      "single_file": 0,
+      "multi_file": 1,
+      "new_files": 0,
+      "plugin_crashes": 0
+    }
+  }
+}

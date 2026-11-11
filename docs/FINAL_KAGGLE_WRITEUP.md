@@ -1,5 +1,9 @@
 # When Code Graphs Help and When They Hurt: Rigorous Harness Mechanics, Statistical Decomposition, and Offline Evaluation of Gemma 4 SWE Agents
 
+> **Superseded.** This draft is kept for provenance only. The canonical writeup is
+> [`docs/MASTER_WRITEUP_FINAL.md`](MASTER_WRITEUP_FINAL.md), which supersedes every
+> number, figure, and claim below. Do not paste this file into Kaggle.
+
 **Track**: Gemma 4 Developer Agent — Writeup / Paper Track  
 **Authors**: Team Antigravity (Chaitanya & Autonomous Systems Auditor)  
 **Evaluated Systems**: Google Gemma 4 31B and E4B, Google ADK 1.36.1, vLLM 0.19.1, 4× NVIDIA L4 GPUs.  

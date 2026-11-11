@@ -1,0 +1,233 @@
+{
+  "generator": "scripts/run_verified_experiments.py",
+  "group": "leaderboard_estimands",
+  "split_size": 58,
+  "runs": [
+    {
+      "run": "exp01",
+      "ref": "56793672",
+      "scale_b": 31,
+      "displayed_score": 0.05,
+      "k_of_58": 3,
+      "exact_fraction": 0.0517,
+      "mechanism": "2 agents, 4m cap",
+      "date": "2026-10-03"
+    },
+    {
+      "run": "exp02",
+      "ref": "56812498",
+      "scale_b": 31,
+      "displayed_score": 0.08,
+      "k_of_58": 5,
+      "exact_fraction": 0.0862,
+      "mechanism": "unified prompt",
+      "date": "2026-10-04"
+    },
+    {
+      "run": "exp03",
+      "ref": "57037122",
+      "scale_b": 31,
+      "displayed_score": 0.17,
+      "k_of_58": 10,
+      "exact_fraction": 0.1724,
+      "mechanism": "exp05 replica",
+      "date": "2026-10-10"
+    },
+    {
+      "run": "exp05",
+      "ref": "57553805",
+      "scale_b": 31,
+      "displayed_score": 0.2,
+      "k_of_58": 12,
+      "exact_fraction": 0.2069,
+      "mechanism": "git add -N -f gate",
+      "date": "2026-10-23"
+    },
+    {
+      "run": "exp08",
+      "ref": "57618114",
+      "scale_b": 31,
+      "displayed_score": 0.17,
+      "k_of_58": 10,
+      "exact_fraction": 0.1724,
+      "mechanism": "contract prompt (+554 chars)",
+      "date": "2026-10-25"
+    },
+    {
+      "run": "exp10",
+      "ref": "57654236",
+      "scale_b": 31,
+      "displayed_score": 0.17,
+      "k_of_58": 10,
+      "exact_fraction": 0.1724,
+      "mechanism": "6 tools, lean",
+      "date": "2026-10-26"
+    },
+    {
+      "run": "exp11_fb",
+      "ref": "57697341",
+      "scale_b": 31,
+      "displayed_score": 0.13,
+      "k_of_58": 8,
+      "exact_fraction": 0.1379,
+      "mechanism": "E4B bundle -> 31B fallback",
+      "date": "2026-10-27"
+    },
+    {
+      "run": "exp12",
+      "ref": "57736284",
+      "scale_b": 31,
+      "displayed_score": 0.17,
+      "k_of_58": 10,
+      "exact_fraction": 0.1724,
+      "mechanism": "6 tools, 9m cap",
+      "date": "2026-10-28"
+    },
+    {
+      "run": "exp11_gen",
+      "ref": "57777888",
+      "scale_b": 4,
+      "displayed_score": 0.06,
+      "k_of_58": 3,
+      "exact_fraction": 0.0517,
+      "mechanism": "genuine E4B",
+      "date": "2026-10-29"
+    },
+    {
+      "run": "e4b-v2",
+      "ref": "57806053",
+      "scale_b": 4,
+      "displayed_score": 0.05,
+      "k_of_58": 3,
+      "exact_fraction": 0.0517,
+      "mechanism": "E4B imperative, t=0.1",
+      "date": "2026-10-30"
+    },
+    {
+      "run": "E0_ctrl",
+      "ref": "57836949",
+      "scale_b": 31,
+      "displayed_score": 0.17,
+      "k_of_58": 10,
+      "exact_fraction": 0.1724,
+      "mechanism": "byte-identical exp05",
+      "date": "2026-10-31"
+    },
+    {
+      "run": "e4b_v4",
+      "ref": "57889741",
+      "scale_b": 4,
+      "displayed_score": 0.05,
+      "k_of_58": 3,
+      "exact_fraction": 0.0517,
+      "mechanism": "E4B + swe-toolkit",
+      "date": "2026-11-02"
+    },
+    {
+      "run": "exp14",
+      "ref": "57933618",
+      "scale_b": 31,
+      "displayed_score": 0.15,
+      "k_of_58": 9,
+      "exact_fraction": 0.1552,
+      "mechanism": "31B + SkillToolset",
+      "date": "2026-11-03"
+    },
+    {
+      "run": "exp_samp",
+      "ref": "58096981",
+      "scale_b": 31,
+      "displayed_score": 0.13,
+      "k_of_58": 8,
+      "exact_fraction": 0.1379,
+      "mechanism": "model-card sampling",
+      "date": "2026-11-07"
+    },
+    {
+      "run": "exp_thk",
+      "ref": "58149803",
+      "scale_b": 31,
+      "displayed_score": null,
+      "k_of_58": null,
+      "exact_fraction": null,
+      "mechanism": "thinking_budget 1024 (unscored)",
+      "date": "2026-11-09"
+    },
+    {
+      "run": "exp15",
+      "ref": "58183079",
+      "scale_b": 31,
+      "displayed_score": 0.13,
+      "k_of_58": 8,
+      "exact_fraction": 0.1379,
+      "mechanism": "thinking_budget 8192, 6 tools",
+      "date": "2026-11-10"
+    }
+  ],
+  "estimand_rows": [
+    {
+      "row": 1,
+      "name": "identical-code repeat pair on fixed 58 tasks",
+      "exp05_k": 12,
+      "e0_k": 10,
+      "observed_shift_tasks": 2,
+      "observed_shift_pp": 3.45,
+      "note": "exp05 is not resolvably different from exp03 (also 10/58)."
+    },
+    {
+      "row": 2,
+      "name": "5 near-baseline 31B bundles",
+      "counts": [
+        12,
+        10,
+        10,
+        10,
+        10
+      ],
+      "mean_tasks": 10.4,
+      "mean_rate": 0.1793,
+      "sd_tasks": 0.894,
+      "df": 4,
+      "sd_ci95": [
+        0.536,
+        2.571
+      ],
+      "mde_two_run_point_tasks": 3.54,
+      "mde_two_run_upper_tasks": 10.19
+    },
+    {
+      "row": 3,
+      "name": "public-to-hidden split sampling uncertainty",
+      "se_split_tasks": 2.92,
+      "se_split_pp": 5.04,
+      "se_two_independent_tasks": 4.13,
+      "se_two_independent_pp": 7.12,
+      "mde_single_vs_reference_tasks": 8.18,
+      "mde_two_independent_tasks": 11.58
+    }
+  ],
+  "sd_if_e0_included": {
+    "counts": [
+      12,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "sd_tasks": 0.816,
+    "note": "including the byte-identical control raises n to 6 and lowers SD to 0.816"
+  },
+  "ledger_summary": {
+    "n_runs": 16,
+    "scored_31b": 12,
+    "scored_e4b": 3,
+    "unscored": 1,
+    "e4b_k_values": [
+      3
+    ],
+    "e4b_k_min": 3,
+    "e4b_k_max": 3
+  },
+  "scored_31b_runs": 12
+}

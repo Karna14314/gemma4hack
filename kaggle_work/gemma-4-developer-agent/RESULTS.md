@@ -550,3 +550,37 @@ deltas ≤2 tasks remain statistically unresolvable (docs/AUDIT_E4B_AND_ANCHOR.m
   Paper: `docs/PAPER_TRACK_DRAFT.md` §2.2 now carries the engine-enforcement finding and
   the E0-control statistical update (2,997 words, under the 3,000 limit).
 
+
+
+## 2026-11-11 -- Paper Track finalization: verified payloads, paper gate, public kernels
+
+- **Producer.** `scripts/run_verified_experiments.py --only ablation,multifile,hazards,leaderboard`
+  wrote four canonical JSONs under `research/verified_json/`: `retrieval_ablation_129.json`
+  (N=129, wall 2,030 s), `multifile_2hop_38.json` (multi=38, source-only=26, wall 472 s),
+  `runtime_hazards_verified.json`, `leaderboard_estimands.json`. Every number in the paper
+  now resolves to one of these files.
+- **Site 4 corrected.** 11 tasks create 49 new files; `git check-ignore` matches 0 of them,
+  so exposure is 0/129. The trap is latent: `.pytest_cache` is ignored in 11/11 snapshots,
+  so only agent-generated scratch is at risk. `git add -N -f` remains correct.
+- **Site 6 corrected.** Definition A (gold `test_patch` imports `inline_snapshot` or
+  `dirty_equals`) = 21/67; A + the one `anyio`-only task = 22/67; B (touched test files)
+  = 17/67; C (whole `tests/` tree) = 67/67. The legacy 27 was A-plus-anyio (22) plus the
+  five `dirty_equals` tasks already inside it: 18 + 5 + 1 = 24, minus 2 double imports = 22.
+- **Two-hop is a trade, not a null.** At k=5 strict all-gold 3/38 -> 6/38 (3 gains, 0 losses,
+  exact paired p=0.250) while any-gold 31/38 -> 29/38 (2 losses, 0 gains, p=0.500); k=10
+  repeats the trade (p=1.000). Mean-fraction flat at k=5, lower at k=10. Graph build median
+  4.48 s vs locate 4.195 s. Replaces the pre-written "null" prose.
+- **Paper.** `docs/MASTER_WRITEUP_FINAL.md`: title "Finding a File Is Not Finding the Patch",
+  2,657 words (target 2,650, hard gate 2,750), 124 claims bound by JSON Pointer, 364 visible
+  numeric tokens all bound or declared structural, no placeholder, no withdrawn artifact.
+  `docs/number_audit.csv` regenerated (124 rows). Legacy calibrated audits quarantined under
+  `research/quarantined_legacy_audits/`; no active script reads them.
+- **Figures.** Six PNGs re-rendered from the JSON by `scripts/generate_paper_figures.py`
+  (`fig0` card, `fig1` harness, `fig2` ladder, `fig3` baselines + 2-hop, `fig4` estimands,
+  `fig5` anatomy/exposure). `fig3` replaces the withdrawn `symrank_v6` panel.
+- **Kernels.** `narisettichaitanya/g4-paper-graph-benchmark` v28 COMPLETE, HTTP 200;
+  `narisettichaitanya/g4-paper-noise-mde` v5 COMPLETE, HTTP 200. Both logs end `DONE:` with
+  no `[FAIL]`; both notebooks rebuilt from the same embedded JSON (sha256 printed in-cell).
+- **Integrity.** `tools/verify_all_integrity.py`: ALL INTEGRITY CHECKS PASSED (quarantine
+  layout, no active readers, gate, both kernels HTTP 200).
+- **No competition submission was made in this session.**

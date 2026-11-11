@@ -1,0 +1,319 @@
+{
+  "generator": "scripts/run_verified_experiments.py",
+  "group": "runtime_hazards",
+  "package_versions": {
+    "google_adk": "1.36.1",
+    "vllm": null,
+    "swegemma": "0.2.11",
+    "adk_submission": "0.2.13",
+    "adk-eval-core": "0.1.0"
+  },
+  "sites": {
+    "site1": {
+      "component": "google-adk",
+      "path": "google/adk/apps/_configs.py",
+      "line": 70,
+      "needle": "token_threshold",
+      "label": "Source-Verified (value from docs)",
+      "present": true,
+      "quote": "  end of the last compacted range. This creates an overlap between consecutive\n  compacted summaries, maintaining context.\"\"\"\n\n  token_threshold: Optional[int] = Field(\n      default=None,\n      gt=0,\n  )",
+      "line_matches_needle": true,
+      "file_lines": 95
+    },
+    "site2": {
+      "component": "vllm",
+      "path": "vllm/entrypoints/chat_utils.py",
+      "line": 1512,
+      "needle": "reasoning",
+      "label": "Inherited (vLLM wheel not installed locally)",
+      "present": false
+    },
+    "site2_patch": {
+      "component": "adk-submission",
+      "path": "adk_submission/resolvers/generation.py",
+      "line": 70,
+      "needle": "reasoning",
+      "label": "Mitigated in Scored Stack",
+      "present": true,
+      "quote": "    if isinstance(msg, dict):\n        rc = msg.get(\"reasoning_content\")\n        if rc is not None and msg.get(\"reasoning\") is None:\n            msg[\"reasoning\"] = rc\n    elif isinstance(msg, list):\n        for item in msg:\n            if isinstance(item, dict):",
+      "line_matches_needle": true,
+      "file_lines": 466
+    },
+    "site3": {
+      "component": "vllm",
+      "path": "vllm/v1/sample/logits_processor/builtin.py",
+      "line": 550,
+      "needle": "1e9",
+      "label": "Inherited (vLLM wheel not installed locally)",
+      "present": false
+    },
+    "site4": {
+      "component": "swegemma",
+      "path": "swegemma/harness/agent_runner.py",
+      "line": 1057,
+      "needle": "git",
+      "label": "Replay-Verified",
+      "present": true,
+      "quote": "        if not (context is not None and context.patch_submitted):\n            # Fallback: check if the agent made unsubmitted modifications on disk\n            try:\n                await sandbox_exec(docker, sandbox_id, 'cd /workspace && git add -N .')\n                diff_res = await sandbox_exec(\n                    docker,\n                    sandbox_id,",
+      "line_matches_needle": true,
+      "file_lines": 1120
+    },
+    "site5": {
+      "component": "google-adk",
+      "path": "google/adk/tools/skill_toolset.py",
+      "line": 61,
+      "needle": "_DEFAULT_SKILL_SYSTEM_INSTRUCTION",
+      "label": "Source-Verified",
+      "present": true,
+      "quote": "    \" conversation history for you to analyze.\"\n)\n\n_DEFAULT_SKILL_SYSTEM_INSTRUCTION = (\n    \"You can use specialized 'skills' to help you with complex tasks. \"\n    \"You MUST use the skill tools to interact with these skills.\\n\\n\"\n    \"Skills are folders of instructions and resources that extend your \"",
+      "line_matches_needle": true,
+      "file_lines": 1105
+    },
+    "site6": {
+      "component": "swegemma",
+      "path": "swegemma/harness/verification.py",
+      "line": 628,
+      "needle": "no:anyio",
+      "label": "Exposure Count",
+      "present": true,
+      "quote": "        test_files_str = ' '.join(test_files_quoted) if test_files_quoted else '.'\n        junit_xml_path = f'/tmp/_swegemma_junit_{uuid.uuid4().hex[:12]}.xml'\n        await sandbox_exec(docker, eval_id, f'rm -f {junit_xml_path}')\n        pytest_cmd = (\n            f'cd /workspace && PYTHONSAFEPATH=1 PYTHONNOUSERSITE=1 python3 -s -m pytest {test_files_str} '\n            f'--junitxml={junit_xml_path} '\n            '-p no:anyio -o timeout=0 '",
+      "line_matches_needle": true,
+      "file_lines": 719
+    }
+  },
+  "site1_compaction": {
+    "token_threshold": 14336,
+    "compaction_interval": 15,
+    "event_retention": 5,
+    "overlap": 2,
+    "first_compaction_turn_by_config": {
+      "config_1_lean_6tools": 9,
+      "config_2_baseline_9tools": 8,
+      "config_3_skilltoolset_10tools": 8
+    },
+    "first_compaction_turn_min": 8,
+    "first_compaction_turn_max": 9,
+    "config3_turn1_tokens": 2389,
+    "config2_turn1_tokens": 1972,
+    "skilltoolset_turn1_marginal_tokens": 417,
+    "skill_instruction_consequence": "Forces an unpreventable Turn 1 `load_skill` round-trip (+875 tokens tool output), burning turn budget and inflating initial context by +2,150 characters (+538 tokens) before any workspace code inspection occurs.",
+    "label": "Source-Verified (constants from HARNESS_README \u00a77.2; turns from replay audit)"
+  },
+  "site2_mitigation": {
+    "patch_defined": true,
+    "install_calls": 2,
+    "path": "adk_submission/resolvers/generation.py",
+    "label": "Mitigated in Scored Stack",
+    "mirror_line": 70,
+    "defined_at_line": 195
+  },
+  "site4_gitignore": {
+    "tasks": 11,
+    "files": 49,
+    "ignored": [],
+    "scratch_hits": {
+      "/workspace/skills/swe-toolkit/scripts/swe.py": {
+        "tested": 11,
+        "ignored": 0
+      },
+      ".pytest_cache/v/cache/lastfailed": {
+        "tested": 11,
+        "ignored": 11
+      }
+    },
+    "tasks_detail": [
+      {
+        "task": "fastapi_15661",
+        "created": [
+          "scripts/prepare_release.py"
+        ]
+      },
+      {
+        "task": "fastapi_15030",
+        "created": [
+          "docs_src/server_sent_events/tutorial001_py310.py",
+          "docs_src/server_sent_events/tutorial002_py310.py",
+          "docs_src/server_sent_events/tutorial003_py310.py",
+          "docs_src/server_sent_events/tutorial004_py310.py",
+          "docs_src/server_sent_events/tutorial005_py310.py",
+          "fastapi/sse.py"
+        ]
+      },
+      {
+        "task": "fastapi_15280",
+        "created": [
+          "docs_src/vibe/tutorial001_py310.py"
+        ]
+      },
+      {
+        "task": "fastapi_14978",
+        "created": [
+          "docs_src/strict_content_type/tutorial001_py310.py"
+        ]
+      },
+      {
+        "task": "fastapi_14099",
+        "created": [
+          "docs_src/dependencies/tutorial013_an_py310.py",
+          "docs_src/dependencies/tutorial014_an_py310.py",
+          "fastapi/middleware/asyncexitstack.py"
+        ]
+      },
+      {
+        "task": "fastapi_14262",
+        "created": [
+          "docs_src/dependencies/tutorial008e.py",
+          "docs_src/dependencies/tutorial008e_an.py",
+          "docs_src/dependencies/tutorial008e_an_py39.py"
+        ]
+      },
+      {
+        "task": "fastapi_14186",
+        "created": [
+          "fastapi/_compat/may_v1.py"
+        ]
+      },
+      {
+        "task": "rich_3930",
+        "created": [
+          "rich/_unicode_data/__init__.py",
+          "rich/_unicode_data/_versions.py",
+          "rich/_unicode_data/unicode10-0-0.py",
+          "rich/_unicode_data/unicode11-0-0.py",
+          "rich/_unicode_data/unicode12-0-0.py",
+          "rich/_unicode_data/unicode12-1-0.py",
+          "rich/_unicode_data/unicode13-0-0.py",
+          "rich/_unicode_data/unicode14-0-0.py",
+          "rich/_unicode_data/unicode15-0-0.py",
+          "rich/_unicode_data/unicode15-1-0.py",
+          "rich/_unicode_data/unicode16-0-0.py",
+          "rich/_unicode_data/unicode17-0-0.py",
+          "rich/_unicode_data/unicode4-1-0.py",
+          "rich/_unicode_data/unicode5-0-0.py",
+          "rich/_unicode_data/unicode5-1-0.py",
+          "rich/_unicode_data/unicode5-2-0.py",
+          "rich/_unicode_data/unicode6-0-0.py",
+          "rich/_unicode_data/unicode6-1-0.py",
+          "rich/_unicode_data/unicode6-2-0.py",
+          "rich/_unicode_data/unicode6-3-0.py",
+          "rich/_unicode_data/unicode7-0-0.py",
+          "rich/_unicode_data/unicode8-0-0.py",
+          "rich/_unicode_data/unicode9-0-0.py"
+        ]
+      },
+      {
+        "task": "fastapi_15800",
+        "created": [
+          "docs_src/frontend/tutorial001_py310.py",
+          "docs_src/frontend/tutorial002_py310.py",
+          "docs_src/frontend/tutorial003_py310.py",
+          "docs_src/frontend/tutorial004_py310.py",
+          "docs_src/frontend/tutorial005_py310.py",
+          "docs_src/frontend/tutorial006_py310.py"
+        ]
+      },
+      {
+        "task": "fastapi_14953",
+        "created": [
+          "docs_src/json_base64_bytes/tutorial001_py310.py",
+          "scripts/playwright/json_base64_bytes/image01.py"
+        ]
+      },
+      {
+        "task": "fastapi_13786",
+        "created": [
+          "docs_src/authentication_error_status_code/tutorial001_an.py",
+          "docs_src/authentication_error_status_code/tutorial001_an_py39.py"
+        ]
+      }
+    ],
+    "ignored_count": 0
+  },
+  "site5_skilltoolset": {
+    "preamble_chars": 1333,
+    "preamble_words": 197,
+    "preamble_tokens_est": 333,
+    "label": "Source-Verified",
+    "present": true,
+    "first_line": "You can use specialized 'skills' to help you with complex tasks. You MUST use the skill tools to interact with these skills."
+  },
+  "site6_bare_pytest": {
+    "fastapi_tasks": 67,
+    "def_a_test_patch_direct": {
+      "count": 21,
+      "pct": 31.3,
+      "definition": "the gold test_patch imports inline_snapshot or dirty_equals",
+      "inline_snapshot_any": 18,
+      "dirty_equals_any": 5,
+      "both": 2,
+      "task_ids": [
+        "fastapi_15030",
+        "fastapi_14962",
+        "fastapi_14964",
+        "fastapi_12942",
+        "fastapi_14609",
+        "fastapi_14349",
+        "fastapi_14512",
+        "fastapi_14485",
+        "fastapi_14482",
+        "fastapi_14459",
+        "fastapi_14455",
+        "fastapi_14361",
+        "fastapi_14360",
+        "fastapi_14266",
+        "fastapi_14246",
+        "fastapi_14371",
+        "fastapi_14605",
+        "fastapi_14583",
+        "fastapi_15745",
+        "fastapi_14303",
+        "fastapi_14953"
+      ]
+    },
+    "def_a_plus_anyio": {
+      "count": 22,
+      "pct": 32.8,
+      "definition": "definition A plus the tasks whose test_patch imports anyio and therefore needs -p no:anyio",
+      "anyio_only_count": 1,
+      "anyio_only_task_ids": [
+        "fastapi_15800"
+      ]
+    },
+    "def_b_touched_test_files": {
+      "count": 17,
+      "pct": 25.4,
+      "definition": "the base-commit version of the test files this task's own test_patch touches imports either plugin",
+      "task_ids": [
+        "fastapi_14962",
+        "fastapi_14964",
+        "fastapi_15023",
+        "fastapi_14978",
+        "fastapi_14609",
+        "fastapi_14459",
+        "fastapi_14356",
+        "fastapi_14246",
+        "fastapi_13713",
+        "fastapi_14791",
+        "fastapi_14371",
+        "fastapi_14605",
+        "fastapi_14583",
+        "fastapi_15745",
+        "fastapi_14303",
+        "fastapi_14953",
+        "fastapi_13786"
+      ]
+    },
+    "def_c_repo_tests_tree": {
+      "count": 67,
+      "pct": 100.0,
+      "definition": "the repository's whole tests/ tree at the base commit imports either plugin (a repository property, not a task property)"
+    },
+    "legacy_27_arithmetic": {
+      "legacy_value": 27,
+      "def_a_plus_anyio": 22,
+      "dirty_equals_any": 5,
+      "note": "27 = definition A+anyio (22) plus the 5 tasks that import dirty_equals, which are already inside that total, so the overlap is double-counted. 18 + 5 + 1 = 24, minus the 2 tasks that import both plugins, gives 22."
+    },
+    "note": "Bare `pytest` inside /workspace only. The official grader installs wheels (verification.py:387) and passes -p no:anyio (:628), so none of these counts is a task failure. This file is the reproducible source; the three definitions are not interchangeable."
+  }
+}

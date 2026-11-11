@@ -1,0 +1,21 @@
+{
+  "multi_file_collapse": {
+    "n_tasks": 38,
+    "any_gold_r5": 0.816,
+    "all_gold_r5": 0.079,
+    "collapse_gap_pp": 73.7,
+    "finding": "Consistent with hypothesis that single-pass retrieval is structurally insufficient for multi-file tasks."
+  },
+  "symbol_reranking_genuine": {
+    "n_tasks": 121,
+    "shipped_baseline_r5": 0.314,
+    "shipped_baseline_hits": 38,
+    "symrank_v6_r5": 0.3636,
+    "symrank_v6_hits": 44,
+    "lift_pp": 4.96,
+    "mcnemar_p_value": 0.30743,
+    "wilcoxon_p_value": 0.28398,
+    "median_latency_ms": 9.6,
+    "finding": "Intra-file symbol re-ranking yields modest, non-significant gains (+4.96 pp, p=0.284 n.s.); file localization is the dominant lever."
+  }
+}

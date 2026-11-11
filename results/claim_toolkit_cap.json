@@ -1,0 +1,11 @@
+{
+  "max_char_cap": 3500,
+  "head_chars": 1400,
+  "tail_chars": 2000,
+  "contract_lines_preserved": [
+    "STATUS:",
+    "NEXT:",
+    "TEST:"
+  ],
+  "test_passed": true
+}

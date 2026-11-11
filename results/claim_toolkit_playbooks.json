@@ -1,0 +1,73 @@
+{
+  "total_triggers": 258,
+  "total_gold_hits": 84,
+  "overall_precision_pct": 32.6,
+  "evaluation_scope": "In-sample on 129 SWE-bench development tasks",
+  "zero_hit_playbooks": [
+    "ASYNC_SYNC_TWIN",
+    "REGISTRATION_SIBLING",
+    "DECORATOR_WRAP"
+  ],
+  "playbooks": {
+    "ASYNC_SYNC_TWIN": {
+      "triggers": 0,
+      "hits": 0,
+      "precision": 0.0,
+      "focus": "Sync/async method parity"
+    },
+    "REGISTRATION_SIBLING": {
+      "triggers": 2,
+      "hits": 0,
+      "precision": 0.0,
+      "focus": "Registry synchronization"
+    },
+    "DECORATOR_WRAP": {
+      "triggers": 3,
+      "hits": 0,
+      "precision": 0.0,
+      "focus": "Metadata propagation"
+    },
+    "EXCEPTION_CHAIN": {
+      "triggers": 15,
+      "hits": 1,
+      "precision": 6.7,
+      "focus": "raise from cause matching"
+    },
+    "MUTABLE_STATE": {
+      "triggers": 38,
+      "hits": 5,
+      "precision": 13.2,
+      "focus": "Default arg & cache isolation"
+    },
+    "TYPE_SUBCLASS": {
+      "triggers": 68,
+      "hits": 16,
+      "precision": 23.5,
+      "focus": "isinstance vs type equality"
+    },
+    "HTTP_URL_COOKIES": {
+      "triggers": 37,
+      "hits": 9,
+      "precision": 24.3,
+      "focus": "Headers & redirect stripping"
+    },
+    "FALSINESS_TRAP": {
+      "triggers": 21,
+      "hits": 6,
+      "precision": 28.6,
+      "focus": "0 and empty string checks"
+    },
+    "FASTAPI_PYDANTIC": {
+      "triggers": 40,
+      "hits": 20,
+      "precision": 50.0,
+      "focus": "Validation & field aliases"
+    },
+    "RICH_RENDERING": {
+      "triggers": 34,
+      "hits": 27,
+      "precision": 79.4,
+      "focus": "Cell wrap & sizing bounds"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "fault_sites": [
+    {
+      "site_id": 1,
+      "component": "ADK History Compaction",
+      "source_file": "google/adk/apps/_configs.py:70 & HARNESS_README.md \u00a77.2",
+      "threshold_tokens": 14336,
+      "compaction_interval_turns": 15,
+      "trigger_turns": "Turns 8-9 (and 15-17)",
+      "mechanism": "_configs.py:70 defines token_threshold without default; 14,336 comes from \u00a77.2. Strips non-model tool frames, keeping only assistant turns.",
+      "evidence_level": "Source-inspected & wheel-verified"
+    },
+    {
+      "site_id": 2,
+      "component": "vLLM Reasoning Key Mismatch & Harness Patch",
+      "source_file": "vllm/entrypoints/chat_utils.py:1512 + adk_submission/resolvers/generation.py:195",
+      "mechanism": "Upstream vLLM 0.19.1 reads message.get('reasoning'); adk_submission runtime monkey-patch mirrors reasoning_content -> reasoning for vLLM <= 0.21.x.",
+      "evidence_level": "Source-inspected & monkey-patch verified in server.py:472-476"
+    },
+    {
+      "site_id": 3,
+      "component": "Logits Thinking Budget Forcing",
+      "source_file": "vllm/v1/sample/logits_processor/builtin.py:550",
+      "mechanism": "Forces end-of-thinking sequence (logits[active_indices, force_tokens] = 1e9) upon budget exhaustion, causing abrupt budget transition.",
+      "evidence_level": "Source-inspected & wheel-verified"
+    },
+    {
+      "site_id": 4,
+      "component": "Working Tree git add -N . Fallback & .gitignore Exposure",
+      "source_file": "swegemma/harness/agent_runner.py:1057",
+      "mechanism": "Fallback staging runs 'git add -N .', respecting .gitignore and omitting untracked files unless staged via 'git add -N -f'.",
+      "exposure_rate": "11/129 tasks (8.5% gold-patch benchmark exposure rate)",
+      "evidence_level": "Source-inspected & reproduced in git"
+    },
+    {
+      "site_id": 5,
+      "component": "SkillToolset System Preamble & Marginal Load Cost",
+      "source_file": "google/adk/tools/skill_toolset.py:61/680",
+      "preamble_chars": 1333,
+      "preamble_words": 197,
+      "marginal_turn1_tokens": 1252,
+      "mechanism": "Line 61 injects 1,333-char preamble forcing load_skill; marginal Turn-1 load cost ~1,252 tokens; lines 680-692 return untruncated subprocess output.",
+      "evidence_level": "Source-inspected & token-counted"
+    },
+    {
+      "site_id": 6,
+      "component": "Agent In-Loop Bare pytest Collection Failure",
+      "source_file": "swegemma/harness/verification.py:387/409/628 vs Bare In-Loop pytest",
+      "affected_fastapi": "27/67 (40.3%)",
+      "mechanism": "Grader installs wheels & runs pytest -p no:anyio; bare in-loop agent pytest fails collection on 27/67 FastAPI tasks (missing inline_snapshot, dirty_equals).",
+      "evidence_level": "Source-inspected & container verified"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "total_scenarios": 9,
+  "passed_scenarios": 9,
+  "pass_rate_pct": 100.0,
+  "scenarios": [
+    {
+      "name": "1. Empty patch (0 changes)",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "latency_ms": 343.67,
+      "passed": true
+    },
+    {
+      "name": "2. Valid source edit",
+      "expected": "OK",
+      "actual": "OK",
+      "latency_ms": 333.33,
+      "passed": true
+    },
+    {
+      "name": "3. Untracked new .py",
+      "expected": "OK",
+      "actual": "OK",
+      "latency_ms": 325.43,
+      "passed": true
+    },
+    {
+      "name": "4. .gitignore ignored file",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "latency_ms": 293.12,
+      "passed": true
+    },
+    {
+      "name": "5. Injected SyntaxError",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "latency_ms": 312.78,
+      "passed": true
+    },
+    {
+      "name": "6. Filename with spaces",
+      "expected": "OK",
+      "actual": "OK",
+      "latency_ms": 315.34,
+      "passed": true
+    },
+    {
+      "name": "7. Non-Python edit (README)",
+      "expected": "OK",
+      "actual": "OK",
+      "latency_ms": 301.23,
+      "passed": true
+    },
+    {
+      "name": "8. Protected test touched",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "latency_ms": 363.61,
+      "passed": true
+    },
+    {
+      "name": "9. Materialized skill leak",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "latency_ms": 331.54,
+      "passed": true
+    }
+  ]
+}

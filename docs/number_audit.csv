@@ -1,0 +1,125 @@
+claim_id,json_file,json_pointer,rendered,occurrences_in_paper,description
+B0_ANY5,retrieval_ablation_129.json,/results/B0/all/@5/any_gold/value,0.3023,1,B0 Any-Gold file R@5
+B0_MF5,retrieval_ablation_129.json,/results/B0/all/@5/mean_fraction/value,0.2520,1,B0 Mean-Fraction file R@5
+B0_ALL5,retrieval_ablation_129.json,/results/B0/all/@5/all_gold/value,0.2403,1,B0 Strict All-Gold file R@5
+B0_CI,retrieval_ablation_129.json,/results/B0/all/@5/any_gold/ci,"[0.2248, 0.3798]",1,B0 Any-Gold @5 95% task-bootstrap CI
+B1_ANY5,retrieval_ablation_129.json,/results/B1/all/@5/any_gold/value,0.3488,1,B1 Any-Gold file R@5
+B1_MF5,retrieval_ablation_129.json,/results/B1/all/@5/mean_fraction/value,0.2747,1,B1 Mean-Fraction file R@5
+B1_ALL5,retrieval_ablation_129.json,/results/B1/all/@5/all_gold/value,0.2326,1,B1 Strict All-Gold file R@5
+B1_CI,retrieval_ablation_129.json,/results/B1/all/@5/any_gold/ci,"[0.2713, 0.4341]",1,B1 Any-Gold @5 95% task-bootstrap CI
+B2_ANY5,retrieval_ablation_129.json,/results/B2/all/@5/any_gold/value,0.5271,2,B2 Any-Gold file R@5
+B2_MF5,retrieval_ablation_129.json,/results/B2/all/@5/mean_fraction/value,0.4252,1,B2 Mean-Fraction file R@5
+B2_ALL5,retrieval_ablation_129.json,/results/B2/all/@5/all_gold/value,0.3643,1,B2 Strict All-Gold file R@5
+B2_CI,retrieval_ablation_129.json,/results/B2/all/@5/any_gold/ci,"[0.4419, 0.6124]",1,B2 Any-Gold @5 95% task-bootstrap CI
+B3_ANY5,retrieval_ablation_129.json,/results/B3/all/@5/any_gold/value,0.7442,3,B3 Any-Gold file R@5
+B3_MF5,retrieval_ablation_129.json,/results/B3/all/@5/mean_fraction/value,0.6184,5,B3 Mean-Fraction file R@5
+B3_ALL5,retrieval_ablation_129.json,/results/B3/all/@5/all_gold/value,0.5271,2,B3 Strict All-Gold file R@5
+B3_CI,retrieval_ablation_129.json,/results/B3/all/@5/any_gold/ci,"[0.6667, 0.8140]",1,B3 Any-Gold @5 95% task-bootstrap CI
+DELTA_B0B1,retrieval_ablation_129.json,/component_deltas_paired/B0->B1/any_gold_delta_pp,+4.65 pp,1,B0->B1 paired Any-Gold @5 change
+DELTA_B1B2,retrieval_ablation_129.json,/component_deltas_paired/B1->B2/any_gold_delta_pp,+17.83 pp,1,B1->B2 paired Any-Gold @5 change
+DELTA_B2B3,retrieval_ablation_129.json,/component_deltas_paired/B2->B3/any_gold_delta_pp,+21.71 pp,1,B2->B3 paired Any-Gold @5 change
+DELTA_B0B3,retrieval_ablation_129.json,/component_deltas_paired/B0->B3/any_gold_delta_pp,+44.19 pp,1,B0->B3 paired Any-Gold @5 change
+RA_M1_R@5_file,retrieval_ablation_129.json,/regime_a/aggregates/M1/R@5_file,0.2284,1,Regime A M1 R@5_file
+RA_M1_R@10_file,retrieval_ablation_129.json,/regime_a/aggregates/M1/R@10_file,0.3036,1,Regime A M1 R@10_file
+RA_M1_MRR_file,retrieval_ablation_129.json,/regime_a/aggregates/M1/MRR_file,0.2212,1,Regime A M1 MRR_file
+RA_M1_latency_ms,retrieval_ablation_129.json,/regime_a/aggregates/M1/latency_ms,127.8,1,Regime A M1 latency_ms
+RA_M1_chars,retrieval_ablation_129.json,/regime_a/aggregates/M1/chars,"2,367",1,Regime A M1 chars
+RA_M2_R@5_file,retrieval_ablation_129.json,/regime_a/aggregates/M2/R@5_file,0.2163,1,Regime A M2 R@5_file
+RA_M2_R@10_file,retrieval_ablation_129.json,/regime_a/aggregates/M2/R@10_file,0.3810,1,Regime A M2 R@10_file
+RA_M2_MRR_file,retrieval_ablation_129.json,/regime_a/aggregates/M2/MRR_file,0.2059,1,Regime A M2 MRR_file
+RA_M2_latency_ms,retrieval_ablation_129.json,/regime_a/aggregates/M2/latency_ms,973.9,1,Regime A M2 latency_ms
+RA_M2_chars,retrieval_ablation_129.json,/regime_a/aggregates/M2/chars,"2,136",1,Regime A M2 chars
+RA_M3_R@5_file,retrieval_ablation_129.json,/regime_a/aggregates/M3/R@5_file,0.2265,1,Regime A M3 R@5_file
+RA_M3_R@10_file,retrieval_ablation_129.json,/regime_a/aggregates/M3/R@10_file,0.2924,1,Regime A M3 R@10_file
+RA_M3_MRR_file,retrieval_ablation_129.json,/regime_a/aggregates/M3/MRR_file,0.2098,1,Regime A M3 MRR_file
+RA_M3_latency_ms,retrieval_ablation_129.json,/regime_a/aggregates/M3/latency_ms,74.2,1,Regime A M3 latency_ms
+RA_M3_chars,retrieval_ablation_129.json,/regime_a/aggregates/M3/chars,"2,416",1,Regime A M3 chars
+RA_M4_R@5_file,retrieval_ablation_129.json,/regime_a/aggregates/M4/R@5_file,0.4350,3,Regime A M4 R@5_file
+RA_M4_R@10_file,retrieval_ablation_129.json,/regime_a/aggregates/M4/R@10_file,0.4587,1,Regime A M4 R@10_file
+RA_M4_MRR_file,retrieval_ablation_129.json,/regime_a/aggregates/M4/MRR_file,0.4354,1,Regime A M4 MRR_file
+RA_M4_latency_ms,retrieval_ablation_129.json,/regime_a/aggregates/M4/latency_ms,645.6,1,Regime A M4 latency_ms
+RA_M4_chars,retrieval_ablation_129.json,/regime_a/aggregates/M4/chars,"2,211",1,Regime A M4 chars
+RA_M5_R@5_file,retrieval_ablation_129.json,/regime_a/aggregates/M5/R@5_file,0.4745,1,Regime A M5 R@5_file
+RA_M5_R@10_file,retrieval_ablation_129.json,/regime_a/aggregates/M5/R@10_file,0.5701,1,Regime A M5 R@10_file
+RA_M5_MRR_file,retrieval_ablation_129.json,/regime_a/aggregates/M5/MRR_file,0.4332,1,Regime A M5 MRR_file
+RA_M5_latency_ms,retrieval_ablation_129.json,/regime_a/aggregates/M5/latency_ms,4.6,2,Regime A M5 latency_ms
+RA_M5_chars,retrieval_ablation_129.json,/regime_a/aggregates/M5/chars,"2,219",1,Regime A M5 chars
+CROSS_REGIME,retrieval_ablation_129.json,/results/B3/all/@5/mean_fraction/value + /regime_a/aggregates/M4/R@5_file,+18.34 pp,1,B3 Mean-Fraction R@5 minus M4 R@5 (observed across regimes)
+M3_VS_M1,retrieval_ablation_129.json,/regime_a/aggregates/M3/R@5_file + /regime_a/aggregates/M1/R@5_file,-0.19 pp,1,M3 R@5 minus M1 R@5 (a null)
+GAP5,retrieval_ablation_129.json,/within_v4_metric_shift/@5/gap_pp,12.58 pp,2,Any-Gold minus Mean-Fraction at k=5 (definitional)
+PARTIAL5,retrieval_ablation_129.json,/within_v4_metric_shift/@5/tasks_partial_credit,28,3,"tasks whose B3 mean fraction is in (0,1) at k=5"
+T1_THRESH,runtime_hazards_verified.json,/site1_compaction/token_threshold,"14,336",1,ADK compaction token threshold
+T1_INTERVAL,runtime_hazards_verified.json,/site1_compaction/compaction_interval,15,2,ADK compaction interval in turns
+T1_TMIN,runtime_hazards_verified.json,/site1_compaction/first_compaction_turn_min,8,65,earliest observed first-compaction turn
+T1_TMAX,runtime_hazards_verified.json,/site1_compaction/first_compaction_turn_max,9,52,latest observed first-compaction turn
+T1_FILES,runtime_hazards_verified.json,/site4_gitignore/files,49,3,new files created by gold patches
+T1_TASKS,runtime_hazards_verified.json,/site4_gitignore/tasks,11,5,tasks that create new files
+T1_IGNORED,runtime_hazards_verified.json,/site4_gitignore/ignored_count,0,137,created files matched by .gitignore
+S5_CHARS,runtime_hazards_verified.json,/site5_skilltoolset/preamble_chars,"1,333",1,SkillToolset hidden preamble characters
+S5_TOKENS,runtime_hazards_verified.json,/site5_skilltoolset/preamble_tokens_est,333,3,SkillToolset hidden preamble token estimate
+S5_DELTA,runtime_hazards_verified.json,/site1_compaction/skilltoolset_turn1_marginal_tokens,417,2,turn-1 token delta attributable to SkillToolset
+S2_DEF,runtime_hazards_verified.json,/site2_mitigation/defined_at_line,195,1,line defining install_litellm_reasoning_patch
+S2_MIRROR,runtime_hazards_verified.json,/site2_mitigation/mirror_line,70,3,line mirroring reasoning_content into reasoning
+S2_CALLS,runtime_hazards_verified.json,/site2_mitigation/install_calls,2,118,module-level installer call sites
+S6_PLUGIN,runtime_hazards_verified.json,/site6_bare_pytest/def_a_test_patch_direct/count,21,7,fastapi tasks whose gold test_patch imports a plugin
+S6_ANYIO,runtime_hazards_verified.json,/site6_bare_pytest/def_a_plus_anyio/count,22,8,"same, plus the anyio-only task"
+S6_TOUCHED,runtime_hazards_verified.json,/site6_bare_pytest/def_b_touched_test_files/count,17,6,tasks whose touched test files import a plugin
+S6_TREE,runtime_hazards_verified.json,/site6_bare_pytest/def_c_repo_tests_tree/count,67,10,tasks whose repository tests/ tree imports a plugin
+S6_N,runtime_hazards_verified.json,/site6_bare_pytest/fastapi_tasks,67,10,fastapi task denominator
+MULTI_TOTAL,multifile_2hop_38.json,/buckets/all_multi/N,38,23,tasks whose gold patch touches more than one file
+MULTI_ANY,multifile_2hop_38.json,/buckets/all_multi/control/k5/any_gold@5/hits + /buckets/all_multi/control/k5/N,31/38,3,single-pass any-gold @5 on the multi-file subset
+MULTI_ALL,multifile_2hop_38.json,/buckets/all_multi/control/k5/all_gold@5/hits + /buckets/all_multi/control/k5/N,3/38,3,single-pass strict all-gold @5 on the multi-file subset
+HOP5_CTRL_ANY,multifile_2hop_38.json,/buckets/all_multi/control/k5/any_gold@5/hits + /buckets/all_multi/control/k5/N,31/38,3,2-hop ctrl any-gold @5
+HOP5_CTRL_ALL,multifile_2hop_38.json,/buckets/all_multi/control/k5/all_gold@5/hits + /buckets/all_multi/control/k5/N,3/38,3,2-hop ctrl strict all-gold @5
+HOP5_CTRL_MF,multifile_2hop_38.json,/buckets/all_multi/control/k5/mean_fraction@5,0.3886,2,2-hop ctrl mean-fraction @5
+HOP10_CTRL_ANY,multifile_2hop_38.json,/buckets/all_multi/control/k10/any_gold@10/hits + /buckets/all_multi/control/k10/N,34/38,2,2-hop ctrl any-gold @10
+HOP10_CTRL_ALL,multifile_2hop_38.json,/buckets/all_multi/control/k10/all_gold@10/hits + /buckets/all_multi/control/k10/N,6/38,3,2-hop ctrl strict all-gold @10
+HOP10_CTRL_MF,multifile_2hop_38.json,/buckets/all_multi/control/k10/mean_fraction@10,0.5130,2,2-hop ctrl mean-fraction @10
+HOP5_HOP_ANY,multifile_2hop_38.json,/buckets/all_multi/hop/k5/any_gold@5/hits + /buckets/all_multi/hop/k5/N,29/38,2,2-hop hop any-gold @5
+HOP5_HOP_ALL,multifile_2hop_38.json,/buckets/all_multi/hop/k5/all_gold@5/hits + /buckets/all_multi/hop/k5/N,6/38,3,2-hop hop strict all-gold @5
+HOP5_HOP_MF,multifile_2hop_38.json,/buckets/all_multi/hop/k5/mean_fraction@5,0.3965,2,2-hop hop mean-fraction @5
+HOP10_HOP_ANY,multifile_2hop_38.json,/buckets/all_multi/hop/k10/any_gold@10/hits + /buckets/all_multi/hop/k10/N,32/38,2,2-hop hop any-gold @10
+HOP10_HOP_ALL,multifile_2hop_38.json,/buckets/all_multi/hop/k10/all_gold@10/hits + /buckets/all_multi/hop/k10/N,7/38,1,2-hop hop strict all-gold @10
+HOP10_HOP_MF,multifile_2hop_38.json,/buckets/all_multi/hop/k10/mean_fraction@10,0.4794,2,2-hop hop mean-fraction @10
+HOP5_P,multifile_2hop_38.json,/buckets/all_multi/paired/k5/any/p_exact,0.500,2,"exact paired sign test, any-gold, hop vs control, k=5"
+HOP5_P_ALL,multifile_2hop_38.json,/buckets/all_multi/paired/k5/all/p_exact,0.250,2,"exact paired sign test, strict all-gold, hop vs control, k=5"
+HOP5_FS,multifile_2hop_38.json,/buckets/all_multi/transitions/k5/fail->success,3,109,"tasks that gain strict all-gold under 2-hop, k=5"
+HOP5_SF,multifile_2hop_38.json,/buckets/all_multi/transitions/k5/success->fail,0,137,"tasks that lose strict all-gold under 2-hop, k=5"
+HOP10_P,multifile_2hop_38.json,/buckets/all_multi/paired/k10/any/p_exact,0.625,1,"exact paired sign test, any-gold, hop vs control, k=10"
+HOP10_P_ALL,multifile_2hop_38.json,/buckets/all_multi/paired/k10/all/p_exact,1.000,2,"exact paired sign test, strict all-gold, hop vs control, k=10"
+HOP10_FS,multifile_2hop_38.json,/buckets/all_multi/transitions/k10/fail->success,3,109,"tasks that gain strict all-gold under 2-hop, k=10"
+HOP10_SF,multifile_2hop_38.json,/buckets/all_multi/transitions/k10/success->fail,2,118,"tasks that lose strict all-gold under 2-hop, k=10"
+HOP5_ANY_LOSS,multifile_2hop_38.json,/buckets/all_multi/paired/k5/any/discordant_b_gt_a,2,118,tasks where 2-hop loses any-gold at k=5
+HOP_CTRL_S,multifile_2hop_38.json,/median_seconds/control_locate,4.20,1,median seconds for one locate call
+HOP_GRAPH_S,multifile_2hop_38.json,/median_seconds/graph_build_once,4.48,1,median seconds to build the import graph once
+STR1_N,multifile_2hop_38.json,/gold_set_structure_all_129/1/N,91,4,tasks touching 1 gold files
+STR1_ANY,multifile_2hop_38.json,/gold_set_structure_all_129/1/any5 + /gold_set_structure_all_129/1/N,65/91,3,"tasks with any gold file at k=5, gold_n=1"
+STR1_ALL,multifile_2hop_38.json,/gold_set_structure_all_129/1/all5 + /gold_set_structure_all_129/1/N,65/91,3,"tasks with all gold files at k=5, gold_n=1"
+STR1_COND,multifile_2hop_38.json,/gold_set_structure_all_129/1/p_all_given_any,1.000,2,"P(all-gold | any-gold) at k=5, gold_n=1"
+STR2_N,multifile_2hop_38.json,/gold_set_structure_all_129/2/N,19,10,tasks touching 2 gold files
+STR2_ANY,multifile_2hop_38.json,/gold_set_structure_all_129/2/any5 + /gold_set_structure_all_129/2/N,14/19,1,"tasks with any gold file at k=5, gold_n=2"
+STR2_ALL,multifile_2hop_38.json,/gold_set_structure_all_129/2/all5 + /gold_set_structure_all_129/2/N,3/19,2,"tasks with all gold files at k=5, gold_n=2"
+STR2_COND,multifile_2hop_38.json,/gold_set_structure_all_129/2/p_all_given_any,0.214,1,"P(all-gold | any-gold) at k=5, gold_n=2"
+STR35_N,multifile_2hop_38.json,/gold_set_structure_all_129/3-5/N,9,52,tasks touching 3-5 gold files
+STR35_ANY,multifile_2hop_38.json,/gold_set_structure_all_129/3-5/any5 + /gold_set_structure_all_129/3-5/N,8/9,1,"tasks with any gold file at k=5, gold_n=3-5"
+STR35_ALL,multifile_2hop_38.json,/gold_set_structure_all_129/3-5/all5 + /gold_set_structure_all_129/3-5/N,0/9,2,"tasks with all gold files at k=5, gold_n=3-5"
+STR35_COND,multifile_2hop_38.json,/gold_set_structure_all_129/3-5/p_all_given_any,0.000,2,"P(all-gold | any-gold) at k=5, gold_n=3-5"
+STRGT5_N,multifile_2hop_38.json,/gold_set_structure_all_129/>5/N,10,20,tasks touching >5 gold files
+STRGT5_ANY,multifile_2hop_38.json,/gold_set_structure_all_129/>5/any5 + /gold_set_structure_all_129/>5/N,9/10,1,"tasks with any gold file at k=5, gold_n=>5"
+STRGT5_ALL,multifile_2hop_38.json,/gold_set_structure_all_129/>5/all5 + /gold_set_structure_all_129/>5/N,0/10,1,"tasks with all gold files at k=5, gold_n=>5"
+STRGT5_COND,multifile_2hop_38.json,/gold_set_structure_all_129/>5/p_all_given_any,0.000,2,"P(all-gold | any-gold) at k=5, gold_n=>5"
+LB_SPLIT,leaderboard_estimands.json,/split_size,58,16,leaderboard split size
+LEDGER_N,leaderboard_estimands.json,/ledger_summary/n_runs,16,4,logged submissions in the ledger
+LEDGER_31B,leaderboard_estimands.json,/ledger_summary/scored_31b,12,20,scored 31B submissions
+LEDGER_E4B,leaderboard_estimands.json,/ledger_summary/scored_e4b,3,109,scored E4B submissions
+LEDGER_UNSCORED,leaderboard_estimands.json,/ledger_summary/unscored,1,138,unscored submissions
+E4B_K,leaderboard_estimands.json,/ledger_summary/e4b_k_min,3,109,tasks solved by every genuine E4B submission
+ROW1_A,leaderboard_estimands.json,/estimand_rows/0/exp05_k,12,20,exp05 solved tasks
+ROW1_B,leaderboard_estimands.json,/estimand_rows/0/e0_k,10,20,byte-identical control solved tasks
+REPEAT_SHIFT,leaderboard_estimands.json,/estimand_rows/0/observed_shift_tasks,2,118,task shift between identical artifacts
+ROW2_MEAN,leaderboard_estimands.json,/estimand_rows/1/mean_tasks,10.4,2,mean solved tasks across five near-baseline bundles
+ROW2_SD,leaderboard_estimands.json,/estimand_rows/1/sd_tasks,0.894,2,sample SD across five near-baseline bundles
+ROW2_CI,leaderboard_estimands.json,/estimand_rows/1/sd_ci95,"[0.54, 2.57]",2,95% chi-square CI on the SD
+ROW2_DF,leaderboard_estimands.json,/estimand_rows/1/df,4,104,degrees of freedom for the SD
+ROW3_SE,leaderboard_estimands.json,/estimand_rows/2/se_split_tasks,2.92,3,"binomial SE of one 58-task split, in tasks"
+ROW3_PP,leaderboard_estimands.json,/estimand_rows/2/se_split_pp,5.04,1,"binomial SE of one 58-task split, in points"
