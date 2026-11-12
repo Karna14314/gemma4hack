@@ -1,292 +1,141 @@
-# gemma4hack — Gemma 4 Developer Agent
+# gemma4hack — Budget-Aware Graph-Lexical Retrieval for Offline Gemma 4 SWE Agents
 
-Private engineering workspace for the Kaggle competition
-[`gemma-4-developer-agent`](https://www.kaggle.com/competitions/gemma-4-developer-agent).
+Repo for the Kaggle competition [`gemma-4-developer-agent`](https://www.kaggle.com/competitions/gemma-4-developer-agent)
+and its **paper track** (`gemma-4-developer-agent-paper`, deadline 2026-11-12).
 
-The deliverable is a **Kaggle notebook that emits `submission.zip`**: a declarative
-[Google ADK](https://google.github.io/adk-docs/) agent package. The organizers compile that
-package with `adk-submission`, serve one Gemma 4 checkpoint on 4× NVIDIA L4, and run the agent
-against ~120 hidden SWE-bench-style tasks. A task scores 1.0 only when the agent's patch makes
-the hidden `pytest` suite pass in a fresh container.
-
-There is **no local scoring loop**. The real evaluator needs the 31B QAT weights, the container
-image and 4× L4, so this repo optimizes for three things instead:
-
-1. **Mechanism-justified design** — every prompt or config change cites a line in the harness
-   source, not a small leaderboard delta.
-2. **Offline verification** — the bundle is checked by the *real* competition wheels, then the
-   notebook is executed end-to-end and its artifact is checked byte-for-byte.
-3. **Submission hygiene** — one verified bundle per day, with a recorded hash and kernel version.
-
----
-
-## Status at a glance
-
-| item | value |
-|---|---|
-| best public score | **0.20** — `exp05_patch_integrity`, ref `57553805` (31B) |
-| other scored entries | 0.17 exp03 / exp08 / exp10 / exp12, 0.13 E4B-as-31B fallback, 0.06 genuine E4B |
-| pending | `57806053` e4b-v2 (submitted 2026-10-30) |
-| public LB top | 0.29 (2026-10-29); 0.24 cluster |
-| team rank | 231 / 4,201 teams (2026-10-30) |
-| main competition deadline | **2026-12-02 23:59 UTC** |
-| paper-track deadline | **2026-11-12 23:59 UTC** |
-| submission limit | **1 per day**; 1 pending at a time; no total cap (verified via the Kaggle API, 2026-10-30) |
-| public dev set | 129 tasks: fastapi 67, rich 48, requests 13, httpx 1 |
-
-Public-LB granularity is ~half of ~120 tasks, so **one task ≈ 0.017** and run-to-run sampling is
-stochastic. **Differences below ~0.05 are noise**; do not tune to them.
+**Summary** (from `docs/PAPER_TRACK_DRAFT.md`, §Abstract — the authoritative thesis statement;
+`docs/MASTER_WRITEUP_FINAL.md` is the machine-gated writeup of the same work, see `scripts/reproduce_all.py`):
+Autonomous SWE agents in offline environments face hard resource ceilings — a 32,768-token vLLM context,
+28 tool calls, and an 8-minute per-task timeout on 4× NVIDIA L4. Under these bounds, outcomes are governed
+by harness mechanics and stochastic variance rather than prompt phrasing. Combining 18 live Kaggle
+submissions with a verified 129-task offline benchmark across four Python repositories, this work shows:
+(1) wheel audits of Google ADK 1.36.1 and vLLM 0.19.1 surface five silent failure modes (interval compaction
+amnesia on thought turns, reasoning-history drops, context-window overflow, `git add -N` ignoring new files,
+and missing sandbox test dependencies); (2) a two-regime retrieval benchmark shows live workspace AST
+indexing lifts File R@5 from 0.4350 (static code graphs, degraded by 5,000-char tool caps) to 0.7440;
+(3) cross-scale ablations show 31B models at 0.20 (pooled 0.17) while equipping 4B agents with
+deterministic localization tools (`skills/swe-toolkit`) fails to lift resolution (0.05), falsifying the
+localization-offload hypothesis.
 
 ---
 
-## Quick start
+## Paper artifact map
 
-### 1. Bootstrap the local harness
+| Paper item | Script | Input data | Output file | Status |
+|---|---|---|---|---|
+| Fig 0–5 (writeup figures) | `scripts/generate_paper_figures.py` | `research/verified_json/*.json` (committed) | `assets/paper_figures/fig0..fig5.png` | reproducible from repo (verified: renders byte-identical to committed PNGs) |
+| Res-fig 0–3 (resource paper) | `scripts/generate_resource_figures.py` | in-script data + verified JSONs | `assets/resource_figures/res_fig0..3.png` | reproducible from repo (verified this session) |
+| Fig 1–3 + thumbnail (evidence pack) | `research/paper_figs/make_figures.py` | `research/paper_figs/ledger.csv`, `eval_results/instrument_b.json`, `symbol_ablation.json` | `research/paper_figs/fig{1,2,3}.png` + `*_data.csv` | reproducible from repo (verified this session) |
+| Every number in `docs/MASTER_WRITEUP_FINAL.md` | `scripts/reproduce_all.py` (gate; `--fill` machine-writes) | `research/verified_json/*.json` JSON pointers | `docs/number_audit.csv` | reproducible from repo; gate exits non-zero on drift |
+| Table 1 — leaderboard ablations (n=58/run) | manual ledger from Kaggle API | `docs/ENV_AUDIT.md` §4.1, `kaggle_work/.../RESULTS.md` | `research/paper_figs/ledger.csv` | committed data |
+| Table 2A — static graph corpus (M1–M5; M4 File R@5 0.4350) | `research/kernel_paper_eval/paper_eval.py` (runs **on Kaggle**) | `tasks.jsonl` + `graphs/*.json` + `embeddings/*.npz` (Kaggle inputs) | `research/PAPER_TABLES.md`; per-task: `research/quarantined_legacy_audits/regime_a_per_task.json` | Kaggle-only rerun; per-task rows committed (quarantined path) |
+| Table 2C — live workspace v4 (0.419/0.651/0.744/0.829) | `scripts/t6_run.py` | `eval_snapshots/` (via `scripts/fetch_eval_data.py`) + `skills/swe-toolkit/scripts/_index.py` | `eval_results/t6_results_v4_repro.json`; per-task v4: `eval_results/instrument_b.json` | v4 per-task committed; full re-run needs `eval_snapshots/` (re-fetchable) |
+| Table 2D — symbol re-ranking (v4…v6) | `scripts/t6_run.py` (v4 only) | `eval_results/t6_results_v4_repro.json` | `research/paper_figs/symbol_ablation.json` | v4 recomputed from committed data; **v5/v5A/v5AB/v6 per-task data not committed** |
+| Table 3 — patch anatomy + 27/67 dep failures | Kaggle kernel `research/kernel_swe_toolkit_demo/g4-swe-toolkit-resource-demo.ipynb` | `tasks.jsonl` gold patches + snapshots | per-repo `PATCH_STATS` in kernel; `docs/PAPER_TRACK_DRAFT.md` Table 3 | runs on Kaggle; counts embedded in committed kernel source |
+| Headline: pooled 31B 79/464 = 0.170, SE 0.0503 | recomputation from ledger | `research/paper_figs/ledger.csv`, `docs/ENV_AUDIT.md` | `docs/PAPER_VERIFY.md` §B | verified doc-level math |
+| Headline: 0.4350 → 0.7440 transition | `paper_eval.py` + `t6_run.py` (different metrics — see gaps) | graph corpus vs `eval_snapshots/` | `docs/PAPER_VERIFY.md` §A | both sides sourced; labels must stay distinct |
+| 80.9% payload truncation (313/387) | — (cap-sweep graphs not committed) | — | `docs/PAPER_TRACK_DRAFT.md` §3.3 | **not re-verifiable from repo** (see gaps) |
 
-```powershell
-# Windows (PowerShell)
-python tools\bootstrap.py
-```
+All paths above verified to exist in the repo. Note: `docs/PAPER_ASSETS.md:18` says
+`python scripts/make_paper_figs.py`, but that path does not exist — the tracked figure script is
+`research/paper_figs/make_figures.py`.
+
+## Reproduce
+
+Audited environment: **Python 3.12** in `.venv-harness` (venv is gitignored). The three competition
+wheels are not on PyPI; they come from the Kaggle dataset `metric/gemma-4-developer-agent-wheelhouse`.
 
 ```bash
-# Linux / macOS
+# 1) venv + wheels + verification (idempotent; Python 3.12)
 python tools/bootstrap.py
+
+# 2) figures + integrity gate (stdlib + matplotlib + numpy + Pillow; tested on Python 3.13 system python)
+python scripts/generate_paper_figures.py      # -> assets/paper_figures/
+python scripts/generate_resource_figures.py   # -> assets/resource_figures/
+python research/paper_figs/make_figures.py    # -> research/paper_figs/
+python scripts/reproduce_all.py               # number gate -> docs/number_audit.csv
+
+# 3) fetch the 129-task eval snapshots (~21.5 GB compressed, multi-hour; needs Kaggle auth)
+python scripts/fetch_eval_data.py             # downloads + extracts + verifies -> eval_snapshots/
+python scripts/fetch_eval_data.py --verify-only
+
+# 4) main eval scripts (need eval_snapshots/ from step 3)
+.venv-harness/Scripts/python.exe scripts/t6_run.py --out eval_results/t6_results_v4_repro.json   # ~30 min
+.venv-harness/Scripts/python.exe scripts/capped_query_eval.py
+.venv-harness/Scripts/python.exe scripts/run_verified_experiments.py  # -> research/verified_json/*.json
+
+# 5) Kaggle-side instruments (run inside Kaggle, not locally)
+#    research/kernel_paper_eval/paper_eval.py          (Table 2A, graph corpus)
+#    research/kernel_swe_toolkit_demo/g4-swe-toolkit-resource-demo.ipynb  (Table 3, playbooks)
 ```
 
-The bootstrap script creates `.venv-harness` on Python 3.12, installs `requirements.txt`,
-downloads the three competition wheels from
-[`metric/gemma-4-developer-agent-wheelhouse`](https://www.kaggle.com/datasets/metric/gemma-4-developer-agent-wheelhouse),
-installs them with `--no-deps`, and runs the verifier. It is idempotent.
+Figure scripts were executed against the committed inputs during the 2026-11-12 doc pass and
+regenerated all tracked PNGs with **zero git diff** (deterministic).
 
-If the wheels are already present, the whole setup works offline:
+## Known gaps and errata
 
-```powershell
-python tools\bootstrap.py --skip-wheels
-```
+Stated plainly, so nobody has to rediscover them:
 
-### 2. Verify the current bundle
+- **v5 / v5A / v5AB / v6 symbol re-ranking**: per-task data and a runnable re-ranker are **not committed**
+  (draft Table 2D values only; `bundles/exp14_lean_toolkit/.../_index.py` has the v6 file-level levers
+  but no per-task symbol entry point). `research/paper_figs/fig3` was omitted from `PAPER_ASSETS.md`
+  for this reason; a regenerated `fig3.png` is now committed.
+- **Instrument B**: per-task any-gold ranks committed **for v4 only** (129 tasks, `eval_results/instrument_b.json`);
+  `base`/`v3` aggregates are draft-only (historical engine variants not in committed code).
+- **M1 / M2**: per-task any-gold ranks **not committed** (aggregate summary only).
+- **No runtime skill-invocation traces** exist for any submission (see `docs/PAPER_VERIFY.md` §C):
+  whether `run_skill_script` actually fired during scoring is unverifiable locally.
+- **Compaction interval unresolved**: 5 (public Kaggle posts #747186 et al.) vs 15 (live 2026-10-13
+  `HARNESS_README` / `AGENTS.md` §1). Wheels hardcode nothing; the scorer's operative value is
+  unknowable from installed wheels (see `docs/PAPER_ASSETS.md` §Step 4). This repo's docs use 15.
+- **File-recall definitions differ and must not be compared**: Table 2A (0.4350) is mean per-task
+  *fraction* over graph-node candidates (`research/kernel_paper_eval/paper_eval.py`); §3.1 (0.7440) is
+  binary *any-gold* over all `.py` files on disk (`scripts/t6_run.py` + `_index.py`).
+  See `docs/PAPER_VERIFY.md` §A.2 for the three independent causes.
+- **v4 symbol recall recomputation**: committed-data recompute gives 0.1488 / 0.2479 / 0.3140 / 0.3554
+  (18/30/38/43 of 121 tasks), vs draft Table 2D's 0.157 / 0.231 / 0.306 / 0.364 — off by 1–2 tasks at
+  every rank. Both sets exist; the draft was not re-edited.
+- **Pooled 31B count is 79/464 = 0.170, not 77/464 = 0.166** (draft §5 misstatement; verified in
+  `docs/PAPER_VERIFY.md` §B.2). The 0.89 task-SD covers only the 5-run exp05-family subset.
+- **exp11_e4b task count is inconsistent in the ledger** (fixed 3→4 in `research/paper_figs/ledger.csv`
+  because 0.06 = floor(100·4/58)/100; older ledgers/docs still say 3).
+- **cap-sweep graph files are not committed**, so the "80.9% (313/387) of 1-hop neighborhoods exceed the
+  5,000-character tool cap" claim is not re-verifiable from this repo.
 
-```powershell
-.venv-harness\Scripts\python.exe tools\verify_bundle.py
-```
+## Repo layout
 
-```bash
-.venv-harness/bin/python tools/verify_bundle.py
-```
-
-Expected: `ALL CHECKS PASSED`. The verifier runs three layers:
-
-1. the project's strict static validator (`src/notebook_lib/validator.py`);
-2. the **real** harness (`adk_submission.validate_directory`,
-   `adk_submission.discovery.discover_declared_models`,
-   `adk_submission.compile_submission`, `swegemma.config.build_submission_limits`);
-3. 16 negative tests that prove the validator rejects broken bundles.
-
-Validate any other bundle with `--bundle`:
-
-```powershell
-.venv-harness\Scripts\python.exe tools\verify_bundle.py --bundle kaggle_work\gemma-4-developer-agent\bundles\exp05_patch_integrity
-```
-
-### 3. Build and execute the notebook
-
-```powershell
-.venv-harness\Scripts\python.exe tools\build_notebook.py --out build\submission_notebook.ipynb
-.venv-harness\Scripts\python.exe tools\verify_notebook.py --notebook build\submission_notebook.ipynb
-```
-
-`build_notebook.py` splices `src/notebook_lib/validator.py` and the bundle source directly into
-the notebook, so the notebook cannot drift from `src/`. `verify_notebook.py` executes every code
-cell in one shared namespace with a temp working directory, then checks the resulting zip:
-root `agent.yaml`, no directory entries, allowed extensions, no adapters, deterministic repack,
-manifest digest, and (when the wheels are importable) the real compiler.
-
-### 4. Check the live competition resources
-
-```powershell
-python tools\check_resources.py
-```
-
-This uses the Kaggle API to verify authentication, the 524 competition files, the public dev set,
-the wheelhouse, the paper track and recent submissions. Details and the verified inventory are in
-[`docs/COMPETITION_RESOURCES.md`](docs/COMPETITION_RESOURCES.md).
-
----
-
-## Which bundle is "the submission"?
-
-`src/agent_package/` is the **default** bundle: `tools/build_notebook.py` and
-`tools/verify_bundle.py` use it when no `--bundle` is given. It currently tracks the **E4B**
-small-model track (9 tools, `temperature 0.2`, `max_tool_calls 28`, `max_time_minutes 8`,
-`max_turns 80`, thinking on at 4096). The best-scoring 31B bundle is kept separately.
-
-| bundle | model | tools | budget | score | where |
-|---|---|---|---:|---:|---|
-| `src/agent_package` | E4B | 9 | 28 calls / 8 min / 80 turns | pending E4B line | default build |
-| `exp05_patch_integrity` | 31B | 9 | 28 / 8 / 80 | **0.20** | `kaggle_work/.../bundles/` |
-| `exp12-timing-buffer` | 31B | 6 | 28 / 9 / 80 | 0.17 | `kaggle_work/.../bundles/` |
-| `e4b_v2` | E4B | 6 | 35 / 8 / 80 | pending `57806053` | `tracks/e4b_small/bundles/` |
-| `e4b_v3` | E4B | 6 | 28 / 8 / 80 | not submitted | `tracks/e4b_small/bundles/` |
-| `ckpt/bundles/*` | mixed | — | frozen copies | — | `ckpt/bundles/` |
-
-Before submitting, **diff the bundle you intend to submit against the last scored bundle** and
-record the single change. `ckpt/bundles/exp05_patch_integrity/` is the 0.20 anchor; keep it
-byte-exact.
-
-The E4B track has its own verifiers:
-
-```powershell
-.venv-harness\Scripts\python.exe tracks\e4b_small\verify_bundle_e4b.py
-.venv-harness\Scripts\python.exe tracks\e4b_small\verify_notebook_e4b.py
-```
-
----
-
-## Repository map
-
-```
-src/
-  agent_package/            default declarative bundle (currently E4B)
-  notebook_lib/             validator.py (inlined into the notebook) + package_source.py
-  sections/                 notebook section modules; tools/build_notebook.py concatenates them
-tools/
-  bootstrap.py              one-command local setup
-  check_resources.py        live Kaggle resource inventory
-  verify_bundle.py          static + real-harness + negative checks
-  build_notebook.py         generate build/submission_notebook.ipynb
-  verify_notebook.py        execute the notebook and inspect its zip
-  dump_notebook.py          dump a notebook back to source files for diffing
-  kaggle_rest.py            bearer-auth REST client (kernel push/status/output/submit)
-  kaggle_ckpt.py            push/pull the private checkpoint dataset
-tracks/
-  e4b_small/                E4B small-model track: bundles + dedicated verifiers + kernels
-kaggle_work/gemma-4-developer-agent/
-  bundles/                  per-experiment agent bundles
-  experiments/              per-experiment kernel dirs (kernel-metadata.json + notebook)
-  research/                 competition files, wheelhouse, dev-set eval kernels
-  RESULTS.md                append-only experiment ledger
-  CONFIG.md                 task/constraint summary (some fields stale; see live docs)
-ckpt/                       frozen checkpoints: STATE.md, RESULTS.md, bundles, kernels, dataset
-research/                   study guide, paper-track experiments, sources, score landscape
-docs/                       runbook, resource inventory, paper draft, session notes
-skills/swe-toolkit/         optional ADK skill (not used by the current primary bundle)
-```
-
-Key reading order for a new session:
-
-1. `AGENTS.md` — hard rules and operating procedure.
-2. this README;
-3. `docs/COMPETITION_RESOURCES.md` — what is actually available;
-4. `ckpt/STATE.md` — resume commands, submission order, kernel refs;
-5. `kaggle_work/gemma-4-developer-agent/RESULTS.md` — what was tried and what happened;
-6. `kaggle_work/gemma-4-developer-agent/research/competition/HARNESS_README.md` — the **live**
-   harness documentation (newer than `ckpt/HARNESS_README.md`).
-
----
-
-## Kaggle workflow
-
-Authentication uses a bearer token. On this machine `KAGGLE_API_TOKEN` is set; the repo's
-`tools/kaggle_rest.py` also accepts `KAGGLE_API_TOKEN` now.
-
-```powershell
-# inventory + auth check
-python tools\check_resources.py
-
-# recent submissions (status/score)
-kaggle competitions submissions -c gemma-4-developer-agent
-
-# kernel run status / output
-kaggle kernels status narisettichaitanya/gemma4-devagent-exp05-ablation-patch-integrity
-kaggle kernels output narisettichaitanya/gemma4-devagent-exp05-ablation-patch-integrity -p runs\exp05
-
-# submit a completed kernel (ONLY with an explicit yes; one per day)
-kaggle competitions submit -c gemma-4-developer-agent `
-  -k narisettichaitanya/gemma4-devagent-exp05-ablation-patch-integrity `
-  -v 1 -f submission.zip -m "exp05 patch integrity"
-```
-
-Kernel pushes can be done with the CLI or with `python tools/kaggle_rest.py push <dir>`.
-Kernel IDs are re-slugified from the title, so always confirm the real ref with
-`kaggle kernels list --mine` before `status`/`output`/`submit`.
-
-The notebook itself is **CPU-only, offline, and self-contained**. It attaches the competition
-as a data source (Kaggle requires this for notebook submissions) but reads nothing from it. It
-only needs the standard library plus `PyYAML`.
-
----
-
-## Hard constraints
-
-| constraint | consequence |
+| path | what it is |
 |---|---|
-| **1 submission/day** | one verified bundle per day; no total cap, but no exploratory spam |
-| **12 h compute for ~120 sequential tasks** | per-task agent budget must average ≲4–5 min; 12 min was measured to exceed the cap and score 0 |
-| **A notebook that errors scores 0** | build, validate and package must be exception-proof; test the notebook offline first |
-| **No internet in the notebook** | no `pip install`, no downloads at run time |
-| **Single base model per submission** | choose one of the four official quantized models; every agent in the bundle must declare the same one |
-| **No LoRA adapters** | an adapter collapses the vLLM KV cache from ~46k to ~7.6k tokens and starves the context |
-| **< 3 GiB unpacked** | only `.yaml .yml .md .txt .py .json .safetensors`; **no empty suffix** (so `LICENSE`, `Makefile`, `Dockerfile` would abort) |
-| **Protected paths** | `conftest.py`, `pytest.ini`, `pyproject.toml`, `tox.ini`, `setup.cfg`, `test_*.py`, `*_test.py`, and any `.py` under `tests/` are reset before grading |
-| **`run_command` keeps the first 5,000 chars** | pytest's verdict is at the end; log to `/tmp` and `tail` |
-| **`read_file` caps at 150 lines / 10,000 chars** | read tight line ranges |
-| **Compaction at 14,336 tokens** | only the model's own text survives; keep a plain-text state card |
-| **Context ceiling 32,768 tokens** | prompt + `max_output_tokens` must fit; a vLLM 400 discards an already-submitted patch |
+| `src/agent_package/` | default declarative ADK bundle used by the notebook builders |
+| `src/notebook_lib/`, `src/sections/` | validator + notebook section modules (`tools/build_notebook.py` splices them) |
+| `tools/` | bootstrap, resource checks, bundle/notebook verify+build, Kaggle REST client |
+| `tracks/e4b_small/` | E4B small-model line: bundles, dedicated verifiers, kernels |
+| `kaggle_work/gemma-4-developer-agent/` | competition workspace: bundles, kernel dirs, live competition docs, `RESULTS.md` ledger |
+| `ckpt/` | frozen checkpoints: `STATE.md`, `RESULTS.md`, bundles, submission archives |
+| `research/` | paper-track experiments: `verified_json/`, `paper_figs/`, `kernel_paper_eval/`, audits, quarantined legacy builders |
+| `docs/` | runbook, resource inventory, paper drafts + verification, audits, ledger |
+| `scripts/` | figure generation, integrity gate, eval runners, snapshot fetcher |
+| `skills/swe-toolkit/` | the released zero-dependency localization/inspection/verification package |
+| `bundles/`, `judgeguard_submission/` | experiment agent bundles (exp13/13swe/14/think1024/breakthrough, judgeguard) |
+| `assets/` | rendered paper + resource figures (committed PNGs) |
+| `eval_results/` | committed per-task eval JSONs (v4 repro, instrument B) |
+| `results/` | `claim_toolkit_*.json` — toolkit claim evidence |
+| `notes/pulled_txt/` | text dumps of public competitor notebooks |
+| `runs/` (gitignored) | pulled kernel outputs / third-party eval CSVs — not redistributed |
+| `audit_snapshots/` (gitignored) | older snapshot cache; re-downloadable from Kaggle |
+| `eval_snapshots/` (gitignored) | 129 extracted per-task repo trees (42 GB); rebuilt by `scripts/fetch_eval_data.py` |
+| `build/` (gitignored) | generated `submission_notebook.ipynb` |
 
-The live `HARNESS_README.md` (2026-10-13) is authoritative. It permits four quantized models
-(`gemma-4-31b-it-qat-w4a16-ct`, `gemma-4-12b-it-qat-w4a16-ct`,
-`gemma-4-e4b-it-qat-w4a16-ct`, `gemma-4-e2b-it-qat-w4a16-ct`) and documents changed thinking
-semantics; `ckpt/HARNESS_README.md` and parts of `ckpt/CONFIG.md` predate that revision.
+## Data
 
----
+Competition data is **not redistributed** in this repo. To obtain it (Kaggle account required):
 
-## Experiment history (public LB)
+- **Task list + harness docs**: `python tools/check_resources.py` (verifies the 524 competition files
+  and 129-task dev set) or `kaggle competitions download -c gemma-4-developer-agent`.
+- **Per-task snapshots**: `python scripts/fetch_eval_data.py` (129 snapshots → `eval_snapshots/`).
+- **Graphs / embeddings / wheelhouse**: attached inputs of the starter kernel
+  [`ryanholbrook/getting-started-gemma-4-developer-agent`](https://www.kaggle.com/code/ryanholbrook/getting-started-gemma-4-developer-agent)
+  and the dataset `metric/gemma-4-developer-agent-wheelhouse`.
+- **Third-party notebooks / eval CSVs** (`research/public_notebooks/`, `runs/`): kept locally only.
 
-| ref | date | bundle | score | model |
-|---|---|---|---|---:|
-| 57806053 | 2026-10-30 | e4b-v2 (temp 0.1 + imperative prompt) | pending | E4B |
-| 57777888 | 2026-10-29 | exp11_e4b genuine E4B | 0.06 | E4B |
-| 57736284 | 2026-10-28 | exp12-timing-buffer | 0.17 | 31B |
-| 57697341 | 2026-10-27 | exp11_e4b (31B fallback) | 0.13 | 31B |
-| 57654236 | 2026-10-26 | exp10-consolidated | 0.17 | 31B |
-| 57618114 | 2026-10-25 | exp08 tool contract prompt | 0.17 | 31B |
-| **57553805** | **2026-10-23** | **exp05 patch integrity** | **0.20** | **31B** |
-| 57037122 | 2026-10-10 | exp03 baseline replica | 0.17 | 31B |
-| 56812498 | 2026-10-04 | exp02 | 0.08 | 31B |
-| 56793672 | 2026-10-03 | exp01 | 0.05 | 31B |
-
-The full audit trail, failure analysis and per-experiment rationale are in
-`kaggle_work/gemma-4-developer-agent/RESULTS.md`, `ckpt/RESULTS.md` and `docs/AUDIT_E4B_AND_PAPER.md`.
-
----
-
-## Documentation
-
-| file | purpose |
-|---|---|
-| [`AGENTS.md`](AGENTS.md) | hard rules and workflow for AI coding agents |
-| [`docs/RUNBOOK.md`](docs/RUNBOOK.md) | copy-paste commands for setup, verify, push, submit, recover |
-| [`docs/TASKLIST.md`](docs/TASKLIST.md) | live task queue: instrument repair, E1 build, gates, submission ladder, deadlines |
-| [`docs/AUDIT_E4B_AND_ANCHOR.md`](docs/AUDIT_E4B_AND_ANCHOR.md) | why 0.17/0.20 is noise, why the E4B line is closed, and what the 0.20 anchor really is |
-| [`docs/COMPETITION_RESOURCES.md`](docs/COMPETITION_RESOURCES.md) | verified live resource inventory (files, hashes, deadlines) |
-| [`docs/TASK_CLASSIFICATION.md`](docs/TASK_CLASSIFICATION.md) | what the 129 dev tasks look like: categories, patch shapes, hot files, difficulty |
-| [`docs/SKILLS_ARCHITECTURE.md`](docs/SKILLS_ARCHITECTURE.md) | final skills/scripts/knowledge design, verified harness facts, 31B experiment ladder |
-| [`docs/AUDIT_SNAPSHOTS.md`](docs/AUDIT_SNAPSHOTS.md) | downloaded audit snapshots: manifest, usage audit, retention policy |
-| [`docs/AUDIT_E4B_AND_PAPER.md`](docs/AUDIT_E4B_AND_PAPER.md) | forensic audit of E4B/paper submissions |
-| [`docs/PAPER_TRACK_DRAFT.md`](docs/PAPER_TRACK_DRAFT.md) | paper-track draft |
-| [`research/COMPETITION_GUIDE.md`](research/COMPETITION_GUIDE.md) | 12-part study guide |
-| [`ckpt/STATE.md`](ckpt/STATE.md) | checkpoint: resume commands and submission order |
-| [`kaggle_work/gemma-4-developer-agent/RESULTS.md`](kaggle_work/gemma-4-developer-agent/RESULTS.md) | append-only experiment ledger |
-
----
-
-## Contributing
-
-This is a small, high-stakes repo: a broken notebook scores 0 and submissions are limited to one
-per day. Before changing anything, read `AGENTS.md`. The short version:
-
-- one isolated change per experiment, with a mechanism in the harness source;
-- run `verify_bundle.py` **and** `verify_notebook.py` before pushing a kernel;
-- never submit without an explicit yes in the conversation;
-- record every experiment (including failures) in `RESULTS.md`;
-- commit and push before long Kaggle waits.
+No LICENSE file exists in this repository yet.
