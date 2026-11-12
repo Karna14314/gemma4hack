@@ -1,0 +1,150 @@
+{
+  "source_leaderboard": "live /leaderboard/view via bearer auth (HTTP 200)",
+  "top_teams_score_ge_022": [
+    {
+      "team": "Yurnero",
+      "score": 0.29,
+      "date": "2026-10-29T08:07:28.29Z"
+    },
+    {
+      "team": "Yike Xu",
+      "score": 0.24,
+      "date": "2026-10-08T06:07:23.13Z"
+    },
+    {
+      "team": "MUHAMMED IDRIS BIN YACOOB",
+      "score": 0.24,
+      "date": "2026-11-07T23:49:25Z"
+    },
+    {
+      "team": "SAVE",
+      "score": 0.24,
+      "date": "2026-11-05T12:04:39.8933333Z"
+    },
+    {
+      "team": "chizhu",
+      "score": 0.24,
+      "date": "2026-11-06T07:28:24.7133333Z"
+    },
+    {
+      "team": "pluris",
+      "score": 0.24,
+      "date": "2026-10-28T10:19:33.71Z"
+    },
+    {
+      "team": "Alberth Moreira",
+      "score": 0.24,
+      "date": "2026-11-08T17:07:33.88Z"
+    },
+    {
+      "team": "tammam alasha",
+      "score": 0.24,
+      "date": "2026-11-09T00:31:25.09Z"
+    },
+    {
+      "team": "P\u0131nar Aksoy",
+      "score": 0.24,
+      "date": "2026-11-08T00:01:32.7533333Z"
+    },
+    {
+      "team": "Takumu Hata",
+      "score": 0.24,
+      "date": "2026-11-08T15:04:51.57Z"
+    },
+    {
+      "team": "Serhii Mosiiash",
+      "score": 0.24,
+      "date": "2026-11-09T07:30:48.5633333Z"
+    },
+    {
+      "team": "LuisSpecian",
+      "score": 0.24,
+      "date": "2026-11-09T00:49:41.9133333Z"
+    },
+    {
+      "team": "Francis Joseph",
+      "score": 0.22,
+      "date": "2026-11-07T16:19:44.4633333Z"
+    },
+    {
+      "team": "Deepest Mind",
+      "score": 0.22,
+      "date": "2026-11-08T10:41:31.81Z"
+    },
+    {
+      "team": "Ayush Barai",
+      "score": 0.22,
+      "date": "2026-11-09T06:34:22.9733333Z"
+    },
+    {
+      "team": "\u5403\u767d\u996d\u7684\u5927\u80a5\u9c7c",
+      "score": 0.22,
+      "date": "2026-11-08T10:49:00.6333333Z"
+    },
+    {
+      "team": "omallo",
+      "score": 0.22,
+      "date": "2026-11-09T00:55:33.2766667Z"
+    },
+    {
+      "team": "Vibhanshu Singh",
+      "score": 0.22,
+      "date": "2026-11-07T16:53:20.0933333Z"
+    },
+    {
+      "team": "ABHIRUP DAS",
+      "score": 0.22,
+      "date": "2026-11-08T04:45:45.19Z"
+    },
+    {
+      "team": "Thomas T\u01b0Nh\u00e2n",
+      "score": 0.22,
+      "date": "2026-11-09T14:00:26.6333333Z"
+    }
+  ],
+  "note": "Live /leaderboard/view returns only top-20 best scores. All scores are multiples of 1/58 (0.29~17/58, 0.24~14/58, 0.22~13/58).",
+  "downloaded_public_notebooks": [
+    {
+      "file": "research/public_intel/kernels/gemma-4-loop-breaker-adk-agent.ipynb",
+      "metadata_author": "prvsiyan/gemma-and-the-shape-of-doubt",
+      "note": "metadata id (prvsiyan) conflicts with file content (robinamirbahar loop-breaker); authorship UNVERIFIED",
+      "url": "https://www.kaggle.com/code/robinamirbahar/gemma-4-loop-breaker-adk-agent",
+      "harness": {
+        "model": "gemma-4-31b-it-qat-w4a16-ct",
+        "tools": "9 base incl. get_code_neighbors/search_similar_code/get_code_subgraph",
+        "temperature": 0.2,
+        "top_p": 0.95,
+        "max_output_tokens": 8192,
+        "thinking_budget": 4096,
+        "max_tool_calls": 28,
+        "max_time_minutes": 8,
+        "max_turns": 80,
+        "skills": "none",
+        "patch_gate": "not evident in dumped config",
+        "prompt_len_chars": "~3,756 (per public notes)"
+      },
+      "diff_vs_ours": "Same harness as exp05; adds loop-breaker/anti-compaction STATE rule; prompt shorter (~3,756 vs 5,461 chars)."
+    },
+    {
+      "file": "research/public_intel/top_kernels/lb-0-22-4-config-files-no-training.ipynb",
+      "metadata_author": "jocelyndumlao/trace-test-guided-repository-exploration",
+      "note": "metadata id (jocelyndumlao) conflicts with leaderboard author (bliverrigpdoge); competition_source=paper track; authorship UNVERIFIED",
+      "url": "https://www.kaggle.com/code/bliverrigpdoge/lb-0-22-4-config-files-no-training",
+      "harness": {
+        "model": "not found inline (references GitHub jcdumlao14/...paper-track results)",
+        "tools": "not found inline",
+        "temperature": "not found inline",
+        "top_p": "not found inline",
+        "max_output_tokens": "not found inline",
+        "thinking_budget": "not found inline",
+        "max_tool_calls": "not found inline",
+        "skills": "not found inline",
+        "patch_gate": "not found inline",
+        "prompt_len_chars": "not found inline"
+      },
+      "diff_vs_ours": "Harness settings not extractable from downloaded notebook; full config not available."
+    }
+  ],
+  "confirmed_top20_match": false,
+  "reason_no_match": "No downloaded notebook author is confirmed as a leaderboard top-20 team. Cannot fetch per-team notebooks (notebook pages JS-rendered; CLI 401s). Differences below are for the two downloaded notebooks only, NOT attributed to top-20 teams."
+}
