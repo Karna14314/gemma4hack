@@ -77,7 +77,7 @@ Scores from `docs/ENV_AUDIT.md:4.1` (full queue, 2026-11-09) and `docs/LEADERBOA
 | 57654236 | 2026-10-26 | exp10 consolidated | 31B | 0.2 | 28 | 6144 / 4096 | 9,867 (+4,350) | 6 | 0.17 | 10 | scored | STATE header + Call-8 rush; max_output 6144 → headroom 26,624 |
 | 57697341 | 2026-10-27 | exp11_e4b (31B fallback) | 31B (fallback) | 0.2 | 28 | 8192 / 4096 | 5,353 | 6 | 0.13 | 8 | scored | E4B alias rejected by validator → 31B fallback package (`docs/AUDIT_E4B_AND_PAPER.md:24`) |
 | 57736284 | 2026-10-28 | exp12 timing buffer | 31B | 0.2 | 28 | 8192 / 4096 | 6,109 (+592) | 6 | 0.17 | 10 | scored | near-exact exp05, 9-min buffer |
-| 57777888 | 2026-10-29 | exp11_e4b genuine E4B | E4B | 0.2 | 28 | 8192 / 4096 | 5,353 | 6 | 0.06 | ~3 | scored | genuine E4B bundle (model swap only) |
+| 57777888 | 2026-10-29 | exp11_e4b genuine E4B | E4B | 0.2 | 28 | 8192 / 4096 | 5,353 | 6 | 0.06 | 4 | scored | genuine E4B bundle (model swap only); tasks corrected 3→4 on 2026-11-12 (0.06 = 4/58 per `research/paper_figs/ledger.csv`) |
 | 57806053 | 2026-10-30 | e4b-v2 | E4B | 0.1 | **35** | 8192 / 4096 | **1,746** | 6 | 0.05 | ~3 | scored | temp 0.1 + imperative prompt + 35 calls (3 changes; LEDGER misdocuments as 2/2440; §3) |
 | 57836949 | 2026-10-31 | E0 control (byte-identical exp05) | 31B | 0.2 | 28 | 8192 / 4096 | 5,425 | 9 | 0.17 | 10 | scored | reproduction check; **exp05's 0.20 did not reproduce** (identical artifact scored 0.17); SHA `2ba7f9b1…` |
 | 57889741 | 2026-11-02 | e4b_v4_swe_toolkit | E4B | 0.1 | **35** | 8192 / 4096 | 2,116 | 7 + SkillToolset | 0.05 | ~3 | scored | E4B + swe-toolkit v4 engine; skill offload prediction falsified |

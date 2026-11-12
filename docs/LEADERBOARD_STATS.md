@@ -7,7 +7,7 @@
 | 57889741 | 2026-11-02 | e4b_v4_swe_toolkit (E4B + upgraded engine) | E4B | 0.05 | ~3 | COMPLETE | −0.15 |
 | 57836949 | 2026-10-31 | E0 control (byte-identical exp05) | 31B | 0.17 | 10 | COMPLETE | −0.03 |
 | 57806053 | 2026-10-30 | e4b-v2 (temp 0.1 + imperative prompt) | E4B | 0.05 | ~3 | COMPLETE | −0.15 |
-| 57777888 | 2026-10-29 | exp11_e4b (genuine E4B, no 31B fallback) | E4B | 0.06 | ~3 | COMPLETE | −0.14 |
+| 57777888 | 2026-10-29 | exp11_e4b (genuine E4B, no 31B fallback) | E4B | 0.06 | 4 | COMPLETE | −0.14 |
 | 57736284 | 2026-10-28 | exp12-timing-buffer (near-exact exp05, 9-min) | 31B | 0.17 | 10 | COMPLETE | −0.03 |
 | 57697341 | 2026-10-27 | exp11_e4b ablation (31B fallback) | 31B→E4B | 0.13 | ~8 | COMPLETE | −0.07 |
 | 57553805 | — | exp05 patch integrity (anchor) | 31B | 0.20 | 12 | COMPLETE | — |

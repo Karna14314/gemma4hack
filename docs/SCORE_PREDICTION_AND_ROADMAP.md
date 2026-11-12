@@ -123,7 +123,9 @@ gold symbols:
 
 | symbol metric | hidden@1 | hidden@3 | hidden@5 | hidden@10 |
 |---|---|---|---|---|
-| locate's shipped symbol ranking | 0.157 | 0.231 | 0.306 | 0.364 |
+| locate's shipped symbol ranking | 0.1488 | 0.2479 | 0.3140 | 0.3554 |
+
+(Corrected 2026-11-12: recomputed from committed `eval_results/t6_results_v4_repro.json` — 18/30/38/43 of 121 tasks; the earlier 0.157/0.231/0.306/0.364 row is superseded. The v5-delta table below uses this corrected v4 row.)
 
 (Web reference: `top_syms` comes from `_index.rank_syms`.) The R&D prototype
 (`%TEMP%/opencode/symrank_v5.py`, outside the repo; the locked bundle is not
@@ -136,10 +138,10 @@ the locked engine, bundle untouched). 121/129 tasks have gold symbols:
 
 | symbol metric | shipped v4 `locate` syms | v5 span re-rank | delta |
 |---|---|---|---|
-| hit@1 | 0.157 (19) | 0.190 (23) | +0.033 |
-| hit@3 | 0.231 (28) | 0.322 (39) | +0.091 |
-| hit@5 | 0.306 (37) | 0.388 (47) | +0.082 |
-| hit@10 | 0.364 (44) | 0.488 (59) | +0.124 |
+| hit@1 | 0.1488 (18) | 0.190 (23) | +0.041 |
+| hit@3 | 0.2479 (30) | 0.322 (39) | +0.074 |
+| hit@5 | 0.3140 (38) | 0.388 (47) | +0.074 |
+| hit@10 | 0.3554 (43) | 0.488 (59) | +0.132 |
 
 - **File ranking unchanged.** Fresh v4 `locate()` ranks matched the stored v4 run
   exactly — 0/129 mismatches — so File R@3 = 0.651 and R@5 = 0.744 carry over

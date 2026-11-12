@@ -7,7 +7,7 @@
 ---
 
 ## Abstract
-Autonomous software engineering (SWE) agents in offline environments face severe resource ceilings: a 32,768-token vLLM context ceiling, 28 tool calls, and an 8-minute per-task timeout on 4x NVIDIA L4 GPUs. Under these tight bounds, benchmark outcomes are governed by harness mechanics and stochastic variance rather than prompt phrasing. We present an empirical study of Gemma 4 combining 18 live Kaggle leaderboard submissions with a verified 129-task offline benchmark across four Python repositories. First, wheel audits of Google ADK 1.36.1 and vLLM 0.19.1 uncover five fatal failure modes: interval compaction (`token_threshold=14336`, `interval=15`) erasing working memory on `<think>` turns, LiteLLM dropping reasoning history (`chat_utils.py:1512`), `.gitignore` omitting new files (8.5% of tasks), and missing sandbox dependencies breaking 27/67 FastAPI tasks before test execution. Second, a two-regime retrieval benchmark shows live workspace AST indexing with test demotion elevates File R@5 from 0.4350 to 0.7440 (+30.9 pp gain, +71.0% relative; R@10 = 0.8290), outperforming static call graphs degraded by 5,000-character tool caps (0.2846 R@10). Third, cross-scale ablations show 31B models reaching 0.20 (pooled rate 0.1702, $N=464$) versus 0.05 for 4B models. Equipping 4B agents with deterministic localization tools (`swe-toolkit`) fails to lift resolution (0.05), falsifying the localization-offload hypothesis and proving 4B models are bottlenecked by state retention and edit restoration fidelity.
+Autonomous software engineering (SWE) agents in offline environments face severe resource ceilings: a 32,768-token vLLM context ceiling, 28 tool calls, and an 8-minute per-task timeout on 4x NVIDIA L4 GPUs. Under these tight bounds, benchmark outcomes are governed by harness mechanics and stochastic variance rather than prompt phrasing. We present an empirical study of Gemma 4 combining 18 live Kaggle leaderboard submissions with a verified 129-task offline benchmark across four Python repositories. First, wheel audits of Google ADK 1.36.1 and vLLM 0.19.1 uncover five fatal failure modes: interval compaction (`token_threshold=14336`, `interval=15`) erasing working memory on `<think>` turns, LiteLLM dropping reasoning history (`chat_utils.py:1512`), `.gitignore` omitting new files (8.5% of tasks), and missing sandbox dependencies breaking 27/67 FastAPI tasks before test execution. Second, a two-regime retrieval benchmark shows live workspace AST indexing with test demotion elevates File R@5 from 0.4350 (Regime A: mean per-task file-recall fraction over graph-node candidates) to 0.7440 (Regime B: any-gold recall over all `.py` files on disk) — **different instruments, so the +30.9 pp difference is an observed cross-regime gap, not a like-for-like gain** (+71.0% rel; R@10 = 0.8290), outperforming static call graphs degraded by 5,000-character tool caps (0.2846 R@10). Third, cross-scale ablations show 31B models reaching 0.20 (pooled rate 0.1702, $N=464$) versus 0.05 for 4B models. Equipping 4B agents with deterministic localization tools (`swe-toolkit`) fails to lift resolution (0.05), falsifying the localization-offload hypothesis and proving 4B models are bottlenecked by state retention and edit restoration fidelity.
 
 ## 1. Introduction & The Offline Small-Agent Regime
 
@@ -21,7 +21,7 @@ We investigate four central research questions:
 - **RQ3 (Context Dynamics):** How do compaction thresholds and engine-level logit budget processors affect multi-turn reasoning?
 - **RQ4 (Cross-Scale Limits):** Can deterministic localization enable compact 4B models to match 31B performance?
 
-Contributions: (1) an audit of ADK 1.36.1 and vLLM 0.19.1 identifying five silent runtime traps; (2) a two-regime benchmark across 129 tasks establishing a +30.9 pp File R@5 transition gain (0.4350 to 0.7440) and exposing an Any-Gold (0.895) vs. Strict All-Gold (0.158) multi-file gap; (3) `swe-toolkit`, an open zero-dependency package with 10 domain playbooks (258 triggers, 32.6% precision) and verification backed by a 9/9 torture suite; and (4) live submission evidence defining the binomial noise floor (SE $\approx$ 0.0503), proving via an identical reproduction control ($E_0$) that 0.20 vs. 0.17 deltas represent noise, and empirically falsifying the 4B localization-offload hypothesis.
+Contributions: (1) an audit of ADK 1.36.1 and vLLM 0.19.1 identifying five silent runtime traps; (2) a two-regime benchmark across 129 tasks reporting a +30.9 pp cross-regime File R@5 difference (0.4350 mean-fraction graph-node instrument → 0.7440 any-gold all-files instrument; **different metrics, not like-for-like**) and exposing an Any-Gold (0.895) vs. Strict All-Gold (0.158) multi-file gap; (3) `swe-toolkit`, an open zero-dependency package with 10 domain playbooks (258 triggers, 32.6% precision) and verification backed by a 9/9 torture suite; and (4) live submission evidence defining the binomial noise floor (SE $\approx$ 0.0503), proving via an identical reproduction control ($E_0$) that 0.20 vs. 0.17 deltas represent noise, and empirically falsifying the 4B localization-offload hypothesis.
 
 ## 2. Wheel-Verified Harness Mechanics & Silent Failure Taxonomy
 
@@ -88,24 +88,24 @@ In Regime B, `swe_toolkit` (`_index.py`) indexes the live filesystem directly vi
 | `v4` (Shipped Engine) | **0.4190** | **0.6510** | **0.7440** | **0.8290** | **0.1710** | Reverted boost, test demotion, tie-break |
 
 The transition from Regime A static graph indexing to Regime B live source-tree indexing marks a decisive performance leap:
-$$\text{File R@5: } 0.4350 \ (\text{Regime A, M4}) \longrightarrow 0.7440 \ (\text{Regime B, v4}) \quad [+\mathbf{30.9}\text{ pp, } +\mathbf{71.0}\%\text{ rel}]$$
+$$\text{File R@5: } 0.4350 \ (\text{Regime A, M4}) \longrightarrow 0.7440 \ (\text{Regime B, v4}) \quad [+\mathbf{30.9}\text{ pp, } +\mathbf{71.0}\%\text{ rel};\ \text{different instruments, not like-for-like}]$$
 $$\text{File R@10: } 0.4587 \ (\text{Regime A, M4}) \longrightarrow 0.8290 \ (\text{Regime B, v4}) \quad [+\mathbf{37.0}\text{ pp, } +\mathbf{80.7}\%\text{ rel}]$$
 Pre-built graphs omit dynamically loaded modules and helpers. Live indexing inspects the exact source tree while actively demoting test paths.
 
 ### 3.4 Multi-File Retrieval Dilemma & Intra-File Symbol Re-ranking
 On 38 multi-file tasks (29.5%), Any-Gold recall reaches 0.7630, 0.8160, and 0.8950 at Top-3, Top-5, and Top-10. However, Strict All-Gold recall (all gold files in top-$k$) is only **0.0790, 0.0790, and 0.1580**! Single-pass retrieval structurally cannot resolve multi-file bugs; an agent must iterate across turns.
 
-Within retrieved files, locating target functions is critical. On 121 tasks with identifiable gold symbols, base `v4` symbol recall is 0.3060 Symbol R@5. Our span-level re-ranking pipeline evaluates four enhancements: signature token overlap (`v5`), expanded top-12 file scope (`v5A`), member-over-container boost (`v5AB`), and call-site scoring (`v6`).
+Within retrieved files, locating target functions is critical. On 121 tasks with identifiable gold symbols, base `v4` symbol recall is 0.3140 Symbol R@5 (corrected 2026-11-12: recomputed from committed `eval_results/t6_results_v4_repro.json`). Our span-level re-ranking pipeline evaluates four enhancements: signature token overlap (`v5`), expanded top-12 file scope (`v5A`), member-over-container boost (`v5AB`), and call-site scoring (`v6`).
 
 #### Table 2D — Intra-File Symbol Recall Ablation (121 Identifiable Symbol Tasks)
 | Re-ranking Variant | Symbol @1 | Symbol @3 | Symbol @5 | Symbol @10 | Algorithmic Enhancement |
 |---|---:|---:|---:|---:|---|
-| `v4` (Shipped Baseline) | 0.1570 | 0.2310 | 0.3060 | 0.3640 | Shipped `_index.py` ranking |
+| `v4` (Shipped Baseline) | 0.1488 | 0.2479 | 0.3140 | 0.3554 | Shipped `_index.py` ranking (recomputed from committed per-task results; the earlier 0.157/0.231/0.306/0.364 row is superseded) |
 | `v5` (Top-8 File Scope) | 0.1900 | 0.3220 | 0.3880 | 0.4880 | Signature + body token overlap |
 | `v5AB` (+Member Boost) | 0.2150 | 0.3220 | 0.3880 | 0.4550 | Prioritize methods over classes |
 | `v6` (+Call-Site Scoring) | **0.2150** | **0.3310** | **0.4050** | **0.4630** | Deep AST span re-ranking |
 
-The complete `v4` $\rightarrow$ `v6` pipeline lifts Symbol R@5 to **0.4050** (+0.0990 net) at +1.31 s latency with zero file-ranking regressions.
+The complete `v4` $\rightarrow$ `v6` pipeline lifts Symbol R@5 to **0.4050** (+0.0910 net vs the corrected v4 R@5 of 0.3140; the draft's +0.0990 used the superseded 0.3060 baseline) at +1.31 s latency with zero file-ranking regressions.
 
 ## 4. The `swe-toolkit` Open Resource & Triggered Playbooks
 

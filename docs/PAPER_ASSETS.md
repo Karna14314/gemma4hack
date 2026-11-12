@@ -15,7 +15,7 @@ Read-only repo work except creating scripts/make_paper_figs.py, research/paper_f
 
 Generate figures:
 ```
-python scripts/make_paper_figs.py
+python research/paper_figs/make_figures.py
 ```
 The script asserts `floor(100*tasks/58)/100 == score` for every scored ledger row (passed). Reads ledger.csv / instrument_b.json; writes PNGs + data CSVs.
 
