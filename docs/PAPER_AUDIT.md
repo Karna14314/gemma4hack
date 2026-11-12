@@ -87,7 +87,8 @@ Scores from `docs/ENV_AUDIT.md:4.1` (full queue, 2026-11-09) and `docs/LEADERBOA
 
 Marking: all rows above are **scored** except `58149803` (**pending scoring**, Gate 4 complete + pulled hash byte-identical, `docs/ENV_AUDIT.md:201-204`). No submission newer than `58149803` exists in the repo (git log top commit is `exp_think1024 submitted (ref 58149803)`; `docs/ENV_AUDIT.md:106` "Nothing is PENDING; no submission today (2026-11-09)"). `docs/LEDGER.md:23-24` still marks e4b-v2 `57806053` "pending" — **stale**; it completed at 0.05 (`docs/ENV_AUDIT.md:97`).
 
-Pooled converged-config 31B = 8 scored runs (0.20, 0.17×5, 0.15, 0.13) ≈ 77/464 = **0.166**, SE ≈ 0.018 (`docs/LEDGER.md:49-50` results section; `docs/LEADERBOARD_STATS.md:17`). E0 control proves exp05's 0.20 was a high draw, not a reproducible +2 (`docs/AUDIT_E4B_AND_ANCHOR.md:58`).
+Pooled converged-config 31B = 8 scored runs (0.20, 0.17×5, 0.15, 0.13) = 79/464 = **0.170**, SE ≈ 0.018 (`docs/LEDGER.md:49-50` results section; `docs/LEADERBOARD_STATS.md:17`). E0 control proves exp05's 0.20 was a high draw, not a reproducible +2 (`docs/AUDIT_E4B_AND_ANCHOR.md:58`).
+**Errata (2026-11-12):** this paragraph previously read "≈ 77/464 = 0.166"; the correct count of the 8 scored runs (12 + 5×10 + 9 + 8 tasks) is **79/464 = 0.170** (`docs/PAPER_VERIFY.md` §B.2).
 
 ---
 
@@ -149,7 +150,7 @@ Word count: **2,997 words, 161 lines** (measured via token-split). The draft has
 | 18 | "offloading ... to a deterministic stdlib skill (swe-toolkit), predicted to double the 4B rate, was measured at 0.05 and falsified" | `docs/SCORE_PREDICTION_AND_ROADMAP.md:112-116` (predicted 0.09–0.13); ref 57889741 scored 0.05 (`docs/ENV_AUDIT.md:95`) | VERIFIED (falsified) |
 | 19 | "E4B line closed (0.05–0.06 across four submissions)" | refs 57777888 (0.06), 57806053 (0.05), 57889741 (0.05), + exp11_e4b (`docs/AUDIT_E4B_AND_ANCHOR.md:273`) | VERIFIED |
 | 20 | "the 4B bottleneck is edit fidelity and state retention, not localization" | `docs/SCORE_PREDICTION_AND_ROADMAP.md:85-100` (mechanism diagnosis) | UNVERIFIED (inference; no per-task traces — `docs/AUDIT_E4B_AND_ANCHOR.md:114-117`) |
-| 21 | "pooled converged-config 31B ≈ 0.166 (0.20, 0.17×5, 0.15, 0.13 ⇒ ≈77/464)" | `docs/LEDGER.md` results section (2026-11-09) | VERIFIED |
+| 21 | "pooled converged-config 31B ≈ 0.166 (0.20, 0.17×5, 0.15, 0.13 ⇒ ≈77/464)" | `docs/LEDGER.md` results section (2026-11-09) | VERIFIED — **errata 2026-11-12: recomputed 79/464 = 0.170 (`docs/PAPER_VERIFY.md` §B.2); quoted text kept as the historical audit record** |
 | 22 | "exp05's 0.20 was a high draw" / "pooled 0.179" | `docs/AUDIT_E4B_AND_ANCHOR.md:58` (52/290 = 0.179) | VERIFIED |
 | 23 | "symbol re-ranker is a prototype (exp14 shipped a lean-toolkit variant, scored 0.15)" | ref 57933618 exp14 scored 0.15 (`docs/ENV_AUDIT.md:94`); re-ranker unshipped (`%TEMP%/opencode/`, outside repo) | VERIFIED (score) / prototype outside repo |
 | 24 | "run narisettichaitanya/g4-paper-graph-benchmark (CPU, ~3 min)" | `research/paper_eval_outputs/g4-paper-graph-benchmark.log` (941 B) | UNVERIFIED locally (kernel not rerun) |

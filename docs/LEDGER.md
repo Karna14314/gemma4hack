@@ -13,6 +13,7 @@
 ## e4b-v2 bundle
 - Bundle: tracks/e4b_small/bundles/e4b_v2
 - Diff vs baseline (57777888): only configs/sampling.yaml (temperature 0.2 -> 0.1) and prompts/system.md (rewritten, 2440 chars). agent.yaml and eval_config.yaml byte-identical.
+- **Correction (2026-11-12):** the text above is wrong for e4b-v2 and actually describes **e4b_v3**. The submitted e4b-v2 run (ref 57806053) changed **3 things**: `temperature 0.2 -> 0.1`, `max_tool_calls 28 -> 35`, and the prompt **cut to 1,746 chars** (not 2,440). The 2-change / 2,440-char description matches the e4b_v3 bundle, not e4b_v2. The original entry is kept for the record; the gate-result line below quoting "prompt 2440 chars" is affected by the same mix-up.
 - Unified diff recorded in commit/PR.
 
 ## Submission
