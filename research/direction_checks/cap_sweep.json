@@ -1,0 +1,9 @@
+{
+  "cap": 5000,
+  "total_nodes": 0,
+  "nodes_over_cap": 0,
+  "frac_over_cap": 0.0,
+  "per_file": [],
+  "claim_in_draft": "80.9% of 1-hop neighborhoods exceed the 5,000-char tool cap",
+  "source": "committed research/graphs/*.json (static, CPU-only)"
+}
